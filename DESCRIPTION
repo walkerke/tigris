@@ -5,8 +5,8 @@ Version: 0.0.1
 Date: 2015-06-15
 Author: person("Kyle", "Walker", "kyle.walker@tcu.edu", c("aut", "cre"))
 Maintainer: Kyle Walker <kyle.walker@tcu.edu>
-Description: More about what it does (maybe more than one line)
-License: MIT + file LICENSE
+Description: Download TIGER shapefiles from the US Census Bureau and load into R as Spatial DataFrames.
+License: MIT
 LazyData: TRUE
 Depends:
   rgdal

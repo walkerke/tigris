@@ -1,5 +1,5 @@
 #' Download a US Counties shapefile into R, and optionally subset by state
-#' @param state The two-digit FIPS code (string) of the state you want.
+#' @param state The two-digit FIPS code (string) of the state you want, or a vector of codes if you want multiple states.
 #' @export
 
 counties <- function(state = NULL) {
@@ -10,9 +10,19 @@ counties <- function(state = NULL) {
 
   if (!is.null(state)) {
 
-    sub <- ctys[ctys$STATEFP == state, ]
+    if (length(state) > 1) {
 
-    sub
+      sub <- ctys[ctys$STATEFP %in% state, ]
+
+      sub
+
+    } else {
+
+      sub <- ctys[ctys$STATEFP == state, ]
+
+      sub
+
+    }
 
   } else {
 
@@ -24,7 +34,8 @@ counties <- function(state = NULL) {
 
 #' Download a Census tracts shapefile into R, and optionally subset by county
 #' @param state The two-digit FIPS code (string) of the state you want.
-#' @param county The three-digit FIPS code (string) of the county you'd like to subset for
+#' @param county The three-digit FIPS code (string) of the county you'd like to subset for, or a vector of FIPS codes
+#' if you desire multiple counties
 #' @export
 
 tracts <- function(state, county = NULL) {
@@ -37,9 +48,19 @@ tracts <- function(state, county = NULL) {
 
   if (!is.null(county)) {
 
-    sub <- trcts[trcts$COUNTYFP == county, ]
+    if (length(county) > 1) {
 
-    sub
+      sub <- trcts[trcts$COUNTYFP %in% county, ]
+
+      sub
+
+    } else {
+
+      sub <- trcts[trcts$COUNTYFP == county, ]
+
+      sub
+
+    }
 
   } else {
 

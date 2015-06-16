@@ -9,7 +9,8 @@ tracts(state, county = NULL)
 \arguments{
 \item{state}{The two-digit FIPS code (string) of the state you want.}
 
-\item{county}{The three-digit FIPS code (string) of the county you'd like to subset for}
+\item{county}{The three-digit FIPS code (string) of the county you'd like to subset for, or a vector of FIPS codes
+if you desire multiple counties}
 }
 \description{
 Download a Census tracts shapefile into R, and optionally subset by county

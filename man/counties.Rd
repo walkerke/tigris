@@ -7,7 +7,7 @@
 counties(state = NULL)
 }
 \arguments{
-\item{state}{The two-digit FIPS code (string) of the state you want.}
+\item{state}{The two-digit FIPS code (string) of the state you want, or a vector of codes if you want multiple states.}
 }
 \description{
 Download a US Counties shapefile into R, and optionally subset by state
