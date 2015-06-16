@@ -15,7 +15,7 @@ load_tiger <- function(url) {
 
   shape <- gsub(".zip", "", file)
 
-  data <- readOGR(dsn = tmp, layer = shape, encoding = "UTF-8", verbose = FALSE)
+  data <- readOGR(dsn = tmp, layer = shape, encoding = "UTF-8", verbose = FALSE, stringsAsFactors = FALSE)
 
 }
 

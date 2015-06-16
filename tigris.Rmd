@@ -1,0 +1,101 @@
+---
+title: 'tigris: Download and use TIGER shapefiles in R'
+author: "Kyle Walker, TCU"
+date: "June 16, 2015"
+output: html_document
+---
+
+`tigris` is an R package I am developing to allow R users to download and use 2014 [TIGER/Line shapefiles](https://www.census.gov/geo/maps-data/data/tiger-line.html).  The package is very early in development, and the API is subject to change.  The code is available on GitHub at https://github.com/walkerke/tigris; please fork and contribute if you'd like!
+
+To install the package, issue the following command: 
+
+```{r, eval = FALSE}
+devtools::install_github('walkerke/tigris')
+```
+
+The following geographies are currently supported: 
+* States
+* Counties
+* Census tracts
+* Census-designated places
+* Congressional districts (114th Congress)
+* Unified school districts
+* Core-based statistical areas
+* Roads
+* Railroads
+* Area water features
+* Linear water features
+
+Using the package is as simple as calling a function that corresponds to the geography you'd like to download.  `tigris` will download the TIGER shapefile from the Census Bureau for you, and read it into R with `readOGR` from the `rgdal` package to return a spatial data frame.  
+
+```{r, message = FALSE, warning = FALSE}
+
+library(tigris)
+library(magrittr)
+
+states() %>% plot()
+
+```
+
+Many geographies are only available at state or county levels, so you'll need to supply the corresponding state and county FIPS codes to get the data.  This website provides a list for you: http://www.epa.gov/envirofw/html/codes/state.html.  
+
+For example, we can get Census tract data for Dallas (code '113') and Tarrant (code '439') Counties in Texas by supplying the state FIPS code for Texas and an appropriate vector of county codes: 
+
+```{r, message = FALSE, warning = FALSE}
+
+dfw <- tracts(state = '48', county = c('113', '439'))
+
+plot(dfw)
+
+```
+
+Of course, once you have the shape data, you probably want to do more than just plot the outlines.  The package includes a helper function, `geo_join`, that handles the sometimes-messy process of joining tabular data to shape data in R.  Let's grab median household income data by Census tract for the two counties using the `acs` package, and map it using the `leaflet` package: 
+
+```{r, message = FALSE, warning = FALSE}
+
+library(acs)
+library(leaflet)
+
+# api.key.install("my_key_here") You can get your own API key from the Census Bureau
+
+income_data <- acs.fetch(endyear = 2012, 
+                         geography = geo.make(state = "TX", 
+                                              county = c(113, 439), 
+                                              tract = "*"), 
+                         variable = "B19013_001")
+
+income_df <- data.frame(paste0(as.character(income_data@geography$state), 
+                               as.character(income_data@geography$county), 
+                               income_data@geography$tract), 
+                        income_data@estimate)
+
+colnames(income_df) <- c("GEOID", "hhincome")
+
+dfw_merged <- geo_join(dfw, income_df, "GEOID", "GEOID")
+
+pal <- colorQuantile("Greens", NULL, n = 6)
+
+popup <- paste0("Median household income: ", as.character(dfw_merged$hhincome))
+
+leaflet() %>%
+  addProviderTiles("CartoDB.Positron") %>%
+  addPolygons(data = dfw_merged, 
+              fillColor = ~pal(dfw_merged$hhincome), 
+              fillOpacity = 0.7, 
+              weight = 0.2, 
+              popup = popup) %>%
+  addLegend(pal = pal, 
+            values = dfw_merged$hhincome, 
+            position = "bottomright", 
+            title = "Income in Dallas and Tarrant Counties")
+```
+
+There is much more to do with this package.  On the to-do list: 
+
+* Support all available Census geographies
+* Smart geography lookup (e.g. supply "Texas" instead of the FIPS code)
+* Subset data by bounding box
+* Improve documentation
+* Port to Python for use with `geopandas`
+
+This package may not meet all your use cases as well.  For example, files often have to first be downloaded in bulk from the Census Bureau website, which can take some time.  
