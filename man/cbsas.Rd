@@ -4,7 +4,11 @@
 \alias{cbsas}
 \title{Download a core-based statistical area shapefile into R}
 \usage{
-cbsas()
+cbsas(detailed = TRUE)
+}
+\arguments{
+\item{detailed}{If detailed is set to FALSE, download a generalized (1:500k) cartographic boundary file.  Defaults
+to TRUE (the most detailed TIGER/Line file).}
 }
 \description{
 Download a core-based statistical area shapefile into R

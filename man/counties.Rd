@@ -4,10 +4,13 @@
 \alias{counties}
 \title{Download a US Counties shapefile into R, and optionally subset by state}
 \usage{
-counties(state = NULL)
+counties(state = NULL, detailed = TRUE)
 }
 \arguments{
 \item{state}{The two-digit FIPS code (string) of the state you want, or a vector of codes if you want multiple states.}
+
+\item{detailed}{If detailed is set to FALSE, download a generalized (1:500k) counties file.  Defaults to TRUE
+(the most detailed TIGER file).}
 }
 \description{
 Download a US Counties shapefile into R, and optionally subset by state

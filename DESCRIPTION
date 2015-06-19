@@ -1,7 +1,7 @@
 Package: tigris
 Type: Package
 Title: Load Census TIGER Geographic Data Into R
-Version: 0.0.1
+Version: 0.0.2
 Date: 2015-06-15
 Author: person("Kyle", "Walker", "kyle.walker@tcu.edu", c("aut", "cre"))
 Maintainer: Kyle Walker <kyle.walker@tcu.edu>

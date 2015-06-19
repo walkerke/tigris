@@ -4,7 +4,11 @@
 \alias{states}
 \title{Download a states shapefile into R}
 \usage{
-states()
+states(detailed = TRUE)
+}
+\arguments{
+\item{detailed}{If detailed is set to FALSE, download a generalized (1:500k) states file.  Defaults to TRUE
+(the most detailed TIGER/Line file)}
 }
 \description{
 Download a states shapefile into R
