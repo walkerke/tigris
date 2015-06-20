@@ -39,6 +39,8 @@ linear_water <- function(state, county) {
 
 
 #' Download a shapefile of the US coastline into R
+#'
+#' @export
 
 coastline <- function() {
 

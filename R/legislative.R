@@ -33,6 +33,7 @@ congressional_districts <- function(detailed = TRUE) {
 #' @param house Specify here whether you want boundaries for the upper or lower house.  Defaults to "upper".
 #' @param detailed If detailed is set to FALSE, download a generalized (1:500k) cartographic boundary file.  Defaults
 #' to TRUE (the most detailed TIGER/Line file).
+#' @export
 
 state_legislative_districts <- function(state, house = "upper", detailed = TRUE) {
 
