@@ -36,3 +36,16 @@ linear_water <- function(state, county) {
   lwtr
 
 }
+
+
+#' Download a shapefile of the US coastline into R
+
+coastline <- function() {
+
+  url <- "http://www2.census.gov/geo/tiger/TIGER2014/COAST/tl_2014_us_coastline.zip"
+
+  coast <- load_tiger(url)
+
+  coast
+
+}

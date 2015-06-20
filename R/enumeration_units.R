@@ -139,30 +139,6 @@ cbsas <- function(detailed = TRUE) {
 
 }
 
-#' Download a congressional districts shapefile for the 114th Congress into R
-#'
-#' @param detailed If detailed is set to FALSE, download a generalized (1:500k) cartographic boundary file.  Defaults
-#' to TRUE (the most detailed TIGER/Line file).
-#' @export
-
-congressional_districts <- function(detailed = TRUE) {
-
-  if (detailed == FALSE) {
-
-    url <- "http://www2.census.gov/geo/tiger/GENZ2014/shp/cb_2014_us_cd114_500k.zip"
-
-  } else {
-
-    url <- "http://www2.census.gov/geo/tiger/TIGER2014/CD/tl_2014_us_cd114.zip"
-
-  }
-
-  cd <- load_tiger(url)
-
-  cd
-
-}
-
 #' Download a unified school district shapefile into R
 #'
 #' @param state The two-digit FIPS code (string) of the state you want.
