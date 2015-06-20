@@ -230,10 +230,15 @@ block_groups <- function(state, county = NULL, detailed = TRUE) {
 #' Download a Zip Code Tabulation Area (ZCTA) shapefile into R
 #'
 #' @param detailed If detailed is set to FALSE, download a generalized (1:500k) ZCTA file.  Defaults to TRUE
-#' (the most detailed TIGER/Line file)
+#' (the most detailed TIGER/Line file).  A warning: the detailed TIGER/Line ZCTA file is massive (around 502MB
+#' unzipped), and the generalized version is also large (64MB zipped).  Be prepared for this especially if you have
+#' a slower internet connection.
+#' @param starts_with Character string specifying the beginning digits of the ZCTAs you want to return.  For example,
+#' supplying the argument \code{starts_with = "761"} will return only those ZCTAs that begin with 761.  Defaults
+#' to NULL, which will return all ZCTAs in the US.
 #' @export
 
-zctas <- function(detailed = TRUE) {
+zctas <- function(detailed = TRUE, starts_with = NULL) {
 
   if (detailed == FALSE) {
 
@@ -247,7 +252,17 @@ zctas <- function(detailed = TRUE) {
 
   zcta <- load_tiger(url)
 
-  zcta
+  if (!is.null(starts_with)) {
+
+    sub <- zcta[grep(paste0("^", starts_with), zcta$ZCTA5CE10), ]
+
+    sub
+
+  } else {
+
+    zcta
+
+  }
 
 }
 

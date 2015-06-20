@@ -17,6 +17,41 @@ roads <- function(state, county) {
 
 }
 
+
+#' Download a national primary roads shapefile into R
+#'
+#' @export
+
+
+primary_roads <- function() {
+
+  url <- "http://www2.census.gov/geo/tiger/TIGER2014/PRIMARYROADS/tl_2014_us_primaryroads.zip"
+
+  rds <- load_tiger(url)
+
+  rds
+
+}
+
+
+#' Download a primary & secondary roads shapefile into R
+#'
+#' @param state The two-digit FIPS code of the state of the county you'd like to download the roads for
+#' @export
+
+primary_secondary_roads <- function(state) {
+
+  url <- paste0("http://www2.census.gov/geo/tiger/TIGER2014/PRISECROADS/tl_2014_",
+                state,
+                "_prisecroads.zip")
+
+  rds <- load_tiger(url)
+
+  rds
+
+}
+
+
 #' Download a national rails shapefile into R
 #'
 #' @export
