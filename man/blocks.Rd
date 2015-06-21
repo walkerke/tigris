@@ -15,7 +15,7 @@ if you desire multiple counties}
 \description{
 This function will download an entire block shapefile for a selected state into R, and optionally subset by county.
 \strong{A warning:} Census block shapefiles are often very large, especially for large states - for example, the
-block file for Texas is 462MB zipped, and XGB unzipped!  If you have a slow or unreliable internet connection,
+block file for Texas is 462MB zipped!  If you have a slow or unreliable internet connection,
 or insufficient memory, this may prove burdensome given that you have to first download by state and then subset.
 }
 

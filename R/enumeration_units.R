@@ -115,30 +115,6 @@ states <- function(detailed = TRUE) {
 
 }
 
-#' Download a core-based statistical area shapefile into R
-#'
-#' @param detailed If detailed is set to FALSE, download a generalized (1:500k) cartographic boundary file.  Defaults
-#' to TRUE (the most detailed TIGER/Line file).
-#' @export
-
-cbsas <- function(detailed = TRUE) {
-
-  if (detailed == FALSE) {
-
-    url <- "http://www2.census.gov/geo/tiger/GENZ2014/shp/cb_2014_us_cbsa_500k.zip"
-
-  } else {
-
-    url <- "http://www2.census.gov/geo/tiger/TIGER2014/CBSA/tl_2014_us_cbsa.zip"
-
-  }
-
-  cbsa <- load_tiger(url)
-
-  cbsa
-
-}
-
 #' Download a unified school district shapefile into R
 #'
 #' @param state The two-digit FIPS code (string) of the state you want.
@@ -230,7 +206,7 @@ block_groups <- function(state, county = NULL, detailed = TRUE) {
 #' Download a Zip Code Tabulation Area (ZCTA) shapefile into R
 #'
 #' @param detailed If detailed is set to FALSE, download a generalized (1:500k) ZCTA file.  Defaults to TRUE
-#' (the most detailed TIGER/Line file).  A warning: the detailed TIGER/Line ZCTA file is massive (around 502MB
+#' (the most detailed TIGER/Line file).  \strong{A warning:} the detailed TIGER/Line ZCTA file is massive (around 502MB
 #' unzipped), and the generalized version is also large (64MB zipped).  Be prepared for this especially if you have
 #' a slower internet connection.
 #' @param starts_with Character string specifying the beginning digits of the ZCTAs you want to return.  For example,
@@ -271,7 +247,7 @@ zctas <- function(detailed = TRUE, starts_with = NULL) {
 #'
 #' This function will download an entire block shapefile for a selected state into R, and optionally subset by county.
 #' \strong{A warning:} Census block shapefiles are often very large, especially for large states - for example, the
-#' block file for Texas is 462MB zipped, and XGB unzipped!  If you have a slow or unreliable internet connection,
+#' block file for Texas is 462MB zipped!  If you have a slow or unreliable internet connection,
 #' or insufficient memory, this may prove burdensome given that you have to first download by state and then subset.
 #'
 #' @param state The two-digit FIPS code (string) of the state you want.

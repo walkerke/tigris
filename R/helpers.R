@@ -1,6 +1,5 @@
 #' Helper function to download Census data
 #'
-#' @export
 #' @import rgdal
 
 load_tiger <- function(url) {
