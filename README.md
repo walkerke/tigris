@@ -35,9 +35,9 @@ plot(ua)
 ![Basic plot](https://dl.dropbox.com/s/evb5u8sm0q9k4sy/ua_plot.png)
 
 ```r
-library(leaflet)
-
 # Interactive Leaflet map (requires the leaflet R package)
+
+library(leaflet)
 
 ua %>% leaflet() %>% addTiles() %>% addPolygons(popup = ~NAME10)
 
