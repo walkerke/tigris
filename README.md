@@ -23,7 +23,6 @@ __Basic usage:__
 
 ```r
 library(tigris)
-library(leaflet)
 
 # Basic plot of US urbanized areas
 
@@ -35,7 +34,8 @@ plot(ua)
 
 ![Basic plot](https://dl.dropbox.com/s/evb5u8sm0q9k4sy/ua_plot.png)
 
-```
+```r
+library(leaflet)
 
 # Interactive Leaflet map (requires the leaflet R package)
 
