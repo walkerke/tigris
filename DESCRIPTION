@@ -1,8 +1,8 @@
 Package: tigris
 Type: Package
 Title: Load Census TIGER Geographic Data Into R
-Version: 0.0.2
-Date: 2015-06-15
+Version: 0.0.5
+Date: 2015-07-01
 Author: person("Kyle", "Walker", "kyle.walker@tcu.edu", c("aut", "cre"))
 Maintainer: Kyle Walker <kyle.walker@tcu.edu>
 Description: Download TIGER shapefiles from the US Census Bureau and load into R as Spatial DataFrames.

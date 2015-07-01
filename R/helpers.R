@@ -43,4 +43,53 @@ geo_join <- function(spatial_data, data_frame, by_sp, by_df) {
 }
 
 
+#' Look up state and county codes
+#'
+#' Function to look up the FIPS codes for states and optionally counties you'd like to load data for.  As the package functions require the codes to return the data correctly, this function makes it easy to find the codes that you need.
+#'
+#' @param state String representing the state you'd like to look up.  Accepts state names (spelled correctly), e.g. "Texas", or postal codes, e.g. "TX".
+#' @param county The name of the county you'll like to search for.  The state that the county is located in must be supplied for this to work, as there are multiple counties with the same names across states.
+#'
+#' @export
 
+lookup_code <- function(state, county = NULL) {
+
+  if (!is.null(county)) {
+
+    if (nchar(state) == 2) {
+
+      sub <- fips_codes[fips_codes$state == state, ]
+
+    } else {
+
+      sub <- fips_codes[fips_codes$state_name == state, ]
+
+    }
+
+    index <- grep(county, sub$county)
+
+    cty <- sub$county_code[index]
+
+    cty_name <- sub$county[index]
+
+    out <- paste0("The code for ", unique(sub$state_name),
+                  " is '", unique(sub$state_code), "'", " and the code for ",
+                  cty_name, " is '", cty, "'.")
+
+    return(out)
+
+  } else {
+
+    state_index <- which(fips_codes$state == state)[1]
+
+    st_code <- fips_codes$state_code[state_index]
+
+    st_name <- fips_codes$state_name[state_index]
+
+    out <- paste0("The code for ", st_name, " is '", st_code, "'.")
+
+    return(out)
+
+  }
+
+}
