@@ -80,7 +80,15 @@ lookup_code <- function(state, county = NULL) {
 
   } else {
 
-    state_index <- which(fips_codes$state == state)[1]
+    if (nchar(state) == 2) {
+
+      state_index <- which(fips_codes$state == state)[1]
+
+    } else {
+
+      state_index <- which(fips_codes$state_name == state)[1]
+
+    }
 
     st_code <- fips_codes$state_code[state_index]
 
