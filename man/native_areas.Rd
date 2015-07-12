@@ -7,9 +7,36 @@
 native_areas(detailed = TRUE)
 }
 \arguments{
-\item{detailed}{If detailed is set to FALSE, download a generalized (1:500k) file.  Defaults to TRUE (the most detailed TIGER/Line file)}
+\item{detailed}{If detailed is set to FALSE, download a generalized (1:500k)
+file.  Defaults to TRUE (the most detailed TIGER/Line file)}
 }
 \description{
 Download an American Indian / Alaska Native / Native Hawaiian Areas shapefile into R.
+}
+\examples{
+\dontrun{
+library(tigris)
+library(ggplot2)
+library(ggthemes)
+
+nat <- native_areas(detailed=FALSE)
+
+nat_map <- fortify(nat)
+
+gg <- ggplot()
+gg <- gg + geom_map(data=nat_map, map=nat_map,
+                    aes(x=long, y=lat, map_id=id),
+                    color="black", fill="white", size=0.25)
+gg <- gg + coord_map(xlim=c(-179.1506, -129.9795),  # alaska
+                     ylim=c(51.2097, 71.4410))
+gg <- gg + theme_map()
+gg
+}
+}
+\seealso{
+Other native/tribal geometries functions: \code{\link{alaska_native_regional_corporations}};
+  \code{\link{tribal_block_groups}};
+  \code{\link{tribal_census_tracts}};
+  \code{\link{tribal_subdivisions_national}}
 }
 

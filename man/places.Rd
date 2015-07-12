@@ -7,12 +7,20 @@
 places(state, detailed = TRUE)
 }
 \arguments{
-\item{state}{The two-digit FIPS code (string) of the state you'd like to download.}
+\item{state}{The two-digit FIPS code (string) of the state you want. Can also
+be state name or state abbreviation.}
 
-\item{detailed}{If detailed is set to FALSE, download a generalized (1:500k) cartographic boundary file.  Defaults
-to TRUE (the most detailed TIGER/Line file).}
+\item{detailed}{If detailed is set to FALSE, download a generalized (1:500k)
+cartographic boundary file.  Defaults to TRUE (the most detailed
+TIGER/Line file).}
 }
 \description{
 Download a Census-designated places shapefile into R
+}
+\seealso{
+Other general area functions: \code{\link{block_groups}};
+  \code{\link{blocks}}; \code{\link{counties}};
+  \code{\link{school_districts}}; \code{\link{states}};
+  \code{\link{tracts}}; \code{\link{zctas}}
 }
 

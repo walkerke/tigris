@@ -7,17 +7,38 @@
 state_legislative_districts(state, house = "upper", detailed = TRUE)
 }
 \arguments{
-\item{state}{The two-digit FIPS code (string) of the state.}
+\item{state}{The two-digit FIPS code (string) of the state. Can also be state
+name or abbreviation (case-insensitive)}
 
-\item{house}{Specify here whether you want boundaries for the upper or lower house.  Defaults to "upper".}
+\item{house}{Specify here whether you want boundaries for the \code{upper} or
+\code{lower} house.  Defaults to \code{upper}.}
 
-\item{detailed}{If detailed is set to FALSE, download a generalized (1:500k) cartographic boundary file.  Defaults
-to TRUE (the most detailed TIGER/Line file).}
+\item{detailed}{If detailed is set to FALSE, download a generalized (1:500k)
+cartographic boundary file.  Defaults to TRUE (the most detailed
+TIGER/Line file).}
 }
 \description{
-This function allows you to download boundaries for state legislatures into R.  Generally, state legislatures
-are comprised of an "upper" house, which is typically referred to as the Senate, and a "lower" house, which is
-often (but not exclusively) referred to as the House.  The exception is Nebraska, which has a unicameral
-state legislature.
+This function allows you to download boundaries for state legislatures into R.
+Generally, state legislatures are comprised of an "upper" house, which is
+typically referred to as the Senate, and a "lower" house, which is often (but
+not exclusively) referred to as the House.  The exception is Nebraska, which
+has a unicameral state legislature.
+}
+\examples{
+\dontrun{
+library(tigris)
+library(leaflet)
+
+leg <- state_legislative_districts("Maine", "lower", detailed=FALSE)
+
+leaflet(leg) \%>\%
+  addProviderTiles("CartoDB.Positron") \%>\%
+  addPolygons(fillColor = "white",
+              color = "black",
+              weight = 0.5)
+}
+}
+\seealso{
+Other legislative district functions: \code{\link{congressional_districts}}
 }
 

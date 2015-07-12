@@ -1,9 +1,10 @@
 #' Download a congressional districts shapefile for the 114th Congress into R
 #'
-#' @param detailed If detailed is set to FALSE, download a generalized (1:500k) cartographic boundary file.  Defaults
-#' to TRUE (the most detailed TIGER/Line file).
+#' @param detailed If detailed is set to FALSE, download a generalized (1:500k)
+#'        cartographic boundary file.  Defaults to TRUE (the most detailed
+#'        TIGER/Line file).
+#' @family legislative district functions
 #' @export
-
 congressional_districts <- function(detailed = TRUE) {
 
   if (detailed == FALSE) {
@@ -16,34 +17,55 @@ congressional_districts <- function(detailed = TRUE) {
 
   }
 
-  cd <- load_tiger(url)
-
-  cd
+  return(load_tiger(url))
 
 }
 
 #' Download a state legislative districts shapefile into R - upper or lower
 #'
-#' This function allows you to download boundaries for state legislatures into R.  Generally, state legislatures
-#' are comprised of an "upper" house, which is typically referred to as the Senate, and a "lower" house, which is
-#' often (but not exclusively) referred to as the House.  The exception is Nebraska, which has a unicameral
-#' state legislature.
+#' This function allows you to download boundaries for state legislatures into R.
+#' Generally, state legislatures are comprised of an "upper" house, which is
+#' typically referred to as the Senate, and a "lower" house, which is often (but
+#' not exclusively) referred to as the House.  The exception is Nebraska, which
+#' has a unicameral state legislature.
 #'
-#' @param state The two-digit FIPS code (string) of the state.
-#' @param house Specify here whether you want boundaries for the upper or lower house.  Defaults to "upper".
-#' @param detailed If detailed is set to FALSE, download a generalized (1:500k) cartographic boundary file.  Defaults
-#' to TRUE (the most detailed TIGER/Line file).
+#' @param state The two-digit FIPS code (string) of the state. Can also be state
+#'        name or abbreviation (case-insensitive)
+#' @param house Specify here whether you want boundaries for the \code{upper} or
+#'        \code{lower} house.  Defaults to \code{upper}.
+#' @param detailed If detailed is set to FALSE, download a generalized (1:500k)
+#'        cartographic boundary file.  Defaults to TRUE (the most detailed
+#'        TIGER/Line file).
+#' @family legislative district functions
 #' @export
-
+#' @examples \dontrun{
+#' library(tigris)
+#' library(leaflet)
+#'
+#' leg <- state_legislative_districts("Maine", "lower", detailed=FALSE)
+#'
+#' leaflet(leg) %>%
+#'   addProviderTiles("CartoDB.Positron") %>%
+#'   addPolygons(fillColor = "white",
+#'               color = "black",
+#'               weight = 0.5)
+#' }
 state_legislative_districts <- function(state, house = "upper", detailed = TRUE) {
 
-  if (house == "lower") {
+  state <- validate_state(state)
 
-    type <- "sldl"
+  if (is.null(state)) stop("Invalid state", call.=FALSE)
 
-  } else if (house == "lower" & state == "31") {
+  if (!house %in% c("upper", "lower"))
+    stop("Must specify 'upper' or 'lower' for 'house' parameter", call.=FALSE)
+
+  if (house == "lower" & state == "31") { # Nebraska
 
     type <- "sldu"
+
+  } else if (house == "lower") {
+
+    type <- "sldl"
 
   } else {
 
@@ -71,8 +93,6 @@ state_legislative_districts <- function(state, house = "upper", detailed = TRUE)
 
   }
 
-  ld <- load_tiger(url)
-
-  ld
+  return(load_tiger(url))
 
 }

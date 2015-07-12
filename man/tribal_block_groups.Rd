@@ -9,4 +9,23 @@ tribal_block_groups()
 \description{
 Download a Tribal block groups shapefile into R.
 }
+\examples{
+\dontrun{
+library(tigris)
+library(leaflet)
+
+trib <- tribal_block_groups()
+leaflet(trib) \%>\%
+  addProviderTiles("CartoDB.Positron") \%>\%
+  addPolygons(fillColor = "white",
+              color = "black",
+              weight = 0.5)
+}
+}
+\seealso{
+Other native/tribal geometries functions: \code{\link{alaska_native_regional_corporations}};
+  \code{\link{native_areas}};
+  \code{\link{tribal_census_tracts}};
+  \code{\link{tribal_subdivisions_national}}
+}
 

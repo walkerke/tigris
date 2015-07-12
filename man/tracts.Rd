@@ -7,15 +7,22 @@
 tracts(state, county = NULL, detailed = TRUE)
 }
 \arguments{
-\item{state}{The two-digit FIPS code (string) of the state you want.}
+\item{state}{The two-digit FIPS code (string) of the state you want. Can also
+be state name or state abbreviation.}
 
-\item{county}{The three-digit FIPS code (string) of the county you'd like to subset for, or a vector of FIPS codes
-if you desire multiple counties}
+\item{county}{The three-digit FIPS code (string) of the county you'd like to
+subset for, or a vector of FIPS codes if you desire multiple counties}
 
-\item{detailed}{If detailed is set to FALSE, download a generalized (1:500k) tracts file.  Defaults to TRUE
-(the most detailed TIGER/Line file)}
+\item{detailed}{If detailed is set to FALSE, download a generalized (1:500k)
+tracts file.  Defaults to TRUE (the most detailed TIGER/Line file)}
 }
 \description{
 Download a Census tracts shapefile into R, and optionally subset by county
+}
+\seealso{
+Other general area functions: \code{\link{block_groups}};
+  \code{\link{blocks}}; \code{\link{counties}};
+  \code{\link{places}}; \code{\link{school_districts}};
+  \code{\link{states}}; \code{\link{zctas}}
 }
 

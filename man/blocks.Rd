@@ -7,15 +7,24 @@
 blocks(state, county = NULL)
 }
 \arguments{
-\item{state}{The two-digit FIPS code (string) of the state you want.}
+\item{state}{The two-digit FIPS code (string) of the state you want. Can also
+be state name or state abbreviation.}
 
-\item{county}{The three-digit FIPS code (string) of the county you'd like to subset for, or a vector of FIPS codes
-if you desire multiple counties}
+\item{county}{The three-digit FIPS code (string) of the county you'd like to
+subset for, or a vector of FIPS codes if you desire multiple counties}
 }
 \description{
-This function will download an entire block shapefile for a selected state into R, and optionally subset by county.
-\strong{A warning:} Census block shapefiles are often very large, especially for large states - for example, the
-block file for Texas is 462MB zipped!  If you have a slow or unreliable internet connection,
-or insufficient memory, this may prove burdensome given that you have to first download by state and then subset.
+This function will download an entire block shapefile for a selected state
+into R, and optionally subset by county. \strong{A warning:} Census block
+shapefiles are often very large, especially for large states - for example, the
+block file for Texas is 462MB zipped!  If you have a slow or unreliable internet
+connection, or insufficient memory, this may prove burdensome given that you
+have to first download by state and then subset.
+}
+\seealso{
+Other general area functions: \code{\link{block_groups}};
+  \code{\link{counties}}; \code{\link{places}};
+  \code{\link{school_districts}}; \code{\link{states}};
+  \code{\link{tracts}}; \code{\link{zctas}}
 }
 

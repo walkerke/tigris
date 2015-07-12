@@ -9,4 +9,23 @@ tribal_subdivisions_national()
 \description{
 Download an American Indian Tribal Subdivision National shapefile into R.
 }
+\examples{
+\dontrun{
+library(tigris)
+library(leaflet)
+
+trib <- tribal_subdivisions_national()
+leaflet(trib) \%>\%
+  addProviderTiles("CartoDB.Positron") \%>\%
+  addPolygons(fillColor = "white",
+              color = "black",
+              weight = 0.5)
+}
+}
+\seealso{
+Other native/tribal geometries functions: \code{\link{alaska_native_regional_corporations}};
+  \code{\link{native_areas}};
+  \code{\link{tribal_block_groups}};
+  \code{\link{tribal_census_tracts}}
+}
 

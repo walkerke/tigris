@@ -7,9 +7,15 @@
 primary_secondary_roads(state)
 }
 \arguments{
-\item{state}{The two-digit FIPS code of the state of the county you'd like to download the roads for}
+\item{state}{The two-digit FIPS code of the state of the county you'd like
+to download the roads for. Can also be state name or abbreviation
+(case-insensitive).}
 }
 \description{
 Download a primary & secondary roads shapefile into R
+}
+\seealso{
+Other transportation functions: \code{\link{primary_roads}};
+  \code{\link{rails}}; \code{\link{roads}}
 }
 

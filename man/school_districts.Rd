@@ -7,9 +7,30 @@
 school_districts(state)
 }
 \arguments{
-\item{state}{The two-digit FIPS code (string) of the state you want.}
+\item{state}{The two-digit FIPS code (string) of the state you want. Can also
+be state name or state abbreviation.}
 }
 \description{
 Download a unified school district shapefile into R
+}
+\examples{
+\dontrun{
+library(tigris)
+library(leaflet)
+
+schools <- school_districts("Maine")
+
+leaflet(schools) \%>\%
+  addProviderTiles("CartoDB.Positron") \%>\%
+  addPolygons(fillColor = "white",
+              color = "black",
+              weight = 0.5)
+}
+}
+\seealso{
+Other general area functions: \code{\link{block_groups}};
+  \code{\link{blocks}}; \code{\link{counties}};
+  \code{\link{places}}; \code{\link{states}};
+  \code{\link{tracts}}; \code{\link{zctas}}
 }
 
