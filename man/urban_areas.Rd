@@ -7,10 +7,16 @@
 urban_areas(detailed = TRUE)
 }
 \arguments{
-\item{detailed}{If detailed is set to FALSE, download a generalized (1:500k) cartographic boundary file.  Defaults
-to TRUE (the most detailed TIGER/Line file).}
+\item{detailed}{If detailed is set to FALSE, download a generalized (1:500k)
+cartographic boundary file.  Defaults to TRUE (the most detailed
+TIGER/Line file).}
 }
 \description{
 Download an urbanized areas shapefile into R
+}
+\seealso{
+Other metro area functions: \code{\link{combined_statistical_areas}};
+  \code{\link{core_based_statistical_areas}};
+  \code{\link{metro_divisions}}
 }
 

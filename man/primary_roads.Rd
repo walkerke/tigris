@@ -9,4 +9,8 @@ primary_roads()
 \description{
 Download a national primary roads shapefile into R
 }
+\seealso{
+Other transportation functions: \code{\link{primary_secondary_roads}};
+  \code{\link{rails}}; \code{\link{roads}}
+}
 

@@ -4,18 +4,30 @@
 \name{fips_codes}
 \alias{fips_codes}
 \title{Dataset with FIPS codes for US states and counties}
-\format{\preformatted{'data.frame':	3235 obs. of  5 variables:
- $ state      : chr  "AL" "AL" "AL" "AL" ...
- $ state_code : chr  "01" "01" "01" "01" ...
- $ state_name : chr  "Alabama" "Alabama" "Alabama" "Alabama" ...
- $ county_code: chr  "001" "003" "005" "007" ...
- $ county     : chr  "Autauga County" "Baldwin County" "Barbour County" "Bibb County" ...
-}}
+\format{A data frame with 3,236 rows and 5 variables}
 \usage{
-fips_codes
+data(fips_codes)
 }
 \description{
-Built-in dataset for use with the \code{lookup_code} function.  To access the data directly, issue the command \code{load(fips_codes)}.
+Built-in dataset for use with the \code{lookup_code} function.
+             To access the data directly, issue the command \code{data(fips_codes)}.
+
+\itemize{
+  \item \code{county}: County name, title-case
+  \item \code{county_code}: County code. (3-digit, 0-padded, character)
+  \item \code{state}: Upper-case abbreviation of state
+  \item \code{state_code}: State FIPS code (2-digit, 0-padded, character)
+  \item \code{state_name}: Title-case name of state
+}
+}
+\details{
+Dataset with FIPS codes for US states and counties
+
+Built-in dataset for use with the \code{lookup_code} function.
+To access the data directly, issue the command \code{datafips_codes)}.
+}
+\note{
+Last updated 2015-07-01
 }
 \keyword{datasets}
 

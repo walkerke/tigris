@@ -1,9 +1,28 @@
 #' Download a US Counties shapefile into R, and optionally subset by state
-#' @param state The two-digit FIPS code (string) of the state you want, or a vector of codes if you want multiple states.
-#' @param detailed If detailed is set to FALSE, download a generalized (1:500k) counties file.  Defaults to TRUE
-#' (the most detailed TIGER file).
+#'
+#' @param state The two-digit FIPS code (string) of the state you want, or a
+#'        vector of codes if you want multiple states. Can also be state name
+#'        or state abbreviation.
+#' @param detailed If detailed is set to FALSE, download a generalized (1:500k)
+#'        counties file.  Defaults to TRUE (the most detailed TIGER file).
 #' @export
-
+#' @family general area functions
+#' @examples \dontrun{
+#' library(tigris)
+#' library(ggplot2)
+#' library(ggthemes)
+#'
+#' me <- counties("Maine", detailed=FALSE)
+#' me_map <- fortify(me)
+#'
+#' gg <- ggplot()
+#' gg <- gg + geom_map(data=me_map, map=me_map,
+#'                     aes(x=long, y=lat, map_id=id),
+#'                     color="black", fill="white", size=0.25)
+#' gg <- gg + coord_map()
+#' gg <- gg + theme_map()
+#' gg
+#' }
 counties <- function(state = NULL, detailed = TRUE) {
 
   if (detailed == FALSE) {
@@ -18,39 +37,31 @@ counties <- function(state = NULL, detailed = TRUE) {
 
   ctys <- load_tiger(url)
 
+  state <- unlist(sapply(state, validate_state, USE.NAMES=FALSE))
+
   if (!is.null(state)) {
-
-    if (length(state) > 1) {
-
-      sub <- ctys[ctys$STATEFP %in% state, ]
-
-      sub
-
-    } else {
-
-      sub <- ctys[ctys$STATEFP == state, ]
-
-      sub
-
-    }
-
+    return(ctys[ctys$STATEFP %in% state,])
   } else {
-
-    ctys
-
+    return(ctys)
   }
 
 }
 
 #' Download a Census tracts shapefile into R, and optionally subset by county
-#' @param state The two-digit FIPS code (string) of the state you want.
-#' @param county The three-digit FIPS code (string) of the county you'd like to subset for, or a vector of FIPS codes
-#' if you desire multiple counties
-#' @param detailed If detailed is set to FALSE, download a generalized (1:500k) tracts file.  Defaults to TRUE
-#' (the most detailed TIGER/Line file)
+#'
+#' @param state The two-digit FIPS code (string) of the state you want. Can also
+#'        be state name or state abbreviation.
+#' @param county The three-digit FIPS code (string) of the county you'd like to
+#'        subset for, or a vector of FIPS codes if you desire multiple counties
+#' @param detailed If detailed is set to FALSE, download a generalized (1:500k)
+#'        tracts file.  Defaults to TRUE (the most detailed TIGER/Line file)
+#' @family general area functions
 #' @export
-
 tracts <- function(state, county = NULL, detailed = TRUE) {
+
+  state <- validate_state(state)
+
+  if (is.null(state)) stop("Invalid state", call.=FALSE)
 
   if (detailed == FALSE) {
 
@@ -69,34 +80,35 @@ tracts <- function(state, county = NULL, detailed = TRUE) {
 
   if (!is.null(county)) {
 
-    if (length(county) > 1) {
-
-      sub <- trcts[trcts$COUNTYFP %in% county, ]
-
-      sub
-
-    } else {
-
-      sub <- trcts[trcts$COUNTYFP == county, ]
-
-      sub
-
-    }
+    return(trcts[trcts$COUNTYFP %in% county, ])
 
   } else {
 
-    trcts
+    return(trcts)
 
   }
 
 }
 
-#' Download a states shapefile into R
+#' Download shapefile for all states into R
 #'
-#' @param detailed If detailed is set to FALSE, download a generalized (1:500k) states file.  Defaults to TRUE
-#' (the most detailed TIGER/Line file)
+#' @param detailed If detailed is set to FALSE, download a generalized (1:500k)
+#'        states file.  Defaults to TRUE (the most detailed TIGER/Line file)
 #' @export
-
+#' @family general area functions
+#' @examples \dontrun{
+#' library(tigris)
+#' library(leaflet)
+#'
+#' states <- states(detailed=FALSE)
+#'
+#' leaflet(states) %>%
+#'   addProviderTiles("CartoDB.Positron") %>%
+#'   addPolygons(fillColor = "white",
+#'               color = "black",
+#'               weight = 0.5) %>%
+#'   setView(-98.5795, 39.8282, zoom=3)
+#' }
 states <- function(detailed = TRUE) {
 
   if (detailed == FALSE) {
@@ -109,35 +121,54 @@ states <- function(detailed = TRUE) {
 
   }
 
-  sts <- load_tiger(url)
-
-  sts
+  return(load_tiger(url))
 
 }
 
 #' Download a unified school district shapefile into R
 #'
-#' @param state The two-digit FIPS code (string) of the state you want.
+#' @param state The two-digit FIPS code (string) of the state you want. Can also
+#'        be state name or state abbreviation.
+#' @family general area functions
 #' @export
-
+#' @examples \dontrun{
+#' library(tigris)
+#' library(leaflet)
+#'
+#' schools <- school_districts("Maine")
+#'
+#' leaflet(schools) %>%
+#'   addProviderTiles("CartoDB.Positron") %>%
+#'   addPolygons(fillColor = "white",
+#'               color = "black",
+#'               weight = 0.5)
+#' }
 school_districts <- function(state) {
+
+  state <- validate_state(state)
+
+  if (is.null(state)) stop("Invalid state", call.=FALSE)
 
   url <- paste0("http://www2.census.gov/geo/tiger/TIGER2014/UNSD/tl_2014_", state, "_unsd.zip")
 
-  sd <- load_tiger(url)
-
-  sd
+  return(load_tiger(url))
 
 }
 
 #' Download a Census-designated places shapefile into R
 #'
-#' @param state The two-digit FIPS code (string) of the state you'd like to download.
-#' @param detailed If detailed is set to FALSE, download a generalized (1:500k) cartographic boundary file.  Defaults
-#' to TRUE (the most detailed TIGER/Line file).
+#' @param state The two-digit FIPS code (string) of the state you want. Can also
+#'        be state name or state abbreviation.
+#' @param detailed If detailed is set to FALSE, download a generalized (1:500k)
+#'        cartographic boundary file.  Defaults to TRUE (the most detailed
+#'        TIGER/Line file).
+#' @family general area functions
 #' @export
-
 places <- function(state, detailed = TRUE) {
+
+  state <- validate_state(state)
+
+  if (is.null(state)) stop("Invalid state", call.=FALSE)
 
   if (detailed == FALSE) {
 
@@ -149,20 +180,25 @@ places <- function(state, detailed = TRUE) {
 
   }
 
-  plcs <- load_tiger(url)
+  return(load_tiger(url))
 
-  plcs
 }
 
 #' Download a Census block groups shapefile into R, and optionally subset by county
-#' @param state The two-digit FIPS code (string) of the state you want.
-#' @param county The three-digit FIPS code (string) of the county you'd like to subset for, or a vector of FIPS codes
-#' if you desire multiple counties
-#' @param detailed If detailed is set to FALSE, download a generalized (1:500k) file.  Defaults to TRUE
-#' (the most detailed TIGER/Line file)
+#'
+#' @param state The two-digit FIPS code (string) of the state you want. Can also
+#'        be state name or state abbreviation.
+#' @param county The three-digit FIPS code (string) of the county you'd like to
+#'        subset for, or a vector of FIPS codes if you desire multiple counties
+#' @param detailed If detailed is set to FALSE, download a generalized (1:500k)
+#'        file.  Defaults to TRUE (the most detailed TIGER/Line file)
+#' @family general area functions
 #' @export
-
 block_groups <- function(state, county = NULL, detailed = TRUE) {
+
+  state <- validate_state(state)
+
+  if (is.null(state)) stop("Invalid state", call.=FALSE)
 
   if (detailed == FALSE) {
 
@@ -181,23 +217,11 @@ block_groups <- function(state, county = NULL, detailed = TRUE) {
 
   if (!is.null(county)) {
 
-    if (length(county) > 1) {
-
-      sub <- bgs[bgs$COUNTYFP %in% county, ]
-
-      sub
-
-    } else {
-
-      sub <- bgs[bgs$COUNTYFP == county, ]
-
-      sub
-
-    }
+    return(bgs[bgs$COUNTYFP %in% county, ])
 
   } else {
 
-    bgs
+    return(bgs)
 
   }
 
@@ -205,15 +229,18 @@ block_groups <- function(state, county = NULL, detailed = TRUE) {
 
 #' Download a Zip Code Tabulation Area (ZCTA) shapefile into R
 #'
-#' @param detailed If detailed is set to FALSE, download a generalized (1:500k) ZCTA file.  Defaults to TRUE
-#' (the most detailed TIGER/Line file).  \strong{A warning:} the detailed TIGER/Line ZCTA file is massive (around 502MB
-#' unzipped), and the generalized version is also large (64MB zipped).  Be prepared for this especially if you have
-#' a slower internet connection.
-#' @param starts_with Character string specifying the beginning digits of the ZCTAs you want to return.  For example,
-#' supplying the argument \code{starts_with = "761"} will return only those ZCTAs that begin with 761.  Defaults
-#' to NULL, which will return all ZCTAs in the US.
+#' @param detailed If detailed is set to FALSE, download a generalized (1:500k)
+#'        ZCTA file.  Defaults to TRUE (the most detailed TIGER/Line file).
+#'        \strong{A warning:} the detailed TIGER/Line ZCTA file is massive
+#'        (around 502MB unzipped), and the generalized version is also large
+#'        (64MB zipped).  Be prepared for this especially if you have a slower
+#'        internet connection.
+#' @param starts_with Character string specifying the beginning digits of the
+#'        ZCTAs you want to return.  For example, supplying the argument
+#'        \code{starts_with = "761"} will return only those ZCTAs that begin
+#'        with 761.  Defaults to NULL, which will return all ZCTAs in the US.
+#' @family general area functions
 #' @export
-
 zctas <- function(detailed = TRUE, starts_with = NULL) {
 
   if (detailed == FALSE) {
@@ -230,13 +257,11 @@ zctas <- function(detailed = TRUE, starts_with = NULL) {
 
   if (!is.null(starts_with)) {
 
-    sub <- zcta[grep(paste0("^", starts_with), zcta$ZCTA5CE10), ]
-
-    sub
+    return(zcta[grep(paste0("^", starts_with), zcta$ZCTA5CE10), ])
 
   } else {
 
-    zcta
+    return(zcta)
 
   }
 
@@ -245,17 +270,24 @@ zctas <- function(detailed = TRUE, starts_with = NULL) {
 
 #' Download a Census block shapefile into R
 #'
-#' This function will download an entire block shapefile for a selected state into R, and optionally subset by county.
-#' \strong{A warning:} Census block shapefiles are often very large, especially for large states - for example, the
-#' block file for Texas is 462MB zipped!  If you have a slow or unreliable internet connection,
-#' or insufficient memory, this may prove burdensome given that you have to first download by state and then subset.
+#' This function will download an entire block shapefile for a selected state
+#' into R, and optionally subset by county. \strong{A warning:} Census block
+#' shapefiles are often very large, especially for large states - for example, the
+#' block file for Texas is 462MB zipped!  If you have a slow or unreliable internet
+#' connection, or insufficient memory, this may prove burdensome given that you
+#' have to first download by state and then subset.
 #'
-#' @param state The two-digit FIPS code (string) of the state you want.
-#' @param county The three-digit FIPS code (string) of the county you'd like to subset for, or a vector of FIPS codes
-#' if you desire multiple counties
+#' @param state The two-digit FIPS code (string) of the state you want. Can also
+#'        be state name or state abbreviation.
+#' @param county The three-digit FIPS code (string) of the county you'd like to
+#'        subset for, or a vector of FIPS codes if you desire multiple counties
+#' @family general area functions
 #' @export
-
 blocks <- function(state, county = NULL) {
+
+  state <- validate_state(state)
+
+  if (is.null(state)) stop("Invalid state", call.=FALSE)
 
   url <- paste0("http://www2.census.gov/geo/tiger/TIGER2014/TABBLOCK/tl_2014_",
                 state,
@@ -265,23 +297,11 @@ blocks <- function(state, county = NULL) {
 
   if (!is.null(county)) {
 
-    if (length(county) > 1) {
-
-      sub <- blks[blks$COUNTYFP %in% county, ]
-
-      sub
-
-    } else {
-
-      sub <- blks[blks$COUNTYFP == county, ]
-
-      sub
-
-    }
+    return(blks[blks$COUNTYFP %in% county, ])
 
   } else {
 
-    blks
+    return(blks)
 
   }
 

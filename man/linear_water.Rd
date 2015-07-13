@@ -7,11 +7,18 @@
 linear_water(state, county)
 }
 \arguments{
-\item{state}{The two-digit FIPS code of the state of the county you'd like to download the water features for}
+\item{state}{The two-digit FIPS code of the state of the county you'd like to
+download the water features for. Can also be state name or abbreviation
+(case-insensitive).}
 
-\item{county}{The three-digit FIPS code of the county you'd like the water features for}
+\item{county}{The three-digit FIPS code of the county you'd like the water f
+eatures for}
 }
 \description{
 Download an linear water shapefile into R
+}
+\seealso{
+Other water functions: \code{\link{area_water}};
+  \code{\link{coastline}}
 }
 

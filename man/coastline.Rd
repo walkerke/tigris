@@ -9,4 +9,38 @@ coastline()
 \description{
 Download a shapefile of the US coastline into R
 }
+\examples{
+\dontrun{
+library(tigris)
+library(ggplot2)
+library(ggthemes)
+library(rgeos)
+library(sp)
+
+coast <- coastline()
+
+# ggplot really doesn't like a ton of detailed lines so
+# we use rgeos::gSimplify to get the structure to a reasonable size
+# but we also lose the SpatialLinesDataFrame, so re-bind the
+# data from the original spatial structure so we can use fortify
+
+coast_simp <- gSimplify(coast, tol=1/200, topologyPreserve=TRUE)
+coast_simp <- SpatialLinesDataFrame(coast_simp, coast@data)
+
+coast_map <- fortify(coast_simp)
+
+gg <- ggplot()
+gg <- gg + geom_map(data=coast_map, map=coast_map,
+                    aes(x=long, y=lat, map_id=id),
+                    color="black", fill="white", size=0.25)
+gg <- gg + coord_map(xlim=c(-125.0011, -66.9326),
+                     ylim=c(24.9493, 49.5904))
+gg <- gg + theme_map()
+gg
+}
+}
+\seealso{
+Other water functions: \code{\link{area_water}};
+  \code{\link{linear_water}}
+}
 

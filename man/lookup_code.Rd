@@ -7,11 +7,42 @@
 lookup_code(state, county = NULL)
 }
 \arguments{
-\item{state}{String representing the state you'd like to look up.  Accepts state names (spelled correctly), e.g. "Texas", or postal codes, e.g. "TX".}
+\item{state}{String representing the state you'd like to look up.
+Accepts state names (spelled correctly), e.g. "Texas", or
+postal codes, e.g. "TX". Can be lower-case.}
 
-\item{county}{The name of the county you'll like to search for.  The state that the county is located in must be supplied for this to work, as there are multiple counties with the same names across states.}
+\item{county}{The name of the county you'll like to search for.  T
+he state that the county is located in must be supplied for this to
+work, as there are multiple counties with the same names across states.
+Can be lower-case.}
+}
+\value{
+character string with an explanation of state/county FIPS codes
 }
 \description{
-Function to look up the FIPS codes for states and optionally counties you'd like to load data for.  As the package functions require the codes to return the data correctly, this function makes it easy to find the codes that you need.
+Function to look up the FIPS codes for states and optionally counties you'd l
+ike to load data for.  As the package functions require the codes to return
+the data correctly, this function makes it easy to find the codes that you need.
+}
+\examples{
+\dontrun{
+lookup_code("me")
+## [1] "The code for Maine is '23'."
+
+lookup_code("Maine")
+## [1] "The code for Maine is '23'."
+
+lookup_code("23")
+## [1] "The code for Maine is '23'."
+
+lookup_code(23)
+## [1] "The code for Maine is '23'."
+
+lookup_code("me", "york")
+## [1] "The code for Maine is '23' and the code for York County is '031'."
+
+lookup_code("Maine", "York County")
+## [1] "The code for Maine is '23' and the code for York County is '031'."
+}
 }
 

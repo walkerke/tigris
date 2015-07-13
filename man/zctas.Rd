@@ -7,16 +7,25 @@
 zctas(detailed = TRUE, starts_with = NULL)
 }
 \arguments{
-\item{detailed}{If detailed is set to FALSE, download a generalized (1:500k) ZCTA file.  Defaults to TRUE
-(the most detailed TIGER/Line file).  \strong{A warning:} the detailed TIGER/Line ZCTA file is massive (around 502MB
-unzipped), and the generalized version is also large (64MB zipped).  Be prepared for this especially if you have
-a slower internet connection.}
+\item{detailed}{If detailed is set to FALSE, download a generalized (1:500k)
+ZCTA file.  Defaults to TRUE (the most detailed TIGER/Line file).
+\strong{A warning:} the detailed TIGER/Line ZCTA file is massive
+(around 502MB unzipped), and the generalized version is also large
+(64MB zipped).  Be prepared for this especially if you have a slower
+internet connection.}
 
-\item{starts_with}{Character string specifying the beginning digits of the ZCTAs you want to return.  For example,
-supplying the argument \code{starts_with = "761"} will return only those ZCTAs that begin with 761.  Defaults
-to NULL, which will return all ZCTAs in the US.}
+\item{starts_with}{Character string specifying the beginning digits of the
+ZCTAs you want to return.  For example, supplying the argument
+\code{starts_with = "761"} will return only those ZCTAs that begin
+with 761.  Defaults to NULL, which will return all ZCTAs in the US.}
 }
 \description{
 Download a Zip Code Tabulation Area (ZCTA) shapefile into R
+}
+\seealso{
+Other general area functions: \code{\link{block_groups}};
+  \code{\link{blocks}}; \code{\link{counties}};
+  \code{\link{places}}; \code{\link{school_districts}};
+  \code{\link{states}}; \code{\link{tracts}}
 }
 

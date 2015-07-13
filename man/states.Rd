@@ -2,15 +2,36 @@
 % Please edit documentation in R/enumeration_units.R
 \name{states}
 \alias{states}
-\title{Download a states shapefile into R}
+\title{Download shapefile for all states into R}
 \usage{
 states(detailed = TRUE)
 }
 \arguments{
-\item{detailed}{If detailed is set to FALSE, download a generalized (1:500k) states file.  Defaults to TRUE
-(the most detailed TIGER/Line file)}
+\item{detailed}{If detailed is set to FALSE, download a generalized (1:500k)
+states file.  Defaults to TRUE (the most detailed TIGER/Line file)}
 }
 \description{
-Download a states shapefile into R
+Download shapefile for all states into R
+}
+\examples{
+\dontrun{
+library(tigris)
+library(leaflet)
+
+states <- states(detailed=FALSE)
+
+leaflet(states) \%>\%
+  addProviderTiles("CartoDB.Positron") \%>\%
+  addPolygons(fillColor = "white",
+              color = "black",
+              weight = 0.5) \%>\%
+  setView(-98.5795, 39.8282, zoom=3)
+}
+}
+\seealso{
+Other general area functions: \code{\link{block_groups}};
+  \code{\link{blocks}}; \code{\link{counties}};
+  \code{\link{places}}; \code{\link{school_districts}};
+  \code{\link{tracts}}; \code{\link{zctas}}
 }
 

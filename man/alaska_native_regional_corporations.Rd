@@ -9,4 +9,10 @@ alaska_native_regional_corporations()
 \description{
 Download an Alaska Native Regional Corporation shapefile into R.
 }
+\seealso{
+Other native/tribal geometries functions: \code{\link{native_areas}};
+  \code{\link{tribal_block_groups}};
+  \code{\link{tribal_census_tracts}};
+  \code{\link{tribal_subdivisions_national}}
+}
 

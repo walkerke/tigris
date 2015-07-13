@@ -7,12 +7,38 @@
 counties(state = NULL, detailed = TRUE)
 }
 \arguments{
-\item{state}{The two-digit FIPS code (string) of the state you want, or a vector of codes if you want multiple states.}
+\item{state}{The two-digit FIPS code (string) of the state you want, or a
+vector of codes if you want multiple states. Can also be state name
+or state abbreviation.}
 
-\item{detailed}{If detailed is set to FALSE, download a generalized (1:500k) counties file.  Defaults to TRUE
-(the most detailed TIGER file).}
+\item{detailed}{If detailed is set to FALSE, download a generalized (1:500k)
+counties file.  Defaults to TRUE (the most detailed TIGER file).}
 }
 \description{
 Download a US Counties shapefile into R, and optionally subset by state
+}
+\examples{
+\dontrun{
+library(tigris)
+library(ggplot2)
+library(ggthemes)
+
+me <- counties("Maine", detailed=FALSE)
+me_map <- fortify(me)
+
+gg <- ggplot()
+gg <- gg + geom_map(data=me_map, map=me_map,
+                    aes(x=long, y=lat, map_id=id),
+                    color="black", fill="white", size=0.25)
+gg <- gg + coord_map()
+gg <- gg + theme_map()
+gg
+}
+}
+\seealso{
+Other general area functions: \code{\link{block_groups}};
+  \code{\link{blocks}}; \code{\link{places}};
+  \code{\link{school_districts}}; \code{\link{states}};
+  \code{\link{tracts}}; \code{\link{zctas}}
 }
 

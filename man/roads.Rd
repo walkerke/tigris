@@ -7,11 +7,47 @@
 roads(state, county)
 }
 \arguments{
-\item{state}{The two-digit FIPS code of the state of the county you'd like to download the roads for}
+\item{state}{The two-digit FIPS code of the state of the county you'd like
+to download the roads for. Can also be state name or abbreviation
+(case-insensitive).}
 
 \item{county}{The three-digit FIPS code of the county you'd like the roads for}
 }
 \description{
 Download a roads shapefile into R
+}
+\examples{
+\dontrun{
+library(tigris)
+library(ggplot2)
+library(ggthemes)
+library(rgeos)
+library(sp)
+
+roads <- roads("Maine", "031")
+
+# for ggplot, we need to simplify the lines otherwise it'll take
+# forever to plot. however, gSimplfy whacks the SpatialLinesDataFrame
+# so we need to re-bind the data from the original object to it so
+# we can use "fortify"
+
+roads_simp <- gSimplify(roads, tol=1/200, topologyPreserve=TRUE)
+roads_simp <- SpatialLinesDataFrame(roads_simp, roads@data)
+
+roads_map <- fortify(roads_simp) # this takes a bit
+
+gg <- ggplot()
+gg <- gg + geom_map(data=roads_map, map=roads_map,
+                    aes(x=long, y=lat, map_id=id),
+                    color="black", fill="white", size=0.25)
+gg <- gg + coord_map()
+gg <- gg + theme_map()
+gg
+}
+}
+\seealso{
+Other transportation functions: \code{\link{primary_roads}};
+  \code{\link{primary_secondary_roads}};
+  \code{\link{rails}}
 }
 

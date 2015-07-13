@@ -9,4 +9,9 @@ metro_divisions()
 \description{
 Download a metropolitan divisions shapefile into R.
 }
+\seealso{
+Other metro area functions: \code{\link{combined_statistical_areas}};
+  \code{\link{core_based_statistical_areas}};
+  \code{\link{urban_areas}}
+}
 
