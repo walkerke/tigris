@@ -15,4 +15,22 @@ one combined Spatial object
 \description{
 Row-bind \code{tigris} Spatial objects
 }
+\examples{
+\dontrun{
+library(sp)
+library(rgeos)
+library(maptools)
+library(maps)
+library(tigris)
+
+me_ctys <- list_counties("me")
+aw <- lapply(me_ctys$county_code[1:3], function(x) {
+  area_water("Maine", x)
+})
+tmp <- rbind_tigris(aw)
+tmp_simp <- gSimplify(tmp, tol=1/200, topologyPreserve=TRUE)
+tmp_simp <- SpatialPolygonsDataFrame(tmp_simp, tmp@data)
+plot(tmp_simp)
+}
+}
 

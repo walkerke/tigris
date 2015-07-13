@@ -175,7 +175,7 @@ list_counties <- function(state) {
 #' @param ... individual (optionally names) \code{tigris} Spatial objects or a list of them
 #' @return one combined Spatial object
 #' @export
-#' @examples \dontrun {
+#' @examples \dontrun{
 #' library(sp)
 #' library(rgeos)
 #' library(maptools)
@@ -188,9 +188,10 @@ list_counties <- function(state) {
 #' })
 #' tmp <- rbind_tigris(aw)
 #' tmp_simp <- gSimplify(tmp, tol=1/200, topologyPreserve=TRUE)
-#' tmp_simp <- SpatialPolygonsDataFrame(tmp_simp, tmp@data)
+#' tmp_simp <- SpatialPolygonsDataFrame(tmp_simp, tmp@@data)
 #' plot(tmp_simp)
 #' }
+
 rbind_tigris <- function(...) {
 
   elements <- list(...)
