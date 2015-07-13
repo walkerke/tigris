@@ -8,4 +8,7 @@
 #' @import rgdal
 #' @import sp
 #' @import utils
+#' @import rappdirs
+#' @import httr
+#' @import uuid
 NULL

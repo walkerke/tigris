@@ -1,24 +1,69 @@
 # Helper function to download Census data
-load_tiger <- function(url) {
+#
+# uses a global option "tigris_refresh" to control re-download of shapefiles (def: FALSE)
+# also uses global option "tigris_use_cache" to determine whether new data files will
+# be cacned or not. (def: TRUE)
+#
+load_tiger <- function(url,
+                       refresh=getOption("tigris_refresh", FALSE),
+                       tigris_type=NULL) {
 
-  tmp <- tempdir()
+  message(url)
 
-  file <- basename(url)
+  use_cache <- getOption("tigris_use_cache", TRUE)
+  tiger_file <- basename(url)
 
-  download.file(url, file, mode = 'wb')
+  obj <- NULL
 
-  unzip(file, exdir = tmp)
+  if (use_cache) {
 
-  shape <- gsub(".zip", "", file)
+    cache_dir <- user_cache_dir("tigris")
+    if (!file.exists(cache_dir)) {
+      dir.create(cache_dir, recursive=TRUE)
+    }
 
-  return(readOGR(dsn = tmp, layer = shape, encoding = "UTF-8",
-                 verbose = FALSE, stringsAsFactors = FALSE))
+    if (file.exists(cache_dir)) {
 
-  # was going to write some cleanup code here but will wait until I get
-  # the cache feature working to do that.
+      file_loc <- file.path(cache_dir, tiger_file)
+
+      if (!file.exists(file_loc)) {
+        try(GET(url,
+                write_disk(file_loc, overwrite=refresh),
+                progress(type="down")), silent=TRUE)
+      }
+
+      shape <- gsub(".zip", "", tiger_file)
+
+      if (refresh | !file.exists(file.path(user_cache_dir("tigris"),
+                                 sprintf("%s.shp", shape)))) {
+        unzip(file_loc, exdir = cache_dir, overwrite=TRUE)
+      }
+
+      obj <- readOGR(dsn = cache_dir, layer = shape, encoding = "UTF-8",
+                     verbose = FALSE, stringsAsFactors = FALSE)
+
+    }
+
+  } else {
+
+    tmp <- tempdir()
+    download.file(url, tiger_file, mode = 'wb')
+    unzip(tiger_file, exdir = tmp)
+    shape <- gsub(".zip", "", tiger_file)
+
+    obj <- readOGR(dsn = tmp, layer = shape, encoding = "UTF-8",
+                   verbose = FALSE, stringsAsFactors = FALSE)
+
+  }
+
+  attr(obj, "tigris") <- "tigris"
+
+  # this will help identify the object "sub type"
+  if (!is.null(tigris_type)) attr(obj, "tigris") <- tigris_type
+
+  return(obj)
 
 }
-
 
 #' Easily merge a data frame to a spatial data frame
 #'
@@ -101,6 +146,99 @@ lookup_code <- function(state, county = NULL) {
 
     return(paste0("The code for ", vals$state_name, " is '", vals$state_code, "'."))
 
+  }
+
+}
+
+#' Return a data frame of county names & FIPS codes for a given state
+#'
+#' @param state String representing the state you'd like to look up.
+#'        Accepts state names (spelled correctly), e.g. "Texas", or
+#'        postal codes, e.g. "TX". Can be lower-case.
+#' @return data frame of county name and FIPS code or NULL if invalid state
+#' @export
+list_counties <- function(state) {
+
+  state <- validate_state(state, .msg=FALSE)
+
+  if (is.null(state)) stop("Invalid state", call.=FALSE)
+
+  vals <- fips_codes[fips_codes$state_code == state, c("county", "county_code")]
+  vals$county <- gsub("\ County$", "", vals$county)
+  rownames(vals) <- NULL
+  return(vals)
+
+}
+
+#' Row-bind \code{tigris} Spatial objects
+#'
+#' @param ... individual (optionally names) \code{tigris} Spatial objects or a list of them
+#' @return one combined Spatial object
+#' @export
+#' @examples \dontrun {
+#' library(sp)
+#' library(rgeos)
+#' library(maptools)
+#' library(maps)
+#' library(tigris)
+#'
+#' me_ctys <- list_counties("me")
+#' aw <- lapply(me_ctys$county_code[1:3], function(x) {
+#'   area_water("Maine", x)
+#' })
+#' tmp <- rbind_tigris(aw)
+#' tmp_simp <- gSimplify(tmp, tol=1/200, topologyPreserve=TRUE)
+#' tmp_simp <- SpatialPolygonsDataFrame(tmp_simp, tmp@data)
+#' plot(tmp_simp)
+#' }
+rbind_tigris <- function(...) {
+
+  elements <- list(...)
+
+  if ((length(elements) == 1) &
+      inherits(elements, "list")) {
+    elements <- unlist(elements)
+  }
+
+  obj_classes <- unique(sapply(elements, class))
+  obj_attrs <- sapply(elements, attr, "tigris")
+  obj_attrs_u <- unique(obj_attrs)
+
+  # all same type
+  # all valid Spatial* type
+  # none are from outside tigris
+  # all same tigris "type"
+
+  if (length(obj_classes) == 1 &
+      obj_classes %in% c("SpatialGridDataFrame", "SpatialLinesDataFrame",
+                         "SpatialPixelsDataFrame", "SpatialPointsDataFrame",
+                         "SpatialPolygonsDataFrame") &
+      !any(sapply(obj_attrs, is.null)) &
+      length(obj_attrs_u)==1) {
+
+    el_nams <- names(elements)
+
+    if (is.null(el_nams)) {
+      el_nams <- rep(NA, length(elements))
+    }
+
+    el_nams <- ifelse(el_nams == "", NA, el_nams)
+
+    el_nams <- sapply(el_nams, function(x) {
+       ifelse(is.na(x), gsub("-", "", UUIDgenerate(), fixed=TRUE), x)
+    })
+
+    tmp <- lapply(1:(length(elements)), function(i) {
+      elem <- elements[[i]]
+      spChFIDs(elem, sprintf("%s%s", el_nams[i], rownames(elem@data)))
+    })
+
+    tmp <- Reduce(spRbind, tmp)
+    attr(tmp, "tigris") <- obj_attrs_u
+    return(tmp)
+
+  } else {
+    stop("Objects must all be Spatial*DataFrame objects and all the same type of tigris object.", call.=FALSE)
   }
 
 }

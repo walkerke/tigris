@@ -47,7 +47,7 @@ roads <- function(state, county) {
                 county,
                 "_roads.zip")
 
-  return(load_tiger(url))
+  return(load_tiger(url, tigris_type="road"))
 
 }
 
@@ -59,7 +59,7 @@ primary_roads <- function() {
 
   url <- "http://www2.census.gov/geo/tiger/TIGER2014/PRIMARYROADS/tl_2014_us_primaryroads.zip"
 
-  return(load_tiger(url))
+  return(load_tiger(url, tigris_type="primary_roads"))
 
 }
 
@@ -80,7 +80,7 @@ primary_secondary_roads <- function(state) {
                 state,
                 "_prisecroads.zip")
 
-  return(load_tiger(url))
+  return(load_tiger(url, tigris_type="prim_sec_roads"))
 
 }
 
@@ -92,6 +92,6 @@ rails <- function() {
 
   url <- "http://www2.census.gov/geo/tiger/TIGER2014/RAILS/tl_2014_us_rails.zip"
 
-  return(load_tiger(url))
+  return(load_tiger(url, tigris_type="rails"))
 
 }

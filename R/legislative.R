@@ -17,7 +17,7 @@ congressional_districts <- function(detailed = TRUE) {
 
   }
 
-  return(load_tiger(url))
+  return(load_tiger(url, tigris_type="congressional_districts"))
 
 }
 
@@ -93,6 +93,6 @@ state_legislative_districts <- function(state, house = "upper", detailed = TRUE)
 
   }
 
-  return(load_tiger(url))
+  return(load_tiger(url, tigris_type="state_legislative_districts"))
 
 }

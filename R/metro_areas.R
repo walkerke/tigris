@@ -17,7 +17,7 @@ core_based_statistical_areas <- function(detailed = TRUE) {
 
   }
 
-  return(load_tiger(url))
+  return(load_tiger(url, tigris_type="cbsa"))
 
 }
 
@@ -40,7 +40,7 @@ urban_areas <- function(detailed = TRUE) {
 
   }
 
-  return(load_tiger(url))
+  return(load_tiger(url, tigris_type="urban_area"))
 
 }
 
@@ -63,7 +63,7 @@ combined_statistical_areas <- function(detailed = TRUE) {
 
   }
 
-  return(load_tiger(url))
+  return(load_tiger(url, tigris_type="csa"))
 
 }
 
@@ -75,6 +75,6 @@ metro_divisions <- function() {
 
   url <- "http://www2.census.gov/geo/tiger/TIGER2014/METDIV/tl_2014_us_metdiv.zip"
 
-  return(load_tiger(url))
+  return(load_tiger(url, tigris_type="metro_division"))
 
 }

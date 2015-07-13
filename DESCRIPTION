@@ -1,10 +1,12 @@
 Package: tigris
 Type: Package
 Title: Load Census TIGER Geographic Data into R
-Version: 0.0.6.9000
+Version: 0.0.6.9002
 Date: 2015-07-12
-Author: person("Kyle", "Walker", "kyle.walker@tcu.edu", c("aut", "cre"))
-Maintainer: Kyle Walker <kyle.walker@tcu.edu>
+Authors@R: c(
+      person(given="Kyle", family="Walker", email="kyle.walker@tcu.edu", role=c("aut", "cre")),
+      person(given="Bob", family="Rudis", email="bob@rudis.net", role="ctb")
+    )
 Description: Download TIGER shapefiles from the US Census Bureau and load into
              R as Spatial DataFrames.
 License: MIT + file LICENSE
@@ -18,10 +20,13 @@ Suggests:
   ggplot2,
   ggthemes,
   leaflet,
-  rgeos,
   knitr
 Imports:
   stringr,
   rgdal,
+  rgeos,
   sp,
-  utils
+  utils,
+  rappdirs,
+  httr,
+  uuid

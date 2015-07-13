@@ -18,7 +18,7 @@ area_water <- function(state, county) {
                 county,
                 "_areawater.zip")
 
-  return(load_tiger(url))
+  return(load_tiger(url, tigris_type="area_water"))
 
 }
 
@@ -42,7 +42,7 @@ linear_water <- function(state, county) {
                 county,
                 "_linearwater.zip")
 
-  return(load_tiger(url))
+  return(load_tiger(url, tigris_type="linear_water"))
 
 }
 
@@ -82,6 +82,6 @@ coastline <- function() {
 
   url <- "http://www2.census.gov/geo/tiger/TIGER2014/COAST/tl_2014_us_coastline.zip"
 
-  return(load_tiger(url))
+  return(load_tiger(url, tigris_type="coastline"))
 
 }
