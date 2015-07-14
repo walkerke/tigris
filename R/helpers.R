@@ -8,8 +8,6 @@ load_tiger <- function(url,
                        refresh=getOption("tigris_refresh", FALSE),
                        tigris_type=NULL) {
 
-  message(url)
-
   use_cache <- getOption("tigris_use_cache", TRUE)
   tiger_file <- basename(url)
 
@@ -148,6 +146,26 @@ lookup_code <- function(state, county = NULL) {
 
   }
 
+}
+
+#' Returns \code{TRUE} if \code{obj} has a \code{tigris} attribute
+#'
+#' It's unlikely that said object was not created by this package
+#'
+#' @param obj R object to test
+#' @return \code{TRUE} if \code{obj} was made by this package
+#' @export
+is_tigris <- function(obj) { !is.null(attr(obj, "tigris")) }
+
+#' Get the type of \code{tigris} object \code{obj} is
+#'
+#' @param obj R object to test
+#' @return character vector containing the \code{tigris} type of \code{obj}
+#'         or \code{NA} if \code{obj} is not a code \code{tigris} object
+#' @export
+tigris_type <- function(obj) {
+  if (is_tigris(obj)) return(attr(obj, "tigris"))
+  return(NA)
 }
 
 #' Return a data frame of county names & FIPS codes for a given state

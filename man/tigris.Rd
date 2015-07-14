@@ -6,7 +6,17 @@
 \alias{tigris-package}
 \title{Download and use U.S. Census TIGER shapefiles in R}
 \description{
-Download and use U.S. Census TIGER shapefiles in R
+Use option \code{tigris_use_cache} to tell \code{tigris} to cache
+Census shapefile downloads. This is \code{TRUE} by default. e.g.
+\code{options(tigris_use_cache=TRUE)}
+}
+\details{
+Use option \code{tigris_refresh} to force a refresh of cached \code{tigris}
+Shapefiles. e.g. \code{options(tigris_refresh=TRUE)}
+}
+\note{
+Two \code{options} control behavior of various \code{tigris} functions.
+      See \code{Description} for more information.
 }
 \author{
 Kyle Walker
