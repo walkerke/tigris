@@ -1,8 +1,8 @@
 Package: tigris
 Type: Package
 Title: Load Census TIGER Geographic Data into R
-Version: 0.0.6.9002
-Date: 2015-07-12
+Version: 0.0.6.9003
+Date: 2015-07-13
 Authors@R: c(
       person(given="Kyle", family="Walker", email="kyle.walker@tcu.edu", role=c("aut", "cre")),
       person(given="Bob", family="Rudis", email="bob@rudis.net", role="ctb")
@@ -23,10 +23,13 @@ Suggests:
   knitr
 Imports:
   stringr,
+  magrittr,
   rgdal,
   rgeos,
   sp,
   utils,
   rappdirs,
+  maptools,
   httr,
   uuid
+VignetteBuilder: knitr

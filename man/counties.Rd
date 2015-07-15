@@ -15,7 +15,31 @@ or state abbreviation.}
 counties file.  Defaults to TRUE (the most detailed TIGER file).}
 }
 \description{
-Download a US Counties shapefile into R, and optionally subset by state
+The primary legal divisions of most states are termed counties. In Louisiana,
+these divisions are known as parishes.  In Alaska, which has no counties,
+the equivalent entities are the organized boroughs, city and boroughs,
+municipalities, and census areas; the latter of which are delineated
+cooperatively for statistical purposes by the state of Alaska and the
+Census Bureau.  In four states (Maryland, Missouri, Nevada, and Virginia),
+there are one or more incorporated places that are independent of any county
+organization and thus constitute primary divisions of their states.  These
+incorporated places are known as independent cities and are treated as
+equivalent entities for purposes of data presentation.  The District of
+Columbia and Guam have no primary divisions, and each area is considered
+an equivalent entity for purposes of data presentation.  All of the counties
+in Connecticut and Rhode Island and nine counties in Massachusetts were
+dissolved as functioning governmental entities; however, the Census Bureau
+continues to present data for these historical entities in order to provide
+comparable geographic units at the county level of the geographic hierarchy
+for these states and represents them as nonfunctioning legal entities in
+data products.  The Census Bureau treats the following entities as
+equivalents of counties for purposes of data presentation: municipios in
+Puerto Rico, districts and islands in American Samoa, municipalities in the
+Commonwealth of the Northern Mariana Islands, and islands in the U.S.
+Virgin Islands.  Each county or statistically equivalent entity is assigned
+a three-character numeric Federal Information Processing Series (FIPS) code
+based on alphabetical sequence that is unique within state and an
+eight-digit National Standard feature identifier.
 }
 \examples{
 \dontrun{
@@ -36,6 +60,8 @@ gg
 }
 }
 \seealso{
+\url{https://www.census.gov/geo/reference/gtc/gtc_cou.html}
+
 Other general area functions: \code{\link{block_groups}};
   \code{\link{blocks}}; \code{\link{places}};
   \code{\link{school_districts}}; \code{\link{states}};

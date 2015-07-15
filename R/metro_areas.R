@@ -8,13 +8,9 @@
 core_based_statistical_areas <- function(detailed = TRUE) {
 
   if (detailed == FALSE) {
-
     url <- "http://www2.census.gov/geo/tiger/GENZ2014/shp/cb_2014_us_cbsa_500k.zip"
-
   } else {
-
     url <- "http://www2.census.gov/geo/tiger/TIGER2014/CBSA/tl_2014_us_cbsa.zip"
-
   }
 
   return(load_tiger(url, tigris_type="cbsa"))
@@ -31,16 +27,12 @@ core_based_statistical_areas <- function(detailed = TRUE) {
 urban_areas <- function(detailed = TRUE) {
 
   if (detailed == FALSE) {
-
     url <- "http://www2.census.gov/geo/tiger/GENZ2014/shp/cb_2014_us_ua10_500k.zip"
-
   } else {
-
     url <- "http://www2.census.gov/geo/tiger/TIGER2014/UAC/tl_2014_us_uac10.zip"
-
   }
 
-  return(load_tiger(url, tigris_type="urban_area"))
+  return(load_tiger(url, tigris_type="urban"))
 
 }
 
@@ -54,13 +46,9 @@ urban_areas <- function(detailed = TRUE) {
 combined_statistical_areas <- function(detailed = TRUE) {
 
   if (detailed == FALSE) {
-
     url <- "http://www2.census.gov/geo/tiger/GENZ2014/shp/cb_2014_us_csa_500k.zip"
-
   } else {
-
     url <- "http://www2.census.gov/geo/tiger/TIGER2014/CSA/tl_2014_us_csa.zip"
-
   }
 
   return(load_tiger(url, tigris_type="csa"))
@@ -75,6 +63,6 @@ metro_divisions <- function() {
 
   url <- "http://www2.census.gov/geo/tiger/TIGER2014/METDIV/tl_2014_us_metdiv.zip"
 
-  return(load_tiger(url, tigris_type="metro_division"))
+  return(load_tiger(url, tigris_type="metro"))
 
 }
