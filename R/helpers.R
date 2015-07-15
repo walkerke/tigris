@@ -2,7 +2,7 @@
 #
 # uses a global option "tigris_refresh" to control re-download of shapefiles (def: FALSE)
 # also uses global option "tigris_use_cache" to determine whether new data files will
-# be cacned or not. (def: TRUE)
+# be cached or not. (def: TRUE)
 #
 load_tiger <- function(url,
                        refresh=getOption("tigris_refresh", FALSE),

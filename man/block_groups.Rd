@@ -22,7 +22,8 @@ Download a Census block groups shapefile into R, and optionally subset by county
 \seealso{
 Other general area functions: \code{\link{blocks}};
   \code{\link{counties}}; \code{\link{places}};
-  \code{\link{school_districts}}; \code{\link{states}};
-  \code{\link{tracts}}; \code{\link{zctas}}
+  \code{\link{pumas}}; \code{\link{school_districts}};
+  \code{\link{states}}; \code{\link{tracts}};
+  \code{\link{zctas}}
 }
 

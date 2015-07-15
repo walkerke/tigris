@@ -53,7 +53,8 @@ and block groups defined by state and county
 
 Other general area functions: \code{\link{block_groups}};
   \code{\link{blocks}}; \code{\link{counties}};
-  \code{\link{places}}; \code{\link{school_districts}};
-  \code{\link{states}}; \code{\link{zctas}}
+  \code{\link{places}}; \code{\link{pumas}};
+  \code{\link{school_districts}}; \code{\link{states}};
+  \code{\link{zctas}}
 }
 

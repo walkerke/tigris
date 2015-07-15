@@ -37,7 +37,8 @@ leaflet(states) \%>\%
 
 Other general area functions: \code{\link{block_groups}};
   \code{\link{blocks}}; \code{\link{counties}};
-  \code{\link{places}}; \code{\link{school_districts}};
-  \code{\link{tracts}}; \code{\link{zctas}}
+  \code{\link{places}}; \code{\link{pumas}};
+  \code{\link{school_districts}}; \code{\link{tracts}};
+  \code{\link{zctas}}
 }
 
