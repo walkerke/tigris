@@ -23,6 +23,7 @@ __Basic usage:__
 
 ```r
 library(tigris)
+library(sp)
 
 # Basic plot of US urbanized areas
 
