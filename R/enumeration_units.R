@@ -273,7 +273,7 @@ blocks <- function(state, county = NULL) {
 
   blks <- load_tiger(url, tigris_type="block")
 
-  if (!is.null(county)) blcks <- blks[blks$COUNTYFP10 %in% county, ]
+  if (!is.null(county)) blks <- blks[blks$COUNTYFP10 %in% county, ]
 
   attr(blks, "tigris") <- "block"
 
