@@ -215,17 +215,23 @@ block_groups <- function(state, county = NULL, detailed = TRUE) {
 
 #' Download a Zip Code Tabulation Area (ZCTA) shapefile into R
 #'
+#' ZIP Code Tabulation Areas (ZCTAs) are generalized areal representations of
+#' United States Postal Service (USPS) ZIP Code service areas.  Please see the link provided for
+#' information on how the Census Bureau creates ZCTAs, and for important information on the
+#' differences between ZCTAs and ZIP Codes.
+#'
 #' @param detailed If detailed is set to FALSE, download a generalized (1:500k)
 #'        ZCTA file.  Defaults to TRUE (the most detailed TIGER/Line file).
 #'        \strong{A warning:} the detailed TIGER/Line ZCTA file is massive
 #'        (around 502MB unzipped), and the generalized version is also large
 #'        (64MB zipped).  Be prepared for this especially if you have a slower
 #'        internet connection.
-#' @param starts_with Character string specifying the beginning digits of the
+#' @param starts_with Character vector specifying the beginning digits of the
 #'        ZCTAs you want to return.  For example, supplying the argument
-#'        \code{starts_with = "761"} will return only those ZCTAs that begin
-#'        with 761.  Defaults to NULL, which will return all ZCTAs in the US.
+#'        \code{starts_with = c("75", "76")} will return only those ZCTAs that begin
+#'        with 75 or 76.  Defaults to NULL, which will return all ZCTAs in the US.
 #' @family general area functions
+#' @seealso \url{https://www.census.gov/geo/reference/zctas.html}
 #' @export
 zctas <- function(detailed = TRUE, starts_with = NULL) {
 
@@ -237,7 +243,14 @@ zctas <- function(detailed = TRUE, starts_with = NULL) {
 
   zcta <- load_tiger(url, tigris_type="zcta")
 
-  if (!is.null(starts_with)) zcta <- zcta[grep(paste0("^", starts_with), zcta$ZCTA5CE10), ]
+  if (!is.null(starts_with)) {
+    if (length(starts_with) > 1) {
+      tmp <- sapply(starts_with, function(x) paste0("^", x))
+      zcta <- zcta[grep(paste(tmp, collapse = "|"), zcta$ZCTA5CE10), ]
+    } else {
+      zcta <- zcta[grep(paste0("^", starts_with), zcta$ZCTA5CE10), ]
+    }
+  }
 
   attr(zcta, "tigris") <- "zcta"
 

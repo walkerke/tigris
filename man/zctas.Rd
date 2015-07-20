@@ -14,15 +14,20 @@ ZCTA file.  Defaults to TRUE (the most detailed TIGER/Line file).
 (64MB zipped).  Be prepared for this especially if you have a slower
 internet connection.}
 
-\item{starts_with}{Character string specifying the beginning digits of the
+\item{starts_with}{Character vector specifying the beginning digits of the
 ZCTAs you want to return.  For example, supplying the argument
-\code{starts_with = "761"} will return only those ZCTAs that begin
-with 761.  Defaults to NULL, which will return all ZCTAs in the US.}
+\code{starts_with = c("75", "76")} will return only those ZCTAs that begin
+with 75 or 76.  Defaults to NULL, which will return all ZCTAs in the US.}
 }
 \description{
-Download a Zip Code Tabulation Area (ZCTA) shapefile into R
+ZIP Code Tabulation Areas (ZCTAs) are generalized areal representations of
+United States Postal Service (USPS) ZIP Code service areas.  Please see the link provided for
+information on how the Census Bureau creates ZCTAs, and for important information on the
+differences between ZCTAs and ZIP Codes.
 }
 \seealso{
+\url{https://www.census.gov/geo/reference/zctas.html}
+
 Other general area functions: \code{\link{block_groups}};
   \code{\link{blocks}}; \code{\link{counties}};
   \code{\link{places}}; \code{\link{pumas}};
