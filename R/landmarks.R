@@ -20,7 +20,7 @@ military <- function() {
 
   url <- "http://www2.census.gov/geo/tiger/TIGER2014/MIL/tl_2014_us_mil.zip"
 
-  return(load_tiger(url), tigris_type("military"))
+  return(load_tiger(url, tigris_type = "military"))
 
 }
 
@@ -66,7 +66,7 @@ landmarks <- function(state, type = "point") {
     return(load_tiger(url, tigris_type = "point_landmark"))
 
   } else {
-    stop('The "type" specified must be either "point" or "area"', call. = FALSE)
+    stop('The argument supplied to type must be either "point" or "area"', call. = FALSE)
   }
 
 }
