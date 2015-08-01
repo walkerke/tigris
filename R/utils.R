@@ -113,8 +113,8 @@ validate_county <- function(state, county, .msg = interactive()) {
 
         ctys <- format_vec(matching_counties)
 
-        warning(paste0("Your county string matches ", ctys, " Returning all of these counties."), call. = FALSE)
-        return(county_table[county_table$county == matching_counties, "county_code"])
+        warning(paste0("Your county string matches ", ctys, " Please refine your selection."), call. = FALSE)
+        return(NULL)
 
       }
 
