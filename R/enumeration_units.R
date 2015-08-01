@@ -136,7 +136,13 @@ tracts <- function(state, county = NULL, detailed = TRUE) {
 
   trcts <- load_tiger(url, tigris_type="tract")
 
-  if (!is.null(county)) trcts <- trcts[trcts$COUNTYFP %in% county, ]
+  if (!is.null(county)) {
+
+     county <- sapply(county, function(x) validate_county(state, x))
+
+     trcts <- trcts[trcts$COUNTYFP %in% county, ]
+
+  }
 
   attr(trcts, "tigris") <- "tract"
 
@@ -205,7 +211,13 @@ block_groups <- function(state, county = NULL, detailed = TRUE) {
 
   bgs <- load_tiger(url, tigris_type="block")
 
-  if (!is.null(county)) bgs <- bgs[bgs$COUNTYFP %in% county, ]
+  if (!is.null(county)) {
+
+    county <- sapply(county, function(x) validate_county(state, x))
+
+    bgs <- bgs[bgs$COUNTYFP %in% county, ]
+
+  }
 
   attr(bgs, "tigris") <- "block"
 
@@ -286,7 +298,13 @@ blocks <- function(state, county = NULL) {
 
   blks <- load_tiger(url, tigris_type="block")
 
-  if (!is.null(county)) blks <- blks[blks$COUNTYFP10 %in% county, ]
+  if (!is.null(county)) {
+
+    county <- sapply(county, function(x) validate_county(state, x))
+
+    blks <- blks[blks$COUNTYFP10 %in% county, ]
+
+  }
 
   attr(blks, "tigris") <- "block"
 

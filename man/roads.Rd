@@ -27,7 +27,7 @@ library(sp)
 roads <- roads("Maine", "031")
 
 # for ggplot, we need to simplify the lines otherwise it'll take
-# forever to plot. however, gSimplfy whacks the SpatialLinesDataFrame
+# forever to plot. however, gSimplify whacks the SpatialLinesDataFrame
 # so we need to re-bind the data from the original object to it so
 # we can use "fortify"
 

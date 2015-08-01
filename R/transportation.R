@@ -16,7 +16,7 @@
 #' roads <- roads("Maine", "031")
 #'
 #' # for ggplot, we need to simplify the lines otherwise it'll take
-#' # forever to plot. however, gSimplfy whacks the SpatialLinesDataFrame
+#' # forever to plot. however, gSimplify whacks the SpatialLinesDataFrame
 #' # so we need to re-bind the data from the original object to it so
 #' # we can use "fortify"
 #'
@@ -37,10 +37,11 @@ roads <- function(state, county) {
 
   state <- validate_state(state)
 
+  county <- validate_county(state, county)
+
   if (is.null(state)) stop("Invalid state", call.=FALSE)
 
-  # was going to add county validation here but that will be another function
-  # in the not too distant future
+  if (is.null(county)) stop("Invalid county", call. = FALSE)
 
   url <- paste0("http://www2.census.gov/geo/tiger/TIGER2014/ROADS/tl_2014_",
                 state,

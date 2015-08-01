@@ -11,7 +11,11 @@ area_water <- function(state, county) {
 
   state <- validate_state(state)
 
+  county <- validate_county(state, county)
+
   if (is.null(state)) stop("Invalid state", call.=FALSE)
+
+  if (is.null(county) | length(county) > 1) stop("Invalid county", call. = FALSE)
 
   url <- paste0("http://www2.census.gov/geo/tiger/TIGER2014/AREAWATER/tl_2014_",
                 state,
@@ -35,7 +39,11 @@ linear_water <- function(state, county) {
 
   state <- validate_state(state)
 
+  county <- validate_county(state, county)
+
   if (is.null(state)) stop("Invalid state", call.=FALSE)
+
+  if (is.null(county)) stop("Invalid county", call. = FALSE)
 
   url <- paste0("http://www2.census.gov/geo/tiger/TIGER2014/LINEARWATER/tl_2014_",
                 state,
