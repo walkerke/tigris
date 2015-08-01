@@ -81,7 +81,7 @@ validate_county <- function(state, county, .msg = interactive()) {
       return(county)
 
     } else {
-      warning(sprintf("'%s' is not a valid FIPS code for counties in '%s'", county, county_table$state_name[1]),
+      warning(sprintf("'%s' is not a valid FIPS code for counties in %s", county, county_table$state_name[1]),
               call. = FALSE)
       return(NULL)
 
@@ -95,7 +95,7 @@ validate_county <- function(state, county, .msg = interactive()) {
 
       if (length(matching_counties) == 0) {
 
-        warning(sprintf("'%s' is not a valid name for counties in '%s'", county, county_table$state_name[1]),
+        warning(sprintf("'%s' is not a valid name for counties in %s", county, county_table$state_name[1]),
                 call. = FALSE)
         return(NULL)
 
