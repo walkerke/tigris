@@ -2,7 +2,7 @@
 
 Download and use Census TIGER shapefiles in R
 
-Current version: __0.0.5__ (updated 1 July 2015)
+Current version: __0.0.7__ (updated 1 August 2015)
 
 `tigris` is an R package that allows users to directly download and use TIGER/Line shapefiles (<https://www.census.gov/geo/maps-data/data/tiger-line.html>) from the US Census Bureau.  
 
