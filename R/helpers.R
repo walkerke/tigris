@@ -16,6 +16,8 @@ load_tiger <- function(url,
 
     url <- gsub("2014", as.character(year), url)
 
+    url <- gsub("shp/", "", url) # A little dirty but should work for now for CB files prior to 2014
+
   }
 
   use_cache <- getOption("tigris_use_cache", TRUE)
