@@ -2,7 +2,7 @@
 
 Download and use Census TIGER shapefiles in R
 
-Current version: __0.0.7__ (updated 1 August 2015)
+Current version: __0.0.8__ (updated 17 August 2015)
 
 `tigris` is an R package that allows users to directly download and use TIGER/Line shapefiles (<https://www.census.gov/geo/maps-data/data/tiger-line.html>) from the US Census Bureau.  
 
@@ -11,6 +11,14 @@ To install the package, issue the following command in R:
 ```
 devtools::install_github('walkerke/tigris')
 ```
+
+__In Version 0.0.8__: 
+
+* `tigris` now caches shapefile downloads!  Download the file once, and `tigris` will store the downloaded shapefile in a special directory so you don't have to re-download every time.  To turn off this behavior, change the option with `options(tigris_use_cache = FALSE)`.  
+* `tigris` is also now much smarter when handling geography arguments.  For example, `tracts("TX", "Dallas")` will get you Census tracts for Dallas County, TX without having to know the FIPS code.  
+* You can combine multiple `tigris` objects of the same type with the new `rbind_tigris` function
+* Multiple years are now supported!  `tigris` defaults to 2014, but you can change years with the new `tigris_year` option.  For example, specifying `options(tigris_year = 2015)` will tell `tigris` to download the new 2015 TIGER/Line files in your R session.  A caution: not everything is available in every year; for example, generalized cartographic boundary files are not released for 2015 yet, so the `detailed = FALSE` argument won't work.  
+* There is much more - download the package and try it out!
 
 __Version 0.0.5 release highlights:__
 
