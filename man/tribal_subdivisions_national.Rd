@@ -4,7 +4,7 @@
 \alias{tribal_subdivisions_national}
 \title{Download an American Indian Tribal Subdivision National shapefile into R.}
 \usage{
-tribal_subdivisions_national()
+tribal_subdivisions_national(...)
 }
 \description{
 Download an American Indian Tribal Subdivision National shapefile into R.

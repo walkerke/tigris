@@ -4,7 +4,7 @@
 \alias{tribal_census_tracts}
 \title{Download a Tribal Census tract shapefile into R.}
 \usage{
-tribal_census_tracts()
+tribal_census_tracts(...)
 }
 \description{
 Download a Tribal Census tract shapefile into R.

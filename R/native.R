@@ -22,7 +22,7 @@
 #' gg <- gg + theme_map()
 #' gg
 #' }
-native_areas <- function(detailed = TRUE) {
+native_areas <- function(detailed = TRUE, ...) {
 
   if (detailed == FALSE) {
 
@@ -34,7 +34,7 @@ native_areas <- function(detailed = TRUE) {
 
   }
 
-  return(load_tiger(url))
+  return(load_tiger(url, ...))
 
 }
 
@@ -53,11 +53,11 @@ native_areas <- function(detailed = TRUE) {
 #'               color = "black",
 #'               weight = 0.5)
 #' }
-tribal_subdivisions_national <- function() {
+tribal_subdivisions_national <- function(...) {
 
   url <- "http://www2.census.gov/geo/tiger/TIGER2014/AITS/tl_2014_us_aitsn.zip"
 
-  return(load_tiger(url))
+  return(load_tiger(url, ...))
 
 }
 
@@ -65,11 +65,11 @@ tribal_subdivisions_national <- function() {
 #'
 #' @family native/tribal geometries functions
 #' @export
-alaska_native_regional_corporations <- function() {
+alaska_native_regional_corporations <- function(...) {
 
   url <- "http://www2.census.gov/geo/tiger/TIGER2014/ANRC/tl_2014_02_anrc.zip"
 
-  return(load_tiger(url))
+  return(load_tiger(url, ...))
 
 }
 
@@ -88,11 +88,11 @@ alaska_native_regional_corporations <- function() {
 #'               color = "black",
 #'               weight = 0.5)
 #' }
-tribal_block_groups <- function() {
+tribal_block_groups <- function(...) {
 
   url <- "http://www2.census.gov/geo/tiger/TIGER2014/TBG/tl_2014_us_tbg.zip"
 
-  return(load_tiger(url))
+  return(load_tiger(url, ...))
 
 }
 
@@ -111,10 +111,10 @@ tribal_block_groups <- function() {
 #'               color = "black",
 #'               weight = 0.5)
 #' }
-tribal_census_tracts <- function() {
+tribal_census_tracts <- function(...) {
 
   url <- "http://www2.census.gov/geo/tiger/TIGER2014/TTRACT/tl_2014_us_ttract.zip"
 
-  return(load_tiger(url))
+  return(load_tiger(url, ...))
 
 }

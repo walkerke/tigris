@@ -4,7 +4,7 @@
 \alias{blocks}
 \title{Download a Census block shapefile into R}
 \usage{
-blocks(state, county = NULL)
+blocks(state, county = NULL, ...)
 }
 \arguments{
 \item{state}{The two-digit FIPS code (string) of the state you want. Can also

@@ -4,7 +4,7 @@
 \alias{area_water}
 \title{Download an area water shapefile into R}
 \usage{
-area_water(state, county)
+area_water(state, county, ...)
 }
 \arguments{
 \item{state}{The two-digit FIPS code of the state of the county you'd like to

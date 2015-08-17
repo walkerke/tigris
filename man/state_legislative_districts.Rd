@@ -4,7 +4,7 @@
 \alias{state_legislative_districts}
 \title{Download a state legislative districts shapefile into R - upper or lower}
 \usage{
-state_legislative_districts(state, house = "upper", detailed = TRUE)
+state_legislative_districts(state, house = "upper", detailed = TRUE, ...)
 }
 \arguments{
 \item{state}{The two-digit FIPS code (string) of the state. Can also be state

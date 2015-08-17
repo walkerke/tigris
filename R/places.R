@@ -31,7 +31,7 @@
 #' @family general area functions
 #' @seealso \url{https://www.census.gov/geo/reference/gtc/gtc_place.html}
 #' @export
-places <- function(state, detailed = TRUE) {
+places <- function(state, detailed = TRUE, ...) {
 
   state <- validate_state(state)
 
@@ -45,7 +45,7 @@ places <- function(state, detailed = TRUE) {
                   state, "_place.zip")
   }
 
-  return(load_tiger(url, tigris_type="place"))
+  return(load_tiger(url, tigris_type="place", ...))
 
 }
 

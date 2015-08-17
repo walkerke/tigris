@@ -4,7 +4,7 @@
 \alias{block_groups}
 \title{Download a Census block groups shapefile into R, and optionally subset by county}
 \usage{
-block_groups(state, county = NULL, detailed = TRUE)
+block_groups(state, county = NULL, detailed = TRUE, ...)
 }
 \arguments{
 \item{state}{The two-digit FIPS code (string) of the state you want. Can also

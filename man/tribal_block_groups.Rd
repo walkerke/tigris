@@ -4,7 +4,7 @@
 \alias{tribal_block_groups}
 \title{Download a Tribal block groups shapefile into R.}
 \usage{
-tribal_block_groups()
+tribal_block_groups(...)
 }
 \description{
 Download a Tribal block groups shapefile into R.

@@ -33,7 +33,7 @@
 #' gg <- gg + theme_map()
 #' gg
 #' }
-roads <- function(state, county) {
+roads <- function(state, county, ...) {
 
   state <- validate_state(state)
 
@@ -48,7 +48,7 @@ roads <- function(state, county) {
                 county,
                 "_roads.zip")
 
-  return(load_tiger(url, tigris_type="road"))
+  return(load_tiger(url, tigris_type="road", ...))
 
 }
 
@@ -56,11 +56,11 @@ roads <- function(state, county) {
 #'
 #' @family transportation functions
 #' @export
-primary_roads <- function() {
+primary_roads <- function(...) {
 
   url <- "http://www2.census.gov/geo/tiger/TIGER2014/PRIMARYROADS/tl_2014_us_primaryroads.zip"
 
-  return(load_tiger(url, tigris_type="primary_roads"))
+  return(load_tiger(url, tigris_type="primary_roads", ...))
 
 }
 
@@ -71,7 +71,7 @@ primary_roads <- function() {
 #'        (case-insensitive).
 #' @family transportation functions
 #' @export
-primary_secondary_roads <- function(state) {
+primary_secondary_roads <- function(state, ...) {
 
   state <- validate_state(state)
 
@@ -81,7 +81,7 @@ primary_secondary_roads <- function(state) {
                 state,
                 "_prisecroads.zip")
 
-  return(load_tiger(url, tigris_type="prim_sec_roads"))
+  return(load_tiger(url, tigris_type="prim_sec_roads", ...))
 
 }
 
@@ -89,10 +89,10 @@ primary_secondary_roads <- function(state) {
 #'
 #' @family transportation functions
 #' @export
-rails <- function() {
+rails <- function(...) {
 
   url <- "http://www2.census.gov/geo/tiger/TIGER2014/RAILS/tl_2014_us_rails.zip"
 
-  return(load_tiger(url, tigris_type="rails"))
+  return(load_tiger(url, tigris_type="rails", ...))
 
 }

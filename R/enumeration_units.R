@@ -50,7 +50,7 @@
 #' gg <- gg + theme_map()
 #' gg
 #' }
-counties <- function(state = NULL, detailed = TRUE) {
+counties <- function(state = NULL, detailed = TRUE, ...) {
 
   if (detailed == FALSE) {
 
@@ -62,7 +62,7 @@ counties <- function(state = NULL, detailed = TRUE) {
 
   }
 
-  ctys <- load_tiger(url, tigris_type="county")
+  ctys <- load_tiger(url, tigris_type="county", ...)
 
   state <- unlist(sapply(state, validate_state, USE.NAMES=FALSE))
 
@@ -115,7 +115,7 @@ counties <- function(state = NULL, detailed = TRUE) {
 #' @family general area functions
 #' @seealso \url{https://www.census.gov/geo/reference/gtc/gtc_ct.html}
 #' @export
-tracts <- function(state, county = NULL, detailed = TRUE) {
+tracts <- function(state, county = NULL, detailed = TRUE, ...) {
 
   state <- validate_state(state)
 
@@ -134,7 +134,7 @@ tracts <- function(state, county = NULL, detailed = TRUE) {
                   "_tract.zip")
   }
 
-  trcts <- load_tiger(url, tigris_type="tract")
+  trcts <- load_tiger(url, tigris_type="tract", ...)
 
   if (!is.null(county)) {
 
@@ -168,7 +168,7 @@ tracts <- function(state, county = NULL, detailed = TRUE) {
 #'               color = "black",
 #'               weight = 0.5)
 #' }
-school_districts <- function(state) {
+school_districts <- function(state, ...) {
 
   state <- validate_state(state)
 
@@ -176,7 +176,7 @@ school_districts <- function(state) {
 
   url <- paste0("http://www2.census.gov/geo/tiger/TIGER2014/UNSD/tl_2014_", state, "_unsd.zip")
 
-  return(load_tiger(url, tigris_type="school"))
+  return(load_tiger(url, tigris_type="school", ...))
 
 }
 
@@ -190,7 +190,7 @@ school_districts <- function(state) {
 #'        file.  Defaults to TRUE (the most detailed TIGER/Line file)
 #' @family general area functions
 #' @export
-block_groups <- function(state, county = NULL, detailed = TRUE) {
+block_groups <- function(state, county = NULL, detailed = TRUE, ...) {
 
   state <- validate_state(state)
 
@@ -209,7 +209,7 @@ block_groups <- function(state, county = NULL, detailed = TRUE) {
                   "_bg.zip")
   }
 
-  bgs <- load_tiger(url, tigris_type="block")
+  bgs <- load_tiger(url, tigris_type="block", ...)
 
   if (!is.null(county)) {
 
@@ -245,7 +245,7 @@ block_groups <- function(state, county = NULL, detailed = TRUE) {
 #' @family general area functions
 #' @seealso \url{https://www.census.gov/geo/reference/zctas.html}
 #' @export
-zctas <- function(detailed = TRUE, starts_with = NULL) {
+zctas <- function(detailed = TRUE, starts_with = NULL, ...) {
 
   if (detailed == FALSE) {
     url <- "http://www2.census.gov/geo/tiger/GENZ2014/shp/cb_2014_us_zcta510_500k.zip"
@@ -253,7 +253,7 @@ zctas <- function(detailed = TRUE, starts_with = NULL) {
     url <- "http://www2.census.gov/geo/tiger/TIGER2014/ZCTA5/tl_2014_us_zcta510.zip"
   }
 
-  zcta <- load_tiger(url, tigris_type="zcta")
+  zcta <- load_tiger(url, tigris_type="zcta", ...)
 
   if (!is.null(starts_with)) {
     if (length(starts_with) > 1) {
@@ -286,7 +286,7 @@ zctas <- function(detailed = TRUE, starts_with = NULL) {
 #'        subset for, or a vector of FIPS codes if you desire multiple counties
 #' @family general area functions
 #' @export
-blocks <- function(state, county = NULL) {
+blocks <- function(state, county = NULL, ...) {
 
   state <- validate_state(state)
 
@@ -296,7 +296,7 @@ blocks <- function(state, county = NULL) {
                 state,
                 "_tabblock10.zip")
 
-  blks <- load_tiger(url, tigris_type="block")
+  blks <- load_tiger(url, tigris_type="block", ...)
 
   if (!is.null(county)) {
 

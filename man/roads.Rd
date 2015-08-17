@@ -4,7 +4,7 @@
 \alias{roads}
 \title{Download a roads shapefile into R}
 \usage{
-roads(state, county)
+roads(state, county, ...)
 }
 \arguments{
 \item{state}{The two-digit FIPS code of the state of the county you'd like

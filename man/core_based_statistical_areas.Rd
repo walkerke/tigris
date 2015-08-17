@@ -4,7 +4,7 @@
 \alias{core_based_statistical_areas}
 \title{Download a core-based statistical area shapefile into R}
 \usage{
-core_based_statistical_areas(detailed = TRUE)
+core_based_statistical_areas(detailed = TRUE, ...)
 }
 \arguments{
 \item{detailed}{If detailed is set to FALSE, download a generalized (1:500k)

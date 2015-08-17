@@ -35,7 +35,7 @@
 #'
 #' plot(us_pumas)
 #' }
-pumas <- function(state, detailed = TRUE) {
+pumas <- function(state, detailed = TRUE, ...) {
 
   state <- validate_state(state)
 
@@ -51,7 +51,7 @@ pumas <- function(state, detailed = TRUE) {
                   "_puma10.zip")
   }
 
-  pm <- load_tiger(url, tigris_type = "puma")
+  pm <- load_tiger(url, tigris_type = "puma", ...)
 
   attr(pm, "tigris") <- "puma"
 

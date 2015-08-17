@@ -4,7 +4,7 @@
 \alias{military}
 \title{Download the Military Installation National Shapefile into R}
 \usage{
-military()
+military(...)
 }
 \description{
 Description from the US Census Bureau:

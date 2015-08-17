@@ -4,7 +4,7 @@
 \alias{rails}
 \title{Download a national rails shapefile into R}
 \usage{
-rails()
+rails(...)
 }
 \description{
 Download a national rails shapefile into R

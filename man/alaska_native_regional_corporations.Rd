@@ -4,7 +4,7 @@
 \alias{alaska_native_regional_corporations}
 \title{Download an Alaska Native Regional Corporation shapefile into R.}
 \usage{
-alaska_native_regional_corporations()
+alaska_native_regional_corporations(...)
 }
 \description{
 Download an Alaska Native Regional Corporation shapefile into R.

@@ -5,7 +5,7 @@
 #'        TIGER/Line file).
 #' @family legislative district functions
 #' @export
-congressional_districts <- function(detailed = TRUE) {
+congressional_districts <- function(detailed = TRUE, ...) {
 
   if (detailed == FALSE) {
 
@@ -17,7 +17,7 @@ congressional_districts <- function(detailed = TRUE) {
 
   }
 
-  return(load_tiger(url, tigris_type="congressional_districts"))
+  return(load_tiger(url, tigris_type="congressional_districts", ...))
 
 }
 
@@ -50,7 +50,7 @@ congressional_districts <- function(detailed = TRUE) {
 #'               color = "black",
 #'               weight = 0.5)
 #' }
-state_legislative_districts <- function(state, house = "upper", detailed = TRUE) {
+state_legislative_districts <- function(state, house = "upper", detailed = TRUE, ...) {
 
   state <- validate_state(state)
 
@@ -93,6 +93,6 @@ state_legislative_districts <- function(state, house = "upper", detailed = TRUE)
 
   }
 
-  return(load_tiger(url, tigris_type="state_legislative_districts"))
+  return(load_tiger(url, tigris_type="state_legislative_districts", ...))
 
 }

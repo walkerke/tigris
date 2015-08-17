@@ -4,7 +4,7 @@
 \alias{landmarks}
 \title{Download a point or area landmarks shapefile into R}
 \usage{
-landmarks(state, type = "point")
+landmarks(state, type = "point", ...)
 }
 \arguments{
 \item{state}{The state for which you'd like to download the landmarks}

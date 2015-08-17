@@ -4,7 +4,7 @@
 \alias{metro_divisions}
 \title{Download a metropolitan divisions shapefile into R.}
 \usage{
-metro_divisions()
+metro_divisions(...)
 }
 \description{
 Download a metropolitan divisions shapefile into R.

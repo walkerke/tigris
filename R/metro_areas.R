@@ -5,7 +5,7 @@
 #'        TIGER/Line file).
 #' @family metro area functions
 #' @export
-core_based_statistical_areas <- function(detailed = TRUE) {
+core_based_statistical_areas <- function(detailed = TRUE, ...) {
 
   if (detailed == FALSE) {
     url <- "http://www2.census.gov/geo/tiger/GENZ2014/shp/cb_2014_us_cbsa_500k.zip"
@@ -13,7 +13,7 @@ core_based_statistical_areas <- function(detailed = TRUE) {
     url <- "http://www2.census.gov/geo/tiger/TIGER2014/CBSA/tl_2014_us_cbsa.zip"
   }
 
-  return(load_tiger(url, tigris_type="cbsa"))
+  return(load_tiger(url, tigris_type="cbsa", ...))
 
 }
 
@@ -24,7 +24,7 @@ core_based_statistical_areas <- function(detailed = TRUE) {
 #'        TIGER/Line file).
 #' @family metro area functions
 #' @export
-urban_areas <- function(detailed = TRUE) {
+urban_areas <- function(detailed = TRUE, ...) {
 
   if (detailed == FALSE) {
     url <- "http://www2.census.gov/geo/tiger/GENZ2014/shp/cb_2014_us_ua10_500k.zip"
@@ -32,7 +32,7 @@ urban_areas <- function(detailed = TRUE) {
     url <- "http://www2.census.gov/geo/tiger/TIGER2014/UAC/tl_2014_us_uac10.zip"
   }
 
-  return(load_tiger(url, tigris_type="urban"))
+  return(load_tiger(url, tigris_type="urban", ...))
 
 }
 
@@ -43,7 +43,7 @@ urban_areas <- function(detailed = TRUE) {
 #'        TIGER/Line file).
 #' @family metro area functions
 #' @export
-combined_statistical_areas <- function(detailed = TRUE) {
+combined_statistical_areas <- function(detailed = TRUE, ...) {
 
   if (detailed == FALSE) {
     url <- "http://www2.census.gov/geo/tiger/GENZ2014/shp/cb_2014_us_csa_500k.zip"
@@ -51,7 +51,7 @@ combined_statistical_areas <- function(detailed = TRUE) {
     url <- "http://www2.census.gov/geo/tiger/TIGER2014/CSA/tl_2014_us_csa.zip"
   }
 
-  return(load_tiger(url, tigris_type="csa"))
+  return(load_tiger(url, tigris_type="csa", ...))
 
 }
 
@@ -59,10 +59,10 @@ combined_statistical_areas <- function(detailed = TRUE) {
 #'
 #' @family metro area functions
 #' @export
-metro_divisions <- function() {
+metro_divisions <- function(...) {
 
   url <- "http://www2.census.gov/geo/tiger/TIGER2014/METDIV/tl_2014_us_metdiv.zip"
 
-  return(load_tiger(url, tigris_type="metro"))
+  return(load_tiger(url, tigris_type="metro", ...))
 
 }

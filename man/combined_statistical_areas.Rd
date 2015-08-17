@@ -4,7 +4,7 @@
 \alias{combined_statistical_areas}
 \title{Download a combined statistical areas shapefile into R}
 \usage{
-combined_statistical_areas(detailed = TRUE)
+combined_statistical_areas(detailed = TRUE, ...)
 }
 \arguments{
 \item{detailed}{If detailed is set to FALSE, download a generalized (1:500k)

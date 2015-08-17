@@ -24,7 +24,7 @@
 #'               weight = 0.5) %>%
 #'   setView(-98.5795, 39.8282, zoom=3)
 #' }
-states <- function(detailed = TRUE) {
+states <- function(detailed = TRUE, ...) {
 
   if (detailed == FALSE) {
     url <- "http://www2.census.gov/geo/tiger/GENZ2014/shp/cb_2014_us_state_500k.zip"
@@ -32,7 +32,7 @@ states <- function(detailed = TRUE) {
     url <- "http://www2.census.gov/geo/tiger/TIGER2014/STATE/tl_2014_us_state.zip"
   }
 
-  return(load_tiger(url, tigris_type="state"))
+  return(load_tiger(url, tigris_type="state", ...))
 
 }
 #' Filter a \code{states} Spatial object for only those states matching the

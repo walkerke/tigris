@@ -4,7 +4,7 @@
 \alias{congressional_districts}
 \title{Download a congressional districts shapefile for the 114th Congress into R}
 \usage{
-congressional_districts(detailed = TRUE)
+congressional_districts(detailed = TRUE, ...)
 }
 \arguments{
 \item{detailed}{If detailed is set to FALSE, download a generalized (1:500k)

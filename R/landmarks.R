@@ -16,11 +16,11 @@
 #' @seealso \url{http://www2.census.gov/geo/pdfs/maps-data/data/tiger/tgrshp2014/TGRSHP2014_TechDoc_Ch3.pdf}
 #' @export
 
-military <- function() {
+military <- function(...) {
 
   url <- "http://www2.census.gov/geo/tiger/TIGER2014/MIL/tl_2014_us_mil.zip"
 
-  return(load_tiger(url, tigris_type = "military"))
+  return(load_tiger(url, tigris_type = "military", ...))
 
 }
 
@@ -53,17 +53,17 @@ military <- function() {
 #' @param state The state for which you'd like to download the landmarks
 #' @param type Whether you would like to download point landmarks (\code{"point"}) or area landmarks (\code{"area"}).                   Defaults to \code{"point"}.
 #' @export
-landmarks <- function(state, type = "point") {
+landmarks <- function(state, type = "point", ...) {
 
   state <- validate_state(state)
 
   if (type == "area") {
     url <- paste0("http://www2.census.gov/geo/tiger/TIGER2014/AREALM/tl_2014_", state, "_arealm.zip")
-    return(load_tiger(url, tigris_type = "area_landmark"))
+    return(load_tiger(url, tigris_type = "area_landmark", ...))
 
   } else if (type == "point") {
     url <- paste0("http://www2.census.gov/geo/tiger/TIGER2014/POINTLM/tl_2014_", state, "_pointlm.zip")
-    return(load_tiger(url, tigris_type = "point_landmark"))
+    return(load_tiger(url, tigris_type = "point_landmark", ...))
 
   } else {
     stop('The argument supplied to type must be either "point" or "area"', call. = FALSE)

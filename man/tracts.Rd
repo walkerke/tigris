@@ -4,7 +4,7 @@
 \alias{tracts}
 \title{Download a Census tracts shapefile into R, and optionally subset by county}
 \usage{
-tracts(state, county = NULL, detailed = TRUE)
+tracts(state, county = NULL, detailed = TRUE, ...)
 }
 \arguments{
 \item{state}{The two-digit FIPS code (string) of the state you want. Can also

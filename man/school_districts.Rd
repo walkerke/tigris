@@ -4,7 +4,7 @@
 \alias{school_districts}
 \title{Download a unified school district shapefile into R}
 \usage{
-school_districts(state)
+school_districts(state, ...)
 }
 \arguments{
 \item{state}{The two-digit FIPS code (string) of the state you want. Can also

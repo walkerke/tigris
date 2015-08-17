@@ -4,7 +4,7 @@
 \alias{coastline}
 \title{Download a shapefile of the US coastline into R}
 \usage{
-coastline()
+coastline(...)
 }
 \description{
 Download a shapefile of the US coastline into R

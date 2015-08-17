@@ -4,7 +4,7 @@
 \alias{states}
 \title{Download shapefile for all states into R}
 \usage{
-states(detailed = TRUE)
+states(detailed = TRUE, ...)
 }
 \arguments{
 \item{detailed}{If detailed is set to FALSE, download a generalized (1:500k)

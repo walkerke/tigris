@@ -7,7 +7,7 @@
 #'        features for
 #' @family water functions
 #' @export
-area_water <- function(state, county) {
+area_water <- function(state, county, ...) {
 
   state <- validate_state(state)
 
@@ -22,7 +22,7 @@ area_water <- function(state, county) {
                 county,
                 "_areawater.zip")
 
-  return(load_tiger(url, tigris_type="area_water"))
+  return(load_tiger(url, tigris_type="area_water", ...))
 
 }
 
@@ -35,7 +35,7 @@ area_water <- function(state, county) {
 #'        eatures for
 #' @family water functions
 #' @export
-linear_water <- function(state, county) {
+linear_water <- function(state, county, ...) {
 
   state <- validate_state(state)
 
@@ -50,7 +50,7 @@ linear_water <- function(state, county) {
                 county,
                 "_linearwater.zip")
 
-  return(load_tiger(url, tigris_type="linear_water"))
+  return(load_tiger(url, tigris_type="linear_water", ...))
 
 }
 
@@ -86,10 +86,10 @@ linear_water <- function(state, county) {
 #' gg <- gg + theme_map()
 #' gg
 #' }
-coastline <- function() {
+coastline <- function(...) {
 
   url <- "http://www2.census.gov/geo/tiger/TIGER2014/COAST/tl_2014_us_coastline.zip"
 
-  return(load_tiger(url, tigris_type="coastline"))
+  return(load_tiger(url, tigris_type="coastline", ...))
 
 }

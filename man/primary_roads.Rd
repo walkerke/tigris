@@ -4,7 +4,7 @@
 \alias{primary_roads}
 \title{Download a national primary roads shapefile into R}
 \usage{
-primary_roads()
+primary_roads(...)
 }
 \description{
 Download a national primary roads shapefile into R

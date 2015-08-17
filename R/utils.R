@@ -38,7 +38,7 @@ validate_state <- function(state, .msg=interactive()) {
       if (.msg)
         message(sprintf("Using FIPS code '%s' for state '%s'",
                         fips_state_table[fips_state_table$abb == state, "fips"],
-                        state))
+                        toupper(state)))
       return(fips_state_table[fips_state_table$abb == state, "fips"])
 
     } else if (nchar(state) > 2 & state %in% fips_state_table$name) { # yay, a name!
@@ -46,7 +46,7 @@ validate_state <- function(state, .msg=interactive()) {
       if (.msg)
         message(sprintf("Using FIPS code '%s' for state '%s'",
                         fips_state_table[fips_state_table$name == state, "fips"],
-                        state))
+                        simpleCapSO(state)))
       return(fips_state_table[fips_state_table$name == state, "fips"])
 
     } else {
@@ -137,4 +137,12 @@ format_vec <- function(vec) {
 
   return(paste0(out, collapse = ''))
 
+}
+
+# Function from SO to do proper capitalization
+
+simpleCapSO <- function(x) {
+  s <- strsplit(x, " ")[[1]]
+  paste(toupper(substring(s, 1,1)), substring(s, 2),
+        sep="", collapse=" ")
 }

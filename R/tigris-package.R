@@ -7,7 +7,10 @@
 #' Use option \code{tigris_refresh} to force a refresh of cached \code{tigris}
 #' Shapefiles. e.g. \code{options(tigris_refresh=TRUE)}
 #'
-#' @note Two \code{options} control behavior of various \code{tigris} functions.
+#' Use option \code{tigris_year} to change the year for which you'd like to download data.
+#' e.g. \code{options(tigris_year = 2013)}.  The default year for the package is 2014.
+#'
+#' @note Three \code{options} control behavior of various \code{tigris} functions.
 #'       See \code{Description} for more information.
 #' @author Kyle Walker
 #' @name tigris
