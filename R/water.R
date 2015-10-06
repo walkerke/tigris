@@ -4,7 +4,7 @@
 #'        download the water features for.  Can also be state name or abbreviation
 #'        (case-insensitive).
 #' @param county The three-digit FIPS code of the county you'd like the water
-#'        features for
+#'        features for.  Can also be a county name.
 #' @family water functions
 #' @export
 area_water <- function(state, county, ...) {
@@ -31,8 +31,8 @@ area_water <- function(state, county, ...) {
 #' @param state The two-digit FIPS code of the state of the county you'd like to
 #'        download the water features for. Can also be state name or abbreviation
 #'        (case-insensitive).
-#' @param county The three-digit FIPS code of the county you'd like the water f
-#'        eatures for
+#' @param county The three-digit FIPS code of the county you'd like the water
+#'        features for.  Can also be a county name.
 #' @family water functions
 #' @export
 linear_water <- function(state, county, ...) {

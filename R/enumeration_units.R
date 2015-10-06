@@ -33,6 +33,8 @@
 #'        counties file.  Defaults to FALSE (the most detailed TIGER file).
 #' @param resolution The resolution of the cartographic boundary file (if cb == TRUE).
 #'        Defaults to '500k'; options include '5m' (1:5 million) and '20m' (1:20 million).
+#' @param detailed (deprecated) Setting detailed to FALSE returns a 1:500k cartographic boundary file.
+#'        This parameter will be removed in a future release.
 #' @export
 #' @family general area functions
 #' @seealso \url{https://www.census.gov/geo/reference/gtc/gtc_cou.html}
@@ -120,9 +122,12 @@ counties <- function(state = NULL, cb = FALSE, resolution = '500k', detailed = T
 #' @param state The two-digit FIPS code (string) of the state you want. Can also
 #'        be state name or state abbreviation.
 #' @param county The three-digit FIPS code (string) of the county you'd like to
-#'        subset for, or a vector of FIPS codes if you desire multiple counties
+#'        subset for, or a vector of FIPS codes if you desire multiple counties.
+#'        Can also be a county name or vector of names.
 #' @param cb If cb is set to TRUE, download a generalized (1:500k)
 #'        tracts file.  Defaults to FALSE (the most detailed TIGER/Line file)
+#' @param detailed (deprecated) Setting detailed to FALSE returns a 1:500k cartographic boundary file.
+#'        This parameter will be removed in a future release.
 #' @family general area functions
 #' @seealso \url{https://www.census.gov/geo/reference/gtc/gtc_ct.html}
 #' @export
@@ -201,9 +206,12 @@ school_districts <- function(state, ...) {
 #' @param state The two-digit FIPS code (string) of the state you want. Can also
 #'        be state name or state abbreviation.
 #' @param county The three-digit FIPS code (string) of the county you'd like to
-#'        subset for, or a vector of FIPS codes if you desire multiple counties
+#'        subset for, or a vector of FIPS codes if you desire multiple counties.
+#'        Can also be a county name or vector of names.
 #' @param cb If cb is set to TRUE, download a generalized (1:500k)
 #'        file.  Defaults to FALSE (the most detailed TIGER/Line file)
+#' @param detailed (deprecated) Setting detailed to FALSE returns a 1:500k cartographic boundary file.
+#'        This parameter will be removed in a future release.
 #' @family general area functions
 #' @export
 block_groups <- function(state, county = NULL, cb = FALSE, detailed = TRUE, ...) {
@@ -263,10 +271,12 @@ block_groups <- function(state, county = NULL, cb = FALSE, detailed = TRUE, ...)
 #'        ZCTAs you want to return.  For example, supplying the argument
 #'        \code{starts_with = c("75", "76")} will return only those ZCTAs that begin
 #'        with 75 or 76.  Defaults to NULL, which will return all ZCTAs in the US.
+#' @param detailed (deprecated) Setting detailed to FALSE returns a 1:500k cartographic boundary file.
+#'        This parameter will be removed in a future release.
 #' @family general area functions
 #' @seealso \url{https://www.census.gov/geo/reference/zctas.html}
 #' @export
-zctas <- function(cb = FALSE, starts_with = NULL, ...) {
+zctas <- function(cb = FALSE, starts_with = NULL, detailed = TRUE, ...) {
 
   if (detailed == FALSE) {
     cb <- TRUE
@@ -309,7 +319,8 @@ zctas <- function(cb = FALSE, starts_with = NULL, ...) {
 #' @param state The two-digit FIPS code (string) of the state you want. Can also
 #'        be state name or state abbreviation.
 #' @param county The three-digit FIPS code (string) of the county you'd like to
-#'        subset for, or a vector of FIPS codes if you desire multiple counties
+#'        subset for, or a vector of FIPS codes if you desire multiple counties.
+#'        Can also be a county name or vector of names.
 #' @family general area functions
 #' @export
 blocks <- function(state, county = NULL, ...) {

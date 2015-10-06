@@ -2,6 +2,8 @@
 #'
 #' @param cb If cb is set to TRUE, download a generalized (1:500k)
 #'        file.  Defaults to FALSE (the most detailed TIGER/Line file)
+#' @param detailed (deprecated) Setting detailed to FALSE returns a 1:500k cartographic boundary file.
+#'        This parameter will be removed in a future release.
 #' @family native/tribal geometries functions
 #' @export
 #' @examples \dontrun{

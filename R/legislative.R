@@ -5,6 +5,8 @@
 #'        TIGER/Line file).
 #' @param resolution The resolution of the cartographic boundary file (if cb == TRUE).
 #'        Defaults to '500k'; options include '5m' (1:5 million) and '20m' (1:20 million).
+#' @param detailed (deprecated) Setting detailed to FALSE returns a 1:500k cartographic boundary file.
+#'        This parameter will be removed in a future release.
 #' @family legislative district functions
 #' @export
 congressional_districts <- function(cb = FALSE, resolution = '500k', detailed = TRUE, ...) {
@@ -48,13 +50,15 @@ congressional_districts <- function(cb = FALSE, resolution = '500k', detailed = 
 #' @param cb If cb is set to TRUE, download a generalized (1:500k)
 #'        cartographic boundary file.  Defaults to FALSE (the most detailed
 #'        TIGER/Line file).
+#' @param detailed (deprecated) Setting detailed to FALSE returns a 1:500k cartographic boundary file.
+#'        This parameter will be removed in a future release.
 #' @family legislative district functions
 #' @export
 #' @examples \dontrun{
 #' library(tigris)
 #' library(leaflet)
 #'
-#' leg <- state_legislative_districts("Maine", "lower", detailed=FALSE)
+#' leg <- state_legislative_districts("Maine", "lower", cb = TRUE)
 #'
 #' leaflet(leg) %>%
 #'   addProviderTiles("CartoDB.Positron") %>%

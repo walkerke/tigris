@@ -10,6 +10,8 @@
 #'        states file.  Defaults to FALSE (the most detailed TIGER/Line file)
 #' @param resolution The resolution of the cartographic boundary file (if cb == TRUE).
 #'        Defaults to '500k'; options include '5m' (1:5 million) and '20m' (1:20 million).
+#' @param detailed (deprecated) Setting detailed to FALSE returns a 1:500k cartographic boundary file.
+#'        This parameter will be removed in a future release.
 #' @export
 #' @family general area functions
 #' @seealso \url{https://www.census.gov/geo/reference/gtc/gtc_state.html}

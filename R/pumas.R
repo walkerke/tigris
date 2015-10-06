@@ -17,6 +17,8 @@
 #'        be state name or state abbreviation.
 #' @param cb If cb is set to TRUE, download a generalized (1:500k)
 #'        states file.  Defaults to FALSE (the most detailed TIGER/Line file)
+#' @param detailed (deprecated) Setting detailed to FALSE returns a 1:500k cartographic boundary file.
+#'        This parameter will be removed in a future release.
 #' @export
 #' @family general area functions
 #' @seealso \url{http://www.census.gov/geo/reference/puma.html}

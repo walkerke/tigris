@@ -3,7 +3,8 @@
 #' @param state The two-digit FIPS code of the state of the county you'd like
 #'        to download the roads for. Can also be state name or abbreviation
 #'        (case-insensitive).
-#' @param county The three-digit FIPS code of the county you'd like the roads for
+#' @param county The three-digit FIPS code of the county you'd like the roads for.
+#'        Can also be a county name.
 #' @family transportation functions
 #' @export
 #' @examples \dontrun{
