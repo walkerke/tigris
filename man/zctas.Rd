@@ -4,11 +4,11 @@
 \alias{zctas}
 \title{Download a Zip Code Tabulation Area (ZCTA) shapefile into R}
 \usage{
-zctas(detailed = TRUE, starts_with = NULL, ...)
+zctas(cb = FALSE, starts_with = NULL, ...)
 }
 \arguments{
-\item{detailed}{If detailed is set to FALSE, download a generalized (1:500k)
-ZCTA file.  Defaults to TRUE (the most detailed TIGER/Line file).
+\item{cb}{If cb is set to TRUE, download a generalized (1:500k)
+ZCTA file.  Defaults to FALSE (the most detailed TIGER/Line file).
 \strong{A warning:} the detailed TIGER/Line ZCTA file is massive
 (around 502MB unzipped), and the generalized version is also large
 (64MB zipped).  Be prepared for this especially if you have a slower

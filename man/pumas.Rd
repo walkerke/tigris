@@ -4,14 +4,14 @@
 \alias{pumas}
 \title{Download a Public Use Microdata Area (PUMA) shapefile into R}
 \usage{
-pumas(state, detailed = TRUE, ...)
+pumas(state, cb = FALSE, detailed = TRUE, ...)
 }
 \arguments{
 \item{state}{The two-digit FIPS code (string) of the state you want. Can also
 be state name or state abbreviation.}
 
-\item{detailed}{detailed If detailed is set to FALSE, download a generalized (1:500k)
-states file.  Defaults to TRUE (the most detailed TIGER/Line file)}
+\item{cb}{If cb is set to TRUE, download a generalized (1:500k)
+states file.  Defaults to FALSE (the most detailed TIGER/Line file)}
 }
 \description{
 Public use microdata areas (PUMAs) are decennial census areas that have been
@@ -36,7 +36,7 @@ us_states <- unique(fips_codes$state)[1:51]
 
 continental_states <- us_states[!us_states \%in\% c("AK", "HI")]
 pumas_list <- lapply(continental_states, function(x) {
-  pumas(state = x, detailed = FALSE)
+  pumas(state = x, cb = TRUE)
   })
 
 us_pumas <- rbind_tigris(pumas_list)

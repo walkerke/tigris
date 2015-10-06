@@ -6,8 +6,10 @@
 #' Northern Mariana Islands, Guam, and the U.S. Virgin Islands as the statistical
 #' equivalents of states for the purpose of data presentation.
 #'
-#' @param detailed If detailed is set to FALSE, download a generalized (1:500k)
-#'        states file.  Defaults to TRUE (the most detailed TIGER/Line file)
+#' @param cb If cb is set to TRUE, download a generalized (1:500k)
+#'        states file.  Defaults to FALSE (the most detailed TIGER/Line file)
+#' @param resolution The resolution of the cartographic boundary file (if cb == TRUE).
+#'        Defaults to '500k'; options include '5m' (1:5 million) and '20m' (1:20 million).
 #' @export
 #' @family general area functions
 #' @seealso \url{https://www.census.gov/geo/reference/gtc/gtc_state.html}
@@ -24,10 +26,21 @@
 #'               weight = 0.5) %>%
 #'   setView(-98.5795, 39.8282, zoom=3)
 #' }
-states <- function(detailed = TRUE, ...) {
+states <- function(cb = FALSE, resolution = '500k', detailed = TRUE, ...) {
+
+  if (!(resolution %in% c('500k', '5m', '20m'))) {
+    stop("Invalid value for resolution. Valid values are '500k', '5m', and '20m'.", call. = FALSE)
+    }
 
   if (detailed == FALSE) {
-    url <- "http://www2.census.gov/geo/tiger/GENZ2014/shp/cb_2014_us_state_500k.zip"
+    cb = TRUE
+    message("The `detailed` parameter is deprecated.  Use `cb` instead.")
+  }
+
+  if (cb == TRUE) {
+    url <- paste0("http://www2.census.gov/geo/tiger/GENZ2014/shp/cb_2014_us_state_",
+                  resolution,
+                  ".zip")
   } else {
     url <- "http://www2.census.gov/geo/tiger/TIGER2014/STATE/tl_2014_us_state.zip"
   }

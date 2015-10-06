@@ -4,12 +4,16 @@
 \alias{congressional_districts}
 \title{Download a congressional districts shapefile for the 114th Congress into R}
 \usage{
-congressional_districts(detailed = TRUE, ...)
+congressional_districts(cb = FALSE, resolution = "500k", detailed = TRUE,
+  ...)
 }
 \arguments{
-\item{detailed}{If detailed is set to FALSE, download a generalized (1:500k)
-cartographic boundary file.  Defaults to TRUE (the most detailed
+\item{cb}{If cb is set to TRUE, download a generalized (1:500k)
+cartographic boundary file.  Defaults to FALSE (the most detailed
 TIGER/Line file).}
+
+\item{resolution}{The resolution of the cartographic boundary file (if cb == TRUE).
+Defaults to '500k'; options include '5m' (1:5 million) and '20m' (1:20 million).}
 }
 \description{
 Download a congressional districts shapefile for the 114th Congress into R

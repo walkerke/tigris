@@ -4,7 +4,7 @@
 \alias{block_groups}
 \title{Download a Census block groups shapefile into R, and optionally subset by county}
 \usage{
-block_groups(state, county = NULL, detailed = TRUE, ...)
+block_groups(state, county = NULL, cb = FALSE, detailed = TRUE, ...)
 }
 \arguments{
 \item{state}{The two-digit FIPS code (string) of the state you want. Can also
@@ -13,8 +13,8 @@ be state name or state abbreviation.}
 \item{county}{The three-digit FIPS code (string) of the county you'd like to
 subset for, or a vector of FIPS codes if you desire multiple counties}
 
-\item{detailed}{If detailed is set to FALSE, download a generalized (1:500k)
-file.  Defaults to TRUE (the most detailed TIGER/Line file)}
+\item{cb}{If cb is set to TRUE, download a generalized (1:500k)
+file.  Defaults to FALSE (the most detailed TIGER/Line file)}
 }
 \description{
 Download a Census block groups shapefile into R, and optionally subset by county

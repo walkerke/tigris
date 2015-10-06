@@ -4,14 +4,14 @@
 \alias{places}
 \title{Download a Census-designated places shapefile into R}
 \usage{
-places(state, detailed = TRUE, ...)
+places(state, cb = FALSE, detailed = TRUE, ...)
 }
 \arguments{
 \item{state}{The two-digit FIPS code (string) of the state you want. Can also
 be state name or state abbreviation.}
 
-\item{detailed}{If detailed is set to FALSE, download a generalized (1:500k)
-cartographic boundary file.  Defaults to TRUE (the most detailed
+\item{cb}{If cb is set to TRUE, download a generalized (1:500k)
+cartographic boundary file.  Defaults to FALSE (the most detailed
 TIGER/Line file).}
 }
 \description{

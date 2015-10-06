@@ -25,17 +25,22 @@
 #'
 #' @param state The two-digit FIPS code (string) of the state you want. Can also
 #'        be state name or state abbreviation.
-#' @param detailed If detailed is set to FALSE, download a generalized (1:500k)
-#'        cartographic boundary file.  Defaults to TRUE (the most detailed
+#' @param cb If cb is set to TRUE, download a generalized (1:500k)
+#'        cartographic boundary file.  Defaults to FALSE (the most detailed
 #'        TIGER/Line file).
 #' @family general area functions
 #' @seealso \url{https://www.census.gov/geo/reference/gtc/gtc_place.html}
 #' @export
-places <- function(state, detailed = TRUE, ...) {
+places <- function(state, cb = FALSE, detailed = TRUE, ...) {
 
   state <- validate_state(state)
 
   if (is.null(state)) stop("Invalid state", call.=FALSE)
+
+  if (detailed == FALSE) {
+    cb = TRUE
+    message("The `detailed` parameter is deprecated.  Use `cb` instead.")
+  }
 
   if (detailed == FALSE) {
     url <- paste0("http://www2.census.gov/geo/tiger/GENZ2014/shp/cb_2014_",

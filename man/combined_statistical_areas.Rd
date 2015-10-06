@@ -4,11 +4,12 @@
 \alias{combined_statistical_areas}
 \title{Download a combined statistical areas shapefile into R}
 \usage{
-combined_statistical_areas(detailed = TRUE, ...)
+combined_statistical_areas(cb = FALSE, resolution = "500k",
+  detailed = TRUE, ...)
 }
 \arguments{
-\item{detailed}{If detailed is set to FALSE, download a generalized (1:500k)
-cartographic boundary file.  Defaults to TRUE (the most detailed
+\item{cb}{If cb is set to TRUE, download a generalized (1:500k)
+cartographic boundary file.  Defaults to FALSE (the most detailed
 TIGER/Line file).}
 }
 \description{

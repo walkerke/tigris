@@ -4,11 +4,14 @@
 \alias{states}
 \title{Download shapefile for all states into R}
 \usage{
-states(detailed = TRUE, ...)
+states(cb = FALSE, resolution = "500k", detailed = TRUE, ...)
 }
 \arguments{
-\item{detailed}{If detailed is set to FALSE, download a generalized (1:500k)
-states file.  Defaults to TRUE (the most detailed TIGER/Line file)}
+\item{cb}{If cb is set to TRUE, download a generalized (1:500k)
+states file.  Defaults to FALSE (the most detailed TIGER/Line file)}
+
+\item{resolution}{The resolution of the cartographic boundary file (if cb == TRUE).
+Defaults to '500k'; options include '5m' (1:5 million) and '20m' (1:20 million).}
 }
 \description{
 States and Equivalent Entities are the primary governmental divisions of the

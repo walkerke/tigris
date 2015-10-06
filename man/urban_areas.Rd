@@ -4,11 +4,11 @@
 \alias{urban_areas}
 \title{Download an urbanized areas shapefile into R}
 \usage{
-urban_areas(detailed = TRUE, ...)
+urban_areas(cb = FALSE, detailed = TRUE, ...)
 }
 \arguments{
-\item{detailed}{If detailed is set to FALSE, download a generalized (1:500k)
-cartographic boundary file.  Defaults to TRUE (the most detailed
+\item{cb}{If cb is set to TRUE, download a generalized (1:500k)
+cartographic boundary file.  Defaults to FALSE (the most detailed
 TIGER/Line file).}
 }
 \description{

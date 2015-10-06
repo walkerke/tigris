@@ -4,7 +4,11 @@
 \alias{alaska_native_regional_corporations}
 \title{Download an Alaska Native Regional Corporation shapefile into R.}
 \usage{
-alaska_native_regional_corporations(...)
+alaska_native_regional_corporations(cb = FALSE, ...)
+}
+\arguments{
+\item{cb}{If cb is set to TRUE, download a generalized (1:500k)
+file.  Defaults to FALSE (the most detailed TIGER/Line file)}
 }
 \description{
 Download an Alaska Native Regional Corporation shapefile into R.

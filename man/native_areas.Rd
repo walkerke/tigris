@@ -4,11 +4,11 @@
 \alias{native_areas}
 \title{Download an American Indian / Alaska Native / Native Hawaiian Areas shapefile into R.}
 \usage{
-native_areas(detailed = TRUE, ...)
+native_areas(cb = FALSE, detailed = TRUE, ...)
 }
 \arguments{
-\item{detailed}{If detailed is set to FALSE, download a generalized (1:500k)
-file.  Defaults to TRUE (the most detailed TIGER/Line file)}
+\item{cb}{If cb is set to TRUE, download a generalized (1:500k)
+file.  Defaults to FALSE (the most detailed TIGER/Line file)}
 }
 \description{
 Download an American Indian / Alaska Native / Native Hawaiian Areas shapefile into R.
@@ -19,7 +19,7 @@ library(tigris)
 library(ggplot2)
 library(ggthemes)
 
-nat <- native_areas(detailed=FALSE)
+nat <- native_areas(cb = TRUE)
 
 nat_map <- fortify(nat)
 

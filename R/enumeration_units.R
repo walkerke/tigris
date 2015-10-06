@@ -29,8 +29,10 @@
 #' @param state The two-digit FIPS code (string) of the state you want, or a
 #'        vector of codes if you want multiple states. Can also be state name
 #'        or state abbreviation.
-#' @param detailed If detailed is set to FALSE, download a generalized (1:500k)
-#'        counties file.  Defaults to TRUE (the most detailed TIGER file).
+#' @param cb If cb is set to TRUE, download a generalized (1:500k)
+#'        counties file.  Defaults to FALSE (the most detailed TIGER file).
+#' @param resolution The resolution of the cartographic boundary file (if cb == TRUE).
+#'        Defaults to '500k'; options include '5m' (1:5 million) and '20m' (1:20 million).
 #' @export
 #' @family general area functions
 #' @seealso \url{https://www.census.gov/geo/reference/gtc/gtc_cou.html}
@@ -39,7 +41,7 @@
 #' library(ggplot2)
 #' library(ggthemes)
 #'
-#' me <- counties("Maine", detailed=FALSE)
+#' me <- counties("Maine", cb = TRUE)
 #' me_map <- fortify(me)
 #'
 #' gg <- ggplot()
@@ -50,12 +52,21 @@
 #' gg <- gg + theme_map()
 #' gg
 #' }
-counties <- function(state = NULL, detailed = TRUE, ...) {
+counties <- function(state = NULL, cb = FALSE, resolution = '500k', detailed = TRUE, ...) {
+
+  if (!(resolution %in% c('500k', '5m', '20m'))) {
+    stop("Invalid value for resolution. Valid values are '500k', '5m', and '20m'.", call. = FALSE)
+  }
 
   if (detailed == FALSE) {
+    cb = TRUE
+    message("The `detailed` parameter is deprecated.  Use `cb` instead.")
+    }
 
-    url <- "http://www2.census.gov/geo/tiger/GENZ2014/shp/cb_2014_us_county_500k.zip"
-
+  if (cb == TRUE) {
+    url <- paste0("http://www2.census.gov/geo/tiger/GENZ2014/shp/cb_2014_us_county_",
+                  resolution,
+                  ".zip")
   } else {
 
     url <- "http://www2.census.gov/geo/tiger/TIGER2014/COUNTY/tl_2014_us_county.zip"
@@ -110,18 +121,23 @@ counties <- function(state = NULL, detailed = TRUE, ...) {
 #'        be state name or state abbreviation.
 #' @param county The three-digit FIPS code (string) of the county you'd like to
 #'        subset for, or a vector of FIPS codes if you desire multiple counties
-#' @param detailed If detailed is set to FALSE, download a generalized (1:500k)
-#'        tracts file.  Defaults to TRUE (the most detailed TIGER/Line file)
+#' @param cb If cb is set to TRUE, download a generalized (1:500k)
+#'        tracts file.  Defaults to FALSE (the most detailed TIGER/Line file)
 #' @family general area functions
 #' @seealso \url{https://www.census.gov/geo/reference/gtc/gtc_ct.html}
 #' @export
-tracts <- function(state, county = NULL, detailed = TRUE, ...) {
+tracts <- function(state, county = NULL, cb = FALSE, detailed = TRUE, ...) {
 
   state <- validate_state(state)
 
   if (is.null(state)) stop("Invalid state", call.=FALSE)
 
   if (detailed == FALSE) {
+    cb = TRUE
+    message("The `detailed` parameter is deprecated.  Use `cb` instead.")
+  }
+
+  if (cb == TRUE) {
 
     url <- paste0("http://www2.census.gov/geo/tiger/GENZ2014/shp/cb_2014_",
                   state,
@@ -186,17 +202,22 @@ school_districts <- function(state, ...) {
 #'        be state name or state abbreviation.
 #' @param county The three-digit FIPS code (string) of the county you'd like to
 #'        subset for, or a vector of FIPS codes if you desire multiple counties
-#' @param detailed If detailed is set to FALSE, download a generalized (1:500k)
-#'        file.  Defaults to TRUE (the most detailed TIGER/Line file)
+#' @param cb If cb is set to TRUE, download a generalized (1:500k)
+#'        file.  Defaults to FALSE (the most detailed TIGER/Line file)
 #' @family general area functions
 #' @export
-block_groups <- function(state, county = NULL, detailed = TRUE, ...) {
+block_groups <- function(state, county = NULL, cb = FALSE, detailed = TRUE, ...) {
 
   state <- validate_state(state)
 
   if (is.null(state)) stop("Invalid state", call.=FALSE)
 
   if (detailed == FALSE) {
+    cb <- TRUE
+    message("The `detailed` parameter is deprecated.  Use `cb` instead.")
+  }
+
+  if (cb == TRUE) {
 
     url <- paste0("http://www2.census.gov/geo/tiger/GENZ2014/shp/cb_2014_",
                   state,
@@ -232,8 +253,8 @@ block_groups <- function(state, county = NULL, detailed = TRUE, ...) {
 #' information on how the Census Bureau creates ZCTAs, and for important information on the
 #' differences between ZCTAs and ZIP Codes.
 #'
-#' @param detailed If detailed is set to FALSE, download a generalized (1:500k)
-#'        ZCTA file.  Defaults to TRUE (the most detailed TIGER/Line file).
+#' @param cb If cb is set to TRUE, download a generalized (1:500k)
+#'        ZCTA file.  Defaults to FALSE (the most detailed TIGER/Line file).
 #'        \strong{A warning:} the detailed TIGER/Line ZCTA file is massive
 #'        (around 502MB unzipped), and the generalized version is also large
 #'        (64MB zipped).  Be prepared for this especially if you have a slower
@@ -245,9 +266,14 @@ block_groups <- function(state, county = NULL, detailed = TRUE, ...) {
 #' @family general area functions
 #' @seealso \url{https://www.census.gov/geo/reference/zctas.html}
 #' @export
-zctas <- function(detailed = TRUE, starts_with = NULL, ...) {
+zctas <- function(cb = FALSE, starts_with = NULL, ...) {
 
   if (detailed == FALSE) {
+    cb <- TRUE
+    message("The `detailed` parameter is deprecated.  Use `cb` instead.")
+  }
+
+  if (cb == TRUE) {
     url <- "http://www2.census.gov/geo/tiger/GENZ2014/shp/cb_2014_us_zcta510_500k.zip"
   } else {
     url <- "http://www2.census.gov/geo/tiger/TIGER2014/ZCTA5/tl_2014_us_zcta510.zip"

@@ -4,7 +4,8 @@
 \alias{state_legislative_districts}
 \title{Download a state legislative districts shapefile into R - upper or lower}
 \usage{
-state_legislative_districts(state, house = "upper", detailed = TRUE, ...)
+state_legislative_districts(state, house = "upper", cb = FALSE,
+  detailed = TRUE, ...)
 }
 \arguments{
 \item{state}{The two-digit FIPS code (string) of the state. Can also be state
@@ -13,8 +14,8 @@ name or abbreviation (case-insensitive)}
 \item{house}{Specify here whether you want boundaries for the \code{upper} or
 \code{lower} house.  Defaults to \code{upper}.}
 
-\item{detailed}{If detailed is set to FALSE, download a generalized (1:500k)
-cartographic boundary file.  Defaults to TRUE (the most detailed
+\item{cb}{If cb is set to TRUE, download a generalized (1:500k)
+cartographic boundary file.  Defaults to FALSE (the most detailed
 TIGER/Line file).}
 }
 \description{

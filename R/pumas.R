@@ -15,8 +15,8 @@
 #'
 #' @param state The two-digit FIPS code (string) of the state you want. Can also
 #'        be state name or state abbreviation.
-#' @param detailed detailed If detailed is set to FALSE, download a generalized (1:500k)
-#'        states file.  Defaults to TRUE (the most detailed TIGER/Line file)
+#' @param cb If cb is set to TRUE, download a generalized (1:500k)
+#'        states file.  Defaults to FALSE (the most detailed TIGER/Line file)
 #' @export
 #' @family general area functions
 #' @seealso \url{http://www.census.gov/geo/reference/puma.html}
@@ -28,20 +28,25 @@
 #'
 #' continental_states <- us_states[!us_states %in% c("AK", "HI")]
 #' pumas_list <- lapply(continental_states, function(x) {
-#'   pumas(state = x, detailed = FALSE)
+#'   pumas(state = x, cb = TRUE)
 #'   })
 #'
 #' us_pumas <- rbind_tigris(pumas_list)
 #'
 #' plot(us_pumas)
 #' }
-pumas <- function(state, detailed = TRUE, ...) {
+pumas <- function(state, cb = FALSE, detailed = TRUE, ...) {
 
   state <- validate_state(state)
 
   if (is.null(state)) stop("Invalid state", call.=FALSE)
 
   if (detailed == FALSE) {
+    cb = TRUE
+    message("The `detailed` parameter is deprecated.  Use `cb` instead.")
+  }
+
+  if (cb == TRUE) {
     url <- paste0("http://www2.census.gov/geo/tiger/GENZ2014/shp/cb_2014_",
                   state,
                   "_puma10_500k.zip")

@@ -1,7 +1,7 @@
 #' Download an American Indian / Alaska Native / Native Hawaiian Areas shapefile into R.
 #'
-#' @param detailed If detailed is set to FALSE, download a generalized (1:500k)
-#'        file.  Defaults to TRUE (the most detailed TIGER/Line file)
+#' @param cb If cb is set to TRUE, download a generalized (1:500k)
+#'        file.  Defaults to FALSE (the most detailed TIGER/Line file)
 #' @family native/tribal geometries functions
 #' @export
 #' @examples \dontrun{
@@ -9,7 +9,7 @@
 #' library(ggplot2)
 #' library(ggthemes)
 #'
-#' nat <- native_areas(detailed=FALSE)
+#' nat <- native_areas(cb = TRUE)
 #'
 #' nat_map <- fortify(nat)
 #'
@@ -22,9 +22,14 @@
 #' gg <- gg + theme_map()
 #' gg
 #' }
-native_areas <- function(detailed = TRUE, ...) {
+native_areas <- function(cb = FALSE, detailed = TRUE, ...) {
 
   if (detailed == FALSE) {
+    cb = TRUE
+    message("The `detailed` parameter is deprecated.  Use `cb` instead.")
+  }
+
+  if (cb == TRUE) {
 
     url <- "http://www2.census.gov/geo/tiger/GENZ2014/shp/cb_2014_us_aiannh_500k.zip"
 
@@ -63,11 +68,21 @@ tribal_subdivisions_national <- function(...) {
 
 #' Download an Alaska Native Regional Corporation shapefile into R.
 #'
+#' @param cb If cb is set to TRUE, download a generalized (1:500k)
+#'        file.  Defaults to FALSE (the most detailed TIGER/Line file)
 #' @family native/tribal geometries functions
 #' @export
-alaska_native_regional_corporations <- function(...) {
+alaska_native_regional_corporations <- function(cb = FALSE, ...) {
 
-  url <- "http://www2.census.gov/geo/tiger/TIGER2014/ANRC/tl_2014_02_anrc.zip"
+  if (cb == TRUE) {
+
+    url <- "http://www2.census.gov/geo/tiger/GENZ2014/shp/cb_2014_02_anrc_500k.zip"
+
+  } else {
+
+    url <- "http://www2.census.gov/geo/tiger/TIGER2014/ANRC/tl_2014_02_anrc.zip"
+
+  }
 
   return(load_tiger(url, ...))
 

@@ -1,16 +1,28 @@
 #' Download a congressional districts shapefile for the 114th Congress into R
 #'
-#' @param detailed If detailed is set to FALSE, download a generalized (1:500k)
-#'        cartographic boundary file.  Defaults to TRUE (the most detailed
+#' @param cb If cb is set to TRUE, download a generalized (1:500k)
+#'        cartographic boundary file.  Defaults to FALSE (the most detailed
 #'        TIGER/Line file).
+#' @param resolution The resolution of the cartographic boundary file (if cb == TRUE).
+#'        Defaults to '500k'; options include '5m' (1:5 million) and '20m' (1:20 million).
 #' @family legislative district functions
 #' @export
-congressional_districts <- function(detailed = TRUE, ...) {
+congressional_districts <- function(cb = FALSE, resolution = '500k', detailed = TRUE, ...) {
+
+  if (!(resolution %in% c('500k', '5m', '20m'))) {
+    stop("Invalid value for resolution. Valid values are '500k', '5m', and '20m'.", call. = FALSE)
+  }
 
   if (detailed == FALSE) {
+    cb = TRUE
+    message("The `detailed` parameter is deprecated.  Use `cb` instead.")
+  }
 
-    url <- "http://www2.census.gov/geo/tiger/GENZ2014/shp/cb_2014_us_cd114_500k.zip"
+  if (cb == TRUE) {
 
+    url <- paste0("http://www2.census.gov/geo/tiger/GENZ2014/shp/cb_2014_us_cd114_",
+                  resolution,
+                  ".zip")
   } else {
 
     url <- "http://www2.census.gov/geo/tiger/TIGER2014/CD/tl_2014_us_cd114.zip"
@@ -33,8 +45,8 @@ congressional_districts <- function(detailed = TRUE, ...) {
 #'        name or abbreviation (case-insensitive)
 #' @param house Specify here whether you want boundaries for the \code{upper} or
 #'        \code{lower} house.  Defaults to \code{upper}.
-#' @param detailed If detailed is set to FALSE, download a generalized (1:500k)
-#'        cartographic boundary file.  Defaults to TRUE (the most detailed
+#' @param cb If cb is set to TRUE, download a generalized (1:500k)
+#'        cartographic boundary file.  Defaults to FALSE (the most detailed
 #'        TIGER/Line file).
 #' @family legislative district functions
 #' @export
@@ -50,7 +62,7 @@ congressional_districts <- function(detailed = TRUE, ...) {
 #'               color = "black",
 #'               weight = 0.5)
 #' }
-state_legislative_districts <- function(state, house = "upper", detailed = TRUE, ...) {
+state_legislative_districts <- function(state, house = "upper", cb = FALSE, detailed = TRUE, ...) {
 
   state <- validate_state(state)
 
@@ -74,6 +86,11 @@ state_legislative_districts <- function(state, house = "upper", detailed = TRUE,
   }
 
   if (detailed == FALSE) {
+    cb = TRUE
+    message("The `detailed` parameter is deprecated.  Use `cb` instead.")
+  }
+
+  if (cb == TRUE) {
 
     url <- paste0("http://www2.census.gov/geo/tiger/GENZ2014/shp/cb_2014_",
                   state,

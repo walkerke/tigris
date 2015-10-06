@@ -4,15 +4,19 @@
 \alias{counties}
 \title{Download a US Counties shapefile into R, and optionally subset by state}
 \usage{
-counties(state = NULL, detailed = TRUE, ...)
+counties(state = NULL, cb = FALSE, resolution = "500k", detailed = TRUE,
+  ...)
 }
 \arguments{
 \item{state}{The two-digit FIPS code (string) of the state you want, or a
 vector of codes if you want multiple states. Can also be state name
 or state abbreviation.}
 
-\item{detailed}{If detailed is set to FALSE, download a generalized (1:500k)
-counties file.  Defaults to TRUE (the most detailed TIGER file).}
+\item{cb}{If cb is set to TRUE, download a generalized (1:500k)
+counties file.  Defaults to FALSE (the most detailed TIGER file).}
+
+\item{resolution}{The resolution of the cartographic boundary file (if cb == TRUE).
+Defaults to '500k'; options include '5m' (1:5 million) and '20m' (1:20 million).}
 }
 \description{
 The primary legal divisions of most states are termed counties. In Louisiana,
@@ -47,7 +51,7 @@ library(tigris)
 library(ggplot2)
 library(ggthemes)
 
-me <- counties("Maine", detailed=FALSE)
+me <- counties("Maine", cb = TRUE)
 me_map <- fortify(me)
 
 gg <- ggplot()
