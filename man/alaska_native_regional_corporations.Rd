@@ -9,6 +9,11 @@ alaska_native_regional_corporations(cb = FALSE, ...)
 \arguments{
 \item{cb}{If cb is set to TRUE, download a generalized (1:500k)
 file.  Defaults to FALSE (the most detailed TIGER/Line file)}
+
+\item{...}{arguments to be passed to the underlying `load_tiger` function, which is not exported.
+Options include \code{refresh}, which specifies whether or not to re-download shapefiles
+(defaults to \code{FALSE}), and \code{year}, the year for which you'd like to download data
+(defaults to 2014).}
 }
 \description{
 Download an Alaska Native Regional Corporation shapefile into R.

@@ -5,6 +5,10 @@
 #'        (case-insensitive).
 #' @param county The three-digit FIPS code of the county you'd like the roads for.
 #'        Can also be a county name.
+#' @param ... arguments to be passed to the underlying `load_tiger` function, which is not exported.
+#'        Options include \code{refresh}, which specifies whether or not to re-download shapefiles
+#'        (defaults to \code{FALSE}), and \code{year}, the year for which you'd like to download data
+#'        (defaults to 2014).
 #' @family transportation functions
 #' @export
 #' @examples \dontrun{
@@ -55,6 +59,10 @@ roads <- function(state, county, ...) {
 
 #' Download a national primary roads shapefile into R
 #'
+#' @param ... arguments to be passed to the underlying `load_tiger` function, which is not exported.
+#'        Options include \code{refresh}, which specifies whether or not to re-download shapefiles
+#'        (defaults to \code{FALSE}), and \code{year}, the year for which you'd like to download data
+#'        (defaults to 2014).
 #' @family transportation functions
 #' @export
 primary_roads <- function(...) {
@@ -70,6 +78,10 @@ primary_roads <- function(...) {
 #' @param state The two-digit FIPS code of the state of the county you'd like
 #'        to download the roads for. Can also be state name or abbreviation
 #'        (case-insensitive).
+#' @param ... arguments to be passed to the underlying `load_tiger` function, which is not exported.
+#'        Options include \code{refresh}, which specifies whether or not to re-download shapefiles
+#'        (defaults to \code{FALSE}), and \code{year}, the year for which you'd like to download data
+#'        (defaults to 2014).
 #' @family transportation functions
 #' @export
 primary_secondary_roads <- function(state, ...) {
@@ -88,6 +100,10 @@ primary_secondary_roads <- function(state, ...) {
 
 #' Download a national rails shapefile into R
 #'
+#' @param ... arguments to be passed to the underlying `load_tiger` function, which is not exported.
+#'        Options include \code{refresh}, which specifies whether or not to re-download shapefiles
+#'        (defaults to \code{FALSE}), and \code{year}, the year for which you'd like to download data
+#'        (defaults to 2014).
 #' @family transportation functions
 #' @export
 rails <- function(...) {

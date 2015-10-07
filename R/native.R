@@ -4,6 +4,10 @@
 #'        file.  Defaults to FALSE (the most detailed TIGER/Line file)
 #' @param detailed (deprecated) Setting detailed to FALSE returns a 1:500k cartographic boundary file.
 #'        This parameter will be removed in a future release.
+#' @param ... arguments to be passed to the underlying `load_tiger` function, which is not exported.
+#'        Options include \code{refresh}, which specifies whether or not to re-download shapefiles
+#'        (defaults to \code{FALSE}), and \code{year}, the year for which you'd like to download data
+#'        (defaults to 2014).
 #' @family native/tribal geometries functions
 #' @export
 #' @examples \dontrun{
@@ -47,6 +51,10 @@ native_areas <- function(cb = FALSE, detailed = TRUE, ...) {
 
 #' Download an American Indian Tribal Subdivision National shapefile into R.
 #'
+#' @param ... arguments to be passed to the underlying `load_tiger` function, which is not exported.
+#'        Options include \code{refresh}, which specifies whether or not to re-download shapefiles
+#'        (defaults to \code{FALSE}), and \code{year}, the year for which you'd like to download data
+#'        (defaults to 2014).
 #' @family native/tribal geometries functions
 #' @export
 #' @examples \dontrun{
@@ -72,6 +80,10 @@ tribal_subdivisions_national <- function(...) {
 #'
 #' @param cb If cb is set to TRUE, download a generalized (1:500k)
 #'        file.  Defaults to FALSE (the most detailed TIGER/Line file)
+#' @param ... arguments to be passed to the underlying `load_tiger` function, which is not exported.
+#'        Options include \code{refresh}, which specifies whether or not to re-download shapefiles
+#'        (defaults to \code{FALSE}), and \code{year}, the year for which you'd like to download data
+#'        (defaults to 2014).
 #' @family native/tribal geometries functions
 #' @export
 alaska_native_regional_corporations <- function(cb = FALSE, ...) {
@@ -92,6 +104,10 @@ alaska_native_regional_corporations <- function(cb = FALSE, ...) {
 
 #' Download a Tribal block groups shapefile into R.
 #'
+#' @param ... arguments to be passed to the underlying `load_tiger` function, which is not exported.
+#'        Options include \code{refresh}, which specifies whether or not to re-download shapefiles
+#'        (defaults to \code{FALSE}), and \code{year}, the year for which you'd like to download data
+#'        (defaults to 2014).
 #' @family native/tribal geometries functions
 #' @export
 #' @examples \dontrun{
@@ -115,6 +131,10 @@ tribal_block_groups <- function(...) {
 
 #' Download a Tribal Census tract shapefile into R.
 #'
+#' @param ... arguments to be passed to the underlying `load_tiger` function, which is not exported.
+#'        Options include \code{refresh}, which specifies whether or not to re-download shapefiles
+#'        (defaults to \code{FALSE}), and \code{year}, the year for which you'd like to download data
+#'        (defaults to 2014).
 #' @family native/tribal geometries functions
 #' @export
 #' @examples \dontrun{

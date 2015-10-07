@@ -11,6 +11,17 @@ combined_statistical_areas(cb = FALSE, resolution = "500k",
 \item{cb}{If cb is set to TRUE, download a generalized (1:500k)
 cartographic boundary file.  Defaults to FALSE (the most detailed
 TIGER/Line file).}
+
+\item{resolution}{The resolution of the cartographic boundary file (if cb == TRUE).
+Defaults to '500k'; options include '5m' (1:5 million) and '20m' (1:20 million).}
+
+\item{detailed}{(deprecated) Setting detailed to FALSE returns a 1:500k cartographic boundary file.
+This parameter will be removed in a future release.}
+
+\item{...}{arguments to be passed to the underlying `load_tiger` function, which is not exported.
+Options include \code{refresh}, which specifies whether or not to re-download shapefiles
+(defaults to \code{FALSE}), and \code{year}, the year for which you'd like to download data
+(defaults to 2014).}
 }
 \description{
 Download a combined statistical areas shapefile into R

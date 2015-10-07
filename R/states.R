@@ -12,6 +12,10 @@
 #'        Defaults to '500k'; options include '5m' (1:5 million) and '20m' (1:20 million).
 #' @param detailed (deprecated) Setting detailed to FALSE returns a 1:500k cartographic boundary file.
 #'        This parameter will be removed in a future release.
+#' @param ... arguments to be passed to the underlying `load_tiger` function, which is not exported.
+#'        Options include \code{refresh}, which specifies whether or not to re-download shapefiles
+#'        (defaults to \code{FALSE}), and \code{year}, the year for which you'd like to download data
+#'        (defaults to 2014).
 #' @export
 #' @family general area functions
 #' @seealso \url{https://www.census.gov/geo/reference/gtc/gtc_state.html}

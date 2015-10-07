@@ -11,10 +11,19 @@ tracts(state, county = NULL, cb = FALSE, detailed = TRUE, ...)
 be state name or state abbreviation.}
 
 \item{county}{The three-digit FIPS code (string) of the county you'd like to
-subset for, or a vector of FIPS codes if you desire multiple counties}
+subset for, or a vector of FIPS codes if you desire multiple counties.
+Can also be a county name or vector of names.}
 
 \item{cb}{If cb is set to TRUE, download a generalized (1:500k)
 tracts file.  Defaults to FALSE (the most detailed TIGER/Line file)}
+
+\item{detailed}{(deprecated) Setting detailed to FALSE returns a 1:500k cartographic boundary file.
+This parameter will be removed in a future release.}
+
+\item{...}{arguments to be passed to the underlying `load_tiger` function, which is not exported.
+Options include \code{refresh}, which specifies whether or not to re-download shapefiles
+(defaults to \code{FALSE}), and \code{year}, the year for which you'd like to download data
+(defaults to 2014).}
 }
 \description{
 Census Tracts are small, relatively permanent statistical subdivisions of

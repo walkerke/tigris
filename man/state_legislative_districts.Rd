@@ -17,6 +17,14 @@ name or abbreviation (case-insensitive)}
 \item{cb}{If cb is set to TRUE, download a generalized (1:500k)
 cartographic boundary file.  Defaults to FALSE (the most detailed
 TIGER/Line file).}
+
+\item{detailed}{(deprecated) Setting detailed to FALSE returns a 1:500k cartographic boundary file.
+This parameter will be removed in a future release.}
+
+\item{...}{arguments to be passed to the underlying `load_tiger` function, which is not exported.
+Options include \code{refresh}, which specifies whether or not to re-download shapefiles
+(defaults to \code{FALSE}), and \code{year}, the year for which you'd like to download data
+(defaults to 2014).}
 }
 \description{
 This function allows you to download boundaries for state legislatures into R.
@@ -30,7 +38,7 @@ has a unicameral state legislature.
 library(tigris)
 library(leaflet)
 
-leg <- state_legislative_districts("Maine", "lower", detailed=FALSE)
+leg <- state_legislative_districts("Maine", "lower", cb = TRUE)
 
 leaflet(leg) \%>\%
   addProviderTiles("CartoDB.Positron") \%>\%

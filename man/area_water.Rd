@@ -12,7 +12,12 @@ download the water features for.  Can also be state name or abbreviation
 (case-insensitive).}
 
 \item{county}{The three-digit FIPS code of the county you'd like the water
-features for}
+features for.  Can also be a county name.}
+
+\item{...}{arguments to be passed to the underlying `load_tiger` function, which is not exported.
+Options include \code{refresh}, which specifies whether or not to re-download shapefiles
+(defaults to \code{FALSE}), and \code{year}, the year for which you'd like to download data
+(defaults to 2014).}
 }
 \description{
 Download an area water shapefile into R

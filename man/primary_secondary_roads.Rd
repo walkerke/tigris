@@ -10,6 +10,11 @@ primary_secondary_roads(state, ...)
 \item{state}{The two-digit FIPS code of the state of the county you'd like
 to download the roads for. Can also be state name or abbreviation
 (case-insensitive).}
+
+\item{...}{arguments to be passed to the underlying `load_tiger` function, which is not exported.
+Options include \code{refresh}, which specifies whether or not to re-download shapefiles
+(defaults to \code{FALSE}), and \code{year}, the year for which you'd like to download data
+(defaults to 2014).}
 }
 \description{
 Download a primary & secondary roads shapefile into R

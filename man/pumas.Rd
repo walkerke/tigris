@@ -12,6 +12,14 @@ be state name or state abbreviation.}
 
 \item{cb}{If cb is set to TRUE, download a generalized (1:500k)
 states file.  Defaults to FALSE (the most detailed TIGER/Line file)}
+
+\item{detailed}{(deprecated) Setting detailed to FALSE returns a 1:500k cartographic boundary file.
+This parameter will be removed in a future release.}
+
+\item{...}{arguments to be passed to the underlying `load_tiger` function, which is not exported.
+Options include \code{refresh}, which specifies whether or not to re-download shapefiles
+(defaults to \code{FALSE}), and \code{year}, the year for which you'd like to download data
+(defaults to 2014).}
 }
 \description{
 Public use microdata areas (PUMAs) are decennial census areas that have been

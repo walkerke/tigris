@@ -35,6 +35,10 @@
 #'        Defaults to '500k'; options include '5m' (1:5 million) and '20m' (1:20 million).
 #' @param detailed (deprecated) Setting detailed to FALSE returns a 1:500k cartographic boundary file.
 #'        This parameter will be removed in a future release.
+#' @param ... arguments to be passed to the underlying `load_tiger` function, which is not exported.
+#'        Options include \code{refresh}, which specifies whether or not to re-download shapefiles
+#'        (defaults to \code{FALSE}), and \code{year}, the year for which you'd like to download data
+#'        (defaults to 2014).
 #' @export
 #' @family general area functions
 #' @seealso \url{https://www.census.gov/geo/reference/gtc/gtc_cou.html}
@@ -128,6 +132,10 @@ counties <- function(state = NULL, cb = FALSE, resolution = '500k', detailed = T
 #'        tracts file.  Defaults to FALSE (the most detailed TIGER/Line file)
 #' @param detailed (deprecated) Setting detailed to FALSE returns a 1:500k cartographic boundary file.
 #'        This parameter will be removed in a future release.
+#' @param ... arguments to be passed to the underlying `load_tiger` function, which is not exported.
+#'        Options include \code{refresh}, which specifies whether or not to re-download shapefiles
+#'        (defaults to \code{FALSE}), and \code{year}, the year for which you'd like to download data
+#'        (defaults to 2014).
 #' @family general area functions
 #' @seealso \url{https://www.census.gov/geo/reference/gtc/gtc_ct.html}
 #' @export
@@ -175,6 +183,10 @@ tracts <- function(state, county = NULL, cb = FALSE, detailed = TRUE, ...) {
 #'
 #' @param state The two-digit FIPS code (string) of the state you want. Can also
 #'        be state name or state abbreviation.
+#' @param ... arguments to be passed to the underlying `load_tiger` function, which is not exported.
+#'        Options include \code{refresh}, which specifies whether or not to re-download shapefiles
+#'        (defaults to \code{FALSE}), and \code{year}, the year for which you'd like to download data
+#'        (defaults to 2014).
 #' @family general area functions
 #' @export
 #' @examples \dontrun{
@@ -212,6 +224,10 @@ school_districts <- function(state, ...) {
 #'        file.  Defaults to FALSE (the most detailed TIGER/Line file)
 #' @param detailed (deprecated) Setting detailed to FALSE returns a 1:500k cartographic boundary file.
 #'        This parameter will be removed in a future release.
+#' @param ... arguments to be passed to the underlying `load_tiger` function, which is not exported.
+#'        Options include \code{refresh}, which specifies whether or not to re-download shapefiles
+#'        (defaults to \code{FALSE}), and \code{year}, the year for which you'd like to download data
+#'        (defaults to 2014).
 #' @family general area functions
 #' @export
 block_groups <- function(state, county = NULL, cb = FALSE, detailed = TRUE, ...) {
@@ -273,6 +289,10 @@ block_groups <- function(state, county = NULL, cb = FALSE, detailed = TRUE, ...)
 #'        with 75 or 76.  Defaults to NULL, which will return all ZCTAs in the US.
 #' @param detailed (deprecated) Setting detailed to FALSE returns a 1:500k cartographic boundary file.
 #'        This parameter will be removed in a future release.
+#' @param ... arguments to be passed to the underlying `load_tiger` function, which is not exported.
+#'        Options include \code{refresh}, which specifies whether or not to re-download shapefiles
+#'        (defaults to \code{FALSE}), and \code{year}, the year for which you'd like to download data
+#'        (defaults to 2014).
 #' @family general area functions
 #' @seealso \url{https://www.census.gov/geo/reference/zctas.html}
 #' @export
@@ -321,6 +341,10 @@ zctas <- function(cb = FALSE, starts_with = NULL, detailed = TRUE, ...) {
 #' @param county The three-digit FIPS code (string) of the county you'd like to
 #'        subset for, or a vector of FIPS codes if you desire multiple counties.
 #'        Can also be a county name or vector of names.
+#' @param ... arguments to be passed to the underlying `load_tiger` function, which is not exported.
+#'        Options include \code{refresh}, which specifies whether or not to re-download shapefiles
+#'        (defaults to \code{FALSE}), and \code{year}, the year for which you'd like to download data
+#'        (defaults to 2014).
 #' @family general area functions
 #' @export
 blocks <- function(state, county = NULL, ...) {

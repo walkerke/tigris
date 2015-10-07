@@ -13,6 +13,10 @@
 #' Although almost all military installations have assigned 8-character National Standard (GNIS) codes, the
 #' Census Bureau has not loaded most of this data into the MAF/TIGER database. The 2014 military
 #' shapefiles contain few values in the ANSICODE field.
+#' @param ... arguments to be passed to the underlying `load_tiger` function, which is not exported.
+#'        Options include \code{refresh}, which specifies whether or not to re-download shapefiles
+#'        (defaults to \code{FALSE}), and \code{year}, the year for which you'd like to download data
+#'        (defaults to 2014).
 #' @seealso \url{http://www2.census.gov/geo/pdfs/maps-data/data/tiger/tgrshp2014/TGRSHP2014_TechDoc_Ch3.pdf}
 #' @export
 
@@ -52,6 +56,10 @@ military <- function(...) {
 #'
 #' @param state The state for which you'd like to download the landmarks
 #' @param type Whether you would like to download point landmarks (\code{"point"}) or area landmarks (\code{"area"}).                   Defaults to \code{"point"}.
+#' @param ... arguments to be passed to the underlying `load_tiger` function, which is not exported.
+#'        Options include \code{refresh}, which specifies whether or not to re-download shapefiles
+#'        (defaults to \code{FALSE}), and \code{year}, the year for which you'd like to download data
+#'        (defaults to 2014).
 #' @export
 landmarks <- function(state, type = "point", ...) {
 

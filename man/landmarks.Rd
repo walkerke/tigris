@@ -10,6 +10,11 @@ landmarks(state, type = "point", ...)
 \item{state}{The state for which you'd like to download the landmarks}
 
 \item{type}{Whether you would like to download point landmarks (\code{"point"}) or area landmarks (\code{"area"}).                   Defaults to \code{"point"}.}
+
+\item{...}{arguments to be passed to the underlying `load_tiger` function, which is not exported.
+Options include \code{refresh}, which specifies whether or not to re-download shapefiles
+(defaults to \code{FALSE}), and \code{year}, the year for which you'd like to download data
+(defaults to 2014).}
 }
 \description{
 Description from the US Census Bureau:

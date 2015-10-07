@@ -4,7 +4,7 @@
 \alias{zctas}
 \title{Download a Zip Code Tabulation Area (ZCTA) shapefile into R}
 \usage{
-zctas(cb = FALSE, starts_with = NULL, ...)
+zctas(cb = FALSE, starts_with = NULL, detailed = TRUE, ...)
 }
 \arguments{
 \item{cb}{If cb is set to TRUE, download a generalized (1:500k)
@@ -18,6 +18,14 @@ internet connection.}
 ZCTAs you want to return.  For example, supplying the argument
 \code{starts_with = c("75", "76")} will return only those ZCTAs that begin
 with 75 or 76.  Defaults to NULL, which will return all ZCTAs in the US.}
+
+\item{detailed}{(deprecated) Setting detailed to FALSE returns a 1:500k cartographic boundary file.
+This parameter will be removed in a future release.}
+
+\item{...}{arguments to be passed to the underlying `load_tiger` function, which is not exported.
+Options include \code{refresh}, which specifies whether or not to re-download shapefiles
+(defaults to \code{FALSE}), and \code{year}, the year for which you'd like to download data
+(defaults to 2014).}
 }
 \description{
 ZIP Code Tabulation Areas (ZCTAs) are generalized areal representations of
