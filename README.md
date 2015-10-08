@@ -1,5 +1,7 @@
 # tigris
 
+[![Travis-CI Build Status](https://travis-ci.org/walkerke/tigris.svg?branch=master)](https://travis-ci.org/walkerke/tigris)
+
 Download and use Census TIGER shapefiles in R
 
 Current version: __0.1__ (updated 8 October 2015)
