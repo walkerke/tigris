@@ -64,3 +64,4 @@ ua %>% leaflet() %>% addTiles() %>% addPolygons(popup = ~NAME10)
 
 For more information on how to use this package, please view the RPubs at <http://rpubs.com/walkerke/tigris>. 
 
+
