@@ -20,9 +20,25 @@ Options include \code{refresh}, which specifies whether or not to re-download sh
 (defaults to 2014).}
 }
 \description{
-Download an area water shapefile into R
+From the US Census Bureau: "The area hydrography shapefile contains the geometry
+and attributes of both perennial and intermittent
+area hydrography features, including ponds, lakes, oceans, swamps, glaciers, and the area covered by
+large streams represented as double-line drainage."
+}
+\examples{
+\dontrun{
+library(tigris)
+library(sp)
+
+dallas_water <- area_water("TX", "Dallas")
+
+plot(dallas_water)
+
+}
 }
 \seealso{
+\url{http://www2.census.gov/geo/pdfs/maps-data/data/tiger/tgrshp2014/TGRSHP2014_TechDoc.pdf}
+
 Other water functions: \code{\link{coastline}};
   \code{\link{linear_water}}
 }

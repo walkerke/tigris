@@ -24,10 +24,18 @@ Options include \code{refresh}, which specifies whether or not to re-download sh
 (defaults to 2014).}
 }
 \description{
-Download a core-based statistical area shapefile into R
+Core-based statistical areas include both metropolitan areas and micropolitan areas.  The US Census
+Bureau defines these areas as follows: "A metro area contains a core urban area of 50,000 or more population, and a
+micro area contains an urban core of at least 10,000 (but less than 50,000) population. Each metro or micro area
+consists of one or more counties and includes the counties containing the core urban area, as well as any adjacent
+counties that have a high degree of social and economic integration (as measured by commuting to work) with the urban
+core."  Please see the link provided for more information
 }
 \seealso{
+\url{http://www.census.gov/population/metro/}
+
 Other metro area functions: \code{\link{combined_statistical_areas}};
-  \code{\link{metro_divisions}}; \code{\link{urban_areas}}
+  \code{\link{metro_divisions}}; \code{\link{new_england}};
+  \code{\link{urban_areas}}
 }
 

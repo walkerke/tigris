@@ -13,7 +13,18 @@ Options include \code{refresh}, which specifies whether or not to re-download sh
 (defaults to 2014).}
 }
 \description{
-Download a Tribal block groups shapefile into R.
+From the US Census Bureau: "Tribal block groups are subdivisions of a tribal
+census tract. Tribal block groups were defined by federally
+recognized tribal government officials in the Census Bureau’s Tribal Statistical Areas Program (TSAP) for
+the 2010 Census. If a tribal government declined to participate in TSAP, the Census Bureau delineated
+tribal block groups on the American Indian reservation and/or off-reservation trust land (ORTL). Tribal
+block groups are intended to generally contain between 600 and 3,000 persons or between 240 and
+1,200 housing units. Many American Indian reservations and ORTLs have less than the minimum
+population thresholds for more than one tribal block group and in those cases one tribal block group was
+delineated that covers the entire American Indian reservation and/or ORTL. Unlike standard block
+groups, the cluster of blocks that comprises each tribal block group will not necessarily begin with the
+same first number of their 4-character census block number, but may contain blocks from several different
+standard census block groups."  For more information, please see the link provided.
 }
 \examples{
 \dontrun{
@@ -29,6 +40,8 @@ leaflet(trib) \%>\%
 }
 }
 \seealso{
+\url{http://www2.census.gov/geo/pdfs/maps-data/data/tiger/tgrshp2014/TGRSHP2014_TechDoc.pdf}
+
 Other native/tribal geometries functions: \code{\link{alaska_native_regional_corporations}};
   \code{\link{native_areas}};
   \code{\link{tribal_census_tracts}};

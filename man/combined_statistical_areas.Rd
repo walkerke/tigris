@@ -24,10 +24,15 @@ Options include \code{refresh}, which specifies whether or not to re-download sh
 (defaults to 2014).}
 }
 \description{
-Download a combined statistical areas shapefile into R
+Combined statistical areas are "two or more adjacent CBSAs that have significant
+employment interchanges."  In turn, CSAs are composed of multiple metropolitan and/or micropolitan areas, and should
+not be compared with individual core-based statistical areas.
 }
 \seealso{
+\url{http://www2.census.gov/geo/pdfs/maps-data/data/tiger/tgrshp2014/TGRSHP2014_TechDoc.pdf}
+
 Other metro area functions: \code{\link{core_based_statistical_areas}};
-  \code{\link{metro_divisions}}; \code{\link{urban_areas}}
+  \code{\link{metro_divisions}}; \code{\link{new_england}};
+  \code{\link{urban_areas}}
 }
 

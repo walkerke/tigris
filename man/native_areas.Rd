@@ -19,7 +19,11 @@ Options include \code{refresh}, which specifies whether or not to re-download sh
 (defaults to 2014).}
 }
 \description{
-Download an American Indian / Alaska Native / Native Hawaiian Areas shapefile into R.
+Description from the Census Bureau: "This shapefile contain both legal and statistical
+American Indian, Alaska Native, and Native Hawaiian
+entities for which the Census Bureau publishes data. The legal entities consist of federally recognized
+American Indian reservations and off-reservation trust land areas, state-recognized American Indian
+reservations, and Hawaiian home lands (HHLs)." For more information, please see the link provided.
 }
 \examples{
 \dontrun{
@@ -42,6 +46,8 @@ gg
 }
 }
 \seealso{
+\url{http://www2.census.gov/geo/pdfs/maps-data/data/tiger/tgrshp2014/TGRSHP2014_TechDoc.pdf}
+
 Other native/tribal geometries functions: \code{\link{alaska_native_regional_corporations}};
   \code{\link{tribal_block_groups}};
   \code{\link{tribal_census_tracts}};

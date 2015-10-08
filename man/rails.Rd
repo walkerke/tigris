@@ -13,9 +13,23 @@ Options include \code{refresh}, which specifies whether or not to re-download sh
 (defaults to 2014).}
 }
 \description{
-Download a national rails shapefile into R
+National dataset for US railroads, including carlines, streetcars,
+monorails, mass transit, cog rail, incline rail, and trams.
+}
+\examples{
+\dontrun{
+library(tigris)
+library(sp)
+
+rls <- rails()
+
+plot(rls)
+
+}
 }
 \seealso{
+\url{http://www2.census.gov/geo/pdfs/maps-data/data/tiger/tgrshp2014/TGRSHP2014_TechDoc.pdf}
+
 Other transportation functions: \code{\link{primary_roads}};
   \code{\link{primary_secondary_roads}};
   \code{\link{roads}}

@@ -18,13 +18,12 @@ Options include \code{refresh}, which specifies whether or not to re-download sh
 }
 \description{
 Description from the US Census Bureau:
-}
-\details{
-The Census Bureau includes landmarks in the MAF/TIGER database (MTDB) for locating special features
+"The Census Bureau includes landmarks in the MAF/TIGER database (MTDB) for locating special features
 and to help enumerators during field operations. Some of the more common landmark types include area
 landmarks such as airports, cemeteries, parks, and educational facilities and point landmarks such as
-schools and churches.
-
+schools and churches."
+}
+\details{
 The Census Bureau adds landmark features to the database on an as-needed basis and makes no
 attempt to ensure that all instances of a particular feature were included. The absence of a landmark
 such as a hospital or prison does not mean that the living quarters associated with that landmark were

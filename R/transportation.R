@@ -1,5 +1,10 @@
 #' Download a roads shapefile into R
 #'
+#' From the Census Bureau: "The content of the all roads shapefile includes
+#' primary roads, secondary roads, local neighborhood roads,
+#' rural roads, city streets, vehicular trails (4WD), ramps, service drives,
+#' walkways, stairways, alleys, and private roads."
+#'
 #' @param state The two-digit FIPS code of the state of the county you'd like
 #'        to download the roads for. Can also be state name or abbreviation
 #'        (case-insensitive).
@@ -10,6 +15,7 @@
 #'        (defaults to \code{FALSE}), and \code{year}, the year for which you'd like to download data
 #'        (defaults to 2014).
 #' @family transportation functions
+#' @seealso \url{http://www2.census.gov/geo/pdfs/maps-data/data/tiger/tgrshp2014/TGRSHP2014_TechDoc.pdf}
 #' @export
 #' @examples \dontrun{
 #' library(tigris)
@@ -59,12 +65,28 @@ roads <- function(state, county, ...) {
 
 #' Download a national primary roads shapefile into R
 #'
+#' From the Census Bureau: "Primary roads are generally divided,
+#' limited-access highways within the Federal interstate highway
+#' system or under state management. These highways are distinguished by the
+#' presence of interchanges
+#' and are accessible by ramps and may include some toll highways."
+#'
 #' @param ... arguments to be passed to the underlying `load_tiger` function, which is not exported.
 #'        Options include \code{refresh}, which specifies whether or not to re-download shapefiles
 #'        (defaults to \code{FALSE}), and \code{year}, the year for which you'd like to download data
 #'        (defaults to 2014).
 #' @family transportation functions
+#' @seealso \url{http://www2.census.gov/geo/pdfs/maps-data/data/tiger/tgrshp2014/TGRSHP2014_TechDoc.pdf}
 #' @export
+#' @examples \dontrun{
+#' library(tigris)
+#' library(sp)
+#'
+#' rds <- primary_roads()
+#'
+#' plot(rds)
+#'
+#' }
 primary_roads <- function(...) {
 
   url <- "http://www2.census.gov/geo/tiger/TIGER2014/PRIMARYROADS/tl_2014_us_primaryroads.zip"
@@ -75,6 +97,15 @@ primary_roads <- function(...) {
 
 #' Download a primary & secondary roads shapefile into R
 #'
+#' From the Census Bureau: "Primary roads are generally divided,
+#' limited-access highways within the Federal interstate highway
+#' system or under state management. These highways are distinguished by the presence of interchanges
+#' and are accessible by ramps and may include some toll highways. Secondary roads are main arteries,
+#'  usually in the U.S. highway, state
+#'  highway, or county highway system. These roads have one or more lanes of
+#'  traffic in each direction, may
+#'  or may not be divided, and usually have at-grade intersections with many other roads and driveways.
+#'
 #' @param state The two-digit FIPS code of the state of the county you'd like
 #'        to download the roads for. Can also be state name or abbreviation
 #'        (case-insensitive).
@@ -83,7 +114,17 @@ primary_roads <- function(...) {
 #'        (defaults to \code{FALSE}), and \code{year}, the year for which you'd like to download data
 #'        (defaults to 2014).
 #' @family transportation functions
+#' @seealso \url{http://www2.census.gov/geo/pdfs/maps-data/data/tiger/tgrshp2014/TGRSHP2014_TechDoc.pdf}
 #' @export
+#' @examples \dontrun{
+#' library(tigris)
+#' library(sp)
+#'
+#' rds <- primary_secondary_roads()
+#'
+#' plot(rds)
+#'
+#' }
 primary_secondary_roads <- function(state, ...) {
 
   state <- validate_state(state)
@@ -100,12 +141,25 @@ primary_secondary_roads <- function(state, ...) {
 
 #' Download a national rails shapefile into R
 #'
+#' National dataset for US railroads, including carlines, streetcars,
+#' monorails, mass transit, cog rail, incline rail, and trams.
+#'
 #' @param ... arguments to be passed to the underlying `load_tiger` function, which is not exported.
 #'        Options include \code{refresh}, which specifies whether or not to re-download shapefiles
 #'        (defaults to \code{FALSE}), and \code{year}, the year for which you'd like to download data
 #'        (defaults to 2014).
 #' @family transportation functions
+#' @seealso \url{http://www2.census.gov/geo/pdfs/maps-data/data/tiger/tgrshp2014/TGRSHP2014_TechDoc.pdf}
 #' @export
+#' @examples \dontrun{
+#' library(tigris)
+#' library(sp)
+#'
+#' rls <- rails()
+#'
+#' plot(rls)
+#'
+#' }
 rails <- function(...) {
 
   url <- "http://www2.census.gov/geo/tiger/TIGER2014/RAILS/tl_2014_us_rails.zip"

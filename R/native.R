@@ -1,5 +1,11 @@
 #' Download an American Indian / Alaska Native / Native Hawaiian Areas shapefile into R.
 #'
+#' Description from the Census Bureau: "This shapefile contain both legal and statistical
+#' American Indian, Alaska Native, and Native Hawaiian
+#' entities for which the Census Bureau publishes data. The legal entities consist of federally recognized
+#' American Indian reservations and off-reservation trust land areas, state-recognized American Indian
+#' reservations, and Hawaiian home lands (HHLs)." For more information, please see the link provided.
+#'
 #' @param cb If cb is set to TRUE, download a generalized (1:500k)
 #'        file.  Defaults to FALSE (the most detailed TIGER/Line file)
 #' @param detailed (deprecated) Setting detailed to FALSE returns a 1:500k cartographic boundary file.
@@ -9,6 +15,7 @@
 #'        (defaults to \code{FALSE}), and \code{year}, the year for which you'd like to download data
 #'        (defaults to 2014).
 #' @family native/tribal geometries functions
+#' @seealso \url{http://www2.census.gov/geo/pdfs/maps-data/data/tiger/tgrshp2014/TGRSHP2014_TechDoc.pdf}
 #' @export
 #' @examples \dontrun{
 #' library(tigris)
@@ -51,11 +58,17 @@ native_areas <- function(cb = FALSE, detailed = TRUE, ...) {
 
 #' Download an American Indian Tribal Subdivision National shapefile into R.
 #'
+#' Definition from the US Census Bureau: "American Indian Tribal Subdivisions (AITS) are legally defined
+#' administrative subdivisions of federally
+#' recognized American Indian reservations and/or off-reservation trust lands or Oklahoma tribal statistical
+#' areas (OTSAs)."  For more information, please see the link provided.
+#'
 #' @param ... arguments to be passed to the underlying `load_tiger` function, which is not exported.
 #'        Options include \code{refresh}, which specifies whether or not to re-download shapefiles
 #'        (defaults to \code{FALSE}), and \code{year}, the year for which you'd like to download data
 #'        (defaults to 2014).
 #' @family native/tribal geometries functions
+#' @seealso \url{http://www2.census.gov/geo/pdfs/maps-data/data/tiger/tgrshp2014/TGRSHP2014_TechDoc.pdf}
 #' @export
 #' @examples \dontrun{
 #' library(tigris)
@@ -78,6 +91,12 @@ tribal_subdivisions_national <- function(...) {
 
 #' Download an Alaska Native Regional Corporation shapefile into R.
 #'
+#' From the US Census Bureau: "ANRCs are corporations created according to the Alaska Native Claims Settlement Act.
+#' They are organized under the laws of the State of
+#' Alaska as "Regional Corporations," to conduct both the for-profit and non-profit affairs of Alaska Natives
+#' within defined regions of Alaska."  For more information, please see the Census technical documentation at the
+#' link provided.
+#'
 #' @param cb If cb is set to TRUE, download a generalized (1:500k)
 #'        file.  Defaults to FALSE (the most detailed TIGER/Line file)
 #' @param ... arguments to be passed to the underlying `load_tiger` function, which is not exported.
@@ -85,6 +104,7 @@ tribal_subdivisions_national <- function(...) {
 #'        (defaults to \code{FALSE}), and \code{year}, the year for which you'd like to download data
 #'        (defaults to 2014).
 #' @family native/tribal geometries functions
+#' @seealso \url{http://www2.census.gov/geo/pdfs/maps-data/data/tiger/tgrshp2014/TGRSHP2014_TechDoc.pdf}
 #' @export
 alaska_native_regional_corporations <- function(cb = FALSE, ...) {
 
@@ -104,11 +124,25 @@ alaska_native_regional_corporations <- function(cb = FALSE, ...) {
 
 #' Download a Tribal block groups shapefile into R.
 #'
+#' From the US Census Bureau: "Tribal block groups are subdivisions of a tribal
+#' census tract. Tribal block groups were defined by federally
+#' recognized tribal government officials in the Census Bureau’s Tribal Statistical Areas Program (TSAP) for
+#' the 2010 Census. If a tribal government declined to participate in TSAP, the Census Bureau delineated
+#' tribal block groups on the American Indian reservation and/or off-reservation trust land (ORTL). Tribal
+#' block groups are intended to generally contain between 600 and 3,000 persons or between 240 and
+#' 1,200 housing units. Many American Indian reservations and ORTLs have less than the minimum
+#' population thresholds for more than one tribal block group and in those cases one tribal block group was
+#' delineated that covers the entire American Indian reservation and/or ORTL. Unlike standard block
+#' groups, the cluster of blocks that comprises each tribal block group will not necessarily begin with the
+#' same first number of their 4-character census block number, but may contain blocks from several different
+#' standard census block groups."  For more information, please see the link provided.
+#'
 #' @param ... arguments to be passed to the underlying `load_tiger` function, which is not exported.
 #'        Options include \code{refresh}, which specifies whether or not to re-download shapefiles
 #'        (defaults to \code{FALSE}), and \code{year}, the year for which you'd like to download data
 #'        (defaults to 2014).
 #' @family native/tribal geometries functions
+#' @seealso \url{http://www2.census.gov/geo/pdfs/maps-data/data/tiger/tgrshp2014/TGRSHP2014_TechDoc.pdf}
 #' @export
 #' @examples \dontrun{
 #' library(tigris)
@@ -131,11 +165,21 @@ tribal_block_groups <- function(...) {
 
 #' Download a Tribal Census tract shapefile into R.
 #'
+#' From the US Census Bureau: "Tribal census tracts are relatively small statistical
+#' subdivisions of an American Indian reservation and/or
+#' off-reservation trust land (ORTL) and were defined by federally recognized tribal government officials in
+#' the Census Bureau’s Tribal Statistical Areas Program (TSAP) for the 2010 Census. If a tribal government
+#' declined to participate in TSAP, the Census Bureau delineated tribal census tracts on the American
+#' Indian reservation and/or ORTL. Tribal census tracts are conceptually similar and equivalent to standard
+#' census tracts. Unlike standard census tracts, however, tribal census tracts may cross state, county, and
+#' standard census tract boundaries." For more information, please view the link provided.
+#'
 #' @param ... arguments to be passed to the underlying `load_tiger` function, which is not exported.
 #'        Options include \code{refresh}, which specifies whether or not to re-download shapefiles
 #'        (defaults to \code{FALSE}), and \code{year}, the year for which you'd like to download data
 #'        (defaults to 2014).
 #' @family native/tribal geometries functions
+#' @seealso \url{http://www2.census.gov/geo/pdfs/maps-data/data/tiger/tgrshp2014/TGRSHP2014_TechDoc.pdf}
 #' @export
 #' @examples \dontrun{
 #' library(tigris)

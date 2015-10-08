@@ -20,9 +20,27 @@ Options include \code{refresh}, which specifies whether or not to re-download sh
 (defaults to 2014).}
 }
 \description{
-Download an linear water shapefile into R
+From the US Census Bureau: "The linear hydrography shapefile contains all linear
+features with "H" (Hydrography) type MTFCCs in the
+MAF/TIGER database by county. The shapefiles are provided at a county geographic extent and in linear
+elemental feature geometry. The linear hydrography shapefile includes streams/rivers, braided streams,
+canals, ditches, artificial paths, and aqueducts. A linear hydrography feature may include edges with both
+perennial and intermittent persistence."
+}
+\examples{
+\dontrun{
+library(tigris)
+library(sp)
+
+dallas_water <- linear_water("TX", "Dallas")
+
+plot(dallas_water)
+
+}
 }
 \seealso{
+\url{http://www2.census.gov/geo/pdfs/maps-data/data/tiger/tgrshp2014/TGRSHP2014_TechDoc.pdf}
+
 Other water functions: \code{\link{area_water}};
   \code{\link{coastline}}
 }

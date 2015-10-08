@@ -20,7 +20,10 @@ Options include \code{refresh}, which specifies whether or not to re-download sh
 (defaults to 2014).}
 }
 \description{
-Download a roads shapefile into R
+From the Census Bureau: "The content of the all roads shapefile includes
+primary roads, secondary roads, local neighborhood roads,
+rural roads, city streets, vehicular trails (4WD), ramps, service drives,
+walkways, stairways, alleys, and private roads."
 }
 \examples{
 \dontrun{
@@ -52,6 +55,8 @@ gg
 }
 }
 \seealso{
+\url{http://www2.census.gov/geo/pdfs/maps-data/data/tiger/tgrshp2014/TGRSHP2014_TechDoc.pdf}
+
 Other transportation functions: \code{\link{primary_roads}};
   \code{\link{primary_secondary_roads}};
   \code{\link{rails}}

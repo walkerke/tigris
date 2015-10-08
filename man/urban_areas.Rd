@@ -2,7 +2,7 @@
 % Please edit documentation in R/metro_areas.R
 \name{urban_areas}
 \alias{urban_areas}
-\title{Download an urbanized areas shapefile into R}
+\title{Download an urban areas shapefile into R}
 \usage{
 urban_areas(cb = FALSE, detailed = TRUE, ...)
 }
@@ -20,11 +20,15 @@ Options include \code{refresh}, which specifies whether or not to re-download sh
 (defaults to 2014).}
 }
 \description{
-Download an urbanized areas shapefile into R
+Urban areas include both "urbanized areas," which are densely developed areas with a population of at least 50,000,
+ and "urban clusters," which have a population of greater than 2,500 but less than 50,000.  For more information,
+please see the link provided.
 }
 \seealso{
+\url{http://www2.census.gov/geo/pdfs/maps-data/data/tiger/tgrshp2014/TGRSHP2014_TechDoc.pdf}
+
 Other metro area functions: \code{\link{combined_statistical_areas}};
   \code{\link{core_based_statistical_areas}};
-  \code{\link{metro_divisions}}
+  \code{\link{metro_divisions}}; \code{\link{new_england}}
 }
 

@@ -1,5 +1,18 @@
 #' Download a congressional districts shapefile for the 114th Congress into R
 #'
+#' Description from the US Census Bureau (see link for source):
+#' The 2014 TIGER/Line Shapefiles contain the 114th Congressional Districts. All congressional districts
+#' appearing in the 2014 TIGER/Line Shapefiles reflect the information provided to the Census Bureau by
+#' the states by May 1, 2014. The 114th Congressional District shapefile contains the areas in effect
+#' January 2015 to 2017.
+#'
+#' Congressional districts are the 435 areas from which people are elected to the U.S. House of
+#' Representatives and the five areas with nonvoting delegates from state equivalents. After the
+#' apportionment of congressional seats among the states based on decennial census population counts,
+#' each state is responsible for establishing the boundaries of the congressional districts for the purpose of
+#' electing representatives. Each congressional district is to be as equal in population to all other
+#' congressional districts in a state as practicable.
+#'
 #' @param cb If cb is set to TRUE, download a generalized (1:500k)
 #'        cartographic boundary file.  Defaults to FALSE (the most detailed
 #'        TIGER/Line file).

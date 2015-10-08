@@ -16,9 +16,15 @@ Options include \code{refresh}, which specifies whether or not to re-download sh
 (defaults to 2014).}
 }
 \description{
-Download an Alaska Native Regional Corporation shapefile into R.
+From the US Census Bureau: "ANRCs are corporations created according to the Alaska Native Claims Settlement Act.
+They are organized under the laws of the State of
+Alaska as "Regional Corporations," to conduct both the for-profit and non-profit affairs of Alaska Natives
+within defined regions of Alaska."  For more information, please see the Census technical documentation at the
+link provided.
 }
 \seealso{
+\url{http://www2.census.gov/geo/pdfs/maps-data/data/tiger/tgrshp2014/TGRSHP2014_TechDoc.pdf}
+
 Other native/tribal geometries functions: \code{\link{native_areas}};
   \code{\link{tribal_block_groups}};
   \code{\link{tribal_census_tracts}};

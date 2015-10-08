@@ -1,12 +1,11 @@
 #' Download the Military Installation National Shapefile into R
 #'
-#' Description from the US Census Bureau:
-#'
-#' The Census Bureau includes landmarks such as military installations in the MAF/TIGER database for
+#' Description from the US Census Bureau: "The Census Bureau includes landmarks
+#' such as military installations in the MAF/TIGER database for
 #' locating special features and to help enumerators during field operations. The Census Bureau adds
 #' landmark features to the database on an as-needed basis and does not attempt to ensure that all
 #' instances of a particular feature are included. For additional information about area landmarks, please
-#' see Section 3.12, Landmarks (Area and Point).
+#' see Section 3.12, Landmarks (Area and Point)."
 #'
 #' This file does not include the three point landmarks identified as military installation features in the
 #' MAF/TIGER database. These point landmarks are included in the point landmark shapefile.
@@ -32,11 +31,10 @@ military <- function(...) {
 #' Download a point or area landmarks shapefile into R
 #'
 #' Description from the US Census Bureau:
-#'
-#' The Census Bureau includes landmarks in the MAF/TIGER database (MTDB) for locating special features
+#' "The Census Bureau includes landmarks in the MAF/TIGER database (MTDB) for locating special features
 #' and to help enumerators during field operations. Some of the more common landmark types include area
 #' landmarks such as airports, cemeteries, parks, and educational facilities and point landmarks such as
-#' schools and churches.
+#' schools and churches."
 #'
 #' The Census Bureau adds landmark features to the database on an as-needed basis and makes no
 #' attempt to ensure that all instances of a particular feature were included. The absence of a landmark

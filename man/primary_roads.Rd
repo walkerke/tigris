@@ -13,9 +13,26 @@ Options include \code{refresh}, which specifies whether or not to re-download sh
 (defaults to 2014).}
 }
 \description{
-Download a national primary roads shapefile into R
+From the Census Bureau: "Primary roads are generally divided,
+limited-access highways within the Federal interstate highway
+system or under state management. These highways are distinguished by the
+presence of interchanges
+and are accessible by ramps and may include some toll highways."
+}
+\examples{
+\dontrun{
+library(tigris)
+library(sp)
+
+rds <- primary_roads()
+
+plot(rds)
+
+}
 }
 \seealso{
+\url{http://www2.census.gov/geo/pdfs/maps-data/data/tiger/tgrshp2014/TGRSHP2014_TechDoc.pdf}
+
 Other transportation functions: \code{\link{primary_secondary_roads}};
   \code{\link{rails}}; \code{\link{roads}}
 }

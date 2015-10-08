@@ -1,5 +1,10 @@
 #' Download an area water shapefile into R
 #'
+#' From the US Census Bureau: "The area hydrography shapefile contains the geometry
+#' and attributes of both perennial and intermittent
+#' area hydrography features, including ponds, lakes, oceans, swamps, glaciers, and the area covered by
+#' large streams represented as double-line drainage."
+#'
 #' @param state The two-digit FIPS code of the state of the county you'd like to
 #'        download the water features for.  Can also be state name or abbreviation
 #'        (case-insensitive).
@@ -10,7 +15,17 @@
 #'        (defaults to \code{FALSE}), and \code{year}, the year for which you'd like to download data
 #'        (defaults to 2014).
 #' @family water functions
+#' @seealso \url{http://www2.census.gov/geo/pdfs/maps-data/data/tiger/tgrshp2014/TGRSHP2014_TechDoc.pdf}
 #' @export
+#' @examples \dontrun{
+#' library(tigris)
+#' library(sp)
+#'
+#' dallas_water <- area_water("TX", "Dallas")
+#'
+#' plot(dallas_water)
+#'
+#' }
 area_water <- function(state, county, ...) {
 
   state <- validate_state(state)
@@ -32,6 +47,13 @@ area_water <- function(state, county, ...) {
 
 #' Download an linear water shapefile into R
 #'
+#' From the US Census Bureau: "The linear hydrography shapefile contains all linear
+#' features with "H" (Hydrography) type MTFCCs in the
+#' MAF/TIGER database by county. The shapefiles are provided at a county geographic extent and in linear
+#' elemental feature geometry. The linear hydrography shapefile includes streams/rivers, braided streams,
+#' canals, ditches, artificial paths, and aqueducts. A linear hydrography feature may include edges with both
+#' perennial and intermittent persistence."
+#'
 #' @param state The two-digit FIPS code of the state of the county you'd like to
 #'        download the water features for. Can also be state name or abbreviation
 #'        (case-insensitive).
@@ -42,7 +64,17 @@ area_water <- function(state, county, ...) {
 #'        (defaults to \code{FALSE}), and \code{year}, the year for which you'd like to download data
 #'        (defaults to 2014).
 #' @family water functions
+#' @seealso \url{http://www2.census.gov/geo/pdfs/maps-data/data/tiger/tgrshp2014/TGRSHP2014_TechDoc.pdf}
 #' @export
+#' @examples \dontrun{
+#' library(tigris)
+#' library(sp)
+#'
+#' dallas_water <- linear_water("TX", "Dallas")
+#'
+#' plot(dallas_water)
+#'
+#' }
 linear_water <- function(state, county, ...) {
 
   state <- validate_state(state)

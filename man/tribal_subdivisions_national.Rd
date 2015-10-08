@@ -13,7 +13,10 @@ Options include \code{refresh}, which specifies whether or not to re-download sh
 (defaults to 2014).}
 }
 \description{
-Download an American Indian Tribal Subdivision National shapefile into R.
+Definition from the US Census Bureau: "American Indian Tribal Subdivisions (AITS) are legally defined
+administrative subdivisions of federally
+recognized American Indian reservations and/or off-reservation trust lands or Oklahoma tribal statistical
+areas (OTSAs)."  For more information, please see the link provided.
 }
 \examples{
 \dontrun{
@@ -29,6 +32,8 @@ leaflet(trib) \%>\%
 }
 }
 \seealso{
+\url{http://www2.census.gov/geo/pdfs/maps-data/data/tiger/tgrshp2014/TGRSHP2014_TechDoc.pdf}
+
 Other native/tribal geometries functions: \code{\link{alaska_native_regional_corporations}};
   \code{\link{native_areas}};
   \code{\link{tribal_block_groups}};
