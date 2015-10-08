@@ -20,10 +20,8 @@ Options include \code{refresh}, which specifies whether or not to re-download sh
 (defaults to 2014).}
 }
 \description{
-Description from the US Census Bureau (see link for source):
-}
-\details{
-Census blocks are statistical areas bounded on all sides by visible features, such as streets, roads,
+Description from the US Census Bureau (see link for source): Census blocks are statistical areas
+bounded on all sides by visible features, such as streets, roads,
 streams, and railroad tracks, and by non-visible boundaries such as city, town, township, and county
 limits, and short line-of-sight extensions of streets and roads. Generally, census blocks are small in area;
 for example, a block in a city. Census blocks in suburban and rural areas may be large, irregular and
@@ -31,7 +29,8 @@ bounded by a variety of features, such as roads, streams, and/or transmission li
 remote areas census blocks may encompass hundreds of square miles. Census blocks cover all territory
 in the United States, Puerto Rico, and the Island areas. Blocks do not cross the boundaries of any entity
 for which the Census Bureau tabulates data.
-
+}
+\details{
 This function will download an entire block shapefile for a selected state
 into R, and optionally subset by county. \strong{A warning:} Census block
 shapefiles are often very large, especially for large states - for example, the

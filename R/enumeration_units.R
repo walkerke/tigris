@@ -256,10 +256,9 @@ school_districts <- function(state, type = 'unified', ...) {
 
 #' Download a Census block groups shapefile into R, and optionally subset by county
 #'
-#' Description from the US Census Bureau (see link for source):
-#'
-#' Standard block groups are clusters of blocks within the same census tract that have the same first digit of
-#' their 4-character census block number. For example, blocks 3001, 3002, 3003… 3999 in census tract
+#' Description from the US Census Bureau (see link for source):Standard block groups are clusters of
+#' blocks within the same census tract that have the same first digit of
+#' their 4-character census block number. For example, blocks 3001, 3002, 3003..., 3999 in census tract
 #' 1210.02 belong to Block Group 3. Due to boundary and feature changes that occur throughout the
 #' decade, current block groups do not always maintain these same block number to block group
 #' relationships. For example, block 3001 might move due to a census tract boundary change but the block
@@ -420,9 +419,8 @@ zctas <- function(cb = FALSE, starts_with = NULL, detailed = TRUE, ...) {
 
 #' Download a Census block shapefile into R
 #'
-#' Description from the US Census Bureau (see link for source):
-#'
-#' Census blocks are statistical areas bounded on all sides by visible features, such as streets, roads,
+#' Description from the US Census Bureau (see link for source): Census blocks are statistical areas
+#' bounded on all sides by visible features, such as streets, roads,
 #' streams, and railroad tracks, and by non-visible boundaries such as city, town, township, and county
 #' limits, and short line-of-sight extensions of streets and roads. Generally, census blocks are small in area;
 #' for example, a block in a city. Census blocks in suburban and rural areas may be large, irregular and
