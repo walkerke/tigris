@@ -1,8 +1,8 @@
 Package: tigris
 Type: Package
 Title: Load Census TIGER Geographic Data into R
-Version: 0.0.95
-Date: 2015-10-06
+Version: 0.1
+Date: 2015-10-08
 Authors@R: c(
       person(given="Kyle", family="Walker", email="kyle.walker@tcu.edu", role=c("aut", "cre")),
       person(given="Bob", family="Rudis", email="bob@rudis.net", role="ctb")
