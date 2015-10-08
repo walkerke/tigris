@@ -26,6 +26,18 @@ Options include \code{refresh}, which specifies whether or not to re-download sh
 \description{
 Download a congressional districts shapefile for the 114th Congress into R
 }
+\examples{
+\dontrun{
+library(tigris)
+library(leaflet)
+
+cd114 <- congressional_districts(cb = TRUE, resolution = '20m')
+
+leaflet(cd114) \%>\%
+   addTiles() \%>\%
+   addPolygons()
+}
+}
 \seealso{
 Other legislative district functions: \code{\link{state_legislative_districts}}
 }

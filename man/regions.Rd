@@ -13,6 +13,18 @@ regions(resolution = "500k")
 \description{
 Download a US regions cartographic boundary shapefile into R
 }
+\examples{
+\dontrun{
+library(tigris)
+library(leaflet)
+
+us_regions <- regions(resolution = '20m')
+
+leaflet(us_regions) \%>\%
+   addTiles() \%>\%
+   addPolygons()
+}
+}
 \seealso{
 Other national cartographic boundary functions: \code{\link{divisions}};
   \code{\link{nation}}

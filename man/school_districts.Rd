@@ -2,13 +2,17 @@
 % Please edit documentation in R/enumeration_units.R
 \name{school_districts}
 \alias{school_districts}
-\title{Download a unified school district shapefile into R}
+\title{Download a school district shapefile into R}
 \usage{
-school_districts(state, ...)
+school_districts(state, type = "unified", ...)
 }
 \arguments{
 \item{state}{The two-digit FIPS code (string) of the state you want. Can also
 be state name or state abbreviation.}
+
+\item{type}{Specify whether you want to return a unified school district (the default, \code{'unified'}),
+an elementary school district (\code{'elementary'}), or a secondary school district (\code{'secondary'}).
+Please note: elementary and secondary school districts do not exist in all states}
 
 \item{...}{arguments to be passed to the underlying `load_tiger` function, which is not exported.
 Options include \code{refresh}, which specifies whether or not to re-download shapefiles
@@ -16,7 +20,19 @@ Options include \code{refresh}, which specifies whether or not to re-download sh
 (defaults to 2014).}
 }
 \description{
-Download a unified school district shapefile into R
+From the US Census Bureau (see link for source):
+School Districts are single-purpose administrative units within which local officials provide public
+educational services for the area's residents. The Census Bureau obtains school district boundaries,
+names, local education agency codes, grade ranges, and school district levels biennially from state
+education officials. The Census Bureau collects this information for the primary purpose of providing the
+U.S. Department of Education with annual estimates of the number of children in poverty within each
+school district, county, and state. This information serves as the basis for the Department of Education to
+determine the annual allocation of Title I funding to states and school districts.
+}
+\details{
+The Census Bureau creates pseudo-unified school districts for areas in which unified school districts do
+not exist.  Additionally, elementary and secondary school districts do not exist in all states.
+Please see the link for more information on how the Census Bureau creates the school district shapefiles.
 }
 \examples{
 \dontrun{
@@ -33,6 +49,8 @@ leaflet(schools) \%>\%
 }
 }
 \seealso{
+\url{http://www2.census.gov/geo/pdfs/maps-data/data/tiger/tgrshp2014/TGRSHP2014_TechDoc.pdf}
+
 Other general area functions: \code{\link{block_groups}};
   \code{\link{blocks}}; \code{\link{counties}};
   \code{\link{places}}; \code{\link{pumas}};

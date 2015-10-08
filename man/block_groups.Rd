@@ -26,9 +26,42 @@ Options include \code{refresh}, which specifies whether or not to re-download sh
 (defaults to 2014).}
 }
 \description{
-Download a Census block groups shapefile into R, and optionally subset by county
+Description from the US Census Bureau (see link for source):
+}
+\details{
+Standard block groups are clusters of blocks within the same census tract that have the same first digit of
+their 4-character census block number. For example, blocks 3001, 3002, 3003… 3999 in census tract
+1210.02 belong to Block Group 3. Due to boundary and feature changes that occur throughout the
+decade, current block groups do not always maintain these same block number to block group
+relationships. For example, block 3001 might move due to a census tract boundary change but the block
+number will not change, even if it does not still fall in block group 3. However, the GEOID for that block,
+identifying block group 3, would remain the same in the attribute information in the TIGER/Line Shapefiles
+because block GEOIDs are always built using the decennial geographic codes.
+
+Block groups delineated for the 2010 Census generally contain between 600 and 3,000 people. Most
+block groups were delineated by local participants in the Census Bureau's Participant Statistical Areas
+Program (PSAP). The Census Bureau delineated block groups only where a local or tribal government
+declined to participate or where the Census Bureau could not identify a potential local participant.
+
+A block group usually covers a contiguous area. Each census tract contains at least one block group and
+block groups are uniquely numbered within census tract. Within the standard census geographic
+hierarchy, block groups never cross county or census tract boundaries, but may cross the boundaries of
+county subdivisions, places, urban areas, voting districts, congressional districts, and American Indian,
+Alaska Native, and Native Hawaiian areas.
+}
+\examples{
+\dontrun{
+library(tigris)
+library(sp)
+
+benton_bgs <- block_groups("Oregon", "Benton")
+
+plot(benton_bgs)
+}
 }
 \seealso{
+\url{http://www2.census.gov/geo/pdfs/maps-data/data/tiger/tgrshp2014/TGRSHP2014_TechDoc.pdf}
+
 Other general area functions: \code{\link{blocks}};
   \code{\link{counties}}; \code{\link{places}};
   \code{\link{pumas}}; \code{\link{school_districts}};

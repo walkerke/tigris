@@ -27,6 +27,7 @@ Options include \code{refresh}, which specifies whether or not to re-download sh
 (defaults to 2014).}
 }
 \description{
+Description from the US Census Bureau (see link for source):
 The primary legal divisions of most states are termed counties. In Louisiana,
 these divisions are known as parishes.  In Alaska, which has no counties,
 the equivalent entities are the organized boroughs, city and boroughs,

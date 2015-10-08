@@ -13,6 +13,16 @@
 #'        (defaults to 2014).
 #' @family legislative district functions
 #' @export
+#' @examples \dontrun{
+#' library(tigris)
+#' library(leaflet)
+#'
+#' cd114 <- congressional_districts(cb = TRUE, resolution = '20m')
+#'
+#' leaflet(cd114) %>%
+#'    addTiles() %>%
+#'    addPolygons()
+#' }
 congressional_districts <- function(cb = FALSE, resolution = '500k', detailed = TRUE, ...) {
 
   if (!(resolution %in% c('500k', '5m', '20m'))) {

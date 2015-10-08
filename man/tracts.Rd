@@ -26,6 +26,7 @@ Options include \code{refresh}, which specifies whether or not to re-download sh
 (defaults to 2014).}
 }
 \description{
+Description from the US Census Bureau (see link for source):
 Census Tracts are small, relatively permanent statistical subdivisions of
 a county or equivalent entity that are updated by local participants prior
 to each decennial census as part of the Census Bureau's Participant
@@ -51,11 +52,19 @@ They may follow nonvisible legal boundaries, such as minor civil division
 allow for census-tract-to-governmental-unit relationships where the
 governmental boundaries tend to remain unchanged between censuses.  State and
 county boundaries always are census tract boundaries in the standard census
-geographic hierarchy. Tribal census tracts are a unique geographic entity
-defined within federally recognized American Indian reservations and
-off-reservation trust lands and can cross state and county boundaries.
-Tribal census tracts may be completely different from the census tracts
-and block groups defined by state and county
+geographic hierarchy.
+}
+\examples{
+\dontrun{
+library(tigris)
+library(leaflet)
+
+tarrant <- tracts("TX", "Tarrant", cb = TRUE)
+
+leaflet(tarrant) \%>\%
+  addTiles() \%>\%
+  addPolygons(popup = ~NAME)
+}
 }
 \seealso{
 \url{https://www.census.gov/geo/reference/gtc/gtc_ct.html}

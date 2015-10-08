@@ -13,6 +13,18 @@ divisions(resolution = "500k")
 \description{
 Download a US Census divisions cartographic boundary shapefile into R
 }
+\examples{
+\dontrun{
+library(tigris)
+library(leaflet)
+
+divs <- divisions(resolution = '20m')
+
+leaflet(divs) \%>\%
+   addTiles() \%>\%
+   addPolygons()
+}
+}
 \seealso{
 Other national cartographic boundary functions: \code{\link{nation}};
   \code{\link{regions}}

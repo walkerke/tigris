@@ -13,6 +13,18 @@ nation(resolution = "5m")
 \description{
 Download a US national boundary shapefile into R
 }
+\examples{
+\dontrun{
+library(tigris)
+library(leaflet)
+
+boundary <- nation(resolution = '20m')
+
+leaflet(boundary) \%>\%
+   addTiles() \%>\%
+   addPolygons()
+}
+}
 \seealso{
 Other national cartographic boundary functions: \code{\link{divisions}};
   \code{\link{regions}}

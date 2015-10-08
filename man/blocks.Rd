@@ -20,6 +20,18 @@ Options include \code{refresh}, which specifies whether or not to re-download sh
 (defaults to 2014).}
 }
 \description{
+Description from the US Census Bureau (see link for source):
+}
+\details{
+Census blocks are statistical areas bounded on all sides by visible features, such as streets, roads,
+streams, and railroad tracks, and by non-visible boundaries such as city, town, township, and county
+limits, and short line-of-sight extensions of streets and roads. Generally, census blocks are small in area;
+for example, a block in a city. Census blocks in suburban and rural areas may be large, irregular and
+bounded by a variety of features, such as roads, streams, and/or transmission line rights-of-way. In
+remote areas census blocks may encompass hundreds of square miles. Census blocks cover all territory
+in the United States, Puerto Rico, and the Island areas. Blocks do not cross the boundaries of any entity
+for which the Census Bureau tabulates data.
+
 This function will download an entire block shapefile for a selected state
 into R, and optionally subset by county. \strong{A warning:} Census block
 shapefiles are often very large, especially for large states - for example, the
@@ -27,7 +39,24 @@ block file for Texas is 462MB zipped!  If you have a slow or unreliable internet
 connection, or insufficient memory, this may prove burdensome given that you
 have to first download by state and then subset.
 }
+\examples{
+\dontrun{#'
+# Simple example using Rose Island, American Samoa
+# Be careful with Census blocks for states!
+
+library(tigris)
+
+rose_island <- blocks(state = "AS", county = "Rose Island")
+
+leaflet(rose_island) \%>\%
+  addTiles() \%>\%
+  addPolygons()
+
+}
+}
 \seealso{
+\url{http://www2.census.gov/geo/pdfs/maps-data/data/tiger/tgrshp2014/TGRSHP2014_TechDoc.pdf}
+
 Other general area functions: \code{\link{block_groups}};
   \code{\link{counties}}; \code{\link{places}};
   \code{\link{pumas}}; \code{\link{school_districts}};

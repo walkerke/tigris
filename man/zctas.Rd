@@ -33,6 +33,26 @@ United States Postal Service (USPS) ZIP Code service areas.  Please see the link
 information on how the Census Bureau creates ZCTAs, and for important information on the
 differences between ZCTAs and ZIP Codes.
 }
+\examples{
+\dontrun{
+# Example: get ZCTAs that intersect the Memphis, TN urbanized area
+
+library(tigris)
+library(rgeos)
+library(sp)
+
+df <- zctas(cb = TRUE, starts_with = c("37", "38", "72"))
+
+uas <- urban_areas()
+
+memphis_ua <- uas[grep("Memphis", uas$NAME10), ]
+
+mem_zcta <- df[as.vector(gIntersects(df, memphis_ua, byid = TRUE)), ]
+
+plot(mem_zcta)
+
+}
+}
 \seealso{
 \url{https://www.census.gov/geo/reference/zctas.html}
 

@@ -4,6 +4,16 @@
 #'        Defaults to '500k'; options include '5m' (1:5 million) and '20m' (1:20 million).
 #'
 #' @family national cartographic boundary functions
+#' @examples \dontrun{
+#' library(tigris)
+#' library(leaflet)
+#'
+#' us_regions <- regions(resolution = '20m')
+#'
+#' leaflet(us_regions) %>%
+#'    addTiles() %>%
+#'    addPolygons()
+#' }
 #' @export
 regions <- function(resolution = '500k') {
 
@@ -28,6 +38,16 @@ regions <- function(resolution = '500k') {
 #'
 #' @family national cartographic boundary functions
 #' @export
+#' @examples \dontrun{
+#' library(tigris)
+#' library(leaflet)
+#'
+#' divs <- divisions(resolution = '20m')
+#'
+#' leaflet(divs) %>%
+#'    addTiles() %>%
+#'    addPolygons()
+#' }
 divisions <- function(resolution = '500k') {
 
   if (!(resolution %in% c('500k', '5m', '20m'))) {
@@ -51,6 +71,16 @@ divisions <- function(resolution = '500k') {
 #'
 #' @family national cartographic boundary functions
 #' @export
+#' @examples \dontrun{
+#' library(tigris)
+#' library(leaflet)
+#'
+#' boundary <- nation(resolution = '20m')
+#'
+#' leaflet(boundary) %>%
+#'    addTiles() %>%
+#'    addPolygons()
+#' }
 nation <- function(resolution = '5m') {
 
   if (!(resolution %in% c('5m', '20m'))) {

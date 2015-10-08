@@ -1,5 +1,6 @@
 #' Download a US Counties shapefile into R, and optionally subset by state
 #'
+#' Description from the US Census Bureau (see link for source):
 #' The primary legal divisions of most states are termed counties. In Louisiana,
 #' these divisions are known as parishes.  In Alaska, which has no counties,
 #' the equivalent entities are the organized boroughs, city and boroughs,
@@ -93,6 +94,7 @@ counties <- function(state = NULL, cb = FALSE, resolution = '500k', detailed = T
 
 #' Download a Census tracts shapefile into R, and optionally subset by county
 #'
+#' Description from the US Census Bureau (see link for source):
 #' Census Tracts are small, relatively permanent statistical subdivisions of
 #' a county or equivalent entity that are updated by local participants prior
 #' to each decennial census as part of the Census Bureau's Participant
@@ -117,11 +119,7 @@ counties <- function(state = NULL, cb = FALSE, resolution = '500k', detailed = T
 #' allow for census-tract-to-governmental-unit relationships where the
 #' governmental boundaries tend to remain unchanged between censuses.  State and
 #' county boundaries always are census tract boundaries in the standard census
-#' geographic hierarchy. Tribal census tracts are a unique geographic entity
-#' defined within federally recognized American Indian reservations and
-#' off-reservation trust lands and can cross state and county boundaries.
-#' Tribal census tracts may be completely different from the census tracts
-#' and block groups defined by state and county
+#' geographic hierarchy.
 #'
 #' @param state The two-digit FIPS code (string) of the state you want. Can also
 #'        be state name or state abbreviation.
@@ -139,6 +137,16 @@ counties <- function(state = NULL, cb = FALSE, resolution = '500k', detailed = T
 #' @family general area functions
 #' @seealso \url{https://www.census.gov/geo/reference/gtc/gtc_ct.html}
 #' @export
+#' @examples \dontrun{
+#' library(tigris)
+#' library(leaflet)
+#'
+#' tarrant <- tracts("TX", "Tarrant", cb = TRUE)
+#'
+#' leaflet(tarrant) %>%
+#'   addTiles() %>%
+#'   addPolygons(popup = ~NAME)
+#' }
 tracts <- function(state, county = NULL, cb = FALSE, detailed = TRUE, ...) {
 
   state <- validate_state(state)
@@ -179,15 +187,32 @@ tracts <- function(state, county = NULL, cb = FALSE, detailed = TRUE, ...) {
 
 }
 
-#' Download a unified school district shapefile into R
+#' Download a school district shapefile into R
+#'
+#' From the US Census Bureau (see link for source):
+#' School Districts are single-purpose administrative units within which local officials provide public
+#' educational services for the area's residents. The Census Bureau obtains school district boundaries,
+#' names, local education agency codes, grade ranges, and school district levels biennially from state
+#' education officials. The Census Bureau collects this information for the primary purpose of providing the
+#' U.S. Department of Education with annual estimates of the number of children in poverty within each
+#' school district, county, and state. This information serves as the basis for the Department of Education to
+#' determine the annual allocation of Title I funding to states and school districts.
+#'
+#' The Census Bureau creates pseudo-unified school districts for areas in which unified school districts do
+#' not exist.  Additionally, elementary and secondary school districts do not exist in all states.
+#' Please see the link for more information on how the Census Bureau creates the school district shapefiles.
 #'
 #' @param state The two-digit FIPS code (string) of the state you want. Can also
 #'        be state name or state abbreviation.
+#' @param type Specify whether you want to return a unified school district (the default, \code{'unified'}),
+#'        an elementary school district (\code{'elementary'}), or a secondary school district (\code{'secondary'}).
+#'        Please note: elementary and secondary school districts do not exist in all states
 #' @param ... arguments to be passed to the underlying `load_tiger` function, which is not exported.
 #'        Options include \code{refresh}, which specifies whether or not to re-download shapefiles
 #'        (defaults to \code{FALSE}), and \code{year}, the year for which you'd like to download data
 #'        (defaults to 2014).
 #' @family general area functions
+#' @seealso \url{http://www2.census.gov/geo/pdfs/maps-data/data/tiger/tgrshp2014/TGRSHP2014_TechDoc.pdf}
 #' @export
 #' @examples \dontrun{
 #' library(tigris)
@@ -201,19 +226,58 @@ tracts <- function(state, county = NULL, cb = FALSE, detailed = TRUE, ...) {
 #'               color = "black",
 #'               weight = 0.5)
 #' }
-school_districts <- function(state, ...) {
+school_districts <- function(state, type = 'unified', ...) {
 
   state <- validate_state(state)
 
   if (is.null(state)) stop("Invalid state", call.=FALSE)
 
-  url <- paste0("http://www2.census.gov/geo/tiger/TIGER2014/UNSD/tl_2014_", state, "_unsd.zip")
+  if (type == 'unified') {
+    type <- 'unsd'
+  } else if (type == 'elementary') {
+    type <- 'elsd'
+  } else if (type == 'secondary') {
+    type <- 'scsd'
+  } else {
+    stop("Invalid school district type.  Valid types are 'unified', 'elementary', and 'secondary'.", call. = FALSE)
+  }
 
-  return(load_tiger(url, tigris_type="school", ...))
+  url <- paste0("http://www2.census.gov/geo/tiger/TIGER2014/",
+                toupper(type),
+                "/tl_2014_",
+                state,
+                "_",
+                type,
+                ".zip")
+
+  return(load_tiger(url, tigris_type = type, ...))
 
 }
 
 #' Download a Census block groups shapefile into R, and optionally subset by county
+#'
+#' Description from the US Census Bureau (see link for source):
+#'
+#' Standard block groups are clusters of blocks within the same census tract that have the same first digit of
+#' their 4-character census block number. For example, blocks 3001, 3002, 3003… 3999 in census tract
+#' 1210.02 belong to Block Group 3. Due to boundary and feature changes that occur throughout the
+#' decade, current block groups do not always maintain these same block number to block group
+#' relationships. For example, block 3001 might move due to a census tract boundary change but the block
+#' number will not change, even if it does not still fall in block group 3. However, the GEOID for that block,
+#' identifying block group 3, would remain the same in the attribute information in the TIGER/Line Shapefiles
+#' because block GEOIDs are always built using the decennial geographic codes.
+#'
+#' Block groups delineated for the 2010 Census generally contain between 600 and 3,000 people. Most
+#' block groups were delineated by local participants in the Census Bureau's Participant Statistical Areas
+#' Program (PSAP). The Census Bureau delineated block groups only where a local or tribal government
+#' declined to participate or where the Census Bureau could not identify a potential local participant.
+#'
+#' A block group usually covers a contiguous area. Each census tract contains at least one block group and
+#' block groups are uniquely numbered within census tract. Within the standard census geographic
+#' hierarchy, block groups never cross county or census tract boundaries, but may cross the boundaries of
+#' county subdivisions, places, urban areas, voting districts, congressional districts, and American Indian,
+#' Alaska Native, and Native Hawaiian areas.
+#'
 #'
 #' @param state The two-digit FIPS code (string) of the state you want. Can also
 #'        be state name or state abbreviation.
@@ -229,7 +293,16 @@ school_districts <- function(state, ...) {
 #'        (defaults to \code{FALSE}), and \code{year}, the year for which you'd like to download data
 #'        (defaults to 2014).
 #' @family general area functions
+#' @seealso \url{http://www2.census.gov/geo/pdfs/maps-data/data/tiger/tgrshp2014/TGRSHP2014_TechDoc.pdf}
 #' @export
+#' @examples \dontrun{
+#' library(tigris)
+#' library(sp)
+#'
+#' benton_bgs <- block_groups("Oregon", "Benton")
+#'
+#' plot(benton_bgs)
+#' }
 block_groups <- function(state, county = NULL, cb = FALSE, detailed = TRUE, ...) {
 
   state <- validate_state(state)
@@ -296,6 +369,24 @@ block_groups <- function(state, county = NULL, cb = FALSE, detailed = TRUE, ...)
 #' @family general area functions
 #' @seealso \url{https://www.census.gov/geo/reference/zctas.html}
 #' @export
+#' @examples \dontrun{
+#' # Example: get ZCTAs that intersect the Memphis, TN urbanized area
+#'
+#' library(tigris)
+#' library(rgeos)
+#' library(sp)
+#'
+#' df <- zctas(cb = TRUE, starts_with = c("37", "38", "72"))
+#'
+#' uas <- urban_areas()
+#'
+#' memphis_ua <- uas[grep("Memphis", uas$NAME10), ]
+#'
+#' mem_zcta <- df[as.vector(gIntersects(df, memphis_ua, byid = TRUE)), ]
+#'
+#' plot(mem_zcta)
+#'
+#' }
 zctas <- function(cb = FALSE, starts_with = NULL, detailed = TRUE, ...) {
 
   if (detailed == FALSE) {
@@ -329,6 +420,17 @@ zctas <- function(cb = FALSE, starts_with = NULL, detailed = TRUE, ...) {
 
 #' Download a Census block shapefile into R
 #'
+#' Description from the US Census Bureau (see link for source):
+#'
+#' Census blocks are statistical areas bounded on all sides by visible features, such as streets, roads,
+#' streams, and railroad tracks, and by non-visible boundaries such as city, town, township, and county
+#' limits, and short line-of-sight extensions of streets and roads. Generally, census blocks are small in area;
+#' for example, a block in a city. Census blocks in suburban and rural areas may be large, irregular and
+#' bounded by a variety of features, such as roads, streams, and/or transmission line rights-of-way. In
+#' remote areas census blocks may encompass hundreds of square miles. Census blocks cover all territory
+#' in the United States, Puerto Rico, and the Island areas. Blocks do not cross the boundaries of any entity
+#' for which the Census Bureau tabulates data.
+#'
 #' This function will download an entire block shapefile for a selected state
 #' into R, and optionally subset by county. \strong{A warning:} Census block
 #' shapefiles are often very large, especially for large states - for example, the
@@ -346,7 +448,21 @@ zctas <- function(cb = FALSE, starts_with = NULL, detailed = TRUE, ...) {
 #'        (defaults to \code{FALSE}), and \code{year}, the year for which you'd like to download data
 #'        (defaults to 2014).
 #' @family general area functions
+#' @seealso \url{http://www2.census.gov/geo/pdfs/maps-data/data/tiger/tgrshp2014/TGRSHP2014_TechDoc.pdf}
 #' @export
+#' @examples \dontrun{#'
+#' # Simple example using Rose Island, American Samoa
+#' # Be careful with Census blocks for states!
+#'
+#' library(tigris)
+#'
+#' rose_island <- blocks(state = "AS", county = "Rose Island")
+#'
+#' leaflet(rose_island) %>%
+#'   addTiles() %>%
+#'   addPolygons()
+#'
+#' }
 blocks <- function(state, county = NULL, ...) {
 
   state <- validate_state(state)
