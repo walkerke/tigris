@@ -2,7 +2,7 @@
 
 Download and use Census TIGER shapefiles in R
 
-Current version: __0.0.8__ (updated 17 August 2015)
+Current version: __0.1__ (updated 8 October 2015)
 
 `tigris` is an R package that allows users to directly download and use TIGER/Line shapefiles (<https://www.census.gov/geo/maps-data/data/tiger-line.html>) from the US Census Bureau.  
 
@@ -11,6 +11,11 @@ To install the package, issue the following command in R:
 ```
 devtools::install_github('walkerke/tigris')
 ```
+
+__In Version 0.1:__
+
+* The `detailed` parameter is now deprecated; replace it with `cb = TRUE` to get cartographic boundary files.  When applicable, this allows users to get very-generalized cartographic boundary files by supplying `5m` or `20m` to the `resolution` parameter.  
+* There is much more documentation available!  Keep an eye out, we hope to have the package on CRAN soon.  
 
 __In Version 0.0.8__: 
 
@@ -35,7 +40,7 @@ library(sp)
 
 # Basic plot of US urbanized areas
 
-ua <- urban_areas(detailed = FALSE)
+ua <- urban_areas(cb = TRUE)
 
 plot(ua)
 
@@ -57,9 +62,3 @@ ua %>% leaflet() %>% addTiles() %>% addPolygons(popup = ~NAME10)
 
 For more information on how to use this package, please view the RPubs at <http://rpubs.com/walkerke/tigris>. 
 
-__Goals for 0.1 release and CRAN submission:__
-
-* All Census geographies supported
-* Better and more informative error handling
-* Improved and more complete documentation
-* More in this space as the package develops...
