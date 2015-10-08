@@ -15,8 +15,9 @@ Options include \code{refresh}, which specifies whether or not to re-download sh
 \description{
 From the US Census Bureau: "Tribal census tracts are relatively small statistical
 subdivisions of an American Indian reservation and/or
-off-reservation trust land (ORTL) and were defined by federally recognized tribal government officials in
-the Census Bureau’s Tribal Statistical Areas Program (TSAP) for the 2010 Census. If a tribal government
+off-reservation trust land (ORTL) and were defined by
+federally recognized tribal government officials in
+the Census Bureau's Tribal Statistical Areas Program (TSAP) for the 2010 Census. If a tribal government
 declined to participate in TSAP, the Census Bureau delineated tribal census tracts on the American
 Indian reservation and/or ORTL. Tribal census tracts are conceptually similar and equivalent to standard
 census tracts. Unlike standard census tracts, however, tribal census tracts may cross state, county, and
