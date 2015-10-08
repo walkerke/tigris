@@ -197,13 +197,13 @@ new_england <- function(type = 'necta', cb = FALSE, ...) {
 
     url <- "http://www2.census.gov/geo/tiger/TIGER2014/CNECTA/tl_2014_us_cnecta.zip"
 
-    return(load_tiger(url), tigris_type = "cnecta", ...)
+    return(load_tiger(url, tigris_type = "cnecta", ...))
 
   } else if (type == 'divisions') {
 
     url <- "http://www2.census.gov/geo/tiger/TIGER2014/NECTADIV/tl_2014_us_nectadiv.zip"
 
-    return(load_tiger(url), tigris_type = "nectadiv", ...)
+    return(load_tiger(url, tigris_type = "nectadiv", ...))
 
   } else {
 
