@@ -7,8 +7,8 @@ Authors@R: c(
       person(given="Kyle", family="Walker", email="kyle.walker@tcu.edu", role=c("aut", "cre")),
       person(given="Bob", family="Rudis", email="bob@rudis.net", role="ctb")
     )
-Description: Download TIGER shapefiles from the US Census Bureau and load into
-             R as Spatial DataFrames.
+Description: A package to download TIGER/Line shapefiles from the United States Census Bureau
+             and load into R as Spatial DataFrames.
 License: MIT + file LICENSE
 LazyData: TRUE
 Depends:
