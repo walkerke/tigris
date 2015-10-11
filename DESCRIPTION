@@ -1,6 +1,6 @@
 Package: tigris
 Type: Package
-Title: Load Census TIGER Geographic Data into R
+Title: Load Census TIGER/Line Shapefiles Into R
 Version: 0.1
 Date: 2015-10-08
 Authors@R: c(
