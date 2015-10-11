@@ -1,14 +1,20 @@
 # tigris
 
-[![Travis-CI Build Status](https://travis-ci.org/walkerke/tigris.svg?branch=master)](https://travis-ci.org/walkerke/tigris)
+[![Travis-CI Build Status](https://travis-ci.org/walkerke/tigris.svg?branch=master)](https://travis-ci.org/walkerke/tigris)![](http://www.r-pkg.org/badges/version/tigris)![](http://cranlogs.r-pkg.org/badges/grand-total/tigris)
 
 Download and use Census TIGER shapefiles in R
 
-Current version: __0.1__ (updated 8 October 2015)
+Current version: __0.1__ (updated 11 October 2015)
 
 `tigris` is an R package that allows users to directly download and use TIGER/Line shapefiles (<https://www.census.gov/geo/maps-data/data/tiger-line.html>) from the US Census Bureau.  
 
-To install the package, issue the following command in R: 
+To install the package from CRAN, issue the following command in R: 
+
+```
+install.packages('tigris')
+```
+
+Or, get the development version from GitHub: 
 
 ```
 devtools::install_github('walkerke/tigris')
