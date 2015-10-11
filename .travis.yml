@@ -8,8 +8,9 @@ r_binary_packages:
   - rgdal
 
 env:
- global:
-   - CRAN: http://cran.rstudio.com
+  global:
+    - NOT_CRAN=true
+before_install: echo "options(repos = c(CRAN='http://cran.rstudio.com'))" > ~/.Rprofile
 
 notifications:
   email:
