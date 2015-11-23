@@ -461,17 +461,29 @@ zctas <- function(cb = FALSE, starts_with = NULL, detailed = TRUE, ...) {
 #'   addPolygons()
 #'
 #' }
-blocks <- function(state, county = NULL, ...) {
+blocks <- function(state, county = NULL, year = 2014, ...) {
 
   state <- validate_state(state)
 
   if (is.null(state)) stop("Invalid state", call.=FALSE)
 
-  url <- paste0("http://www2.census.gov/geo/tiger/TIGER2014/TABBLOCK/tl_2014_",
-                state,
-                "_tabblock10.zip")
+  if (year >= 2014) {
+    url <- paste0("http://www2.census.gov/geo/tiger/TIGER2014/TABBLOCK/tl_2014_",
+                  state,
+                  "_tabblock10.zip")
+  } else if (year >= 2011) {
+    url <- paste0("http://www2.census.gov/geo/tiger/TIGER2014/TABBLOCK/tl_2014_",
+                  state,
+                  "_tabblock.zip")
+  } else if (year == 2010) {
+    url <- paste0("http://www2.census.gov/geo/tiger/TIGER2010/TABBLOCK/2010/tl_2014_",
+                  state,
+                  "_tabblock10.zip")
+  } else {
+    stop()
+  }
 
-  blks <- load_tiger(url, tigris_type="block", ...)
+  blks <- load_tiger(url, tigris_type="block", year = year, ...)
 
   if (!is.null(county)) {
 
