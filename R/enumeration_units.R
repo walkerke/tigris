@@ -441,10 +441,10 @@ zctas <- function(cb = FALSE, starts_with = NULL, detailed = TRUE, ...) {
 #' @param county The three-digit FIPS code (string) of the county you'd like to
 #'        subset for, or a vector of FIPS codes if you desire multiple counties.
 #'        Can also be a county name or vector of names.
+#' @param year The year for which you'd like to download data (defaults to 2014).
 #' @param ... arguments to be passed to the underlying `load_tiger` function, which is not exported.
 #'        Options include \code{refresh}, which specifies whether or not to re-download shapefiles
-#'        (defaults to \code{FALSE}), and \code{year}, the year for which you'd like to download data
-#'        (defaults to 2014).
+#'        (defaults to \code{FALSE}).
 #' @family general area functions
 #' @seealso \url{http://www2.census.gov/geo/pdfs/maps-data/data/tiger/tgrshp2014/TGRSHP2014_TechDoc.pdf}
 #' @export

@@ -4,7 +4,7 @@
 \alias{blocks}
 \title{Download a Census block shapefile into R}
 \usage{
-blocks(state, county = NULL, ...)
+blocks(state, county = NULL, year = 2014, ...)
 }
 \arguments{
 \item{state}{The two-digit FIPS code (string) of the state you want. Can also
@@ -14,10 +14,11 @@ be state name or state abbreviation.}
 subset for, or a vector of FIPS codes if you desire multiple counties.
 Can also be a county name or vector of names.}
 
+\item{year}{The year for which you'd like to download data (defaults to 2014).}
+
 \item{...}{arguments to be passed to the underlying `load_tiger` function, which is not exported.
 Options include \code{refresh}, which specifies whether or not to re-download shapefiles
-(defaults to \code{FALSE}), and \code{year}, the year for which you'd like to download data
-(defaults to 2014).}
+(defaults to \code{FALSE}).}
 }
 \description{
 Description from the US Census Bureau (see link for source): Census blocks are statistical areas
