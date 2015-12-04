@@ -4,7 +4,7 @@
 \alias{geo_join}
 \title{Easily merge a data frame to a spatial data frame}
 \usage{
-geo_join(spatial_data, data_frame, by_sp, by_df)
+geo_join(spatial_data, data_frame, by_sp, by_df, by = NULL, how = "left")
 }
 \arguments{
 \item{spatial_data}{A spatial data frame to which you want to merge data.}
@@ -14,6 +14,10 @@ geo_join(spatial_data, data_frame, by_sp, by_df)
 \item{by_sp}{The column name you'll use for the merge from your spatial data frame.}
 
 \item{by_df}{The column name you'll use for the merge from your regular data frame.}
+
+\item{by}{(optional) If a named argument is supplied to the by parameter, geo_join will assume that the join columns in the spatial data and data frame share the same name.}
+
+\item{how}{The type of join you'd like to perform.  The default, 'left', keeps all rows in the spatial data frame, and returns NA for unmatched rows.  The alternative, 'inner', retains only those rows in the spatial data frame that match rows from the target data frame.}
 }
 \value{
 a \code{SpatialXxxDataFrame} object
@@ -23,5 +27,32 @@ The pages of StackOverflow are littered with questions about how to merge a regu
 spatial data frame in R.  The \code{merge} function from the sp package operates under a strict set of
 assumptions, which if violated will break your data.  This function wraps a couple StackOverflow answers
 I've seen that work in a friendlier syntax.
+}
+\examples{
+\dontrun{
+
+library(rnaturalearth)
+library(WDI)
+library(tigris)
+
+dat <- WDI(country = "all", indicator = "SP.DYN.LE00.IN", start = 2012, end = 2012)
+
+dat$SP.DYN.LE00.IN <- round(dat$SP.DYN.LE00.IN, 1)
+
+countries <- ne_countries()
+
+countries2 <- geo_join(countries, dat, 'iso_a2', 'iso2c')
+
+nrow(countries2)
+
+## [1] 177
+
+countries3 <- geo_join(countries, dat, 'iso_a2', 'iso2c', how = 'inner')
+
+nrow(countries3)
+
+## [1] 169
+
+}
 }
 

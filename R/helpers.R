@@ -86,17 +86,63 @@ load_tiger <- function(url,
 #' @param data_frame A regular data frame that you want to merge to your spatial data.
 #' @param by_sp The column name you'll use for the merge from your spatial data frame.
 #' @param by_df The column name you'll use for the merge from your regular data frame.
+#' @param by (optional) If a named argument is supplied to the by parameter, geo_join will assume that the join columns in the spatial data and data frame share the same name.
+#' @param how The type of join you'd like to perform.  The default, 'left', keeps all rows in the spatial data frame, and returns NA for unmatched rows.  The alternative, 'inner', retains only those rows in the spatial data frame that match rows from the target data frame.
 #' @return a \code{SpatialXxxDataFrame} object
 #' @export
+#' @examples \dontrun{
+#'
+#' library(rnaturalearth)
+#' library(WDI)
+#' library(tigris)
+#'
+#' dat <- WDI(country = "all", indicator = "SP.DYN.LE00.IN", start = 2012, end = 2012)
+#'
+#' dat$SP.DYN.LE00.IN <- round(dat$SP.DYN.LE00.IN, 1)
+#'
+#' countries <- ne_countries()
+#'
+#' countries2 <- geo_join(countries, dat, 'iso_a2', 'iso2c')
+#'
+#' nrow(countries2)
+#'
+#' ## [1] 177
+#'
+#' countries3 <- geo_join(countries, dat, 'iso_a2', 'iso2c', how = 'inner')
+#'
+#' nrow(countries3)
+#'
+#' ## [1] 169
+#'
+#' }
+geo_join <- function(spatial_data, data_frame, by_sp, by_df, by = NULL, how = 'left') {
 
-geo_join <- function(spatial_data, data_frame, by_sp, by_df) {
+  if (!is.null(by)) {
+    by_sp <- by
+    by_df <- by
+  }
 
   spatial_data@data <- data.frame(spatial_data@data,
                                   data_frame[match(spatial_data@data[[by_sp]],
                                                    data_frame[[by_df]]), ])
 
-  return(spatial_data)
+  if (how == 'inner') {
 
+    matches <- match(spatial_data@data[[by_sp]], data_frame[[by_df]])
+
+    spatial_data <- spatial_data[!is.na(matches), ]
+
+    return(spatial_data)
+
+  } else if (how == 'left') {
+
+    return(spatial_data)
+
+  } else {
+
+    stop("The available options for `how` are 'left' and 'inner'.", call. = FALSE)
+
+  }
 
 }
 
