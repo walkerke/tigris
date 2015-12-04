@@ -4,7 +4,9 @@
 
 Download and use Census TIGER shapefiles in R
 
-Current version: __0.1__ (updated 11 October 2015)
+CRAN version: __0.1__ (updated 11 October 2015)
+
+Dev version: __0.1.1.9000__ (updated 4 December 2015)
 
 `tigris` is an R package that allows users to directly download and use TIGER/Line shapefiles (<https://www.census.gov/geo/maps-data/data/tiger-line.html>) from the US Census Bureau.  
 
@@ -49,6 +51,30 @@ ua %>% leaflet() %>% addTiles() %>% addPolygons(popup = ~NAME10)
 
 
 For more information on how to use this package, please view the RPubs at <http://rpubs.com/walkerke/tigris01>. 
+
+__In Version 0.1.1.9000__ (development version)
+
+* Enhancements to the `geo_join` function to merge tabular data frames to spatial data frames.  An optional parameter, `by`, allows you to supply one column name to merge on if the column names are the same.  For example: 
+```r
+joined_data <- geo_join(spatial_data, data_frame, by = 'common_column')
+```
+* `geo_join` also accommodates inner joins as well.  By supplying `'inner`' to the new `how` parameter, the resultant spatial data frame will retain only those rows that match the target tabular data frame.  For example: 
+```r
+library(rnaturalearth)
+library(WDI)
+library(tigris)
+
+dat <- WDI(country = "all",
+           indicator = "SP.DYN.LE00.IN",
+           start = 2012,
+           end = 2012)
+
+dat$SP.DYN.LE00.IN <- round(dat$SP.DYN.LE00.IN, 1)
+
+countries <- ne_countries()
+
+countries2 <- geo_join(countries, dat, 'iso_a2', 'iso2c', how = 'inner')
+```
 
 __In Version 0.1:__
 
