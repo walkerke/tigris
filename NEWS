@@ -1,0 +1,8 @@
+tigris 0.2
+-------------------------------------------------------
+
+* Enhancements to the geo_join function to merge tabular data frames to spatial data frames. An optional parameter, by, allows you to supply one column name to merge on if the column names are the same.
+
+* geo_join also accommodates inner joins as well. By supplying 'inner' to the new how parameter, the resultant spatial data frame will retain only those rows that match the target tabular data frame.
+
+* Various improvements and bug fixes.
