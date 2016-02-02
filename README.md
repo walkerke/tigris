@@ -4,9 +4,9 @@
 
 Download and use Census TIGER shapefiles in R
 
-CRAN version: __0.1__ (updated 11 October 2015)
+CRAN version: __0.2__ (updated 1 February 2016)
 
-Dev version: __0.1.1.9000__ (updated 4 December 2015)
+Dev version: __0.2.0.9000__ (updated 1 February 2016)
 
 `tigris` is an R package that allows users to directly download and use TIGER/Line shapefiles (<https://www.census.gov/geo/maps-data/data/tiger-line.html>) from the US Census Bureau.  
 
@@ -52,7 +52,7 @@ ua %>% leaflet() %>% addTiles() %>% addPolygons(popup = ~NAME10)
 
 For more information on how to use this package, please view the RPubs at <http://rpubs.com/walkerke/tigris01>. 
 
-__In Version 0.1.1.9000__ (development version)
+__In Version 0.2__
 
 * Enhancements to the `geo_join` function to merge tabular data frames to spatial data frames.  An optional parameter, `by`, allows you to supply one column name to merge on if the column names are the same.  For example: 
 ```r
