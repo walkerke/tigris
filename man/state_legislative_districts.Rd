@@ -48,6 +48,7 @@ leaflet(leg) \%>\%
 }
 }
 \seealso{
-Other legislative district functions: \code{\link{congressional_districts}}
+Other legislative district functions: \code{\link{congressional_districts}};
+  \code{\link{voting_districts}}
 }
 

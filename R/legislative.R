@@ -148,3 +148,42 @@ state_legislative_districts <- function(state, house = "upper", cb = FALSE, deta
   return(load_tiger(url, tigris_type="state_legislative_districts", ...))
 
 }
+
+#' Download a voting districts shapefile (2012 TIGER/Line) into R
+#'
+#' This function allows you to download a voting districts boundary file into R.  The voting districts
+#' shapefile is found in the 2012 TIGER/Line dataset, and has not been updated since then. The Census Bureau (see link
+#' for source) describes voting districts as follows: " 'Voting district' is the generic name for geographic
+#' entities such as precincts, wards, and election districts established by state and local governments for
+#' the purpose of conducting elections. States participating in the Census 2010 Redistricting Data Programs
+#' as part of Public Law 94-171 (1975) provided the Census Bureau with boundaries, codes, and names
+#' for their voting districts."
+#'
+#' @param state The state for which you'd like to retrieve data.  Can be a state name, state abbreviation, or FIPS code.
+#'
+#' @family legislative district functions
+#' @export
+#' @examples \dontrun{#'
+#' library(tigris)
+#' library(sp)
+#'
+#' ia <- voting_districts("Iowa")
+#'
+#' plot(ia)
+#'
+#' }
+voting_districts <- function(state) {
+
+  message("The voting districts shapefiles are from the 2012 TIGER/Line dataset.")
+
+  state <- validate_state(state)
+
+  if (is.null(state)) stop("Invalid state", call.=FALSE)
+
+  url <- paste0("http://www2.census.gov/geo/tiger/TIGER2012/VTD/tl_2012_",
+                state,
+                "_vtd10.zip")
+
+  return(load_tiger(url, tigris_type = 'voting_districts'))
+
+}

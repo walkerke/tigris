@@ -51,6 +51,7 @@ leaflet(cd114) \%>\%
 }
 }
 \seealso{
-Other legislative district functions: \code{\link{state_legislative_districts}}
+Other legislative district functions: \code{\link{state_legislative_districts}};
+  \code{\link{voting_districts}}
 }
 
