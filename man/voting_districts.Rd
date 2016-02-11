@@ -18,6 +18,17 @@ the purpose of conducting elections. States participating in the Census 2010 Red
 as part of Public Law 94-171 (1975) provided the Census Bureau with boundaries, codes, and names
 for their voting districts."
 }
+\examples{
+\dontrun{#'
+library(tigris)
+library(sp)
+
+ia <- voting_districts("Iowa")
+
+plot(ia)
+
+}
+}
 \seealso{
 Other legislative district functions: \code{\link{congressional_districts}};
   \code{\link{state_legislative_districts}}

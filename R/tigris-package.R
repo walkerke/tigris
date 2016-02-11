@@ -31,13 +31,20 @@ NULL
 #'
 #' The following functions are imported and then re-exported
 #' from the tigris package to enable use of the magrittr
-#' pipe operator with no additional library calls
+#' pipe operator and the sp plot method without any additional
+#' library calls
 #'
 #' @name tigris-exports
 NULL
-
+#'
 #' @importFrom magrittr %>%
 #' @name %>%
+#' @export
+#' @rdname tigris-exports
+NULL
+
+#' @importFrom sp plot
+#' @name plot
 #' @export
 #' @rdname tigris-exports
 NULL
