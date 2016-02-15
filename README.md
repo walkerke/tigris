@@ -26,7 +26,6 @@ __Basic usage:__
 
 ```r
 library(tigris)
-library(sp)
 
 # Basic plot of US urbanized areas
 
@@ -52,7 +51,13 @@ ua %>% leaflet() %>% addTiles() %>% addPolygons(popup = ~NAME10)
 
 For more information on how to use this package, please view the RPubs at <http://rpubs.com/walkerke/tigris01>. 
 
-__In Version 0.2__
+__In Version 0.2.2__:
+
+* New function, `voting_districts()`, enables users to retrieve voting district (electoral precinct) shapefiles from the 2012 TIGER/Line dataset.
+
+* tigris now imports and re-exports the `plot()` function from the sp package so that Census shapefiles can be plotted without having to load sp explicitly.
+
+__In Version 0.2__:
 
 * Enhancements to the `geo_join` function to merge tabular data frames to spatial data frames.  An optional parameter, `by`, allows you to supply one column name to merge on if the column names are the same.  For example: 
 ```r

@@ -1,3 +1,11 @@
+tigris 0.2.2
+-------------------------------------------------------
+
+* New function, `voting_districts()`, enables users to retrieve voting district (electoral precinct) shapefiles from the 2012 TIGER/Line dataset.
+
+* tigris now imports and re-exports the `plot()` function from the sp package so that Census shapefiles can be plotted without having to load sp explicitly.
+
+
 tigris 0.2
 -------------------------------------------------------
 
