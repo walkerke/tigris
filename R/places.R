@@ -44,11 +44,11 @@ places <- function(state, cb = FALSE, detailed = TRUE, ...) {
   if (is.null(state)) stop("Invalid state", call.=FALSE)
 
   if (detailed == FALSE) {
-    cb = TRUE
+    cb <- TRUE
     message("The `detailed` parameter is deprecated.  Use `cb` instead.")
   }
 
-  if (detailed == FALSE) {
+  if (cb == TRUE) {
     url <- paste0("http://www2.census.gov/geo/tiger/GENZ2015/shp/cb_2015_",
                   state, "_place_500k.zip")
   } else {

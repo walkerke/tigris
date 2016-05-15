@@ -472,7 +472,7 @@ blocks <- function(state, county = NULL, year = 2015, ...) {
                   state,
                   "_tabblock10.zip")
   } else if (year == 2010) {
-    url <- paste0("http://www2.census.gov/geo/tiger/TIGER2010/TABBLOCK/2010/tl_2015_",
+    url <- paste0("http://www2.census.gov/geo/tiger/TIGER2010/TABBLOCK/2010/tl_2010_",
                   state,
                   "_tabblock10.zip")
   } else {

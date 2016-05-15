@@ -89,7 +89,11 @@ tribal_subdivisions_national <- function(year = 2015, ...) {
 
   } else {
 
-    url <- "http://www2.census.gov/geo/tiger/TIGER2015/AITS/tl_2015_us_aitsn.zip"
+    url <- paste0("http://www2.census.gov/geo/tiger/TIGER",
+                  as.character(year),
+                  "/AITS/tl_",
+                  as.character(year),
+                  "_us_aitsn.zip")
 
   }
 
