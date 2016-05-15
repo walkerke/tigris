@@ -10,13 +10,13 @@
 load_tiger <- function(url,
                        refresh=getOption("tigris_refresh", FALSE),
                        tigris_type=NULL,
-                       year = getOption("tigris_year", 2014)) {
+                       year = getOption("tigris_year", 2015)) {
 
-  if (year != 2014) {
+  if (year != 2015) {
 
-    url <- gsub("2014", as.character(year), url)
+    url <- gsub("2015", as.character(year), url)
 
-    url <- gsub("shp/", "", url) # A little dirty but should work for now for CB files prior to 2014
+    url <- gsub("shp/", "", url) # A little dirty but should work for now for CB files prior to 2015
 
   }
 

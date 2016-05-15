@@ -1,3 +1,8 @@
+tigris 0.3
+-------------------------------------------------------
+
+* tigris now defaults to the 2015 TIGER/Line shapefiles and cartographic boundary shapefiles, the most recent shapefiles available from the US Census Bureau.
+
 tigris 0.2.2
 -------------------------------------------------------
 

@@ -1,8 +1,8 @@
 #' Download a congressional districts shapefile for the 114th Congress into R
 #'
 #' Description from the US Census Bureau (see link for source):
-#' The 2014 TIGER/Line Shapefiles contain the 114th Congressional Districts. All congressional districts
-#' appearing in the 2014 TIGER/Line Shapefiles reflect the information provided to the Census Bureau by
+#' The 2015 TIGER/Line Shapefiles contain the 114th Congressional Districts. All congressional districts
+#' appearing in the 2015 TIGER/Line Shapefiles reflect the information provided to the Census Bureau by
 #' the states by May 1, 2014. The 114th Congressional District shapefile contains the areas in effect
 #' January 2015 to 2017.
 #'
@@ -23,8 +23,9 @@
 #' @param ... arguments to be passed to the underlying `load_tiger` function, which is not exported.
 #'        Options include \code{refresh}, which specifies whether or not to re-download shapefiles
 #'        (defaults to \code{FALSE}), and \code{year}, the year for which you'd like to download data
-#'        (defaults to 2014).
+#'        (defaults to 2015).
 #' @family legislative district functions
+#' @seealso \url{http://www2.census.gov/geo/pdfs/maps-data/data/tiger/tgrshp2015/TGRSHP2015_TechDoc.pdf}
 #' @export
 #' @examples \dontrun{
 #' library(tigris)
@@ -49,12 +50,12 @@ congressional_districts <- function(cb = FALSE, resolution = '500k', detailed = 
 
   if (cb == TRUE) {
 
-    url <- paste0("http://www2.census.gov/geo/tiger/GENZ2014/shp/cb_2014_us_cd114_",
+    url <- paste0("http://www2.census.gov/geo/tiger/GENZ2015/shp/cb_2015_us_cd114_",
                   resolution,
                   ".zip")
   } else {
 
-    url <- "http://www2.census.gov/geo/tiger/TIGER2014/CD/tl_2014_us_cd114.zip"
+    url <- "http://www2.census.gov/geo/tiger/TIGER2015/CD/tl_2015_us_cd114.zip"
 
   }
 
@@ -82,7 +83,7 @@ congressional_districts <- function(cb = FALSE, resolution = '500k', detailed = 
 #' @param ... arguments to be passed to the underlying `load_tiger` function, which is not exported.
 #'        Options include \code{refresh}, which specifies whether or not to re-download shapefiles
 #'        (defaults to \code{FALSE}), and \code{year}, the year for which you'd like to download data
-#'        (defaults to 2014).
+#'        (defaults to 2015).
 #' @family legislative district functions
 #' @export
 #' @examples \dontrun{
@@ -127,7 +128,7 @@ state_legislative_districts <- function(state, house = "upper", cb = FALSE, deta
 
   if (cb == TRUE) {
 
-    url <- paste0("http://www2.census.gov/geo/tiger/GENZ2014/shp/cb_2014_",
+    url <- paste0("http://www2.census.gov/geo/tiger/GENZ2015/shp/cb_2015_",
                   state,
                   "_",
                   type,
@@ -135,9 +136,9 @@ state_legislative_districts <- function(state, house = "upper", cb = FALSE, deta
 
   } else {
 
-    url <- paste0("http://www2.census.gov/geo/tiger/TIGER2014/",
+    url <- paste0("http://www2.census.gov/geo/tiger/TIGER2015/",
                   toupper(type),
-                  "/tl_2014_",
+                  "/tl_2015_",
                   state,
                   "_",
                   type,
