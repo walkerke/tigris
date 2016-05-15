@@ -21,12 +21,12 @@ This parameter will be removed in a future release.}
 \item{...}{arguments to be passed to the underlying `load_tiger` function, which is not exported.
 Options include \code{refresh}, which specifies whether or not to re-download shapefiles
 (defaults to \code{FALSE}), and \code{year}, the year for which you'd like to download data
-(defaults to 2014).}
+(defaults to 2015).}
 }
 \description{
 Description from the US Census Bureau (see link for source):
-The 2014 TIGER/Line Shapefiles contain the 114th Congressional Districts. All congressional districts
-appearing in the 2014 TIGER/Line Shapefiles reflect the information provided to the Census Bureau by
+The 2015 TIGER/Line Shapefiles contain the 114th Congressional Districts. All congressional districts
+appearing in the 2015 TIGER/Line Shapefiles reflect the information provided to the Census Bureau by
 the states by May 1, 2014. The 114th Congressional District shapefile contains the areas in effect
 January 2015 to 2017.
 }
@@ -51,6 +51,8 @@ leaflet(cd114) \%>\%
 }
 }
 \seealso{
+\url{http://www2.census.gov/geo/pdfs/maps-data/data/tiger/tgrshp2015/TGRSHP2015_TechDoc.pdf}
+
 Other legislative district functions: \code{\link{state_legislative_districts}};
   \code{\link{voting_districts}}
 }

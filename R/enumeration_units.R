@@ -39,7 +39,7 @@
 #' @param ... arguments to be passed to the underlying `load_tiger` function, which is not exported.
 #'        Options include \code{refresh}, which specifies whether or not to re-download shapefiles
 #'        (defaults to \code{FALSE}), and \code{year}, the year for which you'd like to download data
-#'        (defaults to 2014).
+#'        (defaults to 2015).
 #' @export
 #' @family general area functions
 #' @seealso \url{https://www.census.gov/geo/reference/gtc/gtc_cou.html}
@@ -71,12 +71,12 @@ counties <- function(state = NULL, cb = FALSE, resolution = '500k', detailed = T
     }
 
   if (cb == TRUE) {
-    url <- paste0("http://www2.census.gov/geo/tiger/GENZ2014/shp/cb_2014_us_county_",
+    url <- paste0("http://www2.census.gov/geo/tiger/GENZ2015/shp/cb_2015_us_county_",
                   resolution,
                   ".zip")
   } else {
 
-    url <- "http://www2.census.gov/geo/tiger/TIGER2014/COUNTY/tl_2014_us_county.zip"
+    url <- "http://www2.census.gov/geo/tiger/TIGER2015/COUNTY/tl_2015_us_county.zip"
 
   }
 
@@ -133,7 +133,7 @@ counties <- function(state = NULL, cb = FALSE, resolution = '500k', detailed = T
 #' @param ... arguments to be passed to the underlying `load_tiger` function, which is not exported.
 #'        Options include \code{refresh}, which specifies whether or not to re-download shapefiles
 #'        (defaults to \code{FALSE}), and \code{year}, the year for which you'd like to download data
-#'        (defaults to 2014).
+#'        (defaults to 2015).
 #' @family general area functions
 #' @seealso \url{https://www.census.gov/geo/reference/gtc/gtc_ct.html}
 #' @export
@@ -160,13 +160,13 @@ tracts <- function(state, county = NULL, cb = FALSE, detailed = TRUE, ...) {
 
   if (cb == TRUE) {
 
-    url <- paste0("http://www2.census.gov/geo/tiger/GENZ2014/shp/cb_2014_",
+    url <- paste0("http://www2.census.gov/geo/tiger/GENZ2015/shp/cb_2015_",
                   state,
                   "_tract_500k.zip")
 
   } else {
 
-    url <- paste0("http://www2.census.gov/geo/tiger/TIGER2014/TRACT/tl_2014_",
+    url <- paste0("http://www2.census.gov/geo/tiger/TIGER2015/TRACT/tl_2015_",
                   state,
                   "_tract.zip")
   }
@@ -210,9 +210,9 @@ tracts <- function(state, county = NULL, cb = FALSE, detailed = TRUE, ...) {
 #' @param ... arguments to be passed to the underlying `load_tiger` function, which is not exported.
 #'        Options include \code{refresh}, which specifies whether or not to re-download shapefiles
 #'        (defaults to \code{FALSE}), and \code{year}, the year for which you'd like to download data
-#'        (defaults to 2014).
+#'        (defaults to 2015).
 #' @family general area functions
-#' @seealso \url{http://www2.census.gov/geo/pdfs/maps-data/data/tiger/tgrshp2014/TGRSHP2014_TechDoc.pdf}
+#' @seealso \url{http://www2.census.gov/geo/pdfs/maps-data/data/tiger/tgrshp2015/TGRSHP2015_TechDoc.pdf}
 #' @export
 #' @examples \dontrun{
 #' library(tigris)
@@ -242,9 +242,9 @@ school_districts <- function(state, type = 'unified', ...) {
     stop("Invalid school district type.  Valid types are 'unified', 'elementary', and 'secondary'.", call. = FALSE)
   }
 
-  url <- paste0("http://www2.census.gov/geo/tiger/TIGER2014/",
+  url <- paste0("http://www2.census.gov/geo/tiger/TIGER2015/",
                 toupper(type),
-                "/tl_2014_",
+                "/tl_2015_",
                 state,
                 "_",
                 type,
@@ -290,9 +290,9 @@ school_districts <- function(state, type = 'unified', ...) {
 #' @param ... arguments to be passed to the underlying `load_tiger` function, which is not exported.
 #'        Options include \code{refresh}, which specifies whether or not to re-download shapefiles
 #'        (defaults to \code{FALSE}), and \code{year}, the year for which you'd like to download data
-#'        (defaults to 2014).
+#'        (defaults to 2015).
 #' @family general area functions
-#' @seealso \url{http://www2.census.gov/geo/pdfs/maps-data/data/tiger/tgrshp2014/TGRSHP2014_TechDoc.pdf}
+#' @seealso \url{http://www2.census.gov/geo/pdfs/maps-data/data/tiger/tgrshp2015/TGRSHP2015_TechDoc.pdf}
 #' @export
 #' @examples \dontrun{
 #' library(tigris)
@@ -315,13 +315,13 @@ block_groups <- function(state, county = NULL, cb = FALSE, detailed = TRUE, ...)
 
   if (cb == TRUE) {
 
-    url <- paste0("http://www2.census.gov/geo/tiger/GENZ2014/shp/cb_2014_",
+    url <- paste0("http://www2.census.gov/geo/tiger/GENZ2015/shp/cb_2015_",
                   state,
                   "_bg_500k.zip")
 
   } else {
 
-    url <- paste0("http://www2.census.gov/geo/tiger/TIGER2014/BG/tl_2014_",
+    url <- paste0("http://www2.census.gov/geo/tiger/TIGER2015/BG/tl_2015_",
                   state,
                   "_bg.zip")
   }
@@ -364,7 +364,7 @@ block_groups <- function(state, county = NULL, cb = FALSE, detailed = TRUE, ...)
 #' @param ... arguments to be passed to the underlying `load_tiger` function, which is not exported.
 #'        Options include \code{refresh}, which specifies whether or not to re-download shapefiles
 #'        (defaults to \code{FALSE}), and \code{year}, the year for which you'd like to download data
-#'        (defaults to 2014).
+#'        (defaults to 2015).
 #' @family general area functions
 #' @seealso \url{https://www.census.gov/geo/reference/zctas.html}
 #' @export
@@ -394,9 +394,9 @@ zctas <- function(cb = FALSE, starts_with = NULL, detailed = TRUE, ...) {
   }
 
   if (cb == TRUE) {
-    url <- "http://www2.census.gov/geo/tiger/GENZ2014/shp/cb_2014_us_zcta510_500k.zip"
+    url <- "http://www2.census.gov/geo/tiger/GENZ2015/shp/cb_2015_us_zcta510_500k.zip"
   } else {
-    url <- "http://www2.census.gov/geo/tiger/TIGER2014/ZCTA5/tl_2014_us_zcta510.zip"
+    url <- "http://www2.census.gov/geo/tiger/TIGER2015/ZCTA5/tl_2015_us_zcta510.zip"
   }
 
   zcta <- load_tiger(url, tigris_type="zcta", ...)
@@ -441,12 +441,12 @@ zctas <- function(cb = FALSE, starts_with = NULL, detailed = TRUE, ...) {
 #' @param county The three-digit FIPS code (string) of the county you'd like to
 #'        subset for, or a vector of FIPS codes if you desire multiple counties.
 #'        Can also be a county name or vector of names.
-#' @param year The year for which you'd like to download data (defaults to 2014).
+#' @param year The year for which you'd like to download data (defaults to 2015).
 #' @param ... arguments to be passed to the underlying `load_tiger` function, which is not exported.
 #'        Options include \code{refresh}, which specifies whether or not to re-download shapefiles
 #'        (defaults to \code{FALSE}).
 #' @family general area functions
-#' @seealso \url{http://www2.census.gov/geo/pdfs/maps-data/data/tiger/tgrshp2014/TGRSHP2014_TechDoc.pdf}
+#' @seealso \url{http://www2.census.gov/geo/pdfs/maps-data/data/tiger/tgrshp2015/TGRSHP2015_TechDoc.pdf}
 #' @export
 #' @examples \dontrun{#'
 #' # Simple example using Rose Island, American Samoa
@@ -461,22 +461,18 @@ zctas <- function(cb = FALSE, starts_with = NULL, detailed = TRUE, ...) {
 #'   addPolygons()
 #'
 #' }
-blocks <- function(state, county = NULL, year = 2014, ...) {
+blocks <- function(state, county = NULL, year = 2015, ...) {
 
   state <- validate_state(state)
 
   if (is.null(state)) stop("Invalid state", call.=FALSE)
 
-  if (year >= 2014) {
-    url <- paste0("http://www2.census.gov/geo/tiger/TIGER2014/TABBLOCK/tl_2014_",
+  if (year >= 2011) {
+    url <- paste0("http://www2.census.gov/geo/tiger/TIGER2015/TABBLOCK/tl_2015_",
                   state,
                   "_tabblock10.zip")
-  } else if (year >= 2011) {
-    url <- paste0("http://www2.census.gov/geo/tiger/TIGER2014/TABBLOCK/tl_2014_",
-                  state,
-                  "_tabblock.zip")
   } else if (year == 2010) {
-    url <- paste0("http://www2.census.gov/geo/tiger/TIGER2010/TABBLOCK/2010/tl_2014_",
+    url <- paste0("http://www2.census.gov/geo/tiger/TIGER2010/TABBLOCK/2010/tl_2015_",
                   state,
                   "_tabblock10.zip")
   } else {

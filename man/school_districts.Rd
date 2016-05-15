@@ -17,7 +17,7 @@ Please note: elementary and secondary school districts do not exist in all state
 \item{...}{arguments to be passed to the underlying `load_tiger` function, which is not exported.
 Options include \code{refresh}, which specifies whether or not to re-download shapefiles
 (defaults to \code{FALSE}), and \code{year}, the year for which you'd like to download data
-(defaults to 2014).}
+(defaults to 2015).}
 }
 \description{
 From the US Census Bureau (see link for source):
@@ -49,7 +49,7 @@ leaflet(schools) \%>\%
 }
 }
 \seealso{
-\url{http://www2.census.gov/geo/pdfs/maps-data/data/tiger/tgrshp2014/TGRSHP2014_TechDoc.pdf}
+\url{http://www2.census.gov/geo/pdfs/maps-data/data/tiger/tgrshp2015/TGRSHP2015_TechDoc.pdf}
 
 Other general area functions: \code{\link{block_groups}};
   \code{\link{blocks}}; \code{\link{counties}};

@@ -4,7 +4,7 @@
 \alias{blocks}
 \title{Download a Census block shapefile into R}
 \usage{
-blocks(state, county = NULL, year = 2014, ...)
+blocks(state, county = NULL, year = 2015, ...)
 }
 \arguments{
 \item{state}{The two-digit FIPS code (string) of the state you want. Can also
@@ -14,7 +14,7 @@ be state name or state abbreviation.}
 subset for, or a vector of FIPS codes if you desire multiple counties.
 Can also be a county name or vector of names.}
 
-\item{year}{The year for which you'd like to download data (defaults to 2014).}
+\item{year}{The year for which you'd like to download data (defaults to 2015).}
 
 \item{...}{arguments to be passed to the underlying `load_tiger` function, which is not exported.
 Options include \code{refresh}, which specifies whether or not to re-download shapefiles
@@ -55,7 +55,7 @@ leaflet(rose_island) \%>\%
 }
 }
 \seealso{
-\url{http://www2.census.gov/geo/pdfs/maps-data/data/tiger/tgrshp2014/TGRSHP2014_TechDoc.pdf}
+\url{http://www2.census.gov/geo/pdfs/maps-data/data/tiger/tgrshp2015/TGRSHP2015_TechDoc.pdf}
 
 Other general area functions: \code{\link{block_groups}};
   \code{\link{counties}}; \code{\link{places}};
