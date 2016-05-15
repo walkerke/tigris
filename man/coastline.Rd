@@ -4,13 +4,14 @@
 \alias{coastline}
 \title{Download a shapefile of the US coastline into R}
 \usage{
-coastline(...)
+coastline(year = 2015, ...)
 }
 \arguments{
+\item{year}{The year of the dataset (defaults to 2015)}
+
 \item{...}{arguments to be passed to the underlying `load_tiger` function, which is not exported.
 Options include \code{refresh}, which specifies whether or not to re-download shapefiles
-(defaults to \code{FALSE}), and \code{year}, the year for which you'd like to download data
-(defaults to 2014).}
+(defaults to \code{FALSE}).}
 }
 \description{
 Download a shapefile of the US coastline into R

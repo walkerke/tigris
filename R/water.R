@@ -13,9 +13,9 @@
 #' @param ... arguments to be passed to the underlying `load_tiger` function, which is not exported.
 #'        Options include \code{refresh}, which specifies whether or not to re-download shapefiles
 #'        (defaults to \code{FALSE}), and \code{year}, the year for which you'd like to download data
-#'        (defaults to 2014).
+#'        (defaults to 2015).
 #' @family water functions
-#' @seealso \url{http://www2.census.gov/geo/pdfs/maps-data/data/tiger/tgrshp2014/TGRSHP2014_TechDoc.pdf}
+#' @seealso \url{http://www2.census.gov/geo/pdfs/maps-data/data/tiger/tgrshp2015/TGRSHP2015_TechDoc.pdf}
 #' @export
 #' @examples \dontrun{
 #' library(tigris)
@@ -36,7 +36,7 @@ area_water <- function(state, county, ...) {
 
   if (is.null(county) | length(county) > 1) stop("Invalid county", call. = FALSE)
 
-  url <- paste0("http://www2.census.gov/geo/tiger/TIGER2014/AREAWATER/tl_2014_",
+  url <- paste0("http://www2.census.gov/geo/tiger/TIGER2015/AREAWATER/tl_2015_",
                 state,
                 county,
                 "_areawater.zip")
@@ -62,9 +62,9 @@ area_water <- function(state, county, ...) {
 #' @param ... arguments to be passed to the underlying `load_tiger` function, which is not exported.
 #'        Options include \code{refresh}, which specifies whether or not to re-download shapefiles
 #'        (defaults to \code{FALSE}), and \code{year}, the year for which you'd like to download data
-#'        (defaults to 2014).
+#'        (defaults to 2015).
 #' @family water functions
-#' @seealso \url{http://www2.census.gov/geo/pdfs/maps-data/data/tiger/tgrshp2014/TGRSHP2014_TechDoc.pdf}
+#' @seealso \url{http://www2.census.gov/geo/pdfs/maps-data/data/tiger/tgrshp2015/TGRSHP2015_TechDoc.pdf}
 #' @export
 #' @examples \dontrun{
 #' library(tigris)
@@ -85,7 +85,7 @@ linear_water <- function(state, county, ...) {
 
   if (is.null(county)) stop("Invalid county", call. = FALSE)
 
-  url <- paste0("http://www2.census.gov/geo/tiger/TIGER2014/LINEARWATER/tl_2014_",
+  url <- paste0("http://www2.census.gov/geo/tiger/TIGER2015/LINEARWATER/tl_2015_",
                 state,
                 county,
                 "_linearwater.zip")
@@ -96,10 +96,10 @@ linear_water <- function(state, county, ...) {
 
 #' Download a shapefile of the US coastline into R
 #'
+#' @param year The year of the dataset (defaults to 2015)
 #' @param ... arguments to be passed to the underlying `load_tiger` function, which is not exported.
 #'        Options include \code{refresh}, which specifies whether or not to re-download shapefiles
-#'        (defaults to \code{FALSE}), and \code{year}, the year for which you'd like to download data
-#'        (defaults to 2014).
+#'        (defaults to \code{FALSE}).
 #' @export
 #' @family water functions
 #' @examples \dontrun{
@@ -130,9 +130,17 @@ linear_water <- function(state, county, ...) {
 #' gg <- gg + theme_map()
 #' gg
 #' }
-coastline <- function(...) {
+coastline <- function(year = 2015, ...) {
 
-  url <- "http://www2.census.gov/geo/tiger/TIGER2014/COAST/tl_2014_us_coastline.zip"
+  if (year == 2015) {
+
+    url <- "http://www2.census.gov/geo/tiger/TIGER2015/COASTLINE/tl_2015_us_coastline.zip"
+
+  } else {
+
+    url <- "http://www2.census.gov/geo/tiger/TIGER2015/COAST/tl_2015_us_coastline.zip"
+
+  }
 
   return(load_tiger(url, tigris_type="coastline", ...))
 

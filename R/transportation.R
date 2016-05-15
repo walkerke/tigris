@@ -13,9 +13,9 @@
 #' @param ... arguments to be passed to the underlying `load_tiger` function, which is not exported.
 #'        Options include \code{refresh}, which specifies whether or not to re-download shapefiles
 #'        (defaults to \code{FALSE}), and \code{year}, the year for which you'd like to download data
-#'        (defaults to 2014).
+#'        (defaults to 2015).
 #' @family transportation functions
-#' @seealso \url{http://www2.census.gov/geo/pdfs/maps-data/data/tiger/tgrshp2014/TGRSHP2014_TechDoc.pdf}
+#' @seealso \url{http://www2.census.gov/geo/pdfs/maps-data/data/tiger/tgrshp2015/TGRSHP2015_TechDoc.pdf}
 #' @export
 #' @examples \dontrun{
 #' library(tigris)
@@ -54,7 +54,7 @@ roads <- function(state, county, ...) {
 
   if (is.null(county)) stop("Invalid county", call. = FALSE)
 
-  url <- paste0("http://www2.census.gov/geo/tiger/TIGER2014/ROADS/tl_2014_",
+  url <- paste0("http://www2.census.gov/geo/tiger/TIGER2015/ROADS/tl_2015_",
                 state,
                 county,
                 "_roads.zip")
@@ -74,9 +74,9 @@ roads <- function(state, county, ...) {
 #' @param ... arguments to be passed to the underlying `load_tiger` function, which is not exported.
 #'        Options include \code{refresh}, which specifies whether or not to re-download shapefiles
 #'        (defaults to \code{FALSE}), and \code{year}, the year for which you'd like to download data
-#'        (defaults to 2014).
+#'        (defaults to 2015).
 #' @family transportation functions
-#' @seealso \url{http://www2.census.gov/geo/pdfs/maps-data/data/tiger/tgrshp2014/TGRSHP2014_TechDoc.pdf}
+#' @seealso \url{http://www2.census.gov/geo/pdfs/maps-data/data/tiger/tgrshp2015/TGRSHP2015_TechDoc.pdf}
 #' @export
 #' @examples \dontrun{
 #' library(tigris)
@@ -89,7 +89,7 @@ roads <- function(state, county, ...) {
 #' }
 primary_roads <- function(...) {
 
-  url <- "http://www2.census.gov/geo/tiger/TIGER2014/PRIMARYROADS/tl_2014_us_primaryroads.zip"
+  url <- "http://www2.census.gov/geo/tiger/TIGER2015/PRIMARYROADS/tl_2015_us_primaryroads.zip"
 
   return(load_tiger(url, tigris_type="primary_roads", ...))
 
@@ -112,9 +112,9 @@ primary_roads <- function(...) {
 #' @param ... arguments to be passed to the underlying `load_tiger` function, which is not exported.
 #'        Options include \code{refresh}, which specifies whether or not to re-download shapefiles
 #'        (defaults to \code{FALSE}), and \code{year}, the year for which you'd like to download data
-#'        (defaults to 2014).
+#'        (defaults to 2015).
 #' @family transportation functions
-#' @seealso \url{http://www2.census.gov/geo/pdfs/maps-data/data/tiger/tgrshp2014/TGRSHP2014_TechDoc.pdf}
+#' @seealso \url{http://www2.census.gov/geo/pdfs/maps-data/data/tiger/tgrshp2015/TGRSHP2015_TechDoc.pdf}
 #' @export
 #' @examples \dontrun{
 #' library(tigris)
@@ -131,7 +131,7 @@ primary_secondary_roads <- function(state, ...) {
 
   if (is.null(state)) stop("Invalid state", call.=FALSE)
 
-  url <- paste0("http://www2.census.gov/geo/tiger/TIGER2014/PRISECROADS/tl_2014_",
+  url <- paste0("http://www2.census.gov/geo/tiger/TIGER2015/PRISECROADS/tl_2015_",
                 state,
                 "_prisecroads.zip")
 
@@ -147,9 +147,9 @@ primary_secondary_roads <- function(state, ...) {
 #' @param ... arguments to be passed to the underlying `load_tiger` function, which is not exported.
 #'        Options include \code{refresh}, which specifies whether or not to re-download shapefiles
 #'        (defaults to \code{FALSE}), and \code{year}, the year for which you'd like to download data
-#'        (defaults to 2014).
+#'        (defaults to 2015).
 #' @family transportation functions
-#' @seealso \url{http://www2.census.gov/geo/pdfs/maps-data/data/tiger/tgrshp2014/TGRSHP2014_TechDoc.pdf}
+#' @seealso \url{http://www2.census.gov/geo/pdfs/maps-data/data/tiger/tgrshp2015/TGRSHP2015_TechDoc.pdf}
 #' @export
 #' @examples \dontrun{
 #' library(tigris)
@@ -162,7 +162,7 @@ primary_secondary_roads <- function(state, ...) {
 #' }
 rails <- function(...) {
 
-  url <- "http://www2.census.gov/geo/tiger/TIGER2014/RAILS/tl_2014_us_rails.zip"
+  url <- "http://www2.census.gov/geo/tiger/TIGER2015/RAILS/tl_2015_us_rails.zip"
 
   return(load_tiger(url, tigris_type="rails", ...))
 

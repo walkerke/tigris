@@ -63,10 +63,10 @@ native_areas <- function(cb = FALSE, detailed = TRUE, ...) {
 #' recognized American Indian reservations and/or off-reservation trust lands or Oklahoma tribal statistical
 #' areas (OTSAs)."  For more information, please see the link provided.
 #'
+#' @param year The year for which you'd like to download data (defaults to 2015).
 #' @param ... arguments to be passed to the underlying `load_tiger` function, which is not exported.
 #'        Options include \code{refresh}, which specifies whether or not to re-download shapefiles
-#'        (defaults to \code{FALSE}), and \code{year}, the year for which you'd like to download data
-#'        (defaults to 2015).
+#'        (defaults to \code{FALSE}).
 #' @family native/tribal geometries functions
 #' @seealso \url{http://www2.census.gov/geo/pdfs/maps-data/data/tiger/tgrshp2015/TGRSHP2015_TechDoc.pdf}
 #' @export
@@ -81,9 +81,17 @@ native_areas <- function(cb = FALSE, detailed = TRUE, ...) {
 #'               color = "black",
 #'               weight = 0.5)
 #' }
-tribal_subdivisions_national <- function(...) {
+tribal_subdivisions_national <- function(year = 2015, ...) {
 
-  url <- "http://www2.census.gov/geo/tiger/TIGER2015/AITS/tl_2015_us_aitsn.zip"
+  if (year == 2015) {
+
+    url <- "http://www2.census.gov/geo/tiger/TIGER2015/AITSN/tl_2015_us_aitsn.zip"
+
+  } else {
+
+    url <- "http://www2.census.gov/geo/tiger/TIGER2015/AITS/tl_2015_us_aitsn.zip"
+
+  }
 
   return(load_tiger(url, ...))
 

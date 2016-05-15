@@ -15,7 +15,7 @@
 #' @param ... arguments to be passed to the underlying `load_tiger` function, which is not exported.
 #'        Options include \code{refresh}, which specifies whether or not to re-download shapefiles
 #'        (defaults to \code{FALSE}), and \code{year}, the year for which you'd like to download data
-#'        (defaults to 2014).
+#'        (defaults to 2015).
 #' @export
 #' @family general area functions
 #' @seealso \url{https://www.census.gov/geo/reference/gtc/gtc_state.html}
@@ -44,11 +44,11 @@ states <- function(cb = FALSE, resolution = '500k', detailed = TRUE, ...) {
   }
 
   if (cb == TRUE) {
-    url <- paste0("http://www2.census.gov/geo/tiger/GENZ2014/shp/cb_2014_us_state_",
+    url <- paste0("http://www2.census.gov/geo/tiger/GENZ2015/shp/cb_2015_us_state_",
                   resolution,
                   ".zip")
   } else {
-    url <- "http://www2.census.gov/geo/tiger/TIGER2014/STATE/tl_2014_us_state.zip"
+    url <- "http://www2.census.gov/geo/tiger/TIGER2015/STATE/tl_2015_us_state.zip"
   }
 
   return(load_tiger(url, tigris_type="state", ...))
