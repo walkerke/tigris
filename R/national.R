@@ -21,7 +21,7 @@ regions <- function(resolution = '500k') {
     stop("Invalid value for resolution. Valid values are '500k', '5m', and '20m'.", call. = FALSE)
   }
 
-  url <- paste0("http://www2.census.gov/geo/tiger/GENZ2014/shp/cb_2014_us_region_",
+  url <- paste0("http://www2.census.gov/geo/tiger/GENZ2015/shp/cb_2015_us_region_",
                 resolution,
                 ".zip")
 
@@ -54,7 +54,7 @@ divisions <- function(resolution = '500k') {
     stop("Invalid value for resolution. Valid values are '500k', '5m', and '20m'.", call. = FALSE)
   }
 
-  url <- paste0("http://www2.census.gov/geo/tiger/GENZ2014/shp/cb_2014_us_division_",
+  url <- paste0("http://www2.census.gov/geo/tiger/GENZ2015/shp/cb_2015_us_division_",
                 resolution,
                 ".zip")
 
@@ -87,7 +87,7 @@ nation <- function(resolution = '5m') {
     stop("Invalid value for resolution. Valid values are '5m', and '20m'.", call. = FALSE)
   }
 
-  url <- paste0("http://www2.census.gov/geo/tiger/GENZ2014/shp/cb_2014_us_nation_",
+  url <- paste0("http://www2.census.gov/geo/tiger/GENZ2015/shp/cb_2015_us_nation_",
                 resolution,
                 ".zip")
 

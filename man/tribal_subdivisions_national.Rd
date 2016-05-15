@@ -10,7 +10,7 @@ tribal_subdivisions_national(...)
 \item{...}{arguments to be passed to the underlying `load_tiger` function, which is not exported.
 Options include \code{refresh}, which specifies whether or not to re-download shapefiles
 (defaults to \code{FALSE}), and \code{year}, the year for which you'd like to download data
-(defaults to 2014).}
+(defaults to 2015).}
 }
 \description{
 Definition from the US Census Bureau: "American Indian Tribal Subdivisions (AITS) are legally defined
@@ -32,7 +32,7 @@ leaflet(trib) \%>\%
 }
 }
 \seealso{
-\url{http://www2.census.gov/geo/pdfs/maps-data/data/tiger/tgrshp2014/TGRSHP2014_TechDoc.pdf}
+\url{http://www2.census.gov/geo/pdfs/maps-data/data/tiger/tgrshp2015/TGRSHP2015_TechDoc.pdf}
 
 Other native/tribal geometries functions: \code{\link{alaska_native_regional_corporations}};
   \code{\link{native_areas}};
