@@ -18,7 +18,7 @@
 #' @param ... arguments to be passed to the underlying `load_tiger` function, which is not exported.
 #'        Options include \code{refresh}, which specifies whether or not to re-download shapefiles
 #'        (defaults to \code{FALSE}), and \code{year}, the year for which you'd like to download data
-#'        (defaults to 2014).
+#'        (defaults to 2015).
 #' @family metro area functions
 #' @seealso \url{http://www.census.gov/population/metro/}
 #' @export
@@ -34,11 +34,11 @@ core_based_statistical_areas <- function(cb = FALSE, resolution = '500k', detail
   }
 
   if (cb == TRUE) {
-    url <- paste0("http://www2.census.gov/geo/tiger/GENZ2014/shp/cb_2014_us_cbsa_",
+    url <- paste0("http://www2.census.gov/geo/tiger/GENZ2015/shp/cb_2015_us_cbsa_",
                   resolution,
                   ".zip")
   } else {
-    url <- "http://www2.census.gov/geo/tiger/TIGER2014/CBSA/tl_2014_us_cbsa.zip"
+    url <- "http://www2.census.gov/geo/tiger/TIGER2015/CBSA/tl_2015_us_cbsa.zip"
   }
 
   return(load_tiger(url, tigris_type="cbsa", ...))
@@ -59,9 +59,9 @@ core_based_statistical_areas <- function(cb = FALSE, resolution = '500k', detail
 #' @param ... arguments to be passed to the underlying `load_tiger` function, which is not exported.
 #'        Options include \code{refresh}, which specifies whether or not to re-download shapefiles
 #'        (defaults to \code{FALSE}), and \code{year}, the year for which you'd like to download data
-#'        (defaults to 2014).
+#'        (defaults to 2015).
 #' @family metro area functions
-#' @seealso \url{http://www2.census.gov/geo/pdfs/maps-data/data/tiger/tgrshp2014/TGRSHP2014_TechDoc.pdf}
+#' @seealso \url{http://www2.census.gov/geo/pdfs/maps-data/data/tiger/tgrshp2015/TGRSHP2015_TechDoc.pdf}
 #' @export
 urban_areas <- function(cb = FALSE, detailed = TRUE, ...) {
 
@@ -71,9 +71,9 @@ urban_areas <- function(cb = FALSE, detailed = TRUE, ...) {
   }
 
   if (cb == TRUE) {
-    url <- "http://www2.census.gov/geo/tiger/GENZ2014/shp/cb_2014_us_ua10_500k.zip"
+    url <- "http://www2.census.gov/geo/tiger/GENZ2015/shp/cb_2015_us_ua10_500k.zip"
   } else {
-    url <- "http://www2.census.gov/geo/tiger/TIGER2014/UAC/tl_2014_us_uac10.zip"
+    url <- "http://www2.census.gov/geo/tiger/TIGER2015/UAC/tl_2015_us_uac10.zip"
   }
 
   return(load_tiger(url, tigris_type="urban", ...))
@@ -96,9 +96,9 @@ urban_areas <- function(cb = FALSE, detailed = TRUE, ...) {
 #' @param ... arguments to be passed to the underlying `load_tiger` function, which is not exported.
 #'        Options include \code{refresh}, which specifies whether or not to re-download shapefiles
 #'        (defaults to \code{FALSE}), and \code{year}, the year for which you'd like to download data
-#'        (defaults to 2014).
+#'        (defaults to 2015).
 #' @family metro area functions
-#' @seealso \url{http://www2.census.gov/geo/pdfs/maps-data/data/tiger/tgrshp2014/TGRSHP2014_TechDoc.pdf}
+#' @seealso \url{http://www2.census.gov/geo/pdfs/maps-data/data/tiger/tgrshp2015/TGRSHP2015_TechDoc.pdf}
 #' @export
 combined_statistical_areas <- function(cb = FALSE, resolution = '500k', detailed = TRUE, ...) {
 
@@ -112,11 +112,11 @@ combined_statistical_areas <- function(cb = FALSE, resolution = '500k', detailed
   }
 
   if (cb == TRUE) {
-    url <- paste0("http://www2.census.gov/geo/tiger/GENZ2014/shp/cb_2014_us_csa_",
+    url <- paste0("http://www2.census.gov/geo/tiger/GENZ2015/shp/cb_2015_us_csa_",
                   resolution,
                   ".zip")
   } else {
-    url <- "http://www2.census.gov/geo/tiger/TIGER2014/CSA/tl_2014_us_csa.zip"
+    url <- "http://www2.census.gov/geo/tiger/TIGER2015/CSA/tl_2015_us_csa.zip"
   }
 
   return(load_tiger(url, tigris_type="csa", ...))
@@ -131,13 +131,13 @@ combined_statistical_areas <- function(cb = FALSE, resolution = '500k', detailed
 #' @param ... arguments to be passed to the underlying `load_tiger` function, which is not exported.
 #'        Options include \code{refresh}, which specifies whether or not to re-download shapefiles
 #'        (defaults to \code{FALSE}), and \code{year}, the year for which you'd like to download data
-#'        (defaults to 2014).
+#'        (defaults to 2015).
 #' @family metro area functions
-#' @seealso \url{http://www2.census.gov/geo/pdfs/maps-data/data/tiger/tgrshp2014/TGRSHP2014_TechDoc.pdf}
+#' @seealso \url{http://www2.census.gov/geo/pdfs/maps-data/data/tiger/tgrshp2015/TGRSHP2015_TechDoc.pdf}
 #' @export
 metro_divisions <- function(...) {
 
-  url <- "http://www2.census.gov/geo/tiger/TIGER2014/METDIV/tl_2014_us_metdiv.zip"
+  url <- "http://www2.census.gov/geo/tiger/TIGER2015/METDIV/tl_2015_us_metdiv.zip"
 
   return(load_tiger(url, tigris_type="metro", ...))
 
@@ -164,9 +164,9 @@ metro_divisions <- function(...) {
 #' @param ... arguments to be passed to the underlying `load_tiger` function, which is not exported.
 #'        Options include \code{refresh}, which specifies whether or not to re-download shapefiles
 #'        (defaults to \code{FALSE}), and \code{year}, the year for which you'd like to download data
-#'        (defaults to 2014).
+#'        (defaults to 2015).
 #' @family metro area functions
-#' @seealso \url{http://www2.census.gov/geo/pdfs/maps-data/data/tiger/tgrshp2014/TGRSHP2014_TechDoc.pdf}
+#' @seealso \url{http://www2.census.gov/geo/pdfs/maps-data/data/tiger/tgrshp2015/TGRSHP2015_TechDoc.pdf}
 #' @export
 #' @examples \dontrun{
 #' library(tigris)
@@ -183,11 +183,11 @@ new_england <- function(type = 'necta', cb = FALSE, ...) {
 
     if (cb == TRUE) {
 
-      url <- "http://www2.census.gov/geo/tiger/GENZ2014/shp/cb_2014_us_necta_500k.zip"
+      url <- "http://www2.census.gov/geo/tiger/GENZ2015/shp/cb_2015_us_necta_500k.zip"
 
     } else {
 
-      url <- "http://www2.census.gov/geo/tiger/TIGER2014/NECTA/tl_2014_us_necta.zip"
+      url <- "http://www2.census.gov/geo/tiger/TIGER2015/NECTA/tl_2015_us_necta.zip"
 
     }
 
@@ -195,13 +195,13 @@ new_england <- function(type = 'necta', cb = FALSE, ...) {
 
   } else if (type == 'combined') {
 
-    url <- "http://www2.census.gov/geo/tiger/TIGER2014/CNECTA/tl_2014_us_cnecta.zip"
+    url <- "http://www2.census.gov/geo/tiger/TIGER2015/CNECTA/tl_2015_us_cnecta.zip"
 
     return(load_tiger(url, tigris_type = "cnecta", ...))
 
   } else if (type == 'divisions') {
 
-    url <- "http://www2.census.gov/geo/tiger/TIGER2014/NECTADIV/tl_2014_us_nectadiv.zip"
+    url <- "http://www2.census.gov/geo/tiger/TIGER2015/NECTADIV/tl_2015_us_nectadiv.zip"
 
     return(load_tiger(url, tigris_type = "nectadiv", ...))
 

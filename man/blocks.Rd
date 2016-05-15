@@ -45,6 +45,7 @@ have to first download by state and then subset.
 # Be careful with Census blocks for states!
 
 library(tigris)
+library(leaflet)
 
 rose_island <- blocks(state = "AS", county = "Rose Island")
 

@@ -51,7 +51,6 @@ Alaska Native, and Native Hawaiian areas.
 \examples{
 \dontrun{
 library(tigris)
-library(sp)
 
 benton_bgs <- block_groups("Oregon", "Benton")
 

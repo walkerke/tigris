@@ -10,7 +10,7 @@ military(...)
 \item{...}{arguments to be passed to the underlying `load_tiger` function, which is not exported.
 Options include \code{refresh}, which specifies whether or not to re-download shapefiles
 (defaults to \code{FALSE}), and \code{year}, the year for which you'd like to download data
-(defaults to 2014).}
+(defaults to 2015).}
 }
 \description{
 Description from the US Census Bureau: "The Census Bureau includes landmarks
@@ -24,10 +24,10 @@ see Section 3.12, Landmarks (Area and Point)."
 This file does not include the three point landmarks identified as military installation features in the
 MAF/TIGER database. These point landmarks are included in the point landmark shapefile.
 Although almost all military installations have assigned 8-character National Standard (GNIS) codes, the
-Census Bureau has not loaded most of this data into the MAF/TIGER database. The 2014 military
+Census Bureau has not loaded most of this data into the MAF/TIGER database. The 2015 military
 shapefiles contain few values in the ANSICODE field.
 }
 \seealso{
-\url{http://www2.census.gov/geo/pdfs/maps-data/data/tiger/tgrshp2014/TGRSHP2014_TechDoc_Ch3.pdf}
+\url{http://www2.census.gov/geo/pdfs/maps-data/data/tiger/tgrshp2015/TGRSHP2015_TechDoc_Ch3.pdf}
 }
 

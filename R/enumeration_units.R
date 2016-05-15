@@ -296,7 +296,6 @@ school_districts <- function(state, type = 'unified', ...) {
 #' @export
 #' @examples \dontrun{
 #' library(tigris)
-#' library(sp)
 #'
 #' benton_bgs <- block_groups("Oregon", "Benton")
 #'
@@ -453,6 +452,7 @@ zctas <- function(cb = FALSE, starts_with = NULL, detailed = TRUE, ...) {
 #' # Be careful with Census blocks for states!
 #'
 #' library(tigris)
+#' library(leaflet)
 #'
 #' rose_island <- blocks(state = "AS", county = "Rose Island")
 #'

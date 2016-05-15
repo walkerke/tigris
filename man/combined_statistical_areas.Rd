@@ -21,7 +21,7 @@ This parameter will be removed in a future release.}
 \item{...}{arguments to be passed to the underlying `load_tiger` function, which is not exported.
 Options include \code{refresh}, which specifies whether or not to re-download shapefiles
 (defaults to \code{FALSE}), and \code{year}, the year for which you'd like to download data
-(defaults to 2014).}
+(defaults to 2015).}
 }
 \description{
 Combined statistical areas are "two or more adjacent CBSAs that have significant
@@ -29,7 +29,7 @@ employment interchanges."  In turn, CSAs are composed of multiple metropolitan a
 not be compared with individual core-based statistical areas.
 }
 \seealso{
-\url{http://www2.census.gov/geo/pdfs/maps-data/data/tiger/tgrshp2014/TGRSHP2014_TechDoc.pdf}
+\url{http://www2.census.gov/geo/pdfs/maps-data/data/tiger/tgrshp2015/TGRSHP2015_TechDoc.pdf}
 
 Other metro area functions: \code{\link{core_based_statistical_areas}};
   \code{\link{metro_divisions}}; \code{\link{new_england}};

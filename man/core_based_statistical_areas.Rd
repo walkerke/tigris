@@ -21,7 +21,7 @@ This parameter will be removed in a future release.}
 \item{...}{arguments to be passed to the underlying `load_tiger` function, which is not exported.
 Options include \code{refresh}, which specifies whether or not to re-download shapefiles
 (defaults to \code{FALSE}), and \code{year}, the year for which you'd like to download data
-(defaults to 2014).}
+(defaults to 2015).}
 }
 \description{
 Core-based statistical areas include both metropolitan areas and micropolitan areas.  The US Census

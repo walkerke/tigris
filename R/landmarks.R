@@ -10,18 +10,18 @@
 #' This file does not include the three point landmarks identified as military installation features in the
 #' MAF/TIGER database. These point landmarks are included in the point landmark shapefile.
 #' Although almost all military installations have assigned 8-character National Standard (GNIS) codes, the
-#' Census Bureau has not loaded most of this data into the MAF/TIGER database. The 2014 military
+#' Census Bureau has not loaded most of this data into the MAF/TIGER database. The 2015 military
 #' shapefiles contain few values in the ANSICODE field.
 #' @param ... arguments to be passed to the underlying `load_tiger` function, which is not exported.
 #'        Options include \code{refresh}, which specifies whether or not to re-download shapefiles
 #'        (defaults to \code{FALSE}), and \code{year}, the year for which you'd like to download data
-#'        (defaults to 2014).
-#' @seealso \url{http://www2.census.gov/geo/pdfs/maps-data/data/tiger/tgrshp2014/TGRSHP2014_TechDoc_Ch3.pdf}
+#'        (defaults to 2015).
+#' @seealso \url{http://www2.census.gov/geo/pdfs/maps-data/data/tiger/tgrshp2015/TGRSHP2015_TechDoc_Ch3.pdf}
 #' @export
 
 military <- function(...) {
 
-  url <- "http://www2.census.gov/geo/tiger/TIGER2014/MIL/tl_2014_us_mil.zip"
+  url <- "http://www2.census.gov/geo/tiger/TIGER2015/MIL/tl_2015_us_mil.zip"
 
   return(load_tiger(url, tigris_type = "military", ...))
 
@@ -50,25 +50,25 @@ military <- function(...) {
 #' Landmarks may be identified by a MAF/TIGER feature class code only and may not have a name. Each
 #' landmark has a unique area landmark identifier (AREAID) or point landmark identifier (POINTID) value.
 #'
-#' @seealso \url{http://www2.census.gov/geo/pdfs/maps-data/data/tiger/tgrshp2014/TGRSHP2014_TechDoc_Ch3.pdf}
+#' @seealso \url{http://www2.census.gov/geo/pdfs/maps-data/data/tiger/tgrshp2015/TGRSHP2015_TechDoc_Ch3.pdf}
 #'
 #' @param state The state for which you'd like to download the landmarks
 #' @param type Whether you would like to download point landmarks (\code{"point"}) or area landmarks (\code{"area"}).                   Defaults to \code{"point"}.
 #' @param ... arguments to be passed to the underlying `load_tiger` function, which is not exported.
 #'        Options include \code{refresh}, which specifies whether or not to re-download shapefiles
 #'        (defaults to \code{FALSE}), and \code{year}, the year for which you'd like to download data
-#'        (defaults to 2014).
+#'        (defaults to 2015).
 #' @export
 landmarks <- function(state, type = "point", ...) {
 
   state <- validate_state(state)
 
   if (type == "area") {
-    url <- paste0("http://www2.census.gov/geo/tiger/TIGER2014/AREALM/tl_2014_", state, "_arealm.zip")
+    url <- paste0("http://www2.census.gov/geo/tiger/TIGER2015/AREALM/tl_2015_", state, "_arealm.zip")
     return(load_tiger(url, tigris_type = "area_landmark", ...))
 
   } else if (type == "point") {
-    url <- paste0("http://www2.census.gov/geo/tiger/TIGER2014/POINTLM/tl_2014_", state, "_pointlm.zip")
+    url <- paste0("http://www2.census.gov/geo/tiger/TIGER2015/POINTLM/tl_2015_", state, "_pointlm.zip")
     return(load_tiger(url, tigris_type = "point_landmark", ...))
 
   } else {
