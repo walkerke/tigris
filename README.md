@@ -6,7 +6,7 @@ Download and use Census TIGER shapefiles in R
 
 CRAN version: __0.2__ (updated 1 February 2016)
 
-Dev version: __0.2.1.9000__ (updated 11 February 2016)
+Dev version: __0.3.0.9000__ (updated 16 May 2016)
 
 `tigris` is an R package that allows users to directly download and use TIGER/Line shapefiles (<https://www.census.gov/geo/maps-data/data/tiger-line.html>) from the US Census Bureau.  
 
@@ -50,6 +50,20 @@ ua %>% leaflet() %>% addTiles() %>% addPolygons(popup = ~NAME10)
 
 
 For more information on how to use this package, please view the RPubs at <http://rpubs.com/walkerke/tigris01>. 
+
+__In Version 0.3__: 
+
+* tigris now defaults to the 2015 TIGER/Line shapefiles and the 2015 cartographic boundary shapefiles (with `cb = TRUE` for selected functions).  
+
+* The `refresh` option can now be used to fix corrupted downloads.  If you receive the error: 
+
+```
+Error in ogrInfo(dsn = dsn, layer = layer, encoding = encoding, use_iconv = use_iconv,  : 
+  Cannot open layer 
+```
+
+call the function again, but with the argument `refresh = TRUE`, which will re-download the shapefile.  
+
 
 __In Version 0.2.2__:
 

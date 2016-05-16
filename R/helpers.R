@@ -40,7 +40,7 @@ load_tiger <- function(url,
 
       file_loc <- file.path(cache_dir, tiger_file)
 
-      if (!file.exists(file_loc)) {
+      if (refresh | !file.exists(file_loc)) {
         try(GET(url,
                 write_disk(file_loc, overwrite=refresh),
                 progress(type="down")), silent=TRUE)
