@@ -85,9 +85,17 @@ counties <- function(state = NULL, cb = FALSE, resolution = '500k', detailed = T
   state <- unlist(sapply(state, validate_state, USE.NAMES=FALSE))
 
   if (!is.null(state)) {
-    return(ctys[ctys$STATEFP %in% state,])
+
+    sub <- ctys[ctys$STATEFP %in% state,]
+
+    attr(sub, 'tigris') <- 'county'
+
+    return(sub)
+
   } else {
+
     return(ctys)
+
   }
 
 }

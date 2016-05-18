@@ -160,7 +160,11 @@ state_legislative_districts <- function(state, house = "upper", cb = FALSE, deta
 #' as part of Public Law 94-171 (1975) provided the Census Bureau with boundaries, codes, and names
 #' for their voting districts."
 #'
-#' @param state The state for which you'd like to retrieve data.  Can be a state name, state abbreviation, or FIPS code.
+#' @param state The state for which you'd like to retrieve data.  Can be a state name,
+#'        state abbreviation, or FIPS code.
+#' @param ... arguments to be passed to the underlying `load_tiger` function, which is not exported.
+#'        Options include \code{refresh}, which specifies whether or not to re-download shapefiles
+#'        (defaults to \code{FALSE}).
 #'
 #' @family legislative district functions
 #' @export
@@ -185,6 +189,6 @@ voting_districts <- function(state) {
                 state,
                 "_vtd10.zip")
 
-  return(load_tiger(url, tigris_type = 'voting_districts'))
+  return(load_tiger(url, tigris_type = 'voting_districts', ...))
 
 }

@@ -7,7 +7,12 @@
 voting_districts(state)
 }
 \arguments{
-\item{state}{The state for which you'd like to retrieve data.  Can be a state name, state abbreviation, or FIPS code.}
+\item{state}{The state for which you'd like to retrieve data.  Can be a state name,
+state abbreviation, or FIPS code.}
+
+\item{...}{arguments to be passed to the underlying `load_tiger` function, which is not exported.
+       Options include \code{refresh}, which specifies whether or not to re-download shapefiles
+       (defaults to \code{FALSE}).}
 }
 \description{
 This function allows you to download a voting districts boundary file into R.  The voting districts
