@@ -1,10 +1,10 @@
 # tigris
 
-[![Travis-CI Build Status](https://travis-ci.org/walkerke/tigris.svg?branch=master)](https://travis-ci.org/walkerke/tigris)  ![](http://www.r-pkg.org/badges/version/tigris)  ![](http://cranlogs.r-pkg.org/badges/grand-total/tigris)
+[![Travis-CI Build Status](https://travis-ci.org/walkerke/tigris.svg?branch=master)](https://travis-ci.org/walkerke/tigris)  ![](http://www.r-pkg.org/badges/version/tigris)  ![](http://cranlogs.r-pkg.org/badges/tigris)
 
 Download and use Census TIGER/Line shapefiles in R
 
-CRAN version: __0.2.2__ (updated 15 February 2016)
+CRAN version: __0.3__ (updated 16 May 2016)
 
 Dev version: __0.3.0.9000__ (updated 16 May 2016)
 
@@ -21,6 +21,21 @@ Or, get the development version from GitHub:
 ```
 devtools::install_github('walkerke/tigris')
 ```
+
+__In Version 0.3__: 
+
+* tigris now defaults to the 2015 TIGER/Line shapefiles and the 2015 cartographic boundary shapefiles (with `cb = TRUE` for selected functions).  
+
+* The `refresh` option can now be used to fix corrupted downloads.  If you receive the error: 
+
+```
+Error in ogrInfo(dsn = dsn, layer = layer, encoding = encoding, use_iconv = use_iconv,  : 
+  Cannot open layer 
+```
+
+call the function again, but with the argument `refresh = TRUE`, which will re-download the shapefile. 
+
+For more information on how to use this package, please view the RPubs at <http://rpubs.com/walkerke/tigris01>. 
 
 __Basic usage:__
 
@@ -48,69 +63,48 @@ ua %>% leaflet() %>% addTiles() %>% addPolygons(popup = ~NAME10)
 
 ![Interactive map](https://dl.dropbox.com/s/c4ozukojr7ittwv/atlanta.PNG)
 
+__Available datasets:__
 
-For more information on how to use this package, please view the RPubs at <http://rpubs.com/walkerke/tigris01>. 
+Please note: cartographic boundary files in __tigris__ are only available going back to 2013.  
 
-__In Version 0.3__: 
+| Function | Datasets available | Years available |
+|------------------------------------------|------------------------------------------------|------------------------------|
+| nation | cartographic (1:5m; 1:20m) | 2013, 2014, 2015 |
+| divisions | cartographic (1:500k; 1:5m; 1:20m) | 2013, 2014, 2015 |
+| regions | cartographic (1:500k; 1:5m; 1:20m) | 2013, 2014, 2015 |
+| states | TIGER/Line; cartographic (1:500k; 1:5m; 1:20m) | 2011, 2012, 2013, 2014, 2015 |
+| counties | TIGER/Line; cartographic (1:500k; 1:5m; 1:20m) | 2011, 2012, 2013, 2014, 2015 |
+| tracts | TIGER/Line; cartographic (1:500k) | 2011, 2012, 2013, 2014, 2015 |
+| block_groups | TIGER/Line; cartographic (1:500k) | 2011, 2012, 2013, 2014, 2015 |
+| blocks | TIGER/Line | 2011, 2012, 2013, 2014, 2015 |
+| places | TIGER/Line; cartographic (1:500k) | 2011, 2012, 2013, 2014, 2015 |
+| pumas | TIGER/Line; cartographic (1:500k) | 2012, 2013, 2014, 2015 |
+| school_districts | TIGER/Line | 2011, 2012, 2013, 2014, 2015 |
+| zctas | TIGER/Line; cartographic (1:500k) | 2012, 2013, 2014, 2015 |
+| congressional_districts (114th Congress) | TIGER/Line; cartographic (1:500k; 1:5m; 1:20m) | 2014, 2015 |
+| state_legislative_districts | TIGER/Line; cartographic (1:500k) | 2011, 2012, 2013, 2014, 2015 |
+| voting_districts | TIGER/Line | 2012 |
+| area_water | TIGER/Line | 2011, 2012, 2013, 2014, 2015 |
+| linear_water | TIGER/Line | 2011, 2012, 2013, 2014, 2015 |
+| coastline | TIGER/Line | 2013, 2014, 2015 |
+| core_based_statistical_areas | TIGER/Line; cartographic (1:500k; 1:5m; 1:20m) | 2011, 2012, 2013, 2014, 2015 |
+| combined_statistical_areas | TIGER/Line; cartographic (1:500k; 1:5m; 1:20m) | 2011, 2012, 2013, 2014, 2015 |
+| metro_divisions | TIGER/Line | 2011, 2012, 2013, 2014, 2015 |
+| new_england | TIGER/Line; cartographic (1:500k) | 2011, 2012, 2013, 2014, 2015 |
+| urban_areas | TIGER/Line; cartographic (1:500k) | 2012, 2013, 2014, 2015 |
+| primary_roads | TIGER/Line | 2011, 2012, 2013, 2014, 2015 |
+| primary_secondary_roads | TIGER/Line | 2011, 2012, 2013, 2014, 2015 |
+| roads | TIGER/Line | 2011, 2012, 2013, 2014, 2015 |
+| rails | TIGER/Line | 2011, 2012, 2013, 2014, 2015 |
+| native_areas | TIGER/Line; cartographic (1:500k) | 2011, 2012, 2013, 2014, 2015 |
+| alaska_native_regional_corporations | TIGER/Line; cartographic (1:500k) | 2011, 2012, 2013, 2014, 2015 |
+| tribal_block_groups | TIGER/Line | 2011, 2012, 2013, 2014, 2015 |
+| tribal_census_tracts | TIGER/Line | 2011, 2012, 2013, 2014, 2015 |
+| tribal_subdivisions_national | TIGER/Line | 2011, 2012, 2013, 2014, 2015 |
+| landmarks | TIGER/Line | 2011, 2012, 2013, 2014, 2015 |
+| military | TIGER/Line | 2011, 2012, 2013, 2014, 2015 |
 
-* tigris now defaults to the 2015 TIGER/Line shapefiles and the 2015 cartographic boundary shapefiles (with `cb = TRUE` for selected functions).  
-
-* The `refresh` option can now be used to fix corrupted downloads.  If you receive the error: 
-
-```
-Error in ogrInfo(dsn = dsn, layer = layer, encoding = encoding, use_iconv = use_iconv,  : 
-  Cannot open layer 
-```
-
-call the function again, but with the argument `refresh = TRUE`, which will re-download the shapefile.  
 
 
-__In Version 0.2.2__:
 
-* New function, `voting_districts()`, enables users to retrieve voting district (electoral precinct) shapefiles from the 2012 TIGER/Line dataset.
-
-* tigris now imports and re-exports the `plot()` function from the sp package so that Census shapefiles can be plotted without having to load sp explicitly.
-
-__In Version 0.2__:
-
-* Enhancements to the `geo_join` function to merge tabular data frames to spatial data frames.  An optional parameter, `by`, allows you to supply one column name to merge on if the column names are the same.  For example: 
-```r
-joined_data <- geo_join(spatial_data, data_frame, by = 'common_column')
-```
-* `geo_join` also accommodates inner joins as well.  By supplying `'inner`' to the new `how` parameter, the resultant spatial data frame will retain only those rows that match the target tabular data frame.  For example: 
-```r
-library(rnaturalearth)
-library(WDI)
-library(tigris)
-
-dat <- WDI(country = "all",
-           indicator = "SP.DYN.LE00.IN",
-           start = 2012,
-           end = 2012)
-
-dat$SP.DYN.LE00.IN <- round(dat$SP.DYN.LE00.IN, 1)
-
-countries <- ne_countries()
-
-countries2 <- geo_join(countries, dat, 'iso_a2', 'iso2c', how = 'inner')
-```
-
-__In Version 0.1:__
-
-* The `detailed` parameter is now deprecated; replace it with `cb = TRUE` to get cartographic boundary files.  When applicable, this allows users to get very-generalized cartographic boundary files by supplying `5m` or `20m` to the `resolution` parameter.  
-* There is much more documentation available!  Keep an eye out, we hope to have the package on CRAN soon.  
-
-__In Version 0.0.8__: 
-
-* `tigris` now caches shapefile downloads!  Download the file once, and `tigris` will store the downloaded shapefile in a special directory so you don't have to re-download every time.  To turn off this behavior, change the option with `options(tigris_use_cache = FALSE)`.  
-* `tigris` is also now much smarter when handling geography arguments.  For example, `tracts("TX", "Dallas")` will get you Census tracts for Dallas County, TX without having to know the FIPS code.  
-* You can combine multiple `tigris` objects of the same type with the new `rbind_tigris` function
-* Multiple years are now supported!  `tigris` defaults to 2014, but you can change years with the new `tigris_year` option.  For example, specifying `options(tigris_year = 2015)` will tell `tigris` to download the new 2015 TIGER/Line files in your R session.  A caution: not everything is available in every year; for example, generalized cartographic boundary files are not released for 2015 yet, so the `detailed = FALSE` argument won't work.  
-* There is much more - download the package and try it out!
-
-__Version 0.0.5 release highlights:__
-
-* Many new geographies are available for download - state legislative districts, urbanized areas, Native American areas, and lots more!
-* For many geographies (e.g. states, counties, Census tracts, etc.) an optional argument, `detailed = FALSE`, can be supplied to download simplified (smaller) shapefiles.  While not recommended for analysis, their smaller size makes them better for mapping.  
-* A new function, `lookup_code`, allows you to look up FIPS codes for states and counties interactively.  
-* Zip Code Tabulation Areas (ZCTAs) have an optional parameter, `starts_with`, that allows you to supply an argument to return only those ZCTAs that begin with that string
+ 
