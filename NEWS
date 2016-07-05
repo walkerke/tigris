@@ -1,3 +1,8 @@
+tigris 0.3.2.9000
+-------------------------------------------------------
+
+* fixed a bug that would counties not to load in non-interactive mode
+
 tigris 0.3
 -------------------------------------------------------
 

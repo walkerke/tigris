@@ -183,7 +183,7 @@ tracts <- function(state, county = NULL, cb = FALSE, detailed = TRUE, ...) {
 
   if (!is.null(county)) {
 
-     county <- sapply(county, function(x) validate_county(state, x))
+     county <- sapply(county, function(x) { validate_county(state, x) })
 
      trcts <- trcts[trcts$COUNTYFP %in% county, ]
 
