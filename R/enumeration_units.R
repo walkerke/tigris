@@ -501,7 +501,8 @@ blocks <- function(state, county = NULL, year = 2015, ...) {
 
 #' Download a county subdivision shapefile into R
 #'
-#' From the US Census Bureau (see link for source, and more information): "County subdivisions #' are the primary divisions of counties and their equivalent entities for the reporting of
+#' From the US Census Bureau (see link for source, and more information): "County subdivisions
+#' are the primary divisions of counties and their equivalent entities for the reporting of
 #' decennial census data. They include census county divisions, census subareas, minor civil
 #' divisions, and unorganized territories. They may represent legal or statistical entities.
 #' The 2015 TIGER/Line Shapefiles contain a 5-character FIPS code field for county subdivisions

@@ -4,7 +4,7 @@
 
 Download and use Census TIGER/Line shapefiles in R
 
-CRAN version: __0.3__ (updated 16 May 2016)
+CRAN version: __0.3.3__ (updated 5 July 2016)
 
 Dev version: __0.3.3.9000__ (updated 5 July 2016)
 
