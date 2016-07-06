@@ -53,8 +53,8 @@ leaflet(schools) \%>\%
 
 Other general area functions: \code{\link{block_groups}};
   \code{\link{blocks}}; \code{\link{counties}};
-  \code{\link{places}}; \code{\link{pumas}};
-  \code{\link{states}}; \code{\link{tracts}};
-  \code{\link{zctas}}
+  \code{\link{county_subdivisions}}; \code{\link{places}};
+  \code{\link{pumas}}; \code{\link{states}};
+  \code{\link{tracts}}; \code{\link{zctas}}
 }
 

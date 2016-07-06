@@ -76,9 +76,9 @@ gg
 \url{https://www.census.gov/geo/reference/gtc/gtc_cou.html}
 
 Other general area functions: \code{\link{block_groups}};
-  \code{\link{blocks}}; \code{\link{places}};
-  \code{\link{pumas}}; \code{\link{school_districts}};
-  \code{\link{states}}; \code{\link{tracts}};
-  \code{\link{zctas}}
+  \code{\link{blocks}}; \code{\link{county_subdivisions}};
+  \code{\link{places}}; \code{\link{pumas}};
+  \code{\link{school_districts}}; \code{\link{states}};
+  \code{\link{tracts}}; \code{\link{zctas}}
 }
 

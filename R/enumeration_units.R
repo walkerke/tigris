@@ -86,17 +86,13 @@ counties <- function(state = NULL, cb = FALSE, resolution = '500k', detailed = T
 
   if (!is.null(state)) {
 
-    sub <- ctys[ctys$STATEFP %in% state,]
-
-    attr(sub, 'tigris') <- 'county'
-
-    return(sub)
-
-  } else {
-
-    return(ctys)
+    ctys <- ctys[ctys$STATEFP %in% state,]
 
   }
+
+  attr(ctys, 'tigris') <- 'county'
+
+  return(ctys)
 
 }
 
@@ -333,7 +329,7 @@ block_groups <- function(state, county = NULL, cb = FALSE, detailed = TRUE, ...)
                   "_bg.zip")
   }
 
-  bgs <- load_tiger(url, tigris_type="block", ...)
+  bgs <- load_tiger(url, tigris_type="block_group", ...)
 
   if (!is.null(county)) {
 
@@ -343,7 +339,7 @@ block_groups <- function(state, county = NULL, cb = FALSE, detailed = TRUE, ...)
 
   }
 
-  attr(bgs, "tigris") <- "block"
+  attr(bgs, "tigris") <- "block_group"
 
   return(bgs)
 
@@ -455,7 +451,7 @@ zctas <- function(cb = FALSE, starts_with = NULL, detailed = TRUE, ...) {
 #' @family general area functions
 #' @seealso \url{http://www2.census.gov/geo/pdfs/maps-data/data/tiger/tgrshp2015/TGRSHP2015_TechDoc.pdf}
 #' @export
-#' @examples \dontrun{#'
+#' @examples \dontrun{
 #' # Simple example using Rose Island, American Samoa
 #' # Be careful with Census blocks for states!
 #'
@@ -500,5 +496,78 @@ blocks <- function(state, county = NULL, year = 2015, ...) {
   attr(blks, "tigris") <- "block"
 
   return(blks)
+
+}
+
+#' Download a county subdivision shapefile into R
+#'
+#' From the US Census Bureau (see link for source, and more information): "County subdivisions #' are the primary divisions of counties and their equivalent entities for the reporting of
+#' decennial census data. They include census county divisions, census subareas, minor civil
+#' divisions, and unorganized territories. They may represent legal or statistical entities.
+#' The 2015 TIGER/Line Shapefiles contain a 5-character FIPS code field for county subdivisions
+#' and an 8-character National Standards (GNIS) code."
+#'
+#' @param state The two-digit FIPS code (string) of the state you want. Can also
+#'        be state name or state abbreviation.
+#' @param county The three-digit FIPS code (string) of the county you'd like to
+#'        subset for, or a vector of FIPS codes if you desire multiple counties.
+#'        Can also be a county name or vector of names.
+#' @param cb If cb is set to TRUE, download a generalized (1:500k)
+#'        file.  Defaults to FALSE (the most detailed TIGER/Line file)
+#' @param detailed (deprecated) Setting detailed to FALSE returns a 1:500k cartographic boundary file.
+#'        This parameter will be removed in a future release.
+#' @param ... arguments to be passed to the underlying `load_tiger` function, which is not
+#' exported. Options include \code{refresh}, which specifies whether or not to re-download
+#' shapefiles (defaults to \code{FALSE}), and \code{year}, the year for which you'd like to
+#'  download data (defaults to 2015).
+#' @family general area functions
+#' @seealso \url{http://www2.census.gov/geo/pdfs/maps-data/data/tiger/tgrshp2015/TGRSHP2015_TechDoc.pdf}
+#' @export
+#'
+#' @examples \dontrun{
+#' library(tigris)
+#'
+#' or <- county_subdivisions('Oregon', c('Linn', 'Benton'))
+#'
+#' plot(or)
+#'
+#' }
+county_subdivisions <- function(state, county = NULL, cb = FALSE, detailed = TRUE, ...) {
+
+  state <- validate_state(state)
+
+  if (is.null(state)) stop("Invalid state", call.=FALSE)
+
+  if (detailed == FALSE) {
+    cb <- TRUE
+    message("The `detailed` parameter is deprecated.  Use `cb` instead.")
+  }
+
+  if (cb == TRUE) {
+
+    url <- paste0("http://www2.census.gov/geo/tiger/GENZ2015/shp/cb_2015_",
+                  state,
+                  "_cousub_500k.zip")
+
+  } else {
+
+    url <- paste0("http://www2.census.gov/geo/tiger/TIGER2015/COUSUB/tl_2015_",
+                  state,
+                  "_cousub.zip")
+  }
+
+  cs <- load_tiger(url, tigris_type="county_subdivision", ...)
+
+  if (!is.null(county)) {
+
+    county <- sapply(county, function(x) validate_county(state, x))
+
+    cs <- cs[cs$COUNTYFP %in% county, ]
+
+  }
+
+  attr(cs, "tigris") <- "county_subdivision"
+
+  return(cs)
 
 }

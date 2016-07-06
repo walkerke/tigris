@@ -40,7 +40,7 @@ connection, or insufficient memory, this may prove burdensome given that you
 have to first download by state and then subset.
 }
 \examples{
-\dontrun{#'
+\dontrun{
 # Simple example using Rose Island, American Samoa
 # Be careful with Census blocks for states!
 
@@ -59,7 +59,8 @@ leaflet(rose_island) \%>\%
 \url{http://www2.census.gov/geo/pdfs/maps-data/data/tiger/tgrshp2015/TGRSHP2015_TechDoc.pdf}
 
 Other general area functions: \code{\link{block_groups}};
-  \code{\link{counties}}; \code{\link{places}};
+  \code{\link{counties}};
+  \code{\link{county_subdivisions}}; \code{\link{places}};
   \code{\link{pumas}}; \code{\link{school_districts}};
   \code{\link{states}}; \code{\link{tracts}};
   \code{\link{zctas}}

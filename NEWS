@@ -1,3 +1,8 @@
+tigris 0.3.1
+-------------------------------------------------------
+
+* tigris now accommodates county name changes in the 2015 TIGER/Line dataset.  Shannon County, SD (FIPS code 113) is now Oglala Lakota County (FIPS code 102), and Wade Hampton Census Area, AK (FIPS code 270) is now Kusilvak Census Area (FIPS code 158).
+
 tigris 0.3
 -------------------------------------------------------
 

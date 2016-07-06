@@ -61,7 +61,8 @@ plot(benton_bgs)
 \url{http://www2.census.gov/geo/pdfs/maps-data/data/tiger/tgrshp2015/TGRSHP2015_TechDoc.pdf}
 
 Other general area functions: \code{\link{blocks}};
-  \code{\link{counties}}; \code{\link{places}};
+  \code{\link{counties}};
+  \code{\link{county_subdivisions}}; \code{\link{places}};
   \code{\link{pumas}}; \code{\link{school_districts}};
   \code{\link{states}}; \code{\link{tracts}};
   \code{\link{zctas}}
