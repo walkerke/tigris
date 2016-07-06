@@ -189,6 +189,6 @@ voting_districts <- function(state) {
                 state,
                 "_vtd10.zip")
 
-  return(load_tiger(url, tigris_type = 'voting_districts', ...))
+  return(load_tiger(url, tigris_type = 'voting_districts'))
 
 }

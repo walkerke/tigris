@@ -6,7 +6,7 @@ Download and use Census TIGER/Line shapefiles in R
 
 CRAN version: __0.3__ (updated 16 May 2016)
 
-Dev version: __0.3.0.9000__ (updated 16 May 2016)
+Dev version: __0.3.3.9000__ (updated 5 July 2016)
 
 `tigris` is an R package that allows users to directly download and use TIGER/Line shapefiles (<https://www.census.gov/geo/maps-data/data/tiger-line.html>) from the US Census Bureau.  
 
@@ -22,18 +22,11 @@ Or, get the development version from GitHub:
 devtools::install_github('walkerke/tigris')
 ```
 
-__In Version 0.3__: 
+__In Version 0.3.3__: 
 
-* tigris now defaults to the 2015 TIGER/Line shapefiles and the 2015 cartographic boundary shapefiles (with `cb = TRUE` for selected functions).  
+* tigris now accommodates county name changes in the 2015 TIGER/Line dataset.  Shannon County, SD (FIPS code 113) is now Oglala Lakota County (FIPS code 102), and Wade Hampton Census Area, AK (FIPS code 270) is now Kusilvak Census Area (FIPS code 158).
 
-* The `refresh` option can now be used to fix corrupted downloads.  If you receive the error: 
-
-```
-Error in ogrInfo(dsn = dsn, layer = layer, encoding = encoding, use_iconv = use_iconv,  : 
-  Cannot open layer 
-```
-
-call the function again, but with the argument `refresh = TRUE`, which will re-download the shapefile. 
+* We fixed a bug that would counties not to load in non-interactive mode.
 
 For more information on how to use this package, please view the RPubs at <http://rpubs.com/walkerke/tigris01>. 
 
@@ -91,6 +84,7 @@ Please note: cartographic boundary files in __tigris__ are only available going 
 | combined_statistical_areas | TIGER/Line; cartographic (1:500k; 1:5m; 1:20m) | 2011, 2012, 2013, 2014, 2015 |
 | metro_divisions | TIGER/Line | 2011, 2012, 2013, 2014, 2015 |
 | new_england | TIGER/Line; cartographic (1:500k) | 2011, 2012, 2013, 2014, 2015 |
+| county_subdivisions | TIGER/Line; cartographic (1:500k) | 2011, 2012, 2013, 2014, 2015 |
 | urban_areas | TIGER/Line; cartographic (1:500k) | 2012, 2013, 2014, 2015 |
 | primary_roads | TIGER/Line | 2011, 2012, 2013, 2014, 2015 |
 | primary_secondary_roads | TIGER/Line | 2011, 2012, 2013, 2014, 2015 |
