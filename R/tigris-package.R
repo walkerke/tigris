@@ -37,6 +37,8 @@ NULL
 #'
 #' @name tigris-exports
 NULL
+
+#' Pipe operator
 #'
 #' @importFrom magrittr %>%
 #' @name %>%
@@ -44,6 +46,8 @@ NULL
 #' @rdname tigris-exports
 NULL
 
+#' Spatial plotting
+#'
 #' @importFrom sp plot
 #' @name plot
 #' @export

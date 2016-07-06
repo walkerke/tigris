@@ -179,7 +179,7 @@ tracts <- function(state, county = NULL, cb = FALSE, detailed = TRUE, ...) {
 
   if (!is.null(county)) {
 
-     county <- sapply(county, function(x) validate_county(state, x))
+     county <- sapply(county, function(x) { validate_county(state, x) })
 
      trcts <- trcts[trcts$COUNTYFP %in% county, ]
 
@@ -333,7 +333,7 @@ block_groups <- function(state, county = NULL, cb = FALSE, detailed = TRUE, ...)
 
   if (!is.null(county)) {
 
-    county <- sapply(county, function(x) validate_county(state, x))
+    county <- sapply(county, function(x) { validate_county(state, x) })
 
     bgs <- bgs[bgs$COUNTYFP %in% county, ]
 
@@ -487,7 +487,7 @@ blocks <- function(state, county = NULL, year = 2015, ...) {
 
   if (!is.null(county)) {
 
-    county <- sapply(county, function(x) validate_county(state, x))
+    county <- sapply(county, function(x) { validate_county(state, x) })
 
     blks <- blks[blks$COUNTYFP10 %in% county, ]
 
@@ -560,7 +560,7 @@ county_subdivisions <- function(state, county = NULL, cb = FALSE, detailed = TRU
 
   if (!is.null(county)) {
 
-    county <- sapply(county, function(x) validate_county(state, x))
+    county <- sapply(county, function(x) { validate_county(state, x) })
 
     cs <- cs[cs$COUNTYFP %in% county, ]
 

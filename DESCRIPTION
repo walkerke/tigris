@@ -8,27 +8,28 @@ Authors@R: c(
       person(given="Bob", family="Rudis", email="bob@rudis.net", role="ctb")
     )
 Description: Download TIGER/Line shapefiles from the United States Census Bureau
-             and load into R as 'SpatialDataFrame' objects.
+    and load into R as 'SpatialDataFrame' objects.
 License: MIT + file LICENSE
 LazyData: TRUE
 Depends:
-  R (>= 3.0.0)
+    R (>= 3.0.0)
 Suggests:
-  acs,
-  testthat,
-  dplyr,
-  ggplot2,
-  ggthemes,
-  leaflet,
-  knitr
+    acs,
+    testthat,
+    dplyr,
+    ggplot2,
+    ggthemes,
+    leaflet,
+    knitr
 Imports:
-  stringr,
-  magrittr,
-  rgdal,
-  rgeos,
-  sp,
-  utils,
-  rappdirs,
-  maptools,
-  httr,
-  uuid
+    stringr,
+    magrittr,
+    rgdal,
+    rgeos,
+    sp,
+    utils,
+    rappdirs,
+    maptools,
+    httr,
+    uuid
+RoxygenNote: 5.0.1

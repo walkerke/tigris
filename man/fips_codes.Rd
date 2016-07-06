@@ -24,7 +24,7 @@ Built-in dataset for use with the \code{lookup_code} function.
 Dataset with FIPS codes for US states and counties
 
 Built-in dataset for use with the \code{lookup_code} function.
-To access the data directly, issue the command \code{datafips_codes)}.
+To access the data directly, issue the command \code{data(fips_codes)}.
 }
 \note{
 Last updated 2015-07-01

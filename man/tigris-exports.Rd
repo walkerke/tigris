@@ -11,6 +11,8 @@ from the tigris package to enable use of the magrittr
 pipe operator and the sp plot method without any additional
 library calls
 
+Pipe operator
 
+Spatial plotting
 }
 
