@@ -75,6 +75,7 @@ validate_county <- function(state, county, .msg = interactive()) {
   county_table <- fips_codes[fips_codes$state_code == state, ] # Get a df for the requested state to work with
 
   if (grepl("^[[:digit:]]+$", county)) { # probably a FIPS code
+
     county <- sprintf("%03d", as.numeric(county)) # in case they passed in 1 or 2 digit county codes
 
     if (county %in% county_table$county_code) {
@@ -101,13 +102,12 @@ validate_county <- function(state, county, .msg = interactive()) {
 
       } else if (length(matching_counties) == 1) {
 
-        if (.msg) {
+        if (.msg)
           message(sprintf("Using FIPS code '%s' for '%s'",
                           county_table[county_table$county == matching_counties, "county_code"],
                           matching_counties))
-          return(county_table[county_table$county == matching_counties, "county_code"])
 
-        }
+        return(county_table[county_table$county == matching_counties, "county_code"])
 
       } else if (length(matching_counties) > 1) {
 

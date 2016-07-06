@@ -1,34 +1,35 @@
 Package: tigris
 Type: Package
 Title: Load Census TIGER/Line Shapefiles into R
-Version: 0.3.1.9000
-Date: 2016-05-26
+Version: 0.3.2.9000
+Date: 2016-07-05
 Authors@R: c(
       person(given="Kyle", family="Walker", email="kyle.walker@tcu.edu", role=c("aut", "cre")),
       person(given="Bob", family="Rudis", email="bob@rudis.net", role="ctb")
     )
 Description: Download TIGER/Line shapefiles from the United States Census Bureau
-             and load into R as 'SpatialDataFrame' objects.
+    and load into R as 'SpatialDataFrame' objects.
 License: MIT + file LICENSE
 LazyData: TRUE
 Depends:
-  R (>= 3.0.0)
+    R (>= 3.0.0)
 Suggests:
-  acs,
-  testthat,
-  dplyr,
-  ggplot2,
-  ggthemes,
-  leaflet,
-  knitr
+    acs,
+    testthat,
+    dplyr,
+    ggplot2,
+    ggthemes,
+    leaflet,
+    knitr
 Imports:
-  stringr,
-  magrittr,
-  rgdal,
-  rgeos,
-  sp,
-  utils,
-  rappdirs,
-  maptools,
-  httr,
-  uuid
+    stringr,
+    magrittr,
+    rgdal,
+    rgeos,
+    sp,
+    utils,
+    rappdirs,
+    maptools,
+    httr,
+    uuid
+RoxygenNote: 5.0.1

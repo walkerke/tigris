@@ -1,7 +1,7 @@
 #' Dataset with FIPS codes for US states and counties
 #'
 #' Built-in dataset for use with the \code{lookup_code} function.
-#' To access the data directly, issue the command \code{datafips_codes)}.
+#' To access the data directly, issue the command \code{data(fips_codes)}.
 
 #' @title Dataset with FIPS codes for US states and counties
 #' @description Built-in dataset for use with the \code{lookup_code} function.
