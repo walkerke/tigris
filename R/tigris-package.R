@@ -26,6 +26,7 @@
 #' @import rappdirs
 #' @import httr
 #' @import uuid
+#' @import sf
 NULL
 
 #' tigris exported operators

@@ -10,7 +10,8 @@
 load_tiger <- function(url,
                        refresh=getOption("tigris_refresh", FALSE),
                        tigris_type=NULL,
-                       year = getOption("tigris_year", 2015)) {
+                       year = getOption("tigris_year", 2015),
+                       class = getOption("tigris_class", "sp")) {
 
   if (year != 2015) {
 
@@ -53,8 +54,19 @@ load_tiger <- function(url,
         unzip(file_loc, exdir = cache_dir, overwrite=TRUE)
       }
 
-      obj <- readOGR(dsn = cache_dir, layer = shape, encoding = "UTF-8",
-                     verbose = FALSE, stringsAsFactors = FALSE)
+      if (class == "sp") {
+
+        obj <- readOGR(dsn = cache_dir, layer = shape, encoding = "UTF-8",
+                       verbose = FALSE, stringsAsFactors = FALSE)
+
+      } else if (class == "sf") {
+
+        obj <- st_read(dsn = cache_dir, layer = shape,
+                       quiet = TRUE, stringsAsFactors = FALSE)
+
+      }
+
+
 
     }
 
@@ -65,8 +77,19 @@ load_tiger <- function(url,
     unzip(tiger_file, exdir = tmp)
     shape <- gsub(".zip", "", tiger_file)
 
-    obj <- readOGR(dsn = tmp, layer = shape, encoding = "UTF-8",
-                   verbose = FALSE, stringsAsFactors = FALSE)
+    if (class == "sp") {
+
+      obj <- readOGR(dsn = tmp, layer = shape, encoding = "UTF-8",
+                     verbose = FALSE, stringsAsFactors = FALSE)
+
+    } else if (class == "sf") {
+
+      obj <- st_read(dsn = tmp, layer = shape,
+                     quiet = TRUE, stringsAsFactors = FALSE)
+
+    }
+
+
 
   }
 
