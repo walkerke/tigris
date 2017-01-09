@@ -149,25 +149,71 @@ geo_join <- function(spatial_data, data_frame, by_sp, by_df, by = NULL, how = 'l
     by_df <- by
   }
 
-  spatial_data@data <- data.frame(spatial_data@data,
-                                  data_frame[match(spatial_data@data[[by_sp]],
-                                                   data_frame[[by_df]]), ])
+  # For sp objects
+  if (class(spatial_data)[1] %in% c("SpatialGridDataFrame", "SpatialLinesDataFrame",
+                                "SpatialPixelsDataFrame", "SpatialPointsDataFrame",
+                                "SpatialPolygonsDataFrame")) {
 
-  if (how == 'inner') {
+    spatial_data@data <- data.frame(spatial_data@data,
+                                    data_frame[match(spatial_data@data[[by_sp]],
+                                                     data_frame[[by_df]]), ])
 
-    matches <- match(spatial_data@data[[by_sp]], data_frame[[by_df]])
+    if (how == 'inner') {
 
-    spatial_data <- spatial_data[!is.na(matches), ]
+      matches <- match(spatial_data@data[[by_sp]], data_frame[[by_df]])
 
-    return(spatial_data)
+      spatial_data <- spatial_data[!is.na(matches), ]
 
-  } else if (how == 'left') {
+      return(spatial_data)
 
-    return(spatial_data)
+    } else if (how == 'left') {
 
-  } else {
+      return(spatial_data)
 
-    stop("The available options for `how` are 'left' and 'inner'.", call. = FALSE)
+    } else {
+
+      stop("The available options for `how` are 'left' and 'inner'.", call. = FALSE)
+
+    }
+
+
+  # For sf objects
+  } else if ("sf" %in% class(spatial_data)) {
+
+    join_vars <- c(by_df)
+
+    names(join_vars) <- by_sp
+
+    if (how == "inner") {
+
+      joined <- spatial_data %>%
+        dplyr::inner_join(data_frame, by = join_vars) %>%
+        sf::st_as_sf()
+
+      attr(joined, "tigris") <- tigris_type(spatial_data)
+
+      return(joined)
+
+    } else if (how == "left") {
+
+      # Account for potential duplicate rows in data frame
+      df_unique <- data_frame %>%
+        dplyr::group_by_(by_df) %>%
+        filter(row_number() == 1)
+
+      joined <- spatial_data %>%
+        dplyr::left_join(df_unique, by = join_vars) %>%
+        sf::st_as_sf()
+
+      attr(joined, "tigris") <- tigris_type(spatial_data)
+
+      return(joined)
+
+    } else {
+
+      stop("The available options for `how` are 'left' and 'inner'.", call. = FALSE)
+
+    }
 
   }
 

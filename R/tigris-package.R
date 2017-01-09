@@ -27,6 +27,7 @@
 #' @import httr
 #' @import uuid
 #' @import sf
+#' @import dplyr
 NULL
 
 #' tigris exported operators
