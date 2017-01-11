@@ -199,7 +199,8 @@ geo_join <- function(spatial_data, data_frame, by_sp, by_df, by = NULL, how = 'l
       # Account for potential duplicate rows in data frame
       df_unique <- data_frame %>%
         dplyr::group_by_(by_df) %>%
-        filter(dplyr::row_number() == 1)
+        dplyr::mutate(rank = row_number()) %>%
+        dplyr::filter(rank == 1)
 
       joined <- spatial_data %>%
         dplyr::left_join(df_unique, by = join_vars) %>%
