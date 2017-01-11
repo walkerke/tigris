@@ -409,6 +409,15 @@ rbind_tigris <- function(...) {
 
       tmp <- Reduce(rbind.sf, elements) # bind_rows not working atm
 
+      geometries <- unlist(lapply(elements, function(x) {
+        geoms <- st_geometry_type(x)
+        unique(geoms)
+      }))
+
+      if ("MULTIPOLYGON" %in% geometries) {
+        tmp <- st_cast(tmp, "MULTIPOLYGON")
+      }
+
       attr(tmp, "tigris") <- obj_attrs_u
       return(tmp)
 
