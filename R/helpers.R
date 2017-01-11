@@ -187,8 +187,8 @@ geo_join <- function(spatial_data, data_frame, by_sp, by_df, by = NULL, how = 'l
     if (how == "inner") {
 
       joined <- spatial_data %>%
-        dplyr::inner_join(data_frame, by = join_vars) %>%
-        sf::st_as_sf()
+        inner_join(data_frame, by = join_vars) %>%
+        st_as_sf()
 
       attr(joined, "tigris") <- tigris_type(spatial_data)
 
@@ -198,13 +198,13 @@ geo_join <- function(spatial_data, data_frame, by_sp, by_df, by = NULL, how = 'l
 
       # Account for potential duplicate rows in data frame
       df_unique <- data_frame %>%
-        dplyr::group_by_(by_df) %>%
-        dplyr::mutate(rank = row_number()) %>%
-        dplyr::filter(rank == 1)
+        group_by_(by_df) %>%
+        mutate(rank = row_number()) %>%
+        filter(rank == 1)
 
       joined <- spatial_data %>%
-        dplyr::left_join(df_unique, by = join_vars) %>%
-        sf::st_as_sf()
+        left_join(df_unique, by = join_vars) %>%
+        st_as_sf()
 
       attr(joined, "tigris") <- tigris_type(spatial_data)
 

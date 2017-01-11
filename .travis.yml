@@ -4,6 +4,12 @@ language: r
 warnings_are_errors: true
 sudo: required
 
+addons:
+  apt:
+    packages:
+      - libgdal-dev
+      - libproj-dev
+
 r_binary_packages:
   - rgdal
   - sf

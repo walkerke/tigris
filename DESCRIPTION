@@ -16,7 +16,6 @@ Depends:
 Suggests:
     acs,
     testthat,
-    dplyr,
     ggplot2,
     ggthemes,
     leaflet,

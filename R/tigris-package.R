@@ -27,7 +27,7 @@
 #' @import httr
 #' @import uuid
 #' @import sf
-#' @import dplyr
+#' @importFrom dplyr filter group_by_ row_number left_join inner_join mutate
 NULL
 
 #' tigris exported operators
