@@ -199,7 +199,7 @@ geo_join <- function(spatial_data, data_frame, by_sp, by_df, by = NULL, how = 'l
       # Account for potential duplicate rows in data frame
       df_unique <- data_frame %>%
         dplyr::group_by_(by_df) %>%
-        filter(row_number() == 1)
+        filter(dplyr::row_number() == 1)
 
       joined <- spatial_data %>%
         dplyr::left_join(df_unique, by = join_vars) %>%
@@ -347,48 +347,74 @@ rbind_tigris <- function(...) {
 
   if ((length(elements) == 1) &
       inherits(elements, "list")) {
-    elements <- unlist(elements)
+    elements <- unlist(elements, recursive = FALSE) # Necessary given structure of sf objects
   }
 
   obj_classes <- unique(sapply(elements, class))
   obj_attrs <- sapply(elements, attr, "tigris")
   obj_attrs_u <- unique(obj_attrs)
 
+  if (any(c("SpatialGridDataFrame", "SpatialLinesDataFrame",
+        "SpatialPixelsDataFrame", "SpatialPointsDataFrame",
+        "SpatialPolygonsDataFrame") %in% obj_classes) &
+      "sf" %in% obj_classes) {
+
+    stop("Cannot combine sp and sf objects", call. = FALSE)
+
+  }
+
   # all same type
   # all valid Spatial* type
   # none are from outside tigris
   # all same tigris "type"
 
-  if (length(obj_classes) == 1 &
-      obj_classes %in% c("SpatialGridDataFrame", "SpatialLinesDataFrame",
+  if (obj_classes[1] %in% c("SpatialGridDataFrame", "SpatialLinesDataFrame",
                          "SpatialPixelsDataFrame", "SpatialPointsDataFrame",
-                         "SpatialPolygonsDataFrame") &
-      !any(sapply(obj_attrs, is.null)) &
-      length(obj_attrs_u)==1) {
+                         "SpatialPolygonsDataFrame")) {
 
-    el_nams <- names(elements)
+    if (length(obj_classes) == 1 &
+        !any(sapply(obj_attrs, is.null)) &
+        length(obj_attrs_u)==1) {
 
-    if (is.null(el_nams)) {
-      el_nams <- rep(NA, length(elements))
+      el_nams <- names(elements)
+
+      if (is.null(el_nams)) {
+        el_nams <- rep(NA, length(elements))
+      }
+
+      el_nams <- ifelse(el_nams == "", NA, el_nams)
+
+      el_nams <- sapply(el_nams, function(x) {
+        ifelse(is.na(x), gsub("-", "", UUIDgenerate(), fixed=TRUE), x)
+      })
+
+      tmp <- lapply(1:(length(elements)), function(i) {
+        elem <- elements[[i]]
+        spChFIDs(elem, sprintf("%s%s", el_nams[i], rownames(elem@data)))
+      })
+
+      tmp <- Reduce(spRbind, tmp)
+      attr(tmp, "tigris") <- obj_attrs_u
+      return(tmp)
+
+    } else {
+      stop("Objects must all be Spatial*DataFrame objects and all the same type of tigris object.", call.=FALSE)
     }
 
-    el_nams <- ifelse(el_nams == "", NA, el_nams)
+  } else if ("sf" %in% obj_classes) {
 
-    el_nams <- sapply(el_nams, function(x) {
-       ifelse(is.na(x), gsub("-", "", UUIDgenerate(), fixed=TRUE), x)
-    })
+    if (!any(sapply(obj_attrs, is.null)) &
+        length(obj_attrs_u)==1) {
 
-    tmp <- lapply(1:(length(elements)), function(i) {
-      elem <- elements[[i]]
-      spChFIDs(elem, sprintf("%s%s", el_nams[i], rownames(elem@data)))
-    })
+      tmp <- Reduce(rbind.sf, elements) # bind_rows not working atm
 
-    tmp <- Reduce(spRbind, tmp)
-    attr(tmp, "tigris") <- obj_attrs_u
-    return(tmp)
+      attr(tmp, "tigris") <- obj_attrs_u
+      return(tmp)
 
-  } else {
-    stop("Objects must all be Spatial*DataFrame objects and all the same type of tigris object.", call.=FALSE)
+    } else {
+      stop("Objects must all be the same type of tigris object.", call.=FALSE)
+    }
+
   }
 
 }

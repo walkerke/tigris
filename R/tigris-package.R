@@ -11,7 +11,7 @@
 #' e.g. \code{options(tigris_year = 2013)}.  The default year for the package is 2015, the most
 #' recent year for which data are available.
 #'
-#' @note Three \code{options} control behavior of various \code{tigris} functions.
+#' @note Four \code{options} control behavior of various \code{tigris} functions.
 #'       See \code{Description} for more information.
 #' @author Kyle Walker
 #' @name tigris
@@ -27,7 +27,7 @@
 #' @import httr
 #' @import uuid
 #' @import sf
-#' @import dplyr
+#' @importFrom dplyr left_join inner_join group_by_ row_number
 NULL
 
 #' tigris exported operators

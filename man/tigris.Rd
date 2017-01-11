@@ -19,7 +19,7 @@ e.g. \code{options(tigris_year = 2013)}.  The default year for the package is 20
 recent year for which data are available.
 }
 \note{
-Three \code{options} control behavior of various \code{tigris} functions.
+Four \code{options} control behavior of various \code{tigris} functions.
       See \code{Description} for more information.
 }
 \author{

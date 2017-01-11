@@ -32,5 +32,6 @@ Imports:
     maptools,
     httr,
     uuid, 
-    sf
+    sf, 
+    dplyr
 RoxygenNote: 5.0.1
