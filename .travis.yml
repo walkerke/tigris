@@ -1,29 +1,17 @@
 # Sample .travis.yml for R projects
 
 language: r
+dist: trusty
 warnings_are_errors: true
 sudo: required
 
-matrix:
-    #allow_failures:
-    #    -os: osx
-    include:
-        - os: linux
-          r: release
-          dist: trusty # 14.04
-          env: R_CODECOV=true
-        - os: linux
-          r: devel
-          dist: trusty
-        - os: osx
-          r: release
-          before_install: ''
-          disable_homebrew: true
+apt_packages:
+  - libudunits2-dev
 
 before_install:
-    - sudo add-apt-repository ppa:ubuntugis/ubuntugis-unstable --yes
-    - sudo apt-get --yes --force-yes update -qq
-    - sudo apt-get install --yes libproj-dev libgeos-dev libgdal-dev libudunits2-dev
+  - sudo add-apt-repository ppa:ubuntugis/ubuntugis-unstable --yes
+  - sudo apt-get --yes --force-yes update -qq
+  - sudo apt-get install -y libudunits2-dev libproj-dev libgeos-dev libgdal-dev netcdf-bin libv8-dev
 
 notifications:
   email:
