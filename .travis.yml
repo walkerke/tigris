@@ -2,6 +2,8 @@ language: r
 dist: trusty
 warnings_are_errors: true
 sudo: required
+apt-packages:
+  - libudunits2-dev
 
 before_install:
   - sudo add-apt-repository ppa:ubuntugis/ubuntugis-unstable --yes
