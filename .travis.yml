@@ -9,8 +9,13 @@ env:
     - NOT_CRAN=true
 before_install:
   - echo "options(repos = c(CRAN='http://cran.rstudio.com'))" > ~/.Rprofile
-  - sudo add-apt-repository ppa:ubuntugis/ubuntugis-unstable --yes
-  - sudo apt-get --yes --force-yes update -qq
+  - cd
+  - wget http://download.osgeo.org/gdal/2.1.0/gdal-2.1.0.tar.gz
+  - tar zxf gdal-2.1.0.tar.gz
+  - cd gdal-2.1.0
+  - ./configure
+  - make
+  - sudo make install
 
 apt_packages:
   - udunits-bin
