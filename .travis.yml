@@ -16,10 +16,6 @@ matrix:
         - os: linux
           r: devel
           dist: trusty
-        - os: osx
-          r: release
-          before_install: ''
-          disable_homebrew: true
 
 before_install:
     - sudo add-apt-repository ppa:ubuntugis/ubuntugis-unstable --yes
