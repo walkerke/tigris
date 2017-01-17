@@ -34,5 +34,6 @@ fips_state_table <- structure(list(abb = c("ak", "al", "ar", "as", "az", "ca", "
   options(tigris_refresh=FALSE)
   options(tigris_use_cache=TRUE)
   options(tigris_year = 2015)
+  options(tigris_class = "sp")
   data("fips_codes", package=pkgname, envir=parent.env(environment()))
 }
