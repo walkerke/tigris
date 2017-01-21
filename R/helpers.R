@@ -206,6 +206,8 @@ geo_join <- function(spatial_data, data_frame, by_sp, by_df, by = NULL, how = 'l
         left_join(df_unique, by = join_vars) %>%
         st_as_sf()
 
+      st_crs(joined) <- st_crs(spatial_data)$epsg # re-assign the CRS
+
       attr(joined, "tigris") <- tigris_type(spatial_data)
 
       return(joined)
@@ -404,6 +406,14 @@ rbind_tigris <- function(...) {
 
   } else if ("sf" %in% obj_classes) {
 
+    crs <- unique(sapply(elements, function(x) {
+      return(st_crs(x)$epsg)
+    }))
+
+    if (length(crs) > 1) {
+      stop("All objects must share a single coordinate reference system.")
+    }
+
     if (!any(sapply(obj_attrs, is.null)) &
         length(obj_attrs_u)==1) {
 
@@ -417,6 +427,8 @@ rbind_tigris <- function(...) {
       if ("MULTIPOLYGON" %in% geometries) {
         tmp <- st_cast(tmp, "MULTIPOLYGON")
       }
+
+      st_crs(tmp) <- crs # Re-assign the original CRS
 
       attr(tmp, "tigris") <- obj_attrs_u
       return(tmp)
