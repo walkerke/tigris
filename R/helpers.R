@@ -206,7 +206,13 @@ geo_join <- function(spatial_data, data_frame, by_sp, by_df, by = NULL, how = 'l
         left_join(df_unique, by = join_vars) %>%
         st_as_sf()
 
-      st_crs(joined) <- st_crs(spatial_data)$epsg # re-assign the CRS
+      if (!is.null(st_crs(spatial_data)$epsg)) {
+        crs <- st_crs(spatial_data)$epsg
+      } else {
+        crs <- st_crs(spatial_data)$proj4string
+      }
+
+      st_crs(joined) <- crs # re-assign the CRS
 
       attr(joined, "tigris") <- tigris_type(spatial_data)
 
