@@ -330,6 +330,8 @@ list_counties <- function(state) {
 
 #' Row-bind \code{tigris} Spatial objects
 #'
+#' If multiple school district types are rbound, coerces to "sdall" and does it
+#'
 #' @param ... individual (optionally names) \code{tigris} Spatial objects or a list of them
 #' @return one combined Spatial object
 #' @export
@@ -369,6 +371,23 @@ rbind_tigris <- function(...) {
       "sf" %in% obj_classes) {
 
     stop("Cannot combine sp and sf objects", call. = FALSE)
+
+  }
+
+  #handling for attempts to rbind disparate school districts
+
+  if(all(obj_attrs %in% c("unsd", "elsd", "scsd"))){ # 3 school district types
+
+    warning("Multiple school district tigris types. Coercing to \'sdall\'.", call. = FALSE)
+
+    elements <- lapply(seq_along(elements), function(x){
+                  names(elements[[x]])[2] <- "SDLEA" # Used in some spots elsewhere in TIGER
+                  attr(elements[[x]], "tigris") <- "sdall" # New type
+                  elements[[x]]
+    })
+
+    obj_attrs <- sapply(elements, attr, "tigris")
+    obj_attrs_u <- unique(obj_attrs)
 
   }
 
