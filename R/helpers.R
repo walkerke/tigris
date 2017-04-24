@@ -48,6 +48,7 @@ load_tiger <- function(url,
       }
 
       shape <- gsub(".zip", "", tiger_file)
+      shape <- gsub("_shp", "", shape) # for historic tracts
 
       if (refresh | !file.exists(file.path(user_cache_dir("tigris"),
                                  sprintf("%s.shp", shape)))) {
@@ -59,10 +60,22 @@ load_tiger <- function(url,
         obj <- readOGR(dsn = cache_dir, layer = shape, encoding = "UTF-8",
                        verbose = FALSE, stringsAsFactors = FALSE)
 
+        if (is.na(proj4string(obj))) {
+
+          proj4string(obj) <- CRS("+proj=longlat +datum=NAD83 +no_defs +ellps=GRS80 +towgs84=0,0,0")
+
+        }
+
       } else if (class == "sf") {
 
         obj <- st_read(dsn = cache_dir, layer = shape,
                        quiet = TRUE, stringsAsFactors = FALSE)
+
+        if (is.na(st_crs(obj)$proj4string)) {
+
+          st_crs(obj) <- 4269
+
+        }
 
       }
 
@@ -76,20 +89,32 @@ load_tiger <- function(url,
     download.file(url, tiger_file, mode = 'wb')
     unzip(tiger_file, exdir = tmp)
     shape <- gsub(".zip", "", tiger_file)
+    shape <- gsub("_shp", "", shape) # for historic tracts
+
 
     if (class == "sp") {
 
       obj <- readOGR(dsn = tmp, layer = shape, encoding = "UTF-8",
                      verbose = FALSE, stringsAsFactors = FALSE)
 
+      if (is.na(proj4string(obj))) {
+
+        proj4string(obj) <- CRS("+proj=longlat +datum=NAD83 +no_defs +ellps=GRS80 +towgs84=0,0,0")
+
+      }
+
     } else if (class == "sf") {
 
       obj <- st_read(dsn = tmp, layer = shape,
                      quiet = TRUE, stringsAsFactors = FALSE)
 
+      if (is.na(st_crs(obj)$proj4string)) {
+
+        st_crs(obj) <- 4269
+
+      }
+
     }
-
-
 
   }
 
@@ -97,6 +122,24 @@ load_tiger <- function(url,
 
   # this will help identify the object "sub type"
   if (!is.null(tigris_type)) attr(obj, "tigris") <- tigris_type
+
+  # Take care of COUNTYFP, STATEFP issues for historic data
+  if ("COUNTYFP00" %in% names(obj)) {
+    obj$COUNTYFP <- obj$COUNTYFP00
+    obj$STATEFP <- obj$STATEFP00
+  }
+  if ("COUNTYFP10" %in% names(obj)) {
+    obj$COUNTYFP <- obj$COUNTYFP10
+    obj$STATEFP <- obj$STATEFP10
+  }
+  if ("COUNTY" %in% names(obj)) {
+    obj$COUNTYFP <- obj$COUNTY
+    obj$STATEFP <- obj$STATE
+  }
+  if ("CO" %in% names(obj)) {
+    obj$COUNTYFP <- obj$CO
+    obj$STATEFP <- obj$ST
+  }
 
   return(obj)
 

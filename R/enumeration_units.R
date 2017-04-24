@@ -175,6 +175,8 @@ tracts <- function(state, county = NULL, cb = FALSE, year = 2015, ...) {
 
   } else {
 
+    if (year == 1990) stop("Please specify `cb = TRUE` to get 1990 data.", call. = FALSE)
+
     if (year %in% c(2000, 2010)) {
 
       cyear <- as.character(year)
