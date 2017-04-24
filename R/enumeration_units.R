@@ -128,6 +128,7 @@ counties <- function(state = NULL, cb = FALSE, resolution = '500k', ...) {
 #'        Can also be a county name or vector of names.
 #' @param cb If cb is set to TRUE, download a generalized (1:500k)
 #'        tracts file.  Defaults to FALSE (the most detailed TIGER/Line file)
+#' @param year defaults to 2015; fill in more here
 #' @param ... arguments to be passed to the underlying `load_tiger` function, which is not exported.
 #'        Options include \code{refresh}, which specifies whether or not to re-download shapefiles
 #'        (defaults to \code{FALSE}), and \code{year}, the year for which you'd like to download data
@@ -145,7 +146,7 @@ counties <- function(state = NULL, cb = FALSE, resolution = '500k', ...) {
 #'   addTiles() %>%
 #'   addPolygons(popup = ~NAME)
 #' }
-tracts <- function(state, county = NULL, cb = FALSE, ...) {
+tracts <- function(state, county = NULL, cb = FALSE, year = 2015, ...) {
 
   state <- validate_state(state)
 
