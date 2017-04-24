@@ -59,18 +59,14 @@
 #' gg <- gg + theme_map()
 #' gg
 #' }
-counties <- function(state = NULL, cb = FALSE, resolution = '500k', detailed = TRUE, ...) {
+counties <- function(state = NULL, cb = FALSE, resolution = '500k', ...) {
 
   if (!(resolution %in% c('500k', '5m', '20m'))) {
     stop("Invalid value for resolution. Valid values are '500k', '5m', and '20m'.", call. = FALSE)
   }
 
-  if (detailed == FALSE) {
-    cb = TRUE
-    message("The `detailed` parameter is deprecated.  Use `cb` instead.")
-    }
-
   if (cb == TRUE) {
+
     url <- paste0("http://www2.census.gov/geo/tiger/GENZ2015/shp/cb_2015_us_county_",
                   resolution,
                   ".zip")
@@ -132,8 +128,6 @@ counties <- function(state = NULL, cb = FALSE, resolution = '500k', detailed = T
 #'        Can also be a county name or vector of names.
 #' @param cb If cb is set to TRUE, download a generalized (1:500k)
 #'        tracts file.  Defaults to FALSE (the most detailed TIGER/Line file)
-#' @param detailed (deprecated) Setting detailed to FALSE returns a 1:500k cartographic boundary file.
-#'        This parameter will be removed in a future release.
 #' @param ... arguments to be passed to the underlying `load_tiger` function, which is not exported.
 #'        Options include \code{refresh}, which specifies whether or not to re-download shapefiles
 #'        (defaults to \code{FALSE}), and \code{year}, the year for which you'd like to download data
@@ -151,28 +145,52 @@ counties <- function(state = NULL, cb = FALSE, resolution = '500k', detailed = T
 #'   addTiles() %>%
 #'   addPolygons(popup = ~NAME)
 #' }
-tracts <- function(state, county = NULL, cb = FALSE, detailed = TRUE, ...) {
+tracts <- function(state, county = NULL, cb = FALSE, ...) {
 
   state <- validate_state(state)
 
   if (is.null(state)) stop("Invalid state", call.=FALSE)
 
-  if (detailed == FALSE) {
-    cb = TRUE
-    message("The `detailed` parameter is deprecated.  Use `cb` instead.")
-  }
-
   if (cb == TRUE) {
 
-    url <- paste0("http://www2.census.gov/geo/tiger/GENZ2015/shp/cb_2015_",
-                  state,
-                  "_tract_500k.zip")
+    if (year %in% c(1990, 2000)) {
+
+      suf <- substr(as.character(year), 3, 4)
+
+      url <- sprintf("https://www2.census.gov/geo/tiger/PREVGENZ/tr/tr%sshp/tr%s_d%s_shp.zip",
+                     suf, state, suf)
+
+    } else if (year == 2010) {
+
+      url <- sprintf("https://www2.census.gov/geo/tiger/GENZ2010/gz_2010_%s_140_00_500k.zip",
+                     state)
+
+    } else {
+
+      url <- paste0("http://www2.census.gov/geo/tiger/GENZ2015/shp/cb_2015_",
+                    state,
+                    "_tract_500k.zip")
+    }
 
   } else {
 
-    url <- paste0("http://www2.census.gov/geo/tiger/TIGER2015/TRACT/tl_2015_",
-                  state,
-                  "_tract.zip")
+    if (year %in% c(2000, 2010)) {
+
+      cyear <- as.character(year)
+
+      suf <- substr(cyear, 3, 4)
+
+      url <- sprintf("https://www2.census.gov/geo/tiger/TIGER2010/TRACT/%s/tl_2010_%s_tract%s.zip",
+                     cyear, state, suf)
+
+    } else {
+
+      url <- paste0("http://www2.census.gov/geo/tiger/TIGER2015/TRACT/tl_2015_",
+                    state,
+                    "_tract.zip")
+
+    }
+
   }
 
   trcts <- load_tiger(url, tigris_type="tract", ...)

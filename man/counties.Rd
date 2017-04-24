@@ -4,8 +4,7 @@
 \alias{counties}
 \title{Download a US Counties shapefile into R, and optionally subset by state}
 \usage{
-counties(state = NULL, cb = FALSE, resolution = "500k", detailed = TRUE,
-  ...)
+counties(state = NULL, cb = FALSE, resolution = "500k", ...)
 }
 \arguments{
 \item{state}{The two-digit FIPS code (string) of the state you want, or a
@@ -18,13 +17,13 @@ counties file.  Defaults to FALSE (the most detailed TIGER file).}
 \item{resolution}{The resolution of the cartographic boundary file (if cb == TRUE).
 Defaults to '500k'; options include '5m' (1:5 million) and '20m' (1:20 million).}
 
-\item{detailed}{(deprecated) Setting detailed to FALSE returns a 1:500k cartographic boundary file.
-This parameter will be removed in a future release.}
-
 \item{...}{arguments to be passed to the underlying `load_tiger` function, which is not exported.
 Options include \code{refresh}, which specifies whether or not to re-download shapefiles
 (defaults to \code{FALSE}), and \code{year}, the year for which you'd like to download data
 (defaults to 2015).}
+
+\item{detailed}{(deprecated) Setting detailed to FALSE returns a 1:500k cartographic boundary file.
+This parameter will be removed in a future release.}
 }
 \description{
 Description from the US Census Bureau (see link for source):

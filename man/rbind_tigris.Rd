@@ -13,7 +13,7 @@ rbind_tigris(...)
 one combined Spatial object
 }
 \description{
-Row-bind \code{tigris} Spatial objects
+If multiple school district types are rbound, coerces to "sdall" and does it
 }
 \examples{
 \dontrun{

@@ -442,7 +442,7 @@ rbind_tigris <- function(...) {
     if (!any(sapply(obj_attrs, is.null)) &
         length(obj_attrs_u)==1) {
 
-      tmp <- Reduce(rbind.sf, elements) # bind_rows not working atm
+      tmp <- Reduce(rbind, elements) # bind_rows not working atm
 
       geometries <- unlist(lapply(elements, function(x) {
         geoms <- st_geometry_type(x)
