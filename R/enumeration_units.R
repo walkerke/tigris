@@ -34,8 +34,7 @@
 #'        counties file.  Defaults to FALSE (the most detailed TIGER file).
 #' @param resolution The resolution of the cartographic boundary file (if cb == TRUE).
 #'        Defaults to '500k'; options include '5m' (1:5 million) and '20m' (1:20 million).
-#' @param detailed (deprecated) Setting detailed to FALSE returns a 1:500k cartographic boundary file.
-#'        This parameter will be removed in a future release.
+#' @param year the data year; defaults to 2015
 #' @param ... arguments to be passed to the underlying `load_tiger` function, which is not exported.
 #'        Options include \code{refresh}, which specifies whether or not to re-download shapefiles
 #'        (defaults to \code{FALSE}), and \code{year}, the year for which you'd like to download data
@@ -59,7 +58,7 @@
 #' gg <- gg + theme_map()
 #' gg
 #' }
-counties <- function(state = NULL, cb = FALSE, resolution = '500k', ...) {
+counties <- function(state = NULL, cb = FALSE, resolution = '500k', year = 2015, ...) {
 
   if (!(resolution %in% c('500k', '5m', '20m'))) {
     stop("Invalid value for resolution. Valid values are '500k', '5m', and '20m'.", call. = FALSE)
@@ -67,12 +66,43 @@ counties <- function(state = NULL, cb = FALSE, resolution = '500k', ...) {
 
   if (cb == TRUE) {
 
-    url <- paste0("http://www2.census.gov/geo/tiger/GENZ2015/shp/cb_2015_us_county_",
-                  resolution,
-                  ".zip")
+    if (year %in% c(1990, 2000)) {
+
+      suf <- substr(as.character(year), 3, 4)
+
+      url <- sprintf("https://www2.census.gov/geo/tiger/PREVGENZ/co/co%sshp/co%s_d%s_shp.zip",
+                     suf, state, suf)
+
+    } else if (year == 2010) {
+
+      url <- sprintf("https://www2.census.gov/geo/tiger/GENZ2010/gz_2010_%s_050_00_%s.zip",
+                     state, resolution)
+
+    } else {
+
+      url <- paste0("http://www2.census.gov/geo/tiger/GENZ2015/shp/cb_2015_us_county_",
+                    resolution,
+                    ".zip")
+    }
+
   } else {
 
-    url <- "http://www2.census.gov/geo/tiger/TIGER2015/COUNTY/tl_2015_us_county.zip"
+    if (year == 1990) stop("Please specify `cb = TRUE` to get 1990 data.", call. = FALSE)
+
+    if (year %in% c(2000, 2010)) {
+
+      cyear <- as.character(year)
+
+      suf <- substr(cyear, 3, 4)
+
+      url <- sprintf("https://www2.census.gov/geo/tiger/TIGER2010/COUNTY/%s/tl_2010_%s_county%s.zip",
+                     cyear, state, suf)
+
+    } else {
+
+      url <- "http://www2.census.gov/geo/tiger/TIGER2015/COUNTY/tl_2015_us_county.zip"
+
+    }
 
   }
 
@@ -326,29 +356,56 @@ school_districts <- function(state, type = 'unified', ...) {
 #'
 #' plot(benton_bgs)
 #' }
-block_groups <- function(state, county = NULL, cb = FALSE, detailed = TRUE, ...) {
+block_groups <- function(state, county = NULL, cb = FALSE, year = 2015, ...) {
 
   state <- validate_state(state)
 
   if (is.null(state)) stop("Invalid state", call.=FALSE)
 
-  if (detailed == FALSE) {
-    cb <- TRUE
-    message("The `detailed` parameter is deprecated.  Use `cb` instead.")
-  }
-
   if (cb == TRUE) {
 
-    url <- paste0("http://www2.census.gov/geo/tiger/GENZ2015/shp/cb_2015_",
-                  state,
-                  "_bg_500k.zip")
+    if (year %in% c(1990, 2000)) {
+
+      suf <- substr(as.character(year), 3, 4)
+
+      url <- sprintf("https://www2.census.gov/geo/tiger/PREVGENZ/bg/bg%sshp/bg%s_d%s_shp.zip",
+                     suf, state, suf)
+
+    } else if (year == 2010) {
+
+      url <- sprintf("https://www2.census.gov/geo/tiger/GENZ2010/gz_2010_%s_150_00_500k.zip",
+                     state)
+
+    } else {
+
+      url <- paste0("http://www2.census.gov/geo/tiger/GENZ2015/shp/cb_2015_",
+                    state,
+                    "_bg_500k.zip")
+    }
 
   } else {
 
-    url <- paste0("http://www2.census.gov/geo/tiger/TIGER2015/BG/tl_2015_",
-                  state,
-                  "_bg.zip")
+    if (year == 1990) stop("Please specify `cb = TRUE` to get 1990 data.", call. = FALSE)
+
+    if (year %in% c(2000, 2010)) {
+
+      cyear <- as.character(year)
+
+      suf <- substr(cyear, 3, 4)
+
+      url <- sprintf("https://www2.census.gov/geo/tiger/TIGER2010/BG/%s/tl_2010_%s_bg%s.zip",
+                     cyear, state, suf)
+
+    } else {
+
+      url <- paste0("http://www2.census.gov/geo/tiger/TIGER2015/BG/tl_2015_",
+                    state,
+                    "_bg.zip")
+
+    }
+
   }
+
 
   bgs <- load_tiger(url, tigris_type="block_group", ...)
 
