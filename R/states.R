@@ -10,12 +10,10 @@
 #'        states file.  Defaults to FALSE (the most detailed TIGER/Line file)
 #' @param resolution The resolution of the cartographic boundary file (if cb == TRUE).
 #'        Defaults to '500k'; options include '5m' (1:5 million) and '20m' (1:20 million).
-#' @param detailed (deprecated) Setting detailed to FALSE returns a 1:500k cartographic boundary file.
-#'        This parameter will be removed in a future release.
+#' @param year the year of the data download (defaults to 2015)
 #' @param ... arguments to be passed to the underlying `load_tiger` function, which is not exported.
 #'        Options include \code{refresh}, which specifies whether or not to re-download shapefiles
-#'        (defaults to \code{FALSE}), and \code{year}, the year for which you'd like to download data
-#'        (defaults to 2015).
+#'        (defaults to \code{FALSE}).
 #' @export
 #' @family general area functions
 #' @seealso \url{https://www.census.gov/geo/reference/gtc/gtc_state.html}
@@ -32,23 +30,68 @@
 #'               weight = 0.5) %>%
 #'   setView(-98.5795, 39.8282, zoom=3)
 #' }
-states <- function(cb = FALSE, resolution = '500k', detailed = TRUE, ...) {
+states <- function(cb = FALSE, resolution = '500k', year = NULL, ...) {
 
   if (!(resolution %in% c('500k', '5m', '20m'))) {
     stop("Invalid value for resolution. Valid values are '500k', '5m', and '20m'.", call. = FALSE)
-    }
-
-  if (detailed == FALSE) {
-    cb = TRUE
-    message("The `detailed` parameter is deprecated.  Use `cb` instead.")
   }
 
+  if (is.null(year)) {
+
+    year = getOption("tigris_year", 2015)
+
+  }
+
+  cyear <- as.character(year)
+
+
   if (cb == TRUE) {
-    url <- paste0("http://www2.census.gov/geo/tiger/GENZ2015/shp/cb_2015_us_state_",
-                  resolution,
-                  ".zip")
+
+    if (year %in% c(1990, 2000)) {
+
+      suf <- substr(as.character(year), 3, 4)
+
+      url <- sprintf("https://www2.census.gov/geo/tiger/PREVGENZ/st/st%sshp/st99_d%s_shp.zip",
+                     suf, suf)
+
+    } else if (year == 2010) {
+
+      url <- sprintf("https://www2.census.gov/geo/tiger/GENZ2010/gz_2010_us_040_00_%s.zip",
+                     resolution)
+
+    } else {
+
+      if (year > 2013) {
+
+        url <- sprintf("http://www2.census.gov/geo/tiger/GENZ%s/shp/cb_%s_us_state_%s.zip",
+                       cyear, cyear, resolution)
+
+      } else {
+
+        url <- sprintf("http://www2.census.gov/geo/tiger/GENZ%s/shp/cb_%s_us_state_%s.zip",
+                       cyear, cyear, resolution)
+      }
+
+    }
+
   } else {
-    url <- "http://www2.census.gov/geo/tiger/TIGER2015/STATE/tl_2015_us_state.zip"
+
+    if (year == 1990) stop("Please specify `cb = TRUE` to get 1990 data.", call. = FALSE)
+
+    if (year %in% c(2000, 2010)) {
+
+      suf <- substr(cyear, 3, 4)
+
+      url <- sprintf("https://www2.census.gov/geo/tiger/TIGER2010/STATE/%s/tl_2010_us_state%s.zip",
+                     cyear, suf)
+
+    } else {
+
+      url <- sprintf("http://www2.census.gov/geo/tiger/TIGER%s/STATE/tl_%s_us_state.zip",
+                     cyear, cyear)
+
+    }
+
   }
 
   return(load_tiger(url, tigris_type="state", ...))
