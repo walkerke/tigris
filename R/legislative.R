@@ -18,12 +18,10 @@
 #'        TIGER/Line file).
 #' @param resolution The resolution of the cartographic boundary file (if cb == TRUE).
 #'        Defaults to '500k'; options include '5m' (1:5 million) and '20m' (1:20 million).
-#' @param detailed (deprecated) Setting detailed to FALSE returns a 1:500k cartographic boundary file.
-#'        This parameter will be removed in a future release.
+#' @param year the data year (defaults to 2015).
 #' @param ... arguments to be passed to the underlying `load_tiger` function, which is not exported.
 #'        Options include \code{refresh}, which specifies whether or not to re-download shapefiles
-#'        (defaults to \code{FALSE}), and \code{year}, the year for which you'd like to download data
-#'        (defaults to 2015).
+#'        (defaults to \code{FALSE}).
 #' @family legislative district functions
 #' @seealso \url{http://www2.census.gov/geo/pdfs/maps-data/data/tiger/tgrshp2015/TGRSHP2015_TechDoc.pdf}
 #' @export
@@ -37,25 +35,36 @@
 #'    addTiles() %>%
 #'    addPolygons()
 #' }
-congressional_districts <- function(cb = FALSE, resolution = '500k', detailed = TRUE, ...) {
+congressional_districts <- function(cb = FALSE, resolution = '500k', year = 2015, ...) {
+
+  if (year < 2011) {
+
+    fname <- as.character(match.call())[[1]]
+
+    msg <- sprintf("%s is not currently available for years prior to 2011.  To request this feature,
+                   file an issue at https://github.com/walkerke/tigris.", fname)
+
+    stop(msg, call. = FALSE)
+
+  }
 
   if (!(resolution %in% c('500k', '5m', '20m'))) {
     stop("Invalid value for resolution. Valid values are '500k', '5m', and '20m'.", call. = FALSE)
   }
 
-  if (detailed == FALSE) {
-    cb = TRUE
-    message("The `detailed` parameter is deprecated.  Use `cb` instead.")
-  }
+  cyear <- as.character(year)
 
   if (cb == TRUE) {
 
-    url <- paste0("http://www2.census.gov/geo/tiger/GENZ2015/shp/cb_2015_us_cd114_",
-                  resolution,
-                  ".zip")
+    url <- sprintf("http://www2.census.gov/geo/tiger/GENZ%s/shp/cb_%s_us_cd114_%s.zip",
+                   cyear, cyear, resolution)
+
+    if (year == 2013) url <- gsub("shp/", "", url)
+
   } else {
 
-    url <- "http://www2.census.gov/geo/tiger/TIGER2015/CD/tl_2015_us_cd114.zip"
+    url <- sprintf("http://www2.census.gov/geo/tiger/TIGER%s/CD/tl_%s_us_cd114.zip",
+                   cyear, cyear)
 
   }
 
@@ -78,12 +87,10 @@ congressional_districts <- function(cb = FALSE, resolution = '500k', detailed = 
 #' @param cb If cb is set to TRUE, download a generalized (1:500k)
 #'        cartographic boundary file.  Defaults to FALSE (the most detailed
 #'        TIGER/Line file).
-#' @param detailed (deprecated) Setting detailed to FALSE returns a 1:500k cartographic boundary file.
-#'        This parameter will be removed in a future release.
+#' @param year the data year (defaults to 2015).
 #' @param ... arguments to be passed to the underlying `load_tiger` function, which is not exported.
 #'        Options include \code{refresh}, which specifies whether or not to re-download shapefiles
-#'        (defaults to \code{FALSE}), and \code{year}, the year for which you'd like to download data
-#'        (defaults to 2015).
+#'        (defaults to \code{FALSE}).
 #' @family legislative district functions
 #' @export
 #' @examples \dontrun{
@@ -98,7 +105,18 @@ congressional_districts <- function(cb = FALSE, resolution = '500k', detailed = 
 #'               color = "black",
 #'               weight = 0.5)
 #' }
-state_legislative_districts <- function(state, house = "upper", cb = FALSE, detailed = TRUE, ...) {
+state_legislative_districts <- function(state, house = "upper", cb = FALSE, year = 2015, ...) {
+
+  if (year < 2011) {
+
+    fname <- as.character(match.call())[[1]]
+
+    msg <- sprintf("%s is not currently available for years prior to 2011.  To request this feature,
+                   file an issue at https://github.com/walkerke/tigris.", fname)
+
+    stop(msg, call. = FALSE)
+
+  }
 
   state <- validate_state(state)
 
@@ -121,28 +139,20 @@ state_legislative_districts <- function(state, house = "upper", cb = FALSE, deta
 
   }
 
-  if (detailed == FALSE) {
-    cb = TRUE
-    message("The `detailed` parameter is deprecated.  Use `cb` instead.")
-  }
+  cyear <- as.character(year)
+
 
   if (cb == TRUE) {
 
-    url <- paste0("http://www2.census.gov/geo/tiger/GENZ2015/shp/cb_2015_",
-                  state,
-                  "_",
-                  type,
-                  "_500k.zip")
+    url <- sprintf("http://www2.census.gov/geo/tiger/GENZ%s/shp/cb_%s_%s_%s_500k.zip",
+                   cyear, cyear, state, type)
+
+    if (year == 2013) url <- gsub("shp/", "", url)
 
   } else {
 
-    url <- paste0("http://www2.census.gov/geo/tiger/TIGER2015/",
-                  toupper(type),
-                  "/tl_2015_",
-                  state,
-                  "_",
-                  type,
-                  ".zip")
+    url <- paste0("http://www2.census.gov/geo/tiger/TIGER%s/%s/tl_%s_%s_%s.zip",
+                  cyear, toupper(type), cyear, state, type)
 
   }
 

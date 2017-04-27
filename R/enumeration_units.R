@@ -534,6 +534,9 @@ zctas <- function(cb = FALSE, starts_with = NULL, year = 2015, ...) {
   if (cb == TRUE) {
     url <- sprintf("http://www2.census.gov/geo/tiger/GENZ%s/shp/cb_%s_us_zcta510_500k.zip",
                    cyear, cyear)
+
+    if (year == 2013) url <- gsub("shp/", "", url)
+
   } else {
     url <- sprintf("http://www2.census.gov/geo/tiger/TIGER%s/ZCTA5/tl_%s_us_zcta510.zip",
                    cyear, cyear)
@@ -706,6 +709,9 @@ county_subdivisions <- function(state, county = NULL, cb = FALSE, year = 2015, .
 
     url <- sprintf("http://www2.census.gov/geo/tiger/GENZ%s/shp/cb_%s_%s_cousub_500k.zip",
                    cyear, cyear, state)
+
+    if (year == 2013) url <- gsub("shp/", "", url)
+
 
   } else {
 

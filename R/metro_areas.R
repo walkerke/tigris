@@ -42,6 +42,9 @@ core_based_statistical_areas <- function(cb = FALSE, resolution = '500k', year =
   if (cb == TRUE) {
     url <- sprintf("http://www2.census.gov/geo/tiger/GENZ%s/shp/cb_%s_us_cbsa_%s.zip",
                    cyear, cyear, resolution)
+
+    if (year == 2013) url <- gsub("shp/", "", url)
+
   } else {
     url <- sprintf("http://www2.census.gov/geo/tiger/TIGER%s/CBSA/tl_%s_us_cbsa.zip",
                    cyear, cyear)
@@ -86,6 +89,9 @@ urban_areas <- function(cb = FALSE, year = 2015, ...) {
   if (cb == TRUE) {
     url <- sprintf("http://www2.census.gov/geo/tiger/GENZ%s/shp/cb_%s_us_ua10_500k.zip",
                    cyear, cyear)
+
+    if (year == 2013) url <- gsub("shp/", "", url)
+
   } else {
     url <- sprintf("http://www2.census.gov/geo/tiger/TIGER%s/UAC/tl_%s_us_uac10.zip",
                    cyear, cyear)
@@ -135,6 +141,9 @@ combined_statistical_areas <- function(cb = FALSE, resolution = '500k', year = 2
   if (cb == TRUE) {
     url <- sprintf("http://www2.census.gov/geo/tiger/GENZ%s/shp/cb_%s_us_csa_%s.zip",
                    cyear, cyear, resolution)
+
+    if (year == 2013) url <- gsub("shp/", "", url)
+
   } else {
     url <- sprintf("http://www2.census.gov/geo/tiger/TIGER%s/CSA/tl_%s_us_csa.zip",
                    cyear, cyear)

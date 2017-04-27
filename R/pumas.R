@@ -17,12 +17,10 @@
 #'        be state name or state abbreviation.
 #' @param cb If cb is set to TRUE, download a generalized (1:500k)
 #'        states file.  Defaults to FALSE (the most detailed TIGER/Line file)
-#' @param detailed (deprecated) Setting detailed to FALSE returns a 1:500k cartographic boundary file.
-#'        This parameter will be removed in a future release.
+#' @param year the data year (defaults to 2015).
 #' @param ... arguments to be passed to the underlying `load_tiger` function, which is not exported.
 #'        Options include \code{refresh}, which specifies whether or not to re-download shapefiles
-#'        (defaults to \code{FALSE}), and \code{year}, the year for which you'd like to download data
-#'        (defaults to 2015).
+#'        (defaults to \code{FALSE}).
 #' @export
 #' @family general area functions
 #' @seealso \url{http://www.census.gov/geo/reference/puma.html}
@@ -41,25 +39,35 @@
 #'
 #' plot(us_pumas)
 #' }
-pumas <- function(state, cb = FALSE, detailed = TRUE, ...) {
+pumas <- function(state, cb = FALSE, year = 2015, ...) {
+
+  if (year < 2011) {
+
+    fname <- as.character(match.call())[[1]]
+
+    msg <- sprintf("%s is not currently available for years prior to 2011.  To request this feature,
+                   file an issue at https://github.com/walkerke/tigris.", fname)
+
+    stop(msg, call. = FALSE)
+
+  }
 
   state <- validate_state(state)
 
   if (is.null(state)) stop("Invalid state", call.=FALSE)
 
-  if (detailed == FALSE) {
-    cb = TRUE
-    message("The `detailed` parameter is deprecated.  Use `cb` instead.")
-  }
+  cyear <- as.character(year)
 
   if (cb == TRUE) {
-    url <- paste0("http://www2.census.gov/geo/tiger/GENZ2015/shp/cb_2015_",
-                  state,
-                  "_puma10_500k.zip")
+    url <- sprintf("http://www2.census.gov/geo/tiger/GENZ%s/shp/cb_%s_%s_puma10_500k.zip",
+                   cyear, cyear, state)
+
+    if (year == 2013) url <- gsub("shp/", "", url)
+
+
   } else {
-    url <- paste0("http://www2.census.gov/geo/tiger/TIGER2015/PUMA/tl_2015_",
-                  state,
-                  "_puma10.zip")
+    url <- paste0("http://www2.census.gov/geo/tiger/TIGER%s/PUMA/tl_%s_%s_puma10.zip",
+                  cyear, cyear, state)
   }
 
   pm <- load_tiger(url, tigris_type = "puma", ...)
