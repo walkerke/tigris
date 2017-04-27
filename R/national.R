@@ -2,6 +2,10 @@
 #'
 #' @param resolution The resolution of the cartographic boundary file.
 #'        Defaults to '500k'; options include '5m' (1:5 million) and '20m' (1:20 million).
+#' @param year the data year (defaults to 2015).
+#' @param ... arguments to be passed to the underlying `load_tiger` function, which is not exported.
+#'        Options include \code{refresh}, which specifies whether or not to re-download shapefiles
+#'        (defaults to \code{FALSE}).
 #'
 #' @family national cartographic boundary functions
 #' @examples \dontrun{
@@ -15,15 +19,27 @@
 #'    addPolygons()
 #' }
 #' @export
-regions <- function(resolution = '500k') {
+regions <- function(resolution = '500k', year = 2015, ...) {
+
+  if (year < 2011) {
+
+    fname <- as.character(match.call())[[1]]
+
+    msg <- sprintf("%s is not currently available for years prior to 2011.  To request this feature,
+                   file an issue at https://github.com/walkerke/tigris.", fname)
+
+    stop(msg, call. = FALSE)
+
+  }
 
   if (!(resolution %in% c('500k', '5m', '20m'))) {
     stop("Invalid value for resolution. Valid values are '500k', '5m', and '20m'.", call. = FALSE)
   }
 
-  url <- paste0("http://www2.census.gov/geo/tiger/GENZ2015/shp/cb_2015_us_region_",
-                resolution,
-                ".zip")
+  cyear <- as.character(year)
+
+  url <- sprintf("http://www2.census.gov/geo/tiger/GENZ%s/shp/cb_%s_us_region_%s.zip",
+                 cyear, cyear, resolution)
 
   rgns <- load_tiger(url, tigris_type = "region")
 
@@ -35,6 +51,10 @@ regions <- function(resolution = '500k') {
 #'
 #' @param resolution The resolution of the cartographic boundary file.
 #'        Defaults to '500k'; options include '5m' (1:5 million) and '20m' (1:20 million).
+#' @param year the data year (defaults to 2015).
+#' @param ... arguments to be passed to the underlying `load_tiger` function, which is not exported.
+#'        Options include \code{refresh}, which specifies whether or not to re-download shapefiles
+#'        (defaults to \code{FALSE}).
 #'
 #' @family national cartographic boundary functions
 #' @export
@@ -48,15 +68,27 @@ regions <- function(resolution = '500k') {
 #'    addTiles() %>%
 #'    addPolygons()
 #' }
-divisions <- function(resolution = '500k') {
+divisions <- function(resolution = '500k', year = 2015, ...) {
+
+  if (year < 2011) {
+
+    fname <- as.character(match.call())[[1]]
+
+    msg <- sprintf("%s is not currently available for years prior to 2011.  To request this feature,
+                   file an issue at https://github.com/walkerke/tigris.", fname)
+
+    stop(msg, call. = FALSE)
+
+  }
 
   if (!(resolution %in% c('500k', '5m', '20m'))) {
     stop("Invalid value for resolution. Valid values are '500k', '5m', and '20m'.", call. = FALSE)
   }
 
-  url <- paste0("http://www2.census.gov/geo/tiger/GENZ2015/shp/cb_2015_us_division_",
-                resolution,
-                ".zip")
+  cyear <- as.character(year)
+
+  url <- sprintf("http://www2.census.gov/geo/tiger/GENZ%s/shp/cb_%s_us_division_%s.zip",
+                 cyear, cyear, resolution)
 
   div <- load_tiger(url, tigris_type = "division")
 
@@ -68,6 +100,10 @@ divisions <- function(resolution = '500k') {
 #'
 #' @param resolution The resolution of the cartographic boundary file.
 #'        Defaults to '5m'; options include '5m' (1:5 million) and '20m' (1:20 million).
+#' @param year the data year (defaults to 2015).
+#' @param ... arguments to be passed to the underlying `load_tiger` function, which is not exported.
+#'        Options include \code{refresh}, which specifies whether or not to re-download shapefiles
+#'        (defaults to \code{FALSE}).
 #'
 #' @family national cartographic boundary functions
 #' @export
@@ -83,13 +119,25 @@ divisions <- function(resolution = '500k') {
 #' }
 nation <- function(resolution = '5m') {
 
+  if (year < 2011) {
+
+    fname <- as.character(match.call())[[1]]
+
+    msg <- sprintf("%s is not currently available for years prior to 2011.  To request this feature,
+                   file an issue at https://github.com/walkerke/tigris.", fname)
+
+    stop(msg, call. = FALSE)
+
+  }
+
   if (!(resolution %in% c('5m', '20m'))) {
     stop("Invalid value for resolution. Valid values are '5m', and '20m'.", call. = FALSE)
   }
 
-  url <- paste0("http://www2.census.gov/geo/tiger/GENZ2015/shp/cb_2015_us_nation_",
-                resolution,
-                ".zip")
+  cyear <- as.character(year)
+
+  url <- sprintf("http://www2.census.gov/geo/tiger/GENZ%s/shp/cb_%s_us_nation_%s.zip",
+                 cyear, cyear, resolution)
 
   nat <- load_tiger(url, tigris_type = "nation")
 
