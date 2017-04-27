@@ -4,7 +4,7 @@
 \alias{new_england}
 \title{Download a New England City and Town Area shapefile into R}
 \usage{
-new_england(type = "necta", cb = FALSE, ...)
+new_england(type = "necta", cb = FALSE, year = 2015, ...)
 }
 \arguments{
 \item{type}{Specify whether to download the New England City and Town Areas file (\code{'necta'}, the default),

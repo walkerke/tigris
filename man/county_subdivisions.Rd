@@ -4,8 +4,7 @@
 \alias{county_subdivisions}
 \title{Download a county subdivision shapefile into R}
 \usage{
-county_subdivisions(state, county = NULL, cb = FALSE, detailed = TRUE,
-  ...)
+county_subdivisions(state, county = NULL, cb = FALSE, year = 2015, ...)
 }
 \arguments{
 \item{state}{The two-digit FIPS code (string) of the state you want. Can also
@@ -18,13 +17,11 @@ Can also be a county name or vector of names.}
 \item{cb}{If cb is set to TRUE, download a generalized (1:500k)
 file.  Defaults to FALSE (the most detailed TIGER/Line file)}
 
-\item{detailed}{(deprecated) Setting detailed to FALSE returns a 1:500k cartographic boundary file.
-This parameter will be removed in a future release.}
+\item{year}{the data year (defaults to 2015).}
 
 \item{...}{arguments to be passed to the underlying `load_tiger` function, which is not
 exported. Options include \code{refresh}, which specifies whether or not to re-download
-shapefiles (defaults to \code{FALSE}), and \code{year}, the year for which you'd like to
- download data (defaults to 2015).}
+shapefiles (defaults to \code{FALSE}).}
 }
 \description{
 From the US Census Bureau (see link for source, and more information): "County subdivisions

@@ -4,8 +4,8 @@
 \alias{combined_statistical_areas}
 \title{Download a combined statistical areas shapefile into R}
 \usage{
-combined_statistical_areas(cb = FALSE, resolution = "500k",
-  detailed = TRUE, ...)
+combined_statistical_areas(cb = FALSE, resolution = "500k", year = 2015,
+  ...)
 }
 \arguments{
 \item{cb}{If cb is set to TRUE, download a generalized (1:500k)
@@ -15,13 +15,11 @@ TIGER/Line file).}
 \item{resolution}{The resolution of the cartographic boundary file (if cb == TRUE).
 Defaults to '500k'; options include '5m' (1:5 million) and '20m' (1:20 million).}
 
-\item{detailed}{(deprecated) Setting detailed to FALSE returns a 1:500k cartographic boundary file.
-This parameter will be removed in a future release.}
+\item{year}{the data year (defaults to 2015).}
 
 \item{...}{arguments to be passed to the underlying `load_tiger` function, which is not exported.
 Options include \code{refresh}, which specifies whether or not to re-download shapefiles
-(defaults to \code{FALSE}), and \code{year}, the year for which you'd like to download data
-(defaults to 2015).}
+(defaults to \code{FALSE}).}
 }
 \description{
 Combined statistical areas are "two or more adjacent CBSAs that have significant

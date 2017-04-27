@@ -13,32 +13,38 @@
 #'        TIGER/Line file).
 #' @param resolution The resolution of the cartographic boundary file (if cb == TRUE).
 #'        Defaults to '500k'; options include '5m' (1:5 million) and '20m' (1:20 million).
-#' @param detailed (deprecated) Setting detailed to FALSE returns a 1:500k cartographic boundary file.
-#'        This parameter will be removed in a future release.
+#' @param year the data year (defaults to 2015).
 #' @param ... arguments to be passed to the underlying `load_tiger` function, which is not exported.
 #'        Options include \code{refresh}, which specifies whether or not to re-download shapefiles
-#'        (defaults to \code{FALSE}), and \code{year}, the year for which you'd like to download data
-#'        (defaults to 2015).
+#'        (defaults to \code{FALSE}).
 #' @family metro area functions
 #' @seealso \url{http://www.census.gov/population/metro/}
 #' @export
-core_based_statistical_areas <- function(cb = FALSE, resolution = '500k', detailed = TRUE, ...) {
+core_based_statistical_areas <- function(cb = FALSE, resolution = '500k', year = 2015, ...) {
+
+  if (year < 2011) {
+
+    fname <- as.character(match.call())[[1]]
+
+    msg <- sprintf("%s is not currently available for years prior to 2011.  To request this feature,
+                   file an issue at https://github.com/walkerke/tigris.", fname)
+
+    stop(msg, call. = FALSE)
+
+  }
 
   if (!(resolution %in% c('500k', '5m', '20m'))) {
     stop("Invalid value for resolution. Valid values are '500k', '5m', and '20m'.", call. = FALSE)
   }
 
-  if (detailed == FALSE) {
-    cb = TRUE
-    message("The `detailed` parameter is deprecated.  Use `cb` instead.")
-  }
+  cyear <- as.character(year)
 
   if (cb == TRUE) {
-    url <- paste0("http://www2.census.gov/geo/tiger/GENZ2015/shp/cb_2015_us_cbsa_",
-                  resolution,
-                  ".zip")
+    url <- sprintf("http://www2.census.gov/geo/tiger/GENZ%s/shp/cb_%s_us_cbsa_%s.zip",
+                   cyear, cyear, resolution)
   } else {
-    url <- "http://www2.census.gov/geo/tiger/TIGER2015/CBSA/tl_2015_us_cbsa.zip"
+    url <- sprintf("http://www2.census.gov/geo/tiger/TIGER%s/CBSA/tl_%s_us_cbsa.zip",
+                   cyear, cyear)
   }
 
   return(load_tiger(url, tigris_type="cbsa", ...))
@@ -54,26 +60,35 @@ core_based_statistical_areas <- function(cb = FALSE, resolution = '500k', detail
 #' @param cb If cb is set to TRUE, download a generalized (1:500k)
 #'        cartographic boundary file.  Defaults to FALSE (the most detailed
 #'        TIGER/Line file).
-#' @param detailed (deprecated) Setting detailed to FALSE returns a 1:500k cartographic boundary file.
-#'        This parameter will be removed in a future release.
+#' @param year the data year (defaults to 2015).
 #' @param ... arguments to be passed to the underlying `load_tiger` function, which is not exported.
 #'        Options include \code{refresh}, which specifies whether or not to re-download shapefiles
-#'        (defaults to \code{FALSE}), and \code{year}, the year for which you'd like to download data
-#'        (defaults to 2015).
+#'        (defaults to \code{FALSE}).
 #' @family metro area functions
 #' @seealso \url{http://www2.census.gov/geo/pdfs/maps-data/data/tiger/tgrshp2015/TGRSHP2015_TechDoc.pdf}
 #' @export
-urban_areas <- function(cb = FALSE, detailed = TRUE, ...) {
+urban_areas <- function(cb = FALSE, year = 2015, ...) {
 
-  if (detailed == FALSE) {
-    cb = TRUE
-    message("The `detailed` parameter is deprecated.  Use `cb` instead.")
+  if (year < 2011) {
+
+    fname <- as.character(match.call())[[1]]
+
+    msg <- sprintf("%s is not currently available for years prior to 2011.  To request this feature,
+                   file an issue at https://github.com/walkerke/tigris.", fname)
+
+    stop(msg, call. = FALSE)
+
   }
 
+  cyear <- as.character(year)
+
+
   if (cb == TRUE) {
-    url <- "http://www2.census.gov/geo/tiger/GENZ2015/shp/cb_2015_us_ua10_500k.zip"
+    url <- sprintf("http://www2.census.gov/geo/tiger/GENZ%s/shp/cb_%s_us_ua10_500k.zip",
+                   cyear, cyear)
   } else {
-    url <- "http://www2.census.gov/geo/tiger/TIGER2015/UAC/tl_2015_us_uac10.zip"
+    url <- sprintf("http://www2.census.gov/geo/tiger/TIGER%s/UAC/tl_%s_us_uac10.zip",
+                   cyear, cyear)
   }
 
   return(load_tiger(url, tigris_type="urban", ...))
@@ -91,32 +106,38 @@ urban_areas <- function(cb = FALSE, detailed = TRUE, ...) {
 #'        TIGER/Line file).
 #' @param resolution The resolution of the cartographic boundary file (if cb == TRUE).
 #'        Defaults to '500k'; options include '5m' (1:5 million) and '20m' (1:20 million).
-#' @param detailed (deprecated) Setting detailed to FALSE returns a 1:500k cartographic boundary file.
-#'        This parameter will be removed in a future release.
+#' @param year the data year (defaults to 2015).
 #' @param ... arguments to be passed to the underlying `load_tiger` function, which is not exported.
 #'        Options include \code{refresh}, which specifies whether or not to re-download shapefiles
-#'        (defaults to \code{FALSE}), and \code{year}, the year for which you'd like to download data
-#'        (defaults to 2015).
+#'        (defaults to \code{FALSE}).
 #' @family metro area functions
 #' @seealso \url{http://www2.census.gov/geo/pdfs/maps-data/data/tiger/tgrshp2015/TGRSHP2015_TechDoc.pdf}
 #' @export
-combined_statistical_areas <- function(cb = FALSE, resolution = '500k', detailed = TRUE, ...) {
+combined_statistical_areas <- function(cb = FALSE, resolution = '500k', year = 2015, ...) {
+
+  if (year < 2011) {
+
+    fname <- as.character(match.call())[[1]]
+
+    msg <- sprintf("%s is not currently available for years prior to 2011.  To request this feature,
+                   file an issue at https://github.com/walkerke/tigris.", fname)
+
+    stop(msg, call. = FALSE)
+
+  }
 
   if (!(resolution %in% c('500k', '5m', '20m'))) {
     stop("Invalid value for resolution. Valid values are '500k', '5m', and '20m'.", call. = FALSE)
   }
 
-  if (detailed == FALSE) {
-    cb = TRUE
-    message("The `detailed` parameter is deprecated.  Use `cb` instead.")
-  }
+  cyear <- as.character(year)
 
   if (cb == TRUE) {
-    url <- paste0("http://www2.census.gov/geo/tiger/GENZ2015/shp/cb_2015_us_csa_",
-                  resolution,
-                  ".zip")
+    url <- sprintf("http://www2.census.gov/geo/tiger/GENZ%s/shp/cb_%s_us_csa_%s.zip",
+                   cyear, cyear, resolution)
   } else {
-    url <- "http://www2.census.gov/geo/tiger/TIGER2015/CSA/tl_2015_us_csa.zip"
+    url <- sprintf("http://www2.census.gov/geo/tiger/TIGER%s/CSA/tl_%s_us_csa.zip",
+                   cyear, cyear)
   }
 
   return(load_tiger(url, tigris_type="csa", ...))
@@ -128,6 +149,7 @@ combined_statistical_areas <- function(cb = FALSE, resolution = '500k', detailed
 #' Metropolitan divisions are subdivisions of metropolitan areas with population of at least 2.5 million.  Please note:
 #' not all metropolitan areas have metropolitan divisions.
 #'
+#' @param year The data year (defaults to 2015).
 #' @param ... arguments to be passed to the underlying `load_tiger` function, which is not exported.
 #'        Options include \code{refresh}, which specifies whether or not to re-download shapefiles
 #'        (defaults to \code{FALSE}), and \code{year}, the year for which you'd like to download data
@@ -135,9 +157,23 @@ combined_statistical_areas <- function(cb = FALSE, resolution = '500k', detailed
 #' @family metro area functions
 #' @seealso \url{http://www2.census.gov/geo/pdfs/maps-data/data/tiger/tgrshp2015/TGRSHP2015_TechDoc.pdf}
 #' @export
-metro_divisions <- function(...) {
+metro_divisions <- function(year = 2015, ...) {
 
-  url <- "http://www2.census.gov/geo/tiger/TIGER2015/METDIV/tl_2015_us_metdiv.zip"
+  if (year < 2011) {
+
+    fname <- as.character(match.call())[[1]]
+
+    msg <- sprintf("%s is not currently available for years prior to 2011.  To request this feature,
+                   file an issue at https://github.com/walkerke/tigris.", fname)
+
+    stop(msg, call. = FALSE)
+
+  }
+
+  cyear <- as.character(year)
+
+  url <- sprintf("http://www2.census.gov/geo/tiger/TIGER%s/METDIV/tl_%s_us_metdiv.zip",
+                 cyear, cyear)
 
   return(load_tiger(url, tigris_type="metro", ...))
 
@@ -177,17 +213,32 @@ metro_divisions <- function(...) {
 #' plot(ne)
 #'
 #' }
-new_england <- function(type = 'necta', cb = FALSE, ...) {
+new_england <- function(type = 'necta', cb = FALSE, year = 2015, ...) {
+
+  if (year < 2011) {
+
+    fname <- as.character(match.call())[[1]]
+
+    msg <- sprintf("%s is not currently available for years prior to 2011.  To request this feature,
+                   file an issue at https://github.com/walkerke/tigris.", fname)
+
+    stop(msg, call. = FALSE)
+
+  }
+
+  cyear <- as.character(year)
 
   if (type == 'necta') {
 
     if (cb == TRUE) {
 
-      url <- "http://www2.census.gov/geo/tiger/GENZ2015/shp/cb_2015_us_necta_500k.zip"
+      url <- sprintf("http://www2.census.gov/geo/tiger/GENZ%s/shp/cb_%s_us_necta_500k.zip",
+                     cyear, cyear)
 
     } else {
 
-      url <- "http://www2.census.gov/geo/tiger/TIGER2015/NECTA/tl_2015_us_necta.zip"
+      url <- sprintf("http://www2.census.gov/geo/tiger/TIGER%s/NECTA/tl_%s_us_necta.zip",
+                     cyear, cyear)
 
     }
 
@@ -195,13 +246,15 @@ new_england <- function(type = 'necta', cb = FALSE, ...) {
 
   } else if (type == 'combined') {
 
-    url <- "http://www2.census.gov/geo/tiger/TIGER2015/CNECTA/tl_2015_us_cnecta.zip"
+    url <- sprintf("http://www2.census.gov/geo/tiger/TIGER%s/CNECTA/tl_%s_us_cnecta.zip",
+                   cyear, cyear)
 
     return(load_tiger(url, tigris_type = "cnecta", ...))
 
   } else if (type == 'divisions') {
 
-    url <- "http://www2.census.gov/geo/tiger/TIGER2015/NECTADIV/tl_2015_us_nectadiv.zip"
+    url <- sprintf("http://www2.census.gov/geo/tiger/TIGER%s/NECTADIV/tl_%s_us_nectadiv.zip",
+                   cyear, cyear)
 
     return(load_tiger(url, tigris_type = "nectadiv", ...))
 
