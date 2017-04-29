@@ -134,7 +134,7 @@ coastline <- function(year = 2015, ...) {
 
   if (year == 2015) {
 
-    url <- "http://www2.census.gov/geo/tiger/TIGER2015/COASTLINE/tl_2015_us_coastline.zip"
+    url <- "http://www2.census.gov/geo/tiger/TIGER2015/COAST/tl_2015_us_coastline.zip"
 
   } else {
 

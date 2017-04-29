@@ -5,7 +5,7 @@
 \title{Download a state legislative districts shapefile into R - upper or lower}
 \usage{
 state_legislative_districts(state, house = "upper", cb = FALSE,
-  detailed = TRUE, ...)
+  year = 2015, ...)
 }
 \arguments{
 \item{state}{The two-digit FIPS code (string) of the state. Can also be state
@@ -18,13 +18,11 @@ name or abbreviation (case-insensitive)}
 cartographic boundary file.  Defaults to FALSE (the most detailed
 TIGER/Line file).}
 
-\item{detailed}{(deprecated) Setting detailed to FALSE returns a 1:500k cartographic boundary file.
-This parameter will be removed in a future release.}
+\item{year}{the data year (defaults to 2015).}
 
 \item{...}{arguments to be passed to the underlying `load_tiger` function, which is not exported.
 Options include \code{refresh}, which specifies whether or not to re-download shapefiles
-(defaults to \code{FALSE}), and \code{year}, the year for which you'd like to download data
-(defaults to 2015).}
+(defaults to \code{FALSE}).}
 }
 \description{
 This function allows you to download boundaries for state legislatures into R.

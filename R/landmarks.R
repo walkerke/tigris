@@ -12,16 +12,28 @@
 #' Although almost all military installations have assigned 8-character National Standard (GNIS) codes, the
 #' Census Bureau has not loaded most of this data into the MAF/TIGER database. The 2015 military
 #' shapefiles contain few values in the ANSICODE field.
+#' @param year the data year (defaults to 2015).
 #' @param ... arguments to be passed to the underlying `load_tiger` function, which is not exported.
 #'        Options include \code{refresh}, which specifies whether or not to re-download shapefiles
-#'        (defaults to \code{FALSE}), and \code{year}, the year for which you'd like to download data
-#'        (defaults to 2015).
+#'        (defaults to \code{FALSE}).
 #' @seealso \url{http://www2.census.gov/geo/pdfs/maps-data/data/tiger/tgrshp2015/TGRSHP2015_TechDoc_Ch3.pdf}
 #' @export
 
-military <- function(...) {
+military <- function(year, ...) {
 
-  url <- "http://www2.census.gov/geo/tiger/TIGER2015/MIL/tl_2015_us_mil.zip"
+  if (year < 2011) {
+
+    fname <- as.character(match.call())[[1]]
+
+    msg <- sprintf("%s is not currently available for years prior to 2011.  To request this feature,
+                   file an issue at https://github.com/walkerke/tigris.", fname)
+
+    stop(msg, call. = FALSE)
+
+  }
+
+  url <- sprintf("http://www2.census.gov/geo/tiger/TIGER%s/MIL/tl_%s_us_mil.zip",
+                 as.character(year), as.character(year))
 
   return(load_tiger(url, tigris_type = "military", ...))
 
@@ -53,22 +65,37 @@ military <- function(...) {
 #' @seealso \url{http://www2.census.gov/geo/pdfs/maps-data/data/tiger/tgrshp2015/TGRSHP2015_TechDoc_Ch3.pdf}
 #'
 #' @param state The state for which you'd like to download the landmarks
-#' @param type Whether you would like to download point landmarks (\code{"point"}) or area landmarks (\code{"area"}).                   Defaults to \code{"point"}.
+#' @param type Whether you would like to download point landmarks (\code{"point"}) or area landmarks (\code{"area"}). #'                Defaults to \code{"point"}.
+#' @param year the data year (defaults to 2015).
 #' @param ... arguments to be passed to the underlying `load_tiger` function, which is not exported.
 #'        Options include \code{refresh}, which specifies whether or not to re-download shapefiles
-#'        (defaults to \code{FALSE}), and \code{year}, the year for which you'd like to download data
-#'        (defaults to 2015).
+#'        (defaults to \code{FALSE}).
 #' @export
-landmarks <- function(state, type = "point", ...) {
+landmarks <- function(state, type = "point", year = 2015, ...) {
+
+  if (year < 2011) {
+
+    fname <- as.character(match.call())[[1]]
+
+    msg <- sprintf("%s is not currently available for years prior to 2011.  To request this feature,
+                   file an issue at https://github.com/walkerke/tigris.", fname)
+
+    stop(msg, call. = FALSE)
+
+  }
 
   state <- validate_state(state)
 
+  cyear <- as.character(year)
+
   if (type == "area") {
-    url <- paste0("http://www2.census.gov/geo/tiger/TIGER2015/AREALM/tl_2015_", state, "_arealm.zip")
+    url <- sprintf("http://www2.census.gov/geo/tiger/TIGER%s/AREALM/tl_%s_%s_arealm.zip",
+                   cyear, cyear, state)
     return(load_tiger(url, tigris_type = "area_landmark", ...))
 
   } else if (type == "point") {
-    url <- paste0("http://www2.census.gov/geo/tiger/TIGER2015/POINTLM/tl_2015_", state, "_pointlm.zip")
+    url <- paste0("http://www2.census.gov/geo/tiger/TIGER%s/POINTLM/tl_%s_%s_pointlm.zip",
+                  cyear, cyear, state)
     return(load_tiger(url, tigris_type = "point_landmark", ...))
 
   } else {

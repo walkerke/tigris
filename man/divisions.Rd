@@ -4,11 +4,17 @@
 \alias{divisions}
 \title{Download a US Census divisions cartographic boundary shapefile into R}
 \usage{
-divisions(resolution = "500k")
+divisions(resolution = "500k", year = 2015, ...)
 }
 \arguments{
 \item{resolution}{The resolution of the cartographic boundary file.
 Defaults to '500k'; options include '5m' (1:5 million) and '20m' (1:20 million).}
+
+\item{year}{the data year (defaults to 2015).}
+
+\item{...}{arguments to be passed to the underlying `load_tiger` function, which is not exported.
+Options include \code{refresh}, which specifies whether or not to re-download shapefiles
+(defaults to \code{FALSE}).}
 }
 \description{
 Download a US Census divisions cartographic boundary shapefile into R

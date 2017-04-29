@@ -4,7 +4,7 @@
 \alias{pumas}
 \title{Download a Public Use Microdata Area (PUMA) shapefile into R}
 \usage{
-pumas(state, cb = FALSE, detailed = TRUE, ...)
+pumas(state, cb = FALSE, year = 2015, ...)
 }
 \arguments{
 \item{state}{The two-digit FIPS code (string) of the state you want. Can also
@@ -13,13 +13,11 @@ be state name or state abbreviation.}
 \item{cb}{If cb is set to TRUE, download a generalized (1:500k)
 states file.  Defaults to FALSE (the most detailed TIGER/Line file)}
 
-\item{detailed}{(deprecated) Setting detailed to FALSE returns a 1:500k cartographic boundary file.
-This parameter will be removed in a future release.}
+\item{year}{the data year (defaults to 2015).}
 
 \item{...}{arguments to be passed to the underlying `load_tiger` function, which is not exported.
 Options include \code{refresh}, which specifies whether or not to re-download shapefiles
-(defaults to \code{FALSE}), and \code{year}, the year for which you'd like to download data
-(defaults to 2015).}
+(defaults to \code{FALSE}).}
 }
 \description{
 Public use microdata areas (PUMAs) are decennial census areas that have been

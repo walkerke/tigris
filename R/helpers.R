@@ -53,7 +53,52 @@ load_tiger <- function(url,
 
       if (refresh | !file.exists(file.path(user_cache_dir("tigris"),
                                  sprintf("%s.shp", shape)))) {
-        unzip(file_loc, exdir = cache_dir, overwrite=TRUE)
+
+        unzip_tiger <- function() {
+          unzip(file_loc, exdir = cache_dir, overwrite=TRUE)
+        }
+
+        # Logic for handling download errors and re-downloading
+        t <- tryCatch(unzip_tiger(), warning = function(w) w)
+
+        if ("warning" %in% class(t)) {
+
+          i <- 1
+
+          while (i < 4) {
+
+            message(sprintf("Previous download failed.  Re-download attempt %s of 3...",
+                            as.character(i)))
+
+            try(GET(url,
+                    write_disk(file_loc, overwrite=TRUE),
+                    progress(type="down")), silent=TRUE)
+
+            shape <- gsub(".zip", "", tiger_file)
+            shape <- gsub("_shp", "", shape)
+
+            t <- tryCatch(unzip_tiger(), warning = function(w) w)
+
+            if ("warning" %in% class(t)) {
+              i <- i + 1
+            } else {
+              break
+            }
+
+          }
+
+          if (i == 4) {
+
+            stop("Download failed; check your internet connection or the status of the Census Bureau website
+                 at http://www2.census.gov/geo/tiger/.", call. = FALSE)
+          }
+
+        } else {
+
+          unzip_tiger()
+
+        }
+
       }
 
       if (class == "sp") {

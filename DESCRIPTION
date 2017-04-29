@@ -8,7 +8,7 @@ Authors@R: c(
       person(given="Bob", family="Rudis", email="bob@rudis.net", role="ctb")
     )
 Description: Download TIGER/Line shapefiles from the United States Census Bureau
-    and load into R as 'SpatialDataFrame' objects.
+    and load into R as 'SpatialDataFrame' or 'sf' objects.
 License: MIT + file LICENSE
 LazyData: TRUE
 Depends:

@@ -4,17 +4,18 @@
 \alias{landmarks}
 \title{Download a point or area landmarks shapefile into R}
 \usage{
-landmarks(state, type = "point", ...)
+landmarks(state, type = "point", year = 2015, ...)
 }
 \arguments{
 \item{state}{The state for which you'd like to download the landmarks}
 
-\item{type}{Whether you would like to download point landmarks (\code{"point"}) or area landmarks (\code{"area"}).                   Defaults to \code{"point"}.}
+\item{type}{Whether you would like to download point landmarks (\code{"point"}) or area landmarks (\code{"area"}). #'                Defaults to \code{"point"}.}
+
+\item{year}{the data year (defaults to 2015).}
 
 \item{...}{arguments to be passed to the underlying `load_tiger` function, which is not exported.
 Options include \code{refresh}, which specifies whether or not to re-download shapefiles
-(defaults to \code{FALSE}), and \code{year}, the year for which you'd like to download data
-(defaults to 2015).}
+(defaults to \code{FALSE}).}
 }
 \description{
 Description from the US Census Bureau:
