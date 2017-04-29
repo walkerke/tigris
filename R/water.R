@@ -10,10 +10,10 @@
 #'        (case-insensitive).
 #' @param county The three-digit FIPS code of the county you'd like the water
 #'        features for.  Can also be a county name.
+#' @param year the data year (defaults to 2015).
 #' @param ... arguments to be passed to the underlying `load_tiger` function, which is not exported.
 #'        Options include \code{refresh}, which specifies whether or not to re-download shapefiles
-#'        (defaults to \code{FALSE}), and \code{year}, the year for which you'd like to download data
-#'        (defaults to 2015).
+#'        (defaults to \code{FALSE}).
 #' @family water functions
 #' @seealso \url{http://www2.census.gov/geo/pdfs/maps-data/data/tiger/tgrshp2015/TGRSHP2015_TechDoc.pdf}
 #' @export
@@ -26,7 +26,18 @@
 #' plot(dallas_water)
 #'
 #' }
-area_water <- function(state, county, ...) {
+area_water <- function(state, county, year = 2015, ...) {
+
+  if (year < 2011) {
+
+    fname <- as.character(match.call())[[1]]
+
+    msg <- sprintf("%s is not currently available for years prior to 2011.  To request this feature,
+                   file an issue at https://github.com/walkerke/tigris.", fname)
+
+    stop(msg, call. = FALSE)
+
+  }
 
   state <- validate_state(state)
 
@@ -36,10 +47,10 @@ area_water <- function(state, county, ...) {
 
   if (is.null(county) | length(county) > 1) stop("Invalid county", call. = FALSE)
 
-  url <- paste0("http://www2.census.gov/geo/tiger/TIGER2015/AREAWATER/tl_2015_",
-                state,
-                county,
-                "_areawater.zip")
+  cyear <- as.character(year)
+
+  url <- sprintf("http://www2.census.gov/geo/tiger/TIGER%s/AREAWATER/tl_%s_%s%s_areawater.zip",
+                 cyear, cyear, state, county)
 
   return(load_tiger(url, tigris_type="area_water", ...))
 
@@ -59,10 +70,10 @@ area_water <- function(state, county, ...) {
 #'        (case-insensitive).
 #' @param county The three-digit FIPS code of the county you'd like the water
 #'        features for.  Can also be a county name.
+#' @param year the data year (defaults to 2015).
 #' @param ... arguments to be passed to the underlying `load_tiger` function, which is not exported.
 #'        Options include \code{refresh}, which specifies whether or not to re-download shapefiles
-#'        (defaults to \code{FALSE}), and \code{year}, the year for which you'd like to download data
-#'        (defaults to 2015).
+#'        (defaults to \code{FALSE}).
 #' @family water functions
 #' @seealso \url{http://www2.census.gov/geo/pdfs/maps-data/data/tiger/tgrshp2015/TGRSHP2015_TechDoc.pdf}
 #' @export
@@ -75,7 +86,18 @@ area_water <- function(state, county, ...) {
 #' plot(dallas_water)
 #'
 #' }
-linear_water <- function(state, county, ...) {
+linear_water <- function(state, county, year = 2015, ...) {
+
+  if (year < 2011) {
+
+    fname <- as.character(match.call())[[1]]
+
+    msg <- sprintf("%s is not currently available for years prior to 2011.  To request this feature,
+                   file an issue at https://github.com/walkerke/tigris.", fname)
+
+    stop(msg, call. = FALSE)
+
+  }
 
   state <- validate_state(state)
 
@@ -85,10 +107,10 @@ linear_water <- function(state, county, ...) {
 
   if (is.null(county)) stop("Invalid county", call. = FALSE)
 
-  url <- paste0("http://www2.census.gov/geo/tiger/TIGER2015/LINEARWATER/tl_2015_",
-                state,
-                county,
-                "_linearwater.zip")
+  cyear <- as.character(year)
+
+  url <- sprintf("http://www2.census.gov/geo/tiger/TIGER%s/LINEARWATER/tl_%s_%s%s_linearwater.zip",
+                 cyear, cyear, state, county)
 
   return(load_tiger(url, tigris_type="linear_water", ...))
 
@@ -132,19 +154,10 @@ linear_water <- function(state, county, ...) {
 #' }
 coastline <- function(year = 2015, ...) {
 
-  if (year == 2015) {
+  cyear <- as.character(year)
 
-    url <- "http://www2.census.gov/geo/tiger/TIGER2015/COAST/tl_2015_us_coastline.zip"
-
-  } else {
-
-    url <- paste0("http://www2.census.gov/geo/tiger/TIGER",
-                  as.character(year),
-                  "COAST/tl_",
-                  as.character(year),
-                  "_us_coastline.zip")
-
-  }
+  url <- sprintf("http://www2.census.gov/geo/tiger/TIGER%s/COAST/tl_%s_us_coastline.zip",
+                 cyear, cyear)
 
   return(load_tiger(url, tigris_type="coastline", ...))
 

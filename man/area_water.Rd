@@ -4,7 +4,7 @@
 \alias{area_water}
 \title{Download an area water shapefile into R}
 \usage{
-area_water(state, county, ...)
+area_water(state, county, year = 2015, ...)
 }
 \arguments{
 \item{state}{The two-digit FIPS code of the state of the county you'd like to
@@ -14,10 +14,11 @@ download the water features for.  Can also be state name or abbreviation
 \item{county}{The three-digit FIPS code of the county you'd like the water
 features for.  Can also be a county name.}
 
+\item{year}{the data year (defaults to 2015).}
+
 \item{...}{arguments to be passed to the underlying `load_tiger` function, which is not exported.
 Options include \code{refresh}, which specifies whether or not to re-download shapefiles
-(defaults to \code{FALSE}), and \code{year}, the year for which you'd like to download data
-(defaults to 2015).}
+(defaults to \code{FALSE}).}
 }
 \description{
 From the US Census Bureau: "The area hydrography shapefile contains the geometry
