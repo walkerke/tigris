@@ -44,7 +44,13 @@
 #' gg <- gg + theme_map()
 #' gg
 #' }
-roads <- function(state, county, year = 2015, ...) {
+roads <- function(state, county, year = NULL, ...) {
+
+  if (is.null(year)) {
+
+    year <- getOption("tigris_year", 2015)
+
+  }
 
   if (year < 2011) {
 
@@ -95,7 +101,13 @@ roads <- function(state, county, year = 2015, ...) {
 #' plot(rds)
 #'
 #' }
-primary_roads <- function(year = 2015, ...) {
+primary_roads <- function(year = NULL, ...) {
+
+  if (is.null(year)) {
+
+    year <- getOption("tigris_year", 2015)
+
+  }
 
   if (year < 2011) {
 
@@ -145,7 +157,13 @@ primary_roads <- function(year = 2015, ...) {
 #' plot(rds)
 #'
 #' }
-primary_secondary_roads <- function(state, year = 2015, ...) {
+primary_secondary_roads <- function(state, year = NULL, ...) {
+
+  if (is.null(year)) {
+
+    year <- getOption("tigris_year", 2015)
+
+  }
 
   if (year < 2011) {
 
@@ -190,7 +208,13 @@ primary_secondary_roads <- function(state, year = 2015, ...) {
 #' plot(rls)
 #'
 #' }
-rails <- function(year = 2015, ...) {
+rails <- function(year = NULL, ...) {
+
+  if (is.null(year)) {
+
+    year <- getOption("tigris_year", 2015)
+
+  }
 
   if (year < 2011) {
 

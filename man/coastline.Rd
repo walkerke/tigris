@@ -4,7 +4,7 @@
 \alias{coastline}
 \title{Download a shapefile of the US coastline into R}
 \usage{
-coastline(year = 2015, ...)
+coastline(year = NULL, ...)
 }
 \arguments{
 \item{year}{The year of the dataset (defaults to 2015)}

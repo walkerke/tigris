@@ -4,7 +4,7 @@
 \alias{alaska_native_regional_corporations}
 \title{Download an Alaska Native Regional Corporation shapefile into R.}
 \usage{
-alaska_native_regional_corporations(cb = FALSE, year = 2015, ...)
+alaska_native_regional_corporations(cb = FALSE, year = NULL, ...)
 }
 \arguments{
 \item{cb}{If cb is set to TRUE, download a generalized (1:500k)

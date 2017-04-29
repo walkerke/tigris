@@ -39,7 +39,13 @@
 #'
 #' plot(us_pumas)
 #' }
-pumas <- function(state, cb = FALSE, year = 2015, ...) {
+pumas <- function(state, cb = FALSE, year = NULL, ...) {
+
+  if (is.null(year)) {
+
+    year <- getOption("tigris_year", 2015)
+
+  }
 
   if (year < 2011) {
 

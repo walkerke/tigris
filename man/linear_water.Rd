@@ -4,7 +4,7 @@
 \alias{linear_water}
 \title{Download an linear water shapefile into R}
 \usage{
-linear_water(state, county, year = 2015, ...)
+linear_water(state, county, year = NULL, ...)
 }
 \arguments{
 \item{state}{The two-digit FIPS code of the state of the county you'd like to

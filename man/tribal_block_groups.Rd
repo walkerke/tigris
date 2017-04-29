@@ -4,7 +4,7 @@
 \alias{tribal_block_groups}
 \title{Download a Tribal block groups shapefile into R.}
 \usage{
-tribal_block_groups(year = 2015, ...)
+tribal_block_groups(year = NULL, ...)
 }
 \arguments{
 \item{year}{the data year (defaults to 2015).}

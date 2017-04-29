@@ -4,7 +4,7 @@
 \alias{congressional_districts}
 \title{Download a congressional districts shapefile for the 114th Congress into R}
 \usage{
-congressional_districts(cb = FALSE, resolution = "500k", year = 2015, ...)
+congressional_districts(cb = FALSE, resolution = "500k", year = NULL, ...)
 }
 \arguments{
 \item{cb}{If cb is set to TRUE, download a generalized (1:500k)

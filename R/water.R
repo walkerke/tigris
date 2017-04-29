@@ -26,7 +26,13 @@
 #' plot(dallas_water)
 #'
 #' }
-area_water <- function(state, county, year = 2015, ...) {
+area_water <- function(state, county, year = NULL, ...) {
+
+  if (is.null(year)) {
+
+    year <- getOption("tigris_year", 2015)
+
+  }
 
   if (year < 2011) {
 
@@ -86,7 +92,13 @@ area_water <- function(state, county, year = 2015, ...) {
 #' plot(dallas_water)
 #'
 #' }
-linear_water <- function(state, county, year = 2015, ...) {
+linear_water <- function(state, county, year = NULL, ...) {
+
+  if (is.null(year)) {
+
+    year <- getOption("tigris_year", 2015)
+
+  }
 
   if (year < 2011) {
 
@@ -152,7 +164,13 @@ linear_water <- function(state, county, year = 2015, ...) {
 #' gg <- gg + theme_map()
 #' gg
 #' }
-coastline <- function(year = 2015, ...) {
+coastline <- function(year = NULL, ...) {
+
+  if (is.null(year)) {
+
+    year <- getOption("tigris_year", 2015)
+
+  }
 
   cyear <- as.character(year)
 

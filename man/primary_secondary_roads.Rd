@@ -4,7 +4,7 @@
 \alias{primary_secondary_roads}
 \title{Download a primary & secondary roads shapefile into R}
 \usage{
-primary_secondary_roads(state, year = 2015, ...)
+primary_secondary_roads(state, year = NULL, ...)
 }
 \arguments{
 \item{state}{The two-digit FIPS code of the state of the county you'd like

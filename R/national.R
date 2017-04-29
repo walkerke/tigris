@@ -19,7 +19,13 @@
 #'    addPolygons()
 #' }
 #' @export
-regions <- function(resolution = '500k', year = 2015, ...) {
+regions <- function(resolution = '500k', year = NULL, ...) {
+
+  if (is.null(year)) {
+
+    year <- getOption("tigris_year", 2015)
+
+  }
 
   if (year < 2011) {
 
@@ -68,7 +74,13 @@ regions <- function(resolution = '500k', year = 2015, ...) {
 #'    addTiles() %>%
 #'    addPolygons()
 #' }
-divisions <- function(resolution = '500k', year = 2015, ...) {
+divisions <- function(resolution = '500k', year = NULL, ...) {
+
+  if (is.null(year)) {
+
+    year <- getOption("tigris_year", 2015)
+
+  }
 
   if (year < 2011) {
 
@@ -117,7 +129,13 @@ divisions <- function(resolution = '500k', year = 2015, ...) {
 #'    addTiles() %>%
 #'    addPolygons()
 #' }
-nation <- function(resolution = '5m') {
+nation <- function(resolution = '5m', year = NULL) {
+
+  if (is.null(year)) {
+
+    year <- getOption("tigris_year", 2015)
+
+  }
 
   if (year < 2011) {
 

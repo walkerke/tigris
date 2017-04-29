@@ -4,7 +4,7 @@
 \alias{tribal_census_tracts}
 \title{Download a Tribal Census tract shapefile into R.}
 \usage{
-tribal_census_tracts(year = 2015, ...)
+tribal_census_tracts(year = NULL, ...)
 }
 \arguments{
 \item{year}{the data year (defaults to 2015).}

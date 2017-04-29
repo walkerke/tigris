@@ -19,7 +19,13 @@
 #' @seealso \url{http://www2.census.gov/geo/pdfs/maps-data/data/tiger/tgrshp2015/TGRSHP2015_TechDoc_Ch3.pdf}
 #' @export
 
-military <- function(year, ...) {
+military <- function(year = NULL, ...) {
+
+  if (is.null(year)) {
+
+    year <- getOption("tigris_year", 2015)
+
+  }
 
   if (year < 2011) {
 
@@ -71,7 +77,13 @@ military <- function(year, ...) {
 #'        Options include \code{refresh}, which specifies whether or not to re-download shapefiles
 #'        (defaults to \code{FALSE}).
 #' @export
-landmarks <- function(state, type = "point", year = 2015, ...) {
+landmarks <- function(state, type = "point", year = NULL, ...) {
+
+  if (is.null(year)) {
+
+    year <- getOption("tigris_year", 2015)
+
+  }
 
   if (year < 2011) {
 

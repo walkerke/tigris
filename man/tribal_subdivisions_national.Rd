@@ -4,7 +4,7 @@
 \alias{tribal_subdivisions_national}
 \title{Download an American Indian Tribal Subdivision National shapefile into R.}
 \usage{
-tribal_subdivisions_national(year = 2015, ...)
+tribal_subdivisions_national(year = NULL, ...)
 }
 \arguments{
 \item{year}{The year for which you'd like to download data (defaults to 2015).}

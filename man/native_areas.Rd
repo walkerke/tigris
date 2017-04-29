@@ -4,7 +4,7 @@
 \alias{native_areas}
 \title{Download an American Indian / Alaska Native / Native Hawaiian Areas shapefile into R.}
 \usage{
-native_areas(cb = FALSE, year = 2015, ...)
+native_areas(cb = FALSE, year = NULL, ...)
 }
 \arguments{
 \item{cb}{If cb is set to TRUE, download a generalized (1:500k)

@@ -4,7 +4,7 @@
 \alias{military}
 \title{Download the Military Installation National Shapefile into R}
 \usage{
-military(year, ...)
+military(year = NULL, ...)
 }
 \arguments{
 \item{year}{the data year (defaults to 2015).}

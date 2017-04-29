@@ -4,7 +4,7 @@
 \alias{nation}
 \title{Download a US national boundary shapefile into R}
 \usage{
-nation(resolution = "5m")
+nation(resolution = "5m", year = NULL)
 }
 \arguments{
 \item{resolution}{The resolution of the cartographic boundary file.

@@ -33,7 +33,13 @@
 #' gg <- gg + theme_map()
 #' gg
 #' }
-native_areas <- function(cb = FALSE, year = 2015, ...) {
+native_areas <- function(cb = FALSE, year = NULL, ...) {
+
+  if (is.null(year)) {
+
+    year <- getOption("tigris_year", 2015)
+
+  }
 
   if (year < 2011) {
 
@@ -89,7 +95,13 @@ native_areas <- function(cb = FALSE, year = 2015, ...) {
 #'               color = "black",
 #'               weight = 0.5)
 #' }
-tribal_subdivisions_national <- function(year = 2015, ...) {
+tribal_subdivisions_national <- function(year = NULL, ...) {
+
+  if (is.null(year)) {
+
+    year <- getOption("tigris_year", 2015)
+
+  }
 
   if (year < 2011) {
 
@@ -137,7 +149,13 @@ tribal_subdivisions_national <- function(year = 2015, ...) {
 #' @family native/tribal geometries functions
 #' @seealso \url{http://www2.census.gov/geo/pdfs/maps-data/data/tiger/tgrshp2015/TGRSHP2015_TechDoc.pdf}
 #' @export
-alaska_native_regional_corporations <- function(cb = FALSE, year = 2015, ...) {
+alaska_native_regional_corporations <- function(cb = FALSE, year = NULL, ...) {
+
+  if (is.null(year)) {
+
+    year <- getOption("tigris_year", 2015)
+
+  }
 
   if (year < 2011) {
 
@@ -203,7 +221,13 @@ alaska_native_regional_corporations <- function(cb = FALSE, year = 2015, ...) {
 #'               color = "black",
 #'               weight = 0.5)
 #' }
-tribal_block_groups <- function(year = 2015, ...) {
+tribal_block_groups <- function(year = NULL, ...) {
+
+  if (is.null(year)) {
+
+    year <- getOption("tigris_year", 2015)
+
+  }
 
   if (year < 2011) {
 
@@ -253,7 +277,13 @@ tribal_block_groups <- function(year = 2015, ...) {
 #'               color = "black",
 #'               weight = 0.5)
 #' }
-tribal_census_tracts <- function(year = 2015, ...) {
+tribal_census_tracts <- function(year = NULL, ...) {
+
+  if (is.null(year)) {
+
+    year <- getOption("tigris_year", 2015)
+
+  }
 
   if (year < 2011) {
 

@@ -35,7 +35,13 @@
 #'    addTiles() %>%
 #'    addPolygons()
 #' }
-congressional_districts <- function(cb = FALSE, resolution = '500k', year = 2015, ...) {
+congressional_districts <- function(cb = FALSE, resolution = '500k', year = NULL, ...) {
+
+  if (is.null(year)) {
+
+    year <- getOption("tigris_year", 2015)
+
+  }
 
   if (year < 2011) {
 
@@ -105,7 +111,13 @@ congressional_districts <- function(cb = FALSE, resolution = '500k', year = 2015
 #'               color = "black",
 #'               weight = 0.5)
 #' }
-state_legislative_districts <- function(state, house = "upper", cb = FALSE, year = 2015, ...) {
+state_legislative_districts <- function(state, house = "upper", cb = FALSE, year = NULL, ...) {
+
+  if (is.null(year)) {
+
+    year <- getOption("tigris_year", 2015)
+
+  }
 
   if (year < 2011) {
 

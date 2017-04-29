@@ -4,7 +4,7 @@
 \alias{regions}
 \title{Download a US regions cartographic boundary shapefile into R}
 \usage{
-regions(resolution = "500k", year = 2015, ...)
+regions(resolution = "500k", year = NULL, ...)
 }
 \arguments{
 \item{resolution}{The resolution of the cartographic boundary file.

@@ -35,7 +35,13 @@
 #' @family general area functions
 #' @seealso \url{https://www.census.gov/geo/reference/gtc/gtc_place.html}
 #' @export
-places <- function(state, cb = FALSE, year = 2015, ...) {
+places <- function(state, cb = FALSE, year = NULL, ...) {
+
+  if (is.null(year)) {
+
+    year <- getOption("tigris_year", 2015)
+
+  }
 
   if (year < 2011) {
 

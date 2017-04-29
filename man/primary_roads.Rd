@@ -4,7 +4,7 @@
 \alias{primary_roads}
 \title{Download a national primary roads shapefile into R}
 \usage{
-primary_roads(year = 2015, ...)
+primary_roads(year = NULL, ...)
 }
 \arguments{
 \item{year}{the data year (defaults to 2015).}

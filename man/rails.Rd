@@ -4,7 +4,7 @@
 \alias{rails}
 \title{Download a national rails shapefile into R}
 \usage{
-rails(year = 2015, ...)
+rails(year = NULL, ...)
 }
 \arguments{
 \item{year}{the data year (defaults to 2015).}

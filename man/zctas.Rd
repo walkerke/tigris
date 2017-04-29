@@ -4,7 +4,7 @@
 \alias{zctas}
 \title{Download a Zip Code Tabulation Area (ZCTA) shapefile into R}
 \usage{
-zctas(cb = FALSE, starts_with = NULL, year = 2015, ...)
+zctas(cb = FALSE, starts_with = NULL, year = NULL, ...)
 }
 \arguments{
 \item{cb}{If cb is set to TRUE, download a generalized (1:500k)

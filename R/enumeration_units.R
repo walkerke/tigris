@@ -311,7 +311,13 @@ tracts <- function(state, county = NULL, cb = FALSE, year = NULL, ...) {
 #'               color = "black",
 #'               weight = 0.5)
 #' }
-school_districts <- function(state, type = 'unified', year = 2015, ...) {
+school_districts <- function(state, type = 'unified', year = NULL, ...) {
+
+  if (is.null(year)) {
+
+    year = getOption("tigris_year", 2015)
+
+  }
 
   if (year < 2011) {
 
@@ -516,7 +522,13 @@ block_groups <- function(state, county = NULL, cb = FALSE, year = NULL, ...) {
 #' plot(mem_zcta)
 #'
 #' }
-zctas <- function(cb = FALSE, starts_with = NULL, year = 2015, ...) {
+zctas <- function(cb = FALSE, starts_with = NULL, year = NULL, ...) {
+
+  if (is.null(year)) {
+
+    year = getOption("tigris_year", 2015)
+
+  }
 
   if (year < 2011) {
 
@@ -605,7 +617,13 @@ zctas <- function(cb = FALSE, starts_with = NULL, year = 2015, ...) {
 #'   addPolygons()
 #'
 #' }
-blocks <- function(state, county = NULL, year = 2015, ...) {
+blocks <- function(state, county = NULL, year = NULL, ...) {
+
+  if (is.null(year)) {
+
+    year <- getOption("tigris_year", 2015)
+
+  }
 
   if (year < 2010) {
 
@@ -686,7 +704,13 @@ blocks <- function(state, county = NULL, year = 2015, ...) {
 #' plot(or)
 #'
 #' }
-county_subdivisions <- function(state, county = NULL, cb = FALSE, year = 2015, ...) {
+county_subdivisions <- function(state, county = NULL, cb = FALSE, year = NULL, ...) {
+
+  if (is.null(year)) {
+
+    year <- getOption("tigris_year", 2015)
+
+  }
 
   if (year < 2011) {
 

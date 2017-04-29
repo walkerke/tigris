@@ -4,7 +4,7 @@
 \alias{pumas}
 \title{Download a Public Use Microdata Area (PUMA) shapefile into R}
 \usage{
-pumas(state, cb = FALSE, year = 2015, ...)
+pumas(state, cb = FALSE, year = NULL, ...)
 }
 \arguments{
 \item{state}{The two-digit FIPS code (string) of the state you want. Can also

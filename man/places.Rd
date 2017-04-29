@@ -4,7 +4,7 @@
 \alias{places}
 \title{Download a Census-designated places shapefile into R}
 \usage{
-places(state, cb = FALSE, year = 2015, ...)
+places(state, cb = FALSE, year = NULL, ...)
 }
 \arguments{
 \item{state}{The two-digit FIPS code (string) of the state you want. Can also
