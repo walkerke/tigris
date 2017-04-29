@@ -10,10 +10,10 @@
 #'        (case-insensitive).
 #' @param county The three-digit FIPS code of the county you'd like the roads for.
 #'        Can also be a county name.
+#' @param year the data year (defaults to 2015).
 #' @param ... arguments to be passed to the underlying `load_tiger` function, which is not exported.
 #'        Options include \code{refresh}, which specifies whether or not to re-download shapefiles
-#'        (defaults to \code{FALSE}), and \code{year}, the year for which you'd like to download data
-#'        (defaults to 2015).
+#'        (defaults to \code{FALSE}).
 #' @family transportation functions
 #' @seealso \url{http://www2.census.gov/geo/pdfs/maps-data/data/tiger/tgrshp2015/TGRSHP2015_TechDoc.pdf}
 #' @export
@@ -44,7 +44,18 @@
 #' gg <- gg + theme_map()
 #' gg
 #' }
-roads <- function(state, county, ...) {
+roads <- function(state, county, year = 2015, ...) {
+
+  if (year < 2011) {
+
+    fname <- as.character(match.call())[[1]]
+
+    msg <- sprintf("%s is not currently available for years prior to 2011.  To request this feature,
+                   file an issue at https://github.com/walkerke/tigris.", fname)
+
+    stop(msg, call. = FALSE)
+
+  }
 
   state <- validate_state(state)
 
@@ -54,10 +65,8 @@ roads <- function(state, county, ...) {
 
   if (is.null(county)) stop("Invalid county", call. = FALSE)
 
-  url <- paste0("http://www2.census.gov/geo/tiger/TIGER2015/ROADS/tl_2015_",
-                state,
-                county,
-                "_roads.zip")
+  url <- sprintf("http://www2.census.gov/geo/tiger/TIGER%s/ROADS/tl_%s_%s%s_roads.zip",
+                 as.character(year), as.character(year), state, county)
 
   return(load_tiger(url, tigris_type="road", ...))
 
@@ -71,25 +80,36 @@ roads <- function(state, county, ...) {
 #' presence of interchanges
 #' and are accessible by ramps and may include some toll highways."
 #'
+#' @param year the data year (defaults to 2015).
 #' @param ... arguments to be passed to the underlying `load_tiger` function, which is not exported.
 #'        Options include \code{refresh}, which specifies whether or not to re-download shapefiles
-#'        (defaults to \code{FALSE}), and \code{year}, the year for which you'd like to download data
-#'        (defaults to 2015).
+#'        (defaults to \code{FALSE}).
 #' @family transportation functions
 #' @seealso \url{http://www2.census.gov/geo/pdfs/maps-data/data/tiger/tgrshp2015/TGRSHP2015_TechDoc.pdf}
 #' @export
 #' @examples \dontrun{
 #' library(tigris)
-#' library(sp)
 #'
 #' rds <- primary_roads()
 #'
 #' plot(rds)
 #'
 #' }
-primary_roads <- function(...) {
+primary_roads <- function(year = 2015, ...) {
 
-  url <- "http://www2.census.gov/geo/tiger/TIGER2015/PRIMARYROADS/tl_2015_us_primaryroads.zip"
+  if (year < 2011) {
+
+    fname <- as.character(match.call())[[1]]
+
+    msg <- sprintf("%s is not currently available for years prior to 2011.  To request this feature,
+                   file an issue at https://github.com/walkerke/tigris.", fname)
+
+    stop(msg, call. = FALSE)
+
+  }
+
+  url <- sprintf("http://www2.census.gov/geo/tiger/TIGER%s/PRIMARYROADS/tl_%s_us_primaryroads.zip",
+                 as.character(year), as.character(year))
 
   return(load_tiger(url, tigris_type="primary_roads", ...))
 
@@ -109,10 +129,10 @@ primary_roads <- function(...) {
 #' @param state The two-digit FIPS code of the state of the county you'd like
 #'        to download the roads for. Can also be state name or abbreviation
 #'        (case-insensitive).
+#' @param year the data year (defaults to 2015).
 #' @param ... arguments to be passed to the underlying `load_tiger` function, which is not exported.
 #'        Options include \code{refresh}, which specifies whether or not to re-download shapefiles
-#'        (defaults to \code{FALSE}), and \code{year}, the year for which you'd like to download data
-#'        (defaults to 2015).
+#'        (defaults to \code{FALSE}).
 #' @family transportation functions
 #' @seealso \url{http://www2.census.gov/geo/pdfs/maps-data/data/tiger/tgrshp2015/TGRSHP2015_TechDoc.pdf}
 #' @export
@@ -125,15 +145,25 @@ primary_roads <- function(...) {
 #' plot(rds)
 #'
 #' }
-primary_secondary_roads <- function(state, ...) {
+primary_secondary_roads <- function(state, year = 2015, ...) {
+
+  if (year < 2011) {
+
+    fname <- as.character(match.call())[[1]]
+
+    msg <- sprintf("%s is not currently available for years prior to 2011.  To request this feature,
+                   file an issue at https://github.com/walkerke/tigris.", fname)
+
+    stop(msg, call. = FALSE)
+
+  }
 
   state <- validate_state(state)
 
   if (is.null(state)) stop("Invalid state", call.=FALSE)
 
-  url <- paste0("http://www2.census.gov/geo/tiger/TIGER2015/PRISECROADS/tl_2015_",
-                state,
-                "_prisecroads.zip")
+  url <- sprintf("http://www2.census.gov/geo/tiger/TIGER%s/PRISECROADS/tl_%s_%s_prisecroads.zip",
+                as.character(year), as.character(year), state)
 
   return(load_tiger(url, tigris_type="prim_sec_roads", ...))
 
@@ -144,10 +174,10 @@ primary_secondary_roads <- function(state, ...) {
 #' National dataset for US railroads, including carlines, streetcars,
 #' monorails, mass transit, cog rail, incline rail, and trams.
 #'
+#' @param year the data year (defaults to 2015).
 #' @param ... arguments to be passed to the underlying `load_tiger` function, which is not exported.
 #'        Options include \code{refresh}, which specifies whether or not to re-download shapefiles
-#'        (defaults to \code{FALSE}), and \code{year}, the year for which you'd like to download data
-#'        (defaults to 2015).
+#'        (defaults to \code{FALSE}).
 #' @family transportation functions
 #' @seealso \url{http://www2.census.gov/geo/pdfs/maps-data/data/tiger/tgrshp2015/TGRSHP2015_TechDoc.pdf}
 #' @export
@@ -160,9 +190,21 @@ primary_secondary_roads <- function(state, ...) {
 #' plot(rls)
 #'
 #' }
-rails <- function(...) {
+rails <- function(year = 2015, ...) {
 
-  url <- "http://www2.census.gov/geo/tiger/TIGER2015/RAILS/tl_2015_us_rails.zip"
+  if (year < 2011) {
+
+    fname <- as.character(match.call())[[1]]
+
+    msg <- sprintf("%s is not currently available for years prior to 2011.  To request this feature,
+                   file an issue at https://github.com/walkerke/tigris.", fname)
+
+    stop(msg, call. = FALSE)
+
+  }
+
+  url <- sprintf("http://www2.census.gov/geo/tiger/TIGER%s/RAILS/tl_%s_us_rails.zip",
+                 as.character(year), as.character(year))
 
   return(load_tiger(url, tigris_type="rails", ...))
 

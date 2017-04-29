@@ -8,12 +8,10 @@
 #'
 #' @param cb If cb is set to TRUE, download a generalized (1:500k)
 #'        file.  Defaults to FALSE (the most detailed TIGER/Line file)
-#' @param detailed (deprecated) Setting detailed to FALSE returns a 1:500k cartographic boundary file.
-#'        This parameter will be removed in a future release.
+#' @param year the data year (defaults to 2015).
 #' @param ... arguments to be passed to the underlying `load_tiger` function, which is not exported.
 #'        Options include \code{refresh}, which specifies whether or not to re-download shapefiles
-#'        (defaults to \code{FALSE}), and \code{year}, the year for which you'd like to download data
-#'        (defaults to 2015).
+#'        (defaults to \code{FALSE}).
 #' @family native/tribal geometries functions
 #' @seealso \url{http://www2.census.gov/geo/pdfs/maps-data/data/tiger/tgrshp2015/TGRSHP2015_TechDoc.pdf}
 #' @export
@@ -35,20 +33,30 @@
 #' gg <- gg + theme_map()
 #' gg
 #' }
-native_areas <- function(cb = FALSE, detailed = TRUE, ...) {
+native_areas <- function(cb = FALSE, year = 2015, ...) {
 
-  if (detailed == FALSE) {
-    cb = TRUE
-    message("The `detailed` parameter is deprecated.  Use `cb` instead.")
+  if (year < 2011) {
+
+    fname <- as.character(match.call())[[1]]
+
+    msg <- sprintf("%s is not currently available for years prior to 2011.  To request this feature,
+                   file an issue at https://github.com/walkerke/tigris.", fname)
+
+    stop(msg, call. = FALSE)
+
   }
+
+  cyear <- as.character(year)
 
   if (cb == TRUE) {
 
-    url <- "http://www2.census.gov/geo/tiger/GENZ2015/shp/cb_2015_us_aiannh_500k.zip"
+    url <- sprintf("http://www2.census.gov/geo/tiger/GENZ%s/shp/cb_%s_us_aiannh_500k.zip",
+                   cyear, cyear)
 
   } else {
 
-    url <- "http://www2.census.gov/geo/tiger/TIGER2015/AIANNH/tl_2015_us_aiannh.zip"
+    url <- sprintf("http://www2.census.gov/geo/tiger/TIGER%s/AIANNH/tl_%s_us_aiannh.zip",
+                   cyear, cyear)
 
   }
 
@@ -83,6 +91,17 @@ native_areas <- function(cb = FALSE, detailed = TRUE, ...) {
 #' }
 tribal_subdivisions_national <- function(year = 2015, ...) {
 
+  if (year < 2011) {
+
+    fname <- as.character(match.call())[[1]]
+
+    msg <- sprintf("%s is not currently available for years prior to 2011.  To request this feature,
+                   file an issue at https://github.com/walkerke/tigris.", fname)
+
+    stop(msg, call. = FALSE)
+
+  }
+
   if (year == 2015) {
 
     url <- "http://www2.census.gov/geo/tiger/TIGER2015/AITSN/tl_2015_us_aitsn.zip"
@@ -111,22 +130,37 @@ tribal_subdivisions_national <- function(year = 2015, ...) {
 #'
 #' @param cb If cb is set to TRUE, download a generalized (1:500k)
 #'        file.  Defaults to FALSE (the most detailed TIGER/Line file)
+#' @param year the data year (defaults to 2015).
 #' @param ... arguments to be passed to the underlying `load_tiger` function, which is not exported.
 #'        Options include \code{refresh}, which specifies whether or not to re-download shapefiles
-#'        (defaults to \code{FALSE}), and \code{year}, the year for which you'd like to download data
-#'        (defaults to 2015).
+#'        (defaults to \code{FALSE}).
 #' @family native/tribal geometries functions
 #' @seealso \url{http://www2.census.gov/geo/pdfs/maps-data/data/tiger/tgrshp2015/TGRSHP2015_TechDoc.pdf}
 #' @export
-alaska_native_regional_corporations <- function(cb = FALSE, ...) {
+alaska_native_regional_corporations <- function(cb = FALSE, year = 2015, ...) {
+
+  if (year < 2011) {
+
+    fname <- as.character(match.call())[[1]]
+
+    msg <- sprintf("%s is not currently available for years prior to 2011.  To request this feature,
+                   file an issue at https://github.com/walkerke/tigris.", fname)
+
+    stop(msg, call. = FALSE)
+
+  }
+
+  cyear <- as.character(year)
 
   if (cb == TRUE) {
 
-    url <- "http://www2.census.gov/geo/tiger/GENZ2015/shp/cb_2015_02_anrc_500k.zip"
+    url <- sprintf("http://www2.census.gov/geo/tiger/GENZ%s/shp/cb_%s_02_anrc_500k.zip",
+                   cyear, cyear)
 
   } else {
 
-    url <- "http://www2.census.gov/geo/tiger/TIGER2015/ANRC/tl_2015_02_anrc.zip"
+    url <- sprintf("http://www2.census.gov/geo/tiger/TIGER%s/ANRC/tl_%s_02_anrc.zip",
+                   cyear, cyear)
 
   }
 
@@ -151,10 +185,10 @@ alaska_native_regional_corporations <- function(cb = FALSE, ...) {
 #' but may contain blocks from several different
 #' standard census block groups."  For more information, please see the link provided.
 #'
+#' @param year the data year (defaults to 2015).
 #' @param ... arguments to be passed to the underlying `load_tiger` function, which is not exported.
 #'        Options include \code{refresh}, which specifies whether or not to re-download shapefiles
-#'        (defaults to \code{FALSE}), and \code{year}, the year for which you'd like to download data
-#'        (defaults to 2015).
+#'        (defaults to \code{FALSE}).
 #' @family native/tribal geometries functions
 #' @seealso \url{http://www2.census.gov/geo/pdfs/maps-data/data/tiger/tgrshp2015/TGRSHP2015_TechDoc.pdf}
 #' @export
@@ -169,9 +203,21 @@ alaska_native_regional_corporations <- function(cb = FALSE, ...) {
 #'               color = "black",
 #'               weight = 0.5)
 #' }
-tribal_block_groups <- function(...) {
+tribal_block_groups <- function(year = 2015, ...) {
 
-  url <- "http://www2.census.gov/geo/tiger/TIGER2015/TBG/tl_2015_us_tbg.zip"
+  if (year < 2011) {
+
+    fname <- as.character(match.call())[[1]]
+
+    msg <- sprintf("%s is not currently available for years prior to 2011.  To request this feature,
+                   file an issue at https://github.com/walkerke/tigris.", fname)
+
+    stop(msg, call. = FALSE)
+
+  }
+
+  url <- sprintf("http://www2.census.gov/geo/tiger/TIGER%s/TBG/tl_%s_us_tbg.zip",
+                 as.character(year), as.character(year))
 
   return(load_tiger(url, ...))
 
@@ -189,10 +235,10 @@ tribal_block_groups <- function(...) {
 #' census tracts. Unlike standard census tracts, however, tribal census tracts may cross state, county, and
 #' standard census tract boundaries." For more information, please view the link provided.
 #'
+#' @param year the data year (defaults to 2015).
 #' @param ... arguments to be passed to the underlying `load_tiger` function, which is not exported.
 #'        Options include \code{refresh}, which specifies whether or not to re-download shapefiles
-#'        (defaults to \code{FALSE}), and \code{year}, the year for which you'd like to download data
-#'        (defaults to 2015).
+#'        (defaults to \code{FALSE}).
 #' @family native/tribal geometries functions
 #' @seealso \url{http://www2.census.gov/geo/pdfs/maps-data/data/tiger/tgrshp2015/TGRSHP2015_TechDoc.pdf}
 #' @export
@@ -207,9 +253,21 @@ tribal_block_groups <- function(...) {
 #'               color = "black",
 #'               weight = 0.5)
 #' }
-tribal_census_tracts <- function(...) {
+tribal_census_tracts <- function(year = 2015, ...) {
 
-  url <- "http://www2.census.gov/geo/tiger/TIGER2015/TTRACT/tl_2015_us_ttract.zip"
+  if (year < 2011) {
+
+    fname <- as.character(match.call())[[1]]
+
+    msg <- sprintf("%s is not currently available for years prior to 2011.  To request this feature,
+                   file an issue at https://github.com/walkerke/tigris.", fname)
+
+    stop(msg, call. = FALSE)
+
+  }
+
+  url <- sprintf("http://www2.census.gov/geo/tiger/TIGER%s/TTRACT/tl_%s_us_ttract.zip",
+                 as.character(year), as.character(year))
 
   return(load_tiger(url, ...))
 

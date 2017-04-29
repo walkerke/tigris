@@ -4,13 +4,14 @@
 \alias{primary_roads}
 \title{Download a national primary roads shapefile into R}
 \usage{
-primary_roads(...)
+primary_roads(year = 2015, ...)
 }
 \arguments{
+\item{year}{the data year (defaults to 2015).}
+
 \item{...}{arguments to be passed to the underlying `load_tiger` function, which is not exported.
 Options include \code{refresh}, which specifies whether or not to re-download shapefiles
-(defaults to \code{FALSE}), and \code{year}, the year for which you'd like to download data
-(defaults to 2015).}
+(defaults to \code{FALSE}).}
 }
 \description{
 From the Census Bureau: "Primary roads are generally divided,
@@ -22,7 +23,6 @@ and are accessible by ramps and may include some toll highways."
 \examples{
 \dontrun{
 library(tigris)
-library(sp)
 
 rds <- primary_roads()
 

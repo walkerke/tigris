@@ -4,13 +4,14 @@
 \alias{rails}
 \title{Download a national rails shapefile into R}
 \usage{
-rails(...)
+rails(year = 2015, ...)
 }
 \arguments{
+\item{year}{the data year (defaults to 2015).}
+
 \item{...}{arguments to be passed to the underlying `load_tiger` function, which is not exported.
 Options include \code{refresh}, which specifies whether or not to re-download shapefiles
-(defaults to \code{FALSE}), and \code{year}, the year for which you'd like to download data
-(defaults to 2015).}
+(defaults to \code{FALSE}).}
 }
 \description{
 National dataset for US railroads, including carlines, streetcars,

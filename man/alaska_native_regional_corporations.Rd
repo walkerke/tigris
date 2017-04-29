@@ -4,16 +4,17 @@
 \alias{alaska_native_regional_corporations}
 \title{Download an Alaska Native Regional Corporation shapefile into R.}
 \usage{
-alaska_native_regional_corporations(cb = FALSE, ...)
+alaska_native_regional_corporations(cb = FALSE, year = 2015, ...)
 }
 \arguments{
 \item{cb}{If cb is set to TRUE, download a generalized (1:500k)
 file.  Defaults to FALSE (the most detailed TIGER/Line file)}
 
+\item{year}{the data year (defaults to 2015).}
+
 \item{...}{arguments to be passed to the underlying `load_tiger` function, which is not exported.
 Options include \code{refresh}, which specifies whether or not to re-download shapefiles
-(defaults to \code{FALSE}), and \code{year}, the year for which you'd like to download data
-(defaults to 2015).}
+(defaults to \code{FALSE}).}
 }
 \description{
 From the US Census Bureau: "ANRCs are corporations created according to the Alaska Native Claims Settlement Act.
