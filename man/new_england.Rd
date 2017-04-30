@@ -14,6 +14,8 @@ the combined NECTA file (\code{'combined'}), or the NECTA divisions file (\code{
 cartographic boundary file.  Defaults to FALSE (the most detailed
 TIGER/Line file).  Only available when \code{type = 'necta'}.}
 
+\item{year}{The data year (defaults to 2015).}
+
 \item{...}{arguments to be passed to the underlying `load_tiger` function, which is not exported.
 Options include \code{refresh}, which specifies whether or not to re-download shapefiles
 (defaults to \code{FALSE}), and \code{year}, the year for which you'd like to download data

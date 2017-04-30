@@ -656,7 +656,7 @@ blocks <- function(state, county = NULL, year = NULL, ...) {
     stop()
   }
 
-  blks <- load_tiger(url, tigris_type="block", year = year, ...)
+  blks <- load_tiger(url, tigris_type="block", ...)
 
   if (!is.null(county)) {
 
