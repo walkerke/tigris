@@ -22,7 +22,7 @@ Or, get the development version from GitHub:
 devtools::install_github('walkerke/tigris')
 ```
 
-__In Version 0.3.9.9000__: 
+__In Version 0.5__: 
 
 * tigris now supports simple features!  To load your data as an object of class `sf`, specify `class = "sf"` in the function call, or set this globally with `options(tigris_class = "sf")`.  
 
@@ -62,17 +62,17 @@ ua %>% leaflet() %>% addTiles() %>% addPolygons(popup = ~NAME10)
 
 __Available datasets:__
 
-Please note: cartographic boundary files in __tigris__ are only available going back to 2013.  
+Please note: cartographic boundary files in __tigris__ are not available for 2011 and 2012.  
 
 | Function | Datasets available | Years available |
 |------------------------------------------|------------------------------------------------|------------------------------|
 | nation | cartographic (1:5m; 1:20m) | 2013, 2014, 2015 |
 | divisions | cartographic (1:500k; 1:5m; 1:20m) | 2013, 2014, 2015 |
 | regions | cartographic (1:500k; 1:5m; 1:20m) | 2013, 2014, 2015 |
-| states | TIGER/Line; cartographic (1:500k; 1:5m; 1:20m) | 2011, 2012, 2013, 2014, 2015 |
-| counties | TIGER/Line; cartographic (1:500k; 1:5m; 1:20m) | 2011, 2012, 2013, 2014, 2015 |
-| tracts | TIGER/Line; cartographic (1:500k) | 2011, 2012, 2013, 2014, 2015 |
-| block_groups | TIGER/Line; cartographic (1:500k) | 2011, 2012, 2013, 2014, 2015 |
+| states | TIGER/Line; cartographic (1:500k; 1:5m; 1:20m) | 1990, 2000, 2010, 2011, 2012, 2013, 2014, 2015 |
+| counties | TIGER/Line; cartographic (1:500k; 1:5m; 1:20m) | 1990, 2000, 2010, 2011, 2012, 2013, 2014, 2015 |
+| tracts | TIGER/Line; cartographic (1:500k) | 1990, 2000, 2010, 2011, 2012, 2013, 2014, 2015 |
+| block_groups | TIGER/Line; cartographic (1:500k) | 1990, 2000, 2010, 2011, 2012, 2013, 2014, 2015 |
 | blocks | TIGER/Line | 2011, 2012, 2013, 2014, 2015 |
 | places | TIGER/Line; cartographic (1:500k) | 2011, 2012, 2013, 2014, 2015 |
 | pumas | TIGER/Line; cartographic (1:500k) | 2012, 2013, 2014, 2015 |

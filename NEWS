@@ -1,3 +1,13 @@
+tigris 0.5
+
+* tigris now will return objects of class 'sf' if requested by the user with the argument `class = 'sf'` or by setting the option `options(tigris_class = 'sf')`.
+
+* Historical states, counties, Census tracts, and block groups are now available going back to 1990
+
+* In the event of a download error, tigris will attempt to re-download without the user having to request it.
+
+* Various improvements and bug fixes.
+
 tigris 0.3.3
 -------------------------------------------------------
 
