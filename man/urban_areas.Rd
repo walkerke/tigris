@@ -4,7 +4,7 @@
 \alias{urban_areas}
 \title{Download an urban areas shapefile into R}
 \usage{
-urban_areas(cb = FALSE, year = 2015, ...)
+urban_areas(cb = FALSE, year = NULL, ...)
 }
 \arguments{
 \item{cb}{If cb is set to TRUE, download a generalized (1:500k)

@@ -4,7 +4,7 @@
 \alias{metro_divisions}
 \title{Download a metropolitan divisions shapefile into R.}
 \usage{
-metro_divisions(year = 2015, ...)
+metro_divisions(year = NULL, ...)
 }
 \arguments{
 \item{year}{The data year (defaults to 2015).}

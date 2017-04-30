@@ -4,7 +4,7 @@
 \alias{combined_statistical_areas}
 \title{Download a combined statistical areas shapefile into R}
 \usage{
-combined_statistical_areas(cb = FALSE, resolution = "500k", year = 2015,
+combined_statistical_areas(cb = FALSE, resolution = "500k", year = NULL,
   ...)
 }
 \arguments{

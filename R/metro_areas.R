@@ -20,7 +20,13 @@
 #' @family metro area functions
 #' @seealso \url{http://www.census.gov/population/metro/}
 #' @export
-core_based_statistical_areas <- function(cb = FALSE, resolution = '500k', year = 2015, ...) {
+core_based_statistical_areas <- function(cb = FALSE, resolution = '500k', year = NULL, ...) {
+
+  if (is.null(year)) {
+
+    year <- getOption("tigris_year", 2015)
+
+  }
 
   if (year < 2011) {
 
@@ -70,7 +76,13 @@ core_based_statistical_areas <- function(cb = FALSE, resolution = '500k', year =
 #' @family metro area functions
 #' @seealso \url{http://www2.census.gov/geo/pdfs/maps-data/data/tiger/tgrshp2015/TGRSHP2015_TechDoc.pdf}
 #' @export
-urban_areas <- function(cb = FALSE, year = 2015, ...) {
+urban_areas <- function(cb = FALSE, year = NULL, ...) {
+
+  if (is.null(year)) {
+
+    year <- getOption("tigris_year", 2015)
+
+  }
 
   if (year < 2011) {
 
@@ -119,7 +131,13 @@ urban_areas <- function(cb = FALSE, year = 2015, ...) {
 #' @family metro area functions
 #' @seealso \url{http://www2.census.gov/geo/pdfs/maps-data/data/tiger/tgrshp2015/TGRSHP2015_TechDoc.pdf}
 #' @export
-combined_statistical_areas <- function(cb = FALSE, resolution = '500k', year = 2015, ...) {
+combined_statistical_areas <- function(cb = FALSE, resolution = '500k', year = NULL, ...) {
+
+  if (is.null(year)) {
+
+    year <- getOption("tigris_year", 2015)
+
+  }
 
   if (year < 2011) {
 
@@ -166,7 +184,13 @@ combined_statistical_areas <- function(cb = FALSE, resolution = '500k', year = 2
 #' @family metro area functions
 #' @seealso \url{http://www2.census.gov/geo/pdfs/maps-data/data/tiger/tgrshp2015/TGRSHP2015_TechDoc.pdf}
 #' @export
-metro_divisions <- function(year = 2015, ...) {
+metro_divisions <- function(year = NULL, ...) {
+
+  if (is.null(year)) {
+
+    year <- getOption("tigris_year", 2015)
+
+  }
 
   if (year < 2011) {
 
@@ -222,7 +246,13 @@ metro_divisions <- function(year = 2015, ...) {
 #' plot(ne)
 #'
 #' }
-new_england <- function(type = 'necta', cb = FALSE, year = 2015, ...) {
+new_england <- function(type = 'necta', cb = FALSE, year = NULL, ...) {
+
+  if (is.null(year)) {
+
+    year <- getOption("tigris_year", 2015)
+
+  }
 
   if (year < 2011) {
 

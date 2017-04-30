@@ -4,7 +4,7 @@
 \alias{core_based_statistical_areas}
 \title{Download a core-based statistical area shapefile into R}
 \usage{
-core_based_statistical_areas(cb = FALSE, resolution = "500k", year = 2015,
+core_based_statistical_areas(cb = FALSE, resolution = "500k", year = NULL,
   ...)
 }
 \arguments{

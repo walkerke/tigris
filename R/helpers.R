@@ -531,18 +531,31 @@ rbind_tigris <- function(...) {
     if (!any(sapply(obj_attrs, is.null)) &
         length(obj_attrs_u)==1) {
 
-      tmp <- Reduce(rbind, elements) # bind_rows not working atm
-
       geometries <- unlist(lapply(elements, function(x) {
         geoms <- st_geometry_type(x)
         unique(geoms)
       }))
 
-      if ("MULTIPOLYGON" %in% geometries) {
-        tmp <- st_cast(tmp, "MULTIPOLYGON")
+      # Cast polygon to multipolygon to allow for rbind-ing
+      # This will need to be checked for linear objects as well
+      if ("POLYGON" %in% geometries & "MULTIPOLYGON" %in% geometries) {
+        elements <- lapply(elements, function(x) {
+          st_cast(x, "MULTIPOLYGON")
+        })
       }
 
-      st_crs(tmp) <- crs # Re-assign the original CRS
+      if ("LINESTRING" %in% geometries & "MULTILINESTRING" %in% geometries) {
+        elements <- lapply(elements, function(x) {
+          st_cast(x, "MULTILINESTRING")
+        })
+      }
+
+      tmp <- Reduce(rbind, elements) # bind_rows not working atm
+
+      # Re-assign the original CRS if missing
+      if (is.na(st_crs(tmp)$proj4string)) {
+        st_crs(tmp) <- crs
+      }
 
       attr(tmp, "tigris") <- obj_attrs_u
       return(tmp)
