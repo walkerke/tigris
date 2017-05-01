@@ -2,11 +2,13 @@ Package: tigris
 Type: Package
 Title: Load Census TIGER/Line Shapefiles into R
 Version: 0.5
-Date: 2017-04-30
+Date: 2017-05-01
 Authors@R: c(
       person(given="Kyle", family="Walker", email="kyle.walker@tcu.edu", role=c("aut", "cre")),
       person(given="Bob", family="Rudis", email="bob@rudis.net", role="ctb")
     )
+URL: https://github.com/walkerke/tigris
+BugReports: https://github.com/walkerke/tigris/issues
 Description: Download TIGER/Line shapefiles from the United States Census Bureau
     and load into R as 'SpatialDataFrame' or 'sf' objects.
 License: MIT + file LICENSE

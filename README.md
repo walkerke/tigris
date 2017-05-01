@@ -6,7 +6,7 @@ Download and use Census TIGER/Line shapefiles in R
 
 CRAN version: __0.3.3__ (updated 5 July 2016)
 
-Dev version: __0.3.9.9000__ (updated 17 January 2017)
+Dev version: __0.5__ (updated 1 May 2017)
 
 `tigris` is an R package that allows users to directly download and use TIGER/Line shapefiles (<https://www.census.gov/geo/maps-data/data/tiger-line.html>) from the US Census Bureau.  
 
@@ -26,13 +26,7 @@ __In Version 0.5__:
 
 * tigris now supports simple features!  To load your data as an object of class `sf`, specify `class = "sf"` in the function call, or set this globally with `options(tigris_class = "sf")`.  
 
-__In Version 0.3.3__: 
-
-* tigris now accommodates county name changes in the 2015 TIGER/Line dataset.  Shannon County, SD (FIPS code 113) is now Oglala Lakota County (FIPS code 102), and Wade Hampton Census Area, AK (FIPS code 270) is now Kusilvak Census Area (FIPS code 158).
-
-* We fixed a bug that would counties not to load in non-interactive mode.
-
-For more information on how to use this package, please view the RPubs at <http://rpubs.com/walkerke/tigris01>. 
+* Historic boundaries are available for states, counties, Census tracts, and block groups; 1990 (`cb = TRUE` only), 2000, and 2010 boundaries can be obtained with the `year` parameter in an associated function call.  
 
 __Basic usage:__
 
