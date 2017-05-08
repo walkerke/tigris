@@ -530,38 +530,59 @@ zctas <- function(cb = FALSE, starts_with = NULL, year = NULL, ...) {
 
   }
 
-  if (year < 2011) {
+  if (year == 1990) {
+    stop("Zip Code Tabulation Areas are only available beginning with the 2000 Census.",
+         call. = FALSE)
+  }
 
-    fname <- as.character(match.call())[[1]]
+  cache <- getOption("tigris_use_cache")
 
-    msg <- sprintf("%s is not currently available for years prior to 2011.  To request this feature,
-                   file an issue at https://github.com/walkerke/tigris.", fname)
-
-    stop(msg, call. = FALSE)
-
+  if (!cache) {
+    message("ZCTAs can take several minutes to download.  To cache the data and avoid re-downloading in future R sessions, set `options(tigris_use_cache = TRUE)`")
   }
 
   cyear <- as.character(year)
 
   if (cb == TRUE) {
-    url <- sprintf("http://www2.census.gov/geo/tiger/GENZ%s/shp/cb_%s_us_zcta510_500k.zip",
-                   cyear, cyear)
 
-    if (year == 2013) url <- gsub("shp/", "", url)
+    if (year == 2000) {
+      url <- "https://www2.census.gov/geo/tiger/PREVGENZ/zt/z500shp/zt99_d00_shp.zip"
+    } else if (year == 2010) {
+      url <- "https://www2.census.gov/geo/tiger/GENZ2010/gz_2010_us_860_00_500k.zip"
+    } else {
+      url <- sprintf("http://www2.census.gov/geo/tiger/GENZ%s/shp/cb_%s_us_zcta510_500k.zip",
+                     cyear, cyear)
+
+      if (year == 2013) url <- gsub("shp/", "", url)
+    }
 
   } else {
-    url <- sprintf("http://www2.census.gov/geo/tiger/TIGER%s/ZCTA5/tl_%s_us_zcta510.zip",
-                   cyear, cyear)
+
+    if (year %in% c(2000, 2010)) {
+
+
+      suf <- substr(cyear, 3, 4)
+
+      url <- sprintf("https://www2.census.gov/geo/tiger/TIGER2010/ZCTA5/%s/tl_2010_us_zcta5%s.zip",
+                     cyear, suf)
+
+    } else {
+      url <- sprintf("http://www2.census.gov/geo/tiger/TIGER%s/ZCTA5/tl_%s_us_zcta510.zip",
+                     cyear, cyear)
+      }
+
   }
 
   zcta <- load_tiger(url, tigris_type="zcta", ...)
 
   if (!is.null(starts_with)) {
+    nms <- names(zcta)
+    col <- grep("ZCTA", nms)
     if (length(starts_with) > 1) {
       tmp <- sapply(starts_with, function(x) paste0("^", x))
-      zcta <- zcta[grep(paste(tmp, collapse = "|"), zcta$ZCTA5CE10), ]
+      zcta <- zcta[grep(paste(tmp, collapse = "|"), zcta[,col]), ]
     } else {
-      zcta <- zcta[grep(paste0("^", starts_with), zcta$ZCTA5CE10), ]
+      zcta <- zcta[grep(paste0("^", starts_with), zcta[,col]), ]
     }
   }
 
