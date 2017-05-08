@@ -580,9 +580,9 @@ zctas <- function(cb = FALSE, starts_with = NULL, year = NULL, ...) {
     col <- grep("ZCTA", nms)
     if (length(starts_with) > 1) {
       tmp <- sapply(starts_with, function(x) paste0("^", x))
-      zcta <- zcta[grep(paste(tmp, collapse = "|"), zcta[,col]), ]
+      zcta <- zcta[grep(paste(tmp, collapse = "|"), zcta[[col]]), ]
     } else {
-      zcta <- zcta[grep(paste0("^", starts_with), zcta[,col]), ]
+      zcta <- zcta[grep(paste0("^", starts_with), zcta[[col]]), ]
     }
   }
 
