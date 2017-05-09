@@ -1,5 +1,11 @@
-tigris 0.5
+tigris 0.5.1
+-------------------------------------------------------
+* tigris now downloads data to a temporary directory rather than creating a cache directory by default to conform with CRAN policies.  To enable caching of data, set `options(tigris_use_cache = TRUE)` in your R script or .Rprofile.
 
+* 2000 and 2010 Zip Code Tabulation Areas (ZCTAs) are now available.
+
+tigris 0.5
+-------------------------------------------------------
 * tigris now will return objects of class 'sf' if requested by the user with the argument `class = 'sf'` or by setting the option `options(tigris_class = 'sf')`.
 
 * Historical states, counties, Census tracts, and block groups are now available going back to 1990

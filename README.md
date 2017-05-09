@@ -6,7 +6,7 @@ Download and use Census TIGER/Line shapefiles in R
 
 CRAN version: __0.5__ (updated 1 May 2017)
 
-Dev version: __0.5.0.9000__ (updated 1 May 2017)
+Dev version: __0.5.1__ (updated 9 May 2017)
 
 `tigris` is an R package that allows users to directly download and use TIGER/Line shapefiles (<https://www.census.gov/geo/maps-data/data/tiger-line.html>) from the US Census Bureau.  
 
@@ -22,11 +22,13 @@ Or, get the development version from GitHub:
 devtools::install_github('walkerke/tigris')
 ```
 
-__In Version 0.5__: 
+__In Version 0.5.1__: 
+
+* tigris now downloads data to a temporary directory rather than creating a cache directory by default to conform with CRAN policies.  To enable caching of data, set `options(tigris_use_cache = TRUE)` in your R script or .Rprofile.
 
 * tigris now supports simple features!  To load your data as an object of class `sf`, specify `class = "sf"` in the function call, or set this globally with `options(tigris_class = "sf")`.  
 
-* Historic boundaries are available for states, counties, Census tracts, and block groups; 1990 (`cb = TRUE` only), 2000, and 2010 boundaries can be obtained with the `year` parameter in an associated function call.  
+* Historic boundaries are available for states, counties, Census tracts, block groups, and ZCTAs; 1990 (`cb = TRUE` only, and not for ZCTAs), 2000, and 2010 boundaries can be obtained with the `year` parameter in an associated function call.  
 
 __Basic usage:__
 
