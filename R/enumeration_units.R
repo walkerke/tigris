@@ -646,12 +646,11 @@ blocks <- function(state, county = NULL, year = NULL, ...) {
 
   }
 
-  if (year < 2010) {
+  if (year < 2000) {
 
     fname <- as.character(match.call())[[1]]
 
-    msg <- sprintf("%s is not currently available for years prior to 2010.  To request this feature,
-                   file an issue at https://github.com/walkerke/tigris.", fname)
+    msg <- "Block data are not available for 1990."
 
     stop(msg, call. = FALSE)
 
@@ -669,10 +668,10 @@ blocks <- function(state, county = NULL, year = NULL, ...) {
   } else if (year %in% 2011:2013) {
     url <- sprintf("http://www2.census.gov/geo/tiger/TIGER%s/TABBLOCK/tl_%s_%s_tabblock.zip",
                    cyear, cyear, state)
-  } else if (year == 2010) {
-    url <- paste0("http://www2.census.gov/geo/tiger/TIGER2010/TABBLOCK/2010/tl_2010_",
-                  state,
-                  "_tabblock10.zip")
+  } else if (year %in% c(2000, 2010)) {
+    suf <- substr(cyear, 3, 4)
+    url <- sprintf("http://www2.census.gov/geo/tiger/TIGER2010/TABBLOCK/%s/tl_2010_%s_tabblock%s.zip",
+                   cyear, state, suf)
   } else {
     stop()
   }
@@ -683,8 +682,11 @@ blocks <- function(state, county = NULL, year = NULL, ...) {
 
     county <- sapply(county, function(x) { validate_county(state, x) })
 
-    blks <- blks[blks$COUNTYFP10 %in% county, ]
-
+    if (year > 2000) {
+      blks <- blks[blks$COUNTYFP10 %in% county, ]
+    } else if (year == 2000) {
+      blks <- blks[blks$COUNTYFP00 %in% county, ]
+    }
   }
 
   attr(blks, "tigris") <- "block"
