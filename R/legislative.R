@@ -163,7 +163,7 @@ state_legislative_districts <- function(state, house = "upper", cb = FALSE, year
 
   } else {
 
-    url <- paste0("http://www2.census.gov/geo/tiger/TIGER%s/%s/tl_%s_%s_%s.zip",
+    url <- sprintf("http://www2.census.gov/geo/tiger/TIGER%s/%s/tl_%s_%s_%s.zip",
                   cyear, toupper(type), cyear, state, type)
 
   }
