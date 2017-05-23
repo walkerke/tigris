@@ -498,6 +498,7 @@ block_groups <- function(state, county = NULL, cb = FALSE, year = NULL, ...) {
 #'        \code{starts_with = c("75", "76")} will return only those ZCTAs that begin
 #'        with 75 or 76.  Defaults to NULL, which will return all ZCTAs in the US.
 #' @param year the data year (defaults to 2015).
+#' @param state the state for which you are requesting data; only available for 2000 and 2010
 #' @param ... arguments to be passed to the underlying `load_tiger` function, which is not exported.
 #'        Options include \code{refresh}, which specifies whether or not to re-download shapefiles
 #'        (defaults to \code{FALSE}).
@@ -522,7 +523,7 @@ block_groups <- function(state, county = NULL, cb = FALSE, year = NULL, ...) {
 #' plot(mem_zcta)
 #'
 #' }
-zctas <- function(cb = FALSE, starts_with = NULL, year = NULL, ...) {
+zctas <- function(cb = FALSE, starts_with = NULL, year = NULL, state = NULL, ...) {
 
   if (is.null(year)) {
 
@@ -535,6 +536,8 @@ zctas <- function(cb = FALSE, starts_with = NULL, year = NULL, ...) {
          call. = FALSE)
   }
 
+  if (!is.null(state)) state <- validate_state(state)
+
   cache <- getOption("tigris_use_cache")
 
   if (!cache) {
@@ -546,7 +549,12 @@ zctas <- function(cb = FALSE, starts_with = NULL, year = NULL, ...) {
   if (cb == TRUE) {
 
     if (year == 2000) {
-      url <- "https://www2.census.gov/geo/tiger/PREVGENZ/zt/z500shp/zt99_d00_shp.zip"
+      if (is.null(state)) {
+        url <- "https://www2.census.gov/geo/tiger/PREVGENZ/zt/z500shp/zt99_d00_shp.zip"
+      } else {
+        url <- sprintf("https://www2.census.gov/geo/tiger/PREVGENZ/zt/z500shp/zt%s_d00_shp.zip",
+                       state)
+      }
     } else if (year == 2010) {
       url <- "https://www2.census.gov/geo/tiger/GENZ2010/gz_2010_us_860_00_500k.zip"
     } else {
@@ -560,16 +568,19 @@ zctas <- function(cb = FALSE, starts_with = NULL, year = NULL, ...) {
 
     if (year %in% c(2000, 2010)) {
 
-
       suf <- substr(cyear, 3, 4)
 
-      url <- sprintf("https://www2.census.gov/geo/tiger/TIGER2010/ZCTA5/%s/tl_2010_us_zcta5%s.zip",
-                     cyear, suf)
-
+      if (is.null(state)) {
+        url <- sprintf("https://www2.census.gov/geo/tiger/TIGER2010/ZCTA5/%s/tl_2010_us_zcta5%s.zip",
+                       cyear, suf)
+      } else {
+        url <- sprintf("https://www2.census.gov/geo/tiger/TIGER2010/ZCTA5/%s/tl_2010_%s_zcta5%s.zip",
+                       cyear, state, suf)
+      }
     } else {
       url <- sprintf("http://www2.census.gov/geo/tiger/TIGER%s/ZCTA5/tl_%s_us_zcta510.zip",
                      cyear, cyear)
-      }
+    }
 
   }
 

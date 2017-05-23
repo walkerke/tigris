@@ -16,4 +16,3 @@ character vector containing the \code{tigris} type of \code{obj}
 \description{
 Get the type of \code{tigris} object \code{obj} is
 }
-

@@ -65,4 +65,3 @@ Other general area functions: \code{\link{blocks}},
   \code{\link{states}}, \code{\link{tracts}},
   \code{\link{zctas}}
 }
-

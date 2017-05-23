@@ -42,4 +42,3 @@ landmark has a unique area landmark identifier (AREAID) or point landmark identi
 \seealso{
 \url{http://www2.census.gov/geo/pdfs/maps-data/data/tiger/tgrshp2015/TGRSHP2015_TechDoc_Ch3.pdf}
 }
-

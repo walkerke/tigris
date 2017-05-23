@@ -44,4 +44,3 @@ plot(rds)
 Other transportation functions: \code{\link{primary_roads}},
   \code{\link{rails}}, \code{\link{roads}}
 }
-

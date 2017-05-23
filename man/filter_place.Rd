@@ -22,4 +22,3 @@ contents of the \code{place} vector.
 places("Maine") \%>\% filter_place("berwick")
 }
 }
-

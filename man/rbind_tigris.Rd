@@ -33,4 +33,3 @@ tmp_simp <- SpatialPolygonsDataFrame(tmp_simp, tmp@data)
 plot(tmp_simp)
 }
 }
-

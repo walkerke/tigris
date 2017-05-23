@@ -45,4 +45,3 @@ lookup_code("Maine", "York County")
 ## [1] "The code for Maine is '23' and the code for York County is '031'."
 }
 }
-

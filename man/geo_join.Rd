@@ -55,4 +55,3 @@ nrow(countries3)
 
 }
 }
-

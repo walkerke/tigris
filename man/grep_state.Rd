@@ -20,4 +20,3 @@ This is just shorthand for
 states() \%>\% grep_state("north")
 }
 }
-

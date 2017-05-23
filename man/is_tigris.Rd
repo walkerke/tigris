@@ -15,4 +15,3 @@ is_tigris(obj)
 \description{
 It's unlikely that said object was not created by this package
 }
-

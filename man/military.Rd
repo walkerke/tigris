@@ -31,4 +31,3 @@ shapefiles contain few values in the ANSICODE field.
 \seealso{
 \url{http://www2.census.gov/geo/pdfs/maps-data/data/tiger/tgrshp2015/TGRSHP2015_TechDoc_Ch3.pdf}
 }
-

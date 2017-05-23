@@ -4,7 +4,7 @@
 \alias{zctas}
 \title{Download a Zip Code Tabulation Area (ZCTA) shapefile into R}
 \usage{
-zctas(cb = FALSE, starts_with = NULL, year = NULL, ...)
+zctas(cb = FALSE, starts_with = NULL, year = NULL, state = NULL, ...)
 }
 \arguments{
 \item{cb}{If cb is set to TRUE, download a generalized (1:500k)
@@ -20,6 +20,8 @@ ZCTAs you want to return.  For example, supplying the argument
 with 75 or 76.  Defaults to NULL, which will return all ZCTAs in the US.}
 
 \item{year}{the data year (defaults to 2015).}
+
+\item{state}{the state for which you are requesting data; only available for 2000 and 2010}
 
 \item{...}{arguments to be passed to the underlying `load_tiger` function, which is not exported.
 Options include \code{refresh}, which specifies whether or not to re-download shapefiles
@@ -60,4 +62,3 @@ Other general area functions: \code{\link{block_groups}},
   \code{\link{pumas}}, \code{\link{school_districts}},
   \code{\link{states}}, \code{\link{tracts}}
 }
-

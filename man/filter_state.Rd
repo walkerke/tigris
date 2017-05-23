@@ -22,4 +22,3 @@ contents of the \code{state} vector.
 states() \%>\% filter_state("south")
 }
 }
-

@@ -20,4 +20,3 @@ This is just shorthand for
 places("Maine") \%>\% grep_place("south")
 }
 }
-

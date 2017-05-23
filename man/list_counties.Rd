@@ -17,4 +17,3 @@ data frame of county name and FIPS code or NULL if invalid state
 \description{
 Return a data frame of county names & FIPS codes for a given state
 }
-

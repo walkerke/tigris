@@ -58,4 +58,3 @@ Other general area functions: \code{\link{block_groups}},
   \code{\link{pumas}}, \code{\link{states}},
   \code{\link{tracts}}, \code{\link{zctas}}
 }
-

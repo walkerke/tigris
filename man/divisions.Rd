@@ -35,4 +35,3 @@ leaflet(divs) \%>\%
 Other national cartographic boundary functions: \code{\link{nation}},
   \code{\link{regions}}
 }
-

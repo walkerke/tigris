@@ -19,4 +19,3 @@ Return a list of all the states in a \code{state} object
 states() \%>\% list_states()
 }
 }
-

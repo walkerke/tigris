@@ -38,4 +38,3 @@ plot(ia)
 Other legislative district functions: \code{\link{congressional_districts}},
   \code{\link{state_legislative_districts}}
 }
-

@@ -19,4 +19,3 @@ Return a list of all the places in a \code{places} object
 places("Maine") \%>\% list_places()
 }
 }
-

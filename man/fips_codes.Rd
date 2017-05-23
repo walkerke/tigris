@@ -30,4 +30,3 @@ To access the data directly, issue the command \code{data(fips_codes)}.
 Last updated 2015-07-01
 }
 \keyword{datasets}
-

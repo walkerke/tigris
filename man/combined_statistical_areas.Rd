@@ -33,4 +33,3 @@ Other metro area functions: \code{\link{core_based_statistical_areas}},
   \code{\link{metro_divisions}}, \code{\link{new_england}},
   \code{\link{urban_areas}}
 }
-
