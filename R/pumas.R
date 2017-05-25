@@ -72,7 +72,7 @@ pumas <- function(state, cb = FALSE, year = NULL, ...) {
 
 
   } else {
-    url <- paste0("http://www2.census.gov/geo/tiger/TIGER%s/PUMA/tl_%s_%s_puma10.zip",
+    url <- sprintf("http://www2.census.gov/geo/tiger/TIGER%s/PUMA/tl_%s_%s_puma10.zip",
                   cyear, cyear, state)
   }
 
