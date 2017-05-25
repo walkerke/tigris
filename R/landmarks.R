@@ -106,7 +106,7 @@ landmarks <- function(state, type = "point", year = NULL, ...) {
     return(load_tiger(url, tigris_type = "area_landmark", ...))
 
   } else if (type == "point") {
-    url <- paste0("http://www2.census.gov/geo/tiger/TIGER%s/POINTLM/tl_%s_%s_pointlm.zip",
+    url <- sprintf("http://www2.census.gov/geo/tiger/TIGER%s/POINTLM/tl_%s_%s_pointlm.zip",
                   cyear, cyear, state)
     return(load_tiger(url, tigris_type = "point_landmark", ...))
 

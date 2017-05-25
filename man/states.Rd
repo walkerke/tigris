@@ -31,7 +31,7 @@ equivalents of states for the purpose of data presentation.
 library(tigris)
 library(leaflet)
 
-states <- states(detailed=FALSE)
+states <- states(cb = TRUE)
 
 leaflet(states) \%>\%
   addProviderTiles("CartoDB.Positron") \%>\%
