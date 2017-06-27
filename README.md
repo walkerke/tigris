@@ -44,11 +44,11 @@ Please note: cartographic boundary files in __tigris__ are not available for 201
 | counties | TIGER/Line; cartographic (1:500k; 1:5m; 1:20m) | 1990, 2000, 2010, 2011, 2012, 2013, 2014, 2015 |
 | tracts | TIGER/Line; cartographic (1:500k) | 1990, 2000, 2010, 2011, 2012, 2013, 2014, 2015 |
 | block_groups | TIGER/Line; cartographic (1:500k) | 1990, 2000, 2010, 2011, 2012, 2013, 2014, 2015 |
-| blocks | TIGER/Line | 2011, 2012, 2013, 2014, 2015 |
+| blocks | TIGER/Line | 2000, 2010, 2011, 2012, 2013, 2014, 2015 |
 | places | TIGER/Line; cartographic (1:500k) | 2011, 2012, 2013, 2014, 2015 |
 | pumas | TIGER/Line; cartographic (1:500k) | 2012, 2013, 2014, 2015 |
 | school_districts | TIGER/Line | 2011, 2012, 2013, 2014, 2015 |
-| zctas | TIGER/Line; cartographic (1:500k) | 2012, 2013, 2014, 2015 |
+| zctas | TIGER/Line; cartographic (1:500k) | 2000, 2010, 2012, 2013, 2014, 2015 |
 | congressional_districts (114th Congress) | TIGER/Line; cartographic (1:500k; 1:5m; 1:20m) | 2014, 2015 |
 | state_legislative_districts | TIGER/Line; cartographic (1:500k) | 2011, 2012, 2013, 2014, 2015 |
 | voting_districts | TIGER/Line | 2012 |
