@@ -29,7 +29,7 @@ __In Version 0.5.3__:
 To learn how to use the package, I'd recommend the following materials: 
 
 * My article in _The R Journal_, ["tigris: An R Package to Access and Work with Geographic Data from the US Census Bureau"](https://journal.r-project.org/archive/2016/RJ-2016-043/index.html)
-* [A webinar I gave with Ari Lamstein on tigris in April 2017:](https://www.youtube.com/watch?v=lZuVxVONK9g&__s=hpmyiy9wyzwapfzug5q9)
+* [A webinar I gave with Ari Lamstein on tigris in April 2017](https://www.youtube.com/watch?v=lZuVxVONK9g&__s=hpmyiy9wyzwapfzug5q9)
 
 __Available datasets:__
 
