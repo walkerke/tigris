@@ -4,10 +4,6 @@
 
 Download and use Census TIGER/Line shapefiles in R
 
-CRAN version: __0.5.1__ (updated 9 May 2017)
-
-Dev version: __0.5.1.9000__ (updated 10 May 2017)
-
 `tigris` is an R package that allows users to directly download and use TIGER/Line shapefiles (<https://www.census.gov/geo/maps-data/data/tiger-line.html>) from the US Census Bureau.  
 
 To install the package from CRAN, issue the following command in R: 
@@ -22,7 +18,7 @@ Or, get the development version from GitHub:
 devtools::install_github('walkerke/tigris')
 ```
 
-__In Version 0.5.1__: 
+__In Version 0.5.3__: 
 
 * tigris now downloads data to a temporary directory rather than creating a cache directory by default to conform with CRAN policies.  To enable caching of data, set `options(tigris_use_cache = TRUE)` in your R script or .Rprofile.
 
@@ -30,31 +26,10 @@ __In Version 0.5.1__:
 
 * Historic boundaries are available for states, counties, Census tracts, block groups, and ZCTAs; 1990 (`cb = TRUE` only, and not for ZCTAs), 2000, and 2010 boundaries can be obtained with the `year` parameter in an associated function call.  
 
-__Basic usage:__
+To learn how to use the package, I'd recommend the following materials: 
 
-```r
-library(tigris)
-
-# Basic plot of US urbanized areas
-
-ua <- urban_areas(cb = TRUE)
-
-plot(ua)
-
-```
-
-![Basic plot](https://dl.dropbox.com/s/evb5u8sm0q9k4sy/ua_plot.png)
-
-```r
-# Interactive Leaflet map (requires the leaflet R package)
-
-library(leaflet)
-
-ua %>% leaflet() %>% addTiles() %>% addPolygons(popup = ~NAME10)
-
-```
-
-![Interactive map](https://dl.dropbox.com/s/c4ozukojr7ittwv/atlanta.PNG)
+* My article in _The R Journal_, ["tigris: An R Package to Access and Work with Geographic Data from the US Census Bureau"](https://journal.r-project.org/archive/2016/RJ-2016-043/index.html)
+* [A webinar I gave with Ari Lamstein on tigris in April 2017](https://www.youtube.com/watch?v=lZuVxVONK9g&__s=hpmyiy9wyzwapfzug5q9)
 
 __Available datasets:__
 
@@ -69,11 +44,11 @@ Please note: cartographic boundary files in __tigris__ are not available for 201
 | counties | TIGER/Line; cartographic (1:500k; 1:5m; 1:20m) | 1990, 2000, 2010, 2011, 2012, 2013, 2014, 2015 |
 | tracts | TIGER/Line; cartographic (1:500k) | 1990, 2000, 2010, 2011, 2012, 2013, 2014, 2015 |
 | block_groups | TIGER/Line; cartographic (1:500k) | 1990, 2000, 2010, 2011, 2012, 2013, 2014, 2015 |
-| blocks | TIGER/Line | 2011, 2012, 2013, 2014, 2015 |
+| blocks | TIGER/Line | 2000, 2010, 2011, 2012, 2013, 2014, 2015 |
 | places | TIGER/Line; cartographic (1:500k) | 2011, 2012, 2013, 2014, 2015 |
 | pumas | TIGER/Line; cartographic (1:500k) | 2012, 2013, 2014, 2015 |
 | school_districts | TIGER/Line | 2011, 2012, 2013, 2014, 2015 |
-| zctas | TIGER/Line; cartographic (1:500k) | 2012, 2013, 2014, 2015 |
+| zctas | TIGER/Line; cartographic (1:500k) | 2000, 2010, 2012, 2013, 2014, 2015 |
 | congressional_districts (114th Congress) | TIGER/Line; cartographic (1:500k; 1:5m; 1:20m) | 2014, 2015 |
 | state_legislative_districts | TIGER/Line; cartographic (1:500k) | 2011, 2012, 2013, 2014, 2015 |
 | voting_districts | TIGER/Line | 2012 |
