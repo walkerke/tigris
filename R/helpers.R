@@ -29,9 +29,13 @@ load_tiger <- function(url,
       file_loc <- file.path(cache_dir, tiger_file)
 
       if (refresh | !file.exists(file_loc)) {
-        try(GET(url,
-                write_disk(file_loc, overwrite=refresh),
-                progress(type="down")), silent=TRUE)
+        try(download.file(url, file_loc, mode = "wb"))
+        # GET requests not working at the moment.
+        # Change back if you get additional info.
+
+        # try(GET(url,
+        #         write_disk(file_loc, overwrite=refresh),
+        #         progress(type="down")), silent=TRUE)
       }
 
       shape <- gsub(".zip", "", tiger_file)
@@ -56,9 +60,11 @@ load_tiger <- function(url,
             message(sprintf("Previous download failed.  Re-download attempt %s of 3...",
                             as.character(i)))
 
-            try(GET(url,
-                    write_disk(file_loc, overwrite=TRUE),
-                    progress(type="down")), silent=TRUE)
+            try(download.file(url, file_loc, mode = "wb"))
+
+            # try(GET(url,
+            #         write_disk(file_loc, overwrite=TRUE),
+            #         progress(type="down")), silent=TRUE)
 
             shape <- gsub(".zip", "", tiger_file)
             shape <- gsub("_shp", "", shape)
@@ -105,7 +111,7 @@ load_tiger <- function(url,
 
         if (is.na(st_crs(obj)$proj4string)) {
 
-          st_crs(obj) <- 4269
+          st_crs(obj) <- "+proj=longlat +datum=NAD83 +no_defs +ellps=GRS80 +towgs84=0,0,0"
 
         }
 
