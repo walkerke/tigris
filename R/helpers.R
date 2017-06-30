@@ -12,7 +12,7 @@ load_tiger <- function(url,
                        tigris_type=NULL,
                        class = getOption("tigris_class", "sp")) {
 
-  use_cache <- getOption("tigris_use_cache", TRUE)
+  use_cache <- getOption("tigris_use_cache", FALSE)
   tiger_file <- basename(url)
 
   obj <- NULL
@@ -29,13 +29,13 @@ load_tiger <- function(url,
       file_loc <- file.path(cache_dir, tiger_file)
 
       if (refresh | !file.exists(file_loc)) {
-        try(download.file(url, file_loc, mode = "wb"))
+        # try(download.file(url, file_loc, mode = "wb"))
         # GET requests not working at the moment.
         # Change back if you get additional info.
 
-        # try(GET(url,
-        #         write_disk(file_loc, overwrite=refresh),
-        #         progress(type="down")), silent=TRUE)
+        try(GET(url,
+                write_disk(file_loc, overwrite=refresh),
+                progress(type="down")), silent=TRUE)
       }
 
       shape <- gsub(".zip", "", tiger_file)
@@ -60,11 +60,11 @@ load_tiger <- function(url,
             message(sprintf("Previous download failed.  Re-download attempt %s of 3...",
                             as.character(i)))
 
-            try(download.file(url, file_loc, mode = "wb"))
+            # try(download.file(url, file_loc, mode = "wb"))
 
-            # try(GET(url,
-            #         write_disk(file_loc, overwrite=TRUE),
-            #         progress(type="down")), silent=TRUE)
+            try(GET(url,
+                    write_disk(file_loc, overwrite=TRUE),
+                    progress(type="down")), silent=TRUE)
 
             shape <- gsub(".zip", "", tiger_file)
             shape <- gsub("_shp", "", shape)
