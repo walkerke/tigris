@@ -28,6 +28,7 @@
 #' @import uuid
 #' @import sf
 #' @importFrom dplyr filter group_by_ row_number left_join inner_join mutate
+#' @import curl
 NULL
 
 #' tigris exported operators

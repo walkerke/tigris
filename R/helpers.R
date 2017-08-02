@@ -124,8 +124,11 @@ load_tiger <- function(url,
   } else {
 
     tmp <- tempdir()
-    download.file(url, tiger_file, mode = 'wb')
-    unzip(tiger_file, exdir = tmp)
+    file_loc <- file.path(tmp, tiger_file)
+    try(GET(url, write_disk(file_loc),
+            progress(type = "down")), silent = TRUE)
+    # download.file(url, tiger_file, mode = 'wb')
+    unzip(file_loc, exdir = tmp)
     shape <- gsub(".zip", "", tiger_file)
     shape <- gsub("_shp", "", shape) # for historic tracts
 

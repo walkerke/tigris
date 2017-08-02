@@ -34,5 +34,6 @@ Imports:
     httr,
     uuid, 
     sf, 
-    dplyr
+    dplyr, 
+    curl
 RoxygenNote: 6.0.1
