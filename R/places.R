@@ -37,6 +37,15 @@
 #' @export
 places <- function(state, cb = FALSE, year = NULL, ...) {
 
+  if (length(state) > 1) {
+    p <- lapply(state, function(x) {
+      places(state = x, cb = cb, year = year)
+    }) %>%
+      rbind_tigris()
+
+    return(p)
+  }
+
   if (is.null(year)) {
 
     year <- getOption("tigris_year", 2015)
