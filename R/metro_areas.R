@@ -28,11 +28,11 @@ core_based_statistical_areas <- function(cb = FALSE, resolution = '500k', year =
 
   }
 
-  if (year < 2011) {
+  if (year < 2010) {
 
     fname <- as.character(match.call())[[1]]
 
-    msg <- sprintf("%s is not currently available for years prior to 2011.  To request this feature,
+    msg <- sprintf("%s is not currently available for years prior to 2010.  To request this feature,
                    file an issue at https://github.com/walkerke/tigris.", fname)
 
     stop(msg, call. = FALSE)
@@ -46,14 +46,28 @@ core_based_statistical_areas <- function(cb = FALSE, resolution = '500k', year =
   cyear <- as.character(year)
 
   if (cb == TRUE) {
-    url <- sprintf("http://www2.census.gov/geo/tiger/GENZ%s/shp/cb_%s_us_cbsa_%s.zip",
-                   cyear, cyear, resolution)
+    if (year == 2010) {
+      if (resolution == "5m") stop("Available resolutions are '500k' and '20m'", call. = FALSE)
+      url <- sprintf("https://www2.census.gov/geo/tiger/GENZ2010/gz_2010_us_310_%s_20m.zip",
+                     resolution)
 
-    if (year == 2013) url <- gsub("shp/", "", url)
+    } else {
+      url <- sprintf("http://www2.census.gov/geo/tiger/GENZ%s/shp/cb_%s_us_cbsa_%s.zip",
+                     cyear, cyear, resolution)
+
+      if (year == 2013) url <- gsub("shp/", "", url)
+    }
+
 
   } else {
-    url <- sprintf("http://www2.census.gov/geo/tiger/TIGER%s/CBSA/tl_%s_us_cbsa.zip",
-                   cyear, cyear)
+
+    if (year == 2010) {
+      url <- sprintf("https://www2.census.gov/geo/tiger/TIGER2010/CBSA/2010/tl_2010_us_cbsa10.zip")
+    } else {
+      url <- sprintf("http://www2.census.gov/geo/tiger/TIGER%s/CBSA/tl_%s_us_cbsa.zip",
+                     cyear, cyear)
+    }
+
   }
 
   return(load_tiger(url, tigris_type="cbsa", ...))
