@@ -48,7 +48,7 @@ core_based_statistical_areas <- function(cb = FALSE, resolution = '500k', year =
   if (cb == TRUE) {
     if (year == 2010) {
       if (resolution == "5m") stop("Available resolutions are '500k' and '20m'", call. = FALSE)
-      url <- sprintf("https://www2.census.gov/geo/tiger/GENZ2010/gz_2010_us_310_%s_20m.zip",
+      url <- sprintf("https://www2.census.gov/geo/tiger/GENZ2010/gz_2010_us_310_m1_%s.zip",
                      resolution)
 
     } else {
