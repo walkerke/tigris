@@ -100,7 +100,7 @@ load_tiger <- function(url,
 
         if (is.na(proj4string(obj))) {
 
-          proj4string(obj) <- CRS("+proj=longlat +datum=NAD83 +no_defs +ellps=GRS80 +towgs84=0,0,0")
+          proj4string(obj) <- CRS("+proj=longlat +datum=NAD83 +no_defs")
 
         }
 
@@ -111,7 +111,7 @@ load_tiger <- function(url,
 
         if (is.na(st_crs(obj)$proj4string)) {
 
-          st_crs(obj) <- "+proj=longlat +datum=NAD83 +no_defs +ellps=GRS80 +towgs84=0,0,0"
+          st_crs(obj) <- "+proj=longlat +datum=NAD83 +no_defs"
 
         }
 
@@ -140,7 +140,7 @@ load_tiger <- function(url,
 
       if (is.na(proj4string(obj))) {
 
-        proj4string(obj) <- CRS("+proj=longlat +datum=NAD83 +no_defs +ellps=GRS80 +towgs84=0,0,0")
+        proj4string(obj) <- CRS("+proj=longlat +datum=NAD83 +no_defs")
 
       }
 
@@ -151,7 +151,7 @@ load_tiger <- function(url,
 
       if (is.na(st_crs(obj)$proj4string)) {
 
-        st_crs(obj) <- "+proj=longlat +datum=NAD83 +no_defs +ellps=GRS80 +towgs84=0,0,0"
+        st_crs(obj) <- "+proj=longlat +datum=NAD83 +no_defs"
 
       }
 
