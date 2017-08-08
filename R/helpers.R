@@ -151,7 +151,7 @@ load_tiger <- function(url,
 
       if (is.na(st_crs(obj)$proj4string)) {
 
-        st_crs(obj) <- 4269
+        st_crs(obj) <- "+proj=longlat +datum=NAD83 +no_defs +ellps=GRS80 +towgs84=0,0,0"
 
       }
 
