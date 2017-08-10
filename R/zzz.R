@@ -39,5 +39,5 @@ fips_state_table <- structure(list(abb = c("ak", "al", "ar", "as", "az", "ca", "
 }
 
 .onAttach <- function(libname, pkgname) {
-  packageStartupMessage("As of version 0.5.1, tigris does not cache downloaded data by default. To enable \ncaching of data, set `options(tigris_use_cache = TRUE)` in your R script or .Rprofile.")
+  packageStartupMessage("To enable \ncaching of data, set `options(tigris_use_cache = TRUE)` in your R script or .Rprofile.")
 }
