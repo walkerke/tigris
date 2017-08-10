@@ -52,7 +52,7 @@ core_based_statistical_areas <- function(cb = FALSE, resolution = '500k', year =
                      resolution)
 
     } else {
-      url <- sprintf("http://www2.census.gov/geo/tiger/GENZ%s/shp/cb_%s_us_cbsa_%s.zip",
+      url <- sprintf("https://www2.census.gov/geo/tiger/GENZ%s/shp/cb_%s_us_cbsa_%s.zip",
                      cyear, cyear, resolution)
 
       if (year == 2013) url <- gsub("shp/", "", url)
@@ -64,7 +64,7 @@ core_based_statistical_areas <- function(cb = FALSE, resolution = '500k', year =
     if (year == 2010) {
       url <- sprintf("https://www2.census.gov/geo/tiger/TIGER2010/CBSA/2010/tl_2010_us_cbsa10.zip")
     } else {
-      url <- sprintf("http://www2.census.gov/geo/tiger/TIGER%s/CBSA/tl_%s_us_cbsa.zip",
+      url <- sprintf("https://www2.census.gov/geo/tiger/TIGER%s/CBSA/tl_%s_us_cbsa.zip",
                      cyear, cyear)
     }
 
@@ -113,13 +113,13 @@ urban_areas <- function(cb = FALSE, year = NULL, ...) {
 
 
   if (cb == TRUE) {
-    url <- sprintf("http://www2.census.gov/geo/tiger/GENZ%s/shp/cb_%s_us_ua10_500k.zip",
+    url <- sprintf("https://www2.census.gov/geo/tiger/GENZ%s/shp/cb_%s_us_ua10_500k.zip",
                    cyear, cyear)
 
     if (year == 2013) url <- gsub("shp/", "", url)
 
   } else {
-    url <- sprintf("http://www2.census.gov/geo/tiger/TIGER%s/UAC/tl_%s_us_uac10.zip",
+    url <- sprintf("https://www2.census.gov/geo/tiger/TIGER%s/UAC/tl_%s_us_uac10.zip",
                    cyear, cyear)
   }
 
@@ -171,13 +171,13 @@ combined_statistical_areas <- function(cb = FALSE, resolution = '500k', year = N
   cyear <- as.character(year)
 
   if (cb == TRUE) {
-    url <- sprintf("http://www2.census.gov/geo/tiger/GENZ%s/shp/cb_%s_us_csa_%s.zip",
+    url <- sprintf("https://www2.census.gov/geo/tiger/GENZ%s/shp/cb_%s_us_csa_%s.zip",
                    cyear, cyear, resolution)
 
     if (year == 2013) url <- gsub("shp/", "", url)
 
   } else {
-    url <- sprintf("http://www2.census.gov/geo/tiger/TIGER%s/CSA/tl_%s_us_csa.zip",
+    url <- sprintf("https://www2.census.gov/geo/tiger/TIGER%s/CSA/tl_%s_us_csa.zip",
                    cyear, cyear)
   }
 
@@ -219,7 +219,7 @@ metro_divisions <- function(year = NULL, ...) {
 
   cyear <- as.character(year)
 
-  url <- sprintf("http://www2.census.gov/geo/tiger/TIGER%s/METDIV/tl_%s_us_metdiv.zip",
+  url <- sprintf("https://www2.census.gov/geo/tiger/TIGER%s/METDIV/tl_%s_us_metdiv.zip",
                  cyear, cyear)
 
   return(load_tiger(url, tigris_type="metro", ...))
@@ -286,12 +286,12 @@ new_england <- function(type = 'necta', cb = FALSE, year = NULL, ...) {
 
     if (cb == TRUE) {
 
-      url <- sprintf("http://www2.census.gov/geo/tiger/GENZ%s/shp/cb_%s_us_necta_500k.zip",
+      url <- sprintf("https://www2.census.gov/geo/tiger/GENZ%s/shp/cb_%s_us_necta_500k.zip",
                      cyear, cyear)
 
     } else {
 
-      url <- sprintf("http://www2.census.gov/geo/tiger/TIGER%s/NECTA/tl_%s_us_necta.zip",
+      url <- sprintf("https://www2.census.gov/geo/tiger/TIGER%s/NECTA/tl_%s_us_necta.zip",
                      cyear, cyear)
 
     }
@@ -300,14 +300,14 @@ new_england <- function(type = 'necta', cb = FALSE, year = NULL, ...) {
 
   } else if (type == 'combined') {
 
-    url <- sprintf("http://www2.census.gov/geo/tiger/TIGER%s/CNECTA/tl_%s_us_cnecta.zip",
+    url <- sprintf("https://www2.census.gov/geo/tiger/TIGER%s/CNECTA/tl_%s_us_cnecta.zip",
                    cyear, cyear)
 
     return(load_tiger(url, tigris_type = "cnecta", ...))
 
   } else if (type == 'divisions') {
 
-    url <- sprintf("http://www2.census.gov/geo/tiger/TIGER%s/NECTADIV/tl_%s_us_nectadiv.zip",
+    url <- sprintf("https://www2.census.gov/geo/tiger/TIGER%s/NECTADIV/tl_%s_us_nectadiv.zip",
                    cyear, cyear)
 
     return(load_tiger(url, tigris_type = "nectadiv", ...))

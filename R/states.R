@@ -63,12 +63,12 @@ states <- function(cb = FALSE, resolution = '500k', year = NULL, ...) {
 
       if (year > 2013) {
 
-        url <- sprintf("http://www2.census.gov/geo/tiger/GENZ%s/shp/cb_%s_us_state_%s.zip",
+        url <- sprintf("https://www2.census.gov/geo/tiger/GENZ%s/shp/cb_%s_us_state_%s.zip",
                        cyear, cyear, resolution)
 
       } else {
 
-        url <- sprintf("http://www2.census.gov/geo/tiger/GENZ%s/shp/cb_%s_us_state_%s.zip",
+        url <- sprintf("https://www2.census.gov/geo/tiger/GENZ%s/shp/cb_%s_us_state_%s.zip",
                        cyear, cyear, resolution)
       }
 
@@ -87,7 +87,7 @@ states <- function(cb = FALSE, resolution = '500k', year = NULL, ...) {
 
     } else {
 
-      url <- sprintf("http://www2.census.gov/geo/tiger/TIGER%s/STATE/tl_%s_us_state.zip",
+      url <- sprintf("https://www2.census.gov/geo/tiger/TIGER%s/STATE/tl_%s_us_state.zip",
                      cyear, cyear)
 
     }

@@ -38,7 +38,7 @@ military <- function(year = NULL, ...) {
 
   }
 
-  url <- sprintf("http://www2.census.gov/geo/tiger/TIGER%s/MIL/tl_%s_us_mil.zip",
+  url <- sprintf("https://www2.census.gov/geo/tiger/TIGER%s/MIL/tl_%s_us_mil.zip",
                  as.character(year), as.character(year))
 
   return(load_tiger(url, tigris_type = "military", ...))
@@ -68,7 +68,7 @@ military <- function(year = NULL, ...) {
 #' Landmarks may be identified by a MAF/TIGER feature class code only and may not have a name. Each
 #' landmark has a unique area landmark identifier (AREAID) or point landmark identifier (POINTID) value.
 #'
-#' @seealso \url{http://www2.census.gov/geo/pdfs/maps-data/data/tiger/tgrshp2015/TGRSHP2015_TechDoc_Ch3.pdf}
+#' @seealso \url{https://www2.census.gov/geo/pdfs/maps-data/data/tiger/tgrshp2015/TGRSHP2015_TechDoc_Ch3.pdf}
 #'
 #' @param state The state for which you'd like to download the landmarks
 #' @param type Whether you would like to download point landmarks (\code{"point"}) or area landmarks (\code{"area"}). #'                Defaults to \code{"point"}.
@@ -101,12 +101,12 @@ landmarks <- function(state, type = "point", year = NULL, ...) {
   cyear <- as.character(year)
 
   if (type == "area") {
-    url <- sprintf("http://www2.census.gov/geo/tiger/TIGER%s/AREALM/tl_%s_%s_arealm.zip",
+    url <- sprintf("https://www2.census.gov/geo/tiger/TIGER%s/AREALM/tl_%s_%s_arealm.zip",
                    cyear, cyear, state)
     return(load_tiger(url, tigris_type = "area_landmark", ...))
 
   } else if (type == "point") {
-    url <- sprintf("http://www2.census.gov/geo/tiger/TIGER%s/POINTLM/tl_%s_%s_pointlm.zip",
+    url <- sprintf("https://www2.census.gov/geo/tiger/TIGER%s/POINTLM/tl_%s_%s_pointlm.zip",
                   cyear, cyear, state)
     return(load_tiger(url, tigris_type = "point_landmark", ...))
 

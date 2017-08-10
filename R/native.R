@@ -56,12 +56,12 @@ native_areas <- function(cb = FALSE, year = NULL, ...) {
 
   if (cb == TRUE) {
 
-    url <- sprintf("http://www2.census.gov/geo/tiger/GENZ%s/shp/cb_%s_us_aiannh_500k.zip",
+    url <- sprintf("https://www2.census.gov/geo/tiger/GENZ%s/shp/cb_%s_us_aiannh_500k.zip",
                    cyear, cyear)
 
   } else {
 
-    url <- sprintf("http://www2.census.gov/geo/tiger/TIGER%s/AIANNH/tl_%s_us_aiannh.zip",
+    url <- sprintf("https://www2.census.gov/geo/tiger/TIGER%s/AIANNH/tl_%s_us_aiannh.zip",
                    cyear, cyear)
 
   }
@@ -116,11 +116,11 @@ tribal_subdivisions_national <- function(year = NULL, ...) {
 
   if (year == 2015) {
 
-    url <- "http://www2.census.gov/geo/tiger/TIGER2015/AITSN/tl_2015_us_aitsn.zip"
+    url <- "https://www2.census.gov/geo/tiger/TIGER2015/AITSN/tl_2015_us_aitsn.zip"
 
   } else {
 
-    url <- paste0("http://www2.census.gov/geo/tiger/TIGER",
+    url <- paste0("https://www2.census.gov/geo/tiger/TIGER",
                   as.character(year),
                   "/AITS/tl_",
                   as.character(year),
@@ -172,12 +172,12 @@ alaska_native_regional_corporations <- function(cb = FALSE, year = NULL, ...) {
 
   if (cb == TRUE) {
 
-    url <- sprintf("http://www2.census.gov/geo/tiger/GENZ%s/shp/cb_%s_02_anrc_500k.zip",
+    url <- sprintf("https://www2.census.gov/geo/tiger/GENZ%s/shp/cb_%s_02_anrc_500k.zip",
                    cyear, cyear)
 
   } else {
 
-    url <- sprintf("http://www2.census.gov/geo/tiger/TIGER%s/ANRC/tl_%s_02_anrc.zip",
+    url <- sprintf("https://www2.census.gov/geo/tiger/TIGER%s/ANRC/tl_%s_02_anrc.zip",
                    cyear, cyear)
 
   }
@@ -240,7 +240,7 @@ tribal_block_groups <- function(year = NULL, ...) {
 
   }
 
-  url <- sprintf("http://www2.census.gov/geo/tiger/TIGER%s/TBG/tl_%s_us_tbg.zip",
+  url <- sprintf("https://www2.census.gov/geo/tiger/TIGER%s/TBG/tl_%s_us_tbg.zip",
                  as.character(year), as.character(year))
 
   return(load_tiger(url, ...))
@@ -296,7 +296,7 @@ tribal_census_tracts <- function(year = NULL, ...) {
 
   }
 
-  url <- sprintf("http://www2.census.gov/geo/tiger/TIGER%s/TTRACT/tl_%s_us_ttract.zip",
+  url <- sprintf("https://www2.census.gov/geo/tiger/TIGER%s/TTRACT/tl_%s_us_ttract.zip",
                  as.character(year), as.character(year))
 
   return(load_tiger(url, ...))

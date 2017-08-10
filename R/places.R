@@ -70,10 +70,10 @@ places <- function(state, cb = FALSE, year = NULL, ...) {
   cyear <- as.character(year)
 
   if (cb == TRUE) {
-    url <- sprintf("http://www2.census.gov/geo/tiger/GENZ%s/shp/cb_%s_%s_place_500k.zip",
+    url <- sprintf("https://www2.census.gov/geo/tiger/GENZ%s/shp/cb_%s_%s_place_500k.zip",
                    cyear, cyear, state)
   } else {
-    url <- sprintf("http://www2.census.gov/geo/tiger/TIGER%s/PLACE/tl_%s_%s_place.zip",
+    url <- sprintf("https://www2.census.gov/geo/tiger/TIGER%s/PLACE/tl_%s_%s_place.zip",
                    cyear, cyear, state)
   }
 

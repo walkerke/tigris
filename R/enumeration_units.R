@@ -89,12 +89,12 @@ counties <- function(state = NULL, cb = FALSE, resolution = '500k', year = NULL,
 
       if (year > 2013) {
 
-        url <- sprintf("http://www2.census.gov/geo/tiger/GENZ%s/shp/cb_%s_us_county_%s.zip",
+        url <- sprintf("https://www2.census.gov/geo/tiger/GENZ%s/shp/cb_%s_us_county_%s.zip",
                        cyear, cyear, resolution)
 
       } else {
 
-        url <- sprintf("http://www2.census.gov/geo/tiger/GENZ%s/cb_%s_us_county_%s.zip",
+        url <- sprintf("https://www2.census.gov/geo/tiger/GENZ%s/cb_%s_us_county_%s.zip",
                        cyear, cyear, resolution)
 
       }
@@ -115,7 +115,7 @@ counties <- function(state = NULL, cb = FALSE, resolution = '500k', year = NULL,
 
     } else {
 
-      url <- sprintf("http://www2.census.gov/geo/tiger/TIGER%s/COUNTY/tl_%s_us_county.zip",
+      url <- sprintf("https://www2.census.gov/geo/tiger/TIGER%s/COUNTY/tl_%s_us_county.zip",
                      cyear, cyear)
 
     }
@@ -221,12 +221,12 @@ tracts <- function(state, county = NULL, cb = FALSE, year = NULL, ...) {
 
       if (year > 2013) {
 
-        url <- sprintf("http://www2.census.gov/geo/tiger/GENZ%s/shp/cb_%s_%s_tract_500k.zip",
+        url <- sprintf("https://www2.census.gov/geo/tiger/GENZ%s/shp/cb_%s_%s_tract_500k.zip",
                        as.character(year), as.character(year), state)
 
       } else {
 
-        url <- sprintf("http://www2.census.gov/geo/tiger/GENZ%s/cb_%s_%s_tract_500k.zip",
+        url <- sprintf("https://www2.census.gov/geo/tiger/GENZ%s/cb_%s_%s_tract_500k.zip",
                        as.character(year), as.character(year), state)
 
       }
@@ -249,7 +249,7 @@ tracts <- function(state, county = NULL, cb = FALSE, year = NULL, ...) {
 
     } else {
 
-      url <- sprintf("http://www2.census.gov/geo/tiger/TIGER%s/TRACT/tl_%s_%s_tract.zip",
+      url <- sprintf("https://www2.census.gov/geo/tiger/TIGER%s/TRACT/tl_%s_%s_tract.zip",
                      as.character(year), as.character(year), state)
 
     }
@@ -346,7 +346,7 @@ school_districts <- function(state, type = 'unified', year = NULL, ...) {
 
   cyear <- as.character(year)
 
-  url <- sprintf("http://www2.census.gov/geo/tiger/TIGER%s/%s/tl_%s_%s_%s.zip",
+  url <- sprintf("https://www2.census.gov/geo/tiger/TIGER%s/%s/tl_%s_%s_%s.zip",
                  cyear, toupper(type), cyear, state, type)
 
   return(load_tiger(url, tigris_type = type, ...))
@@ -430,12 +430,12 @@ block_groups <- function(state, county = NULL, cb = FALSE, year = NULL, ...) {
 
       if (year > 2013) {
 
-        url <- sprintf("http://www2.census.gov/geo/tiger/GENZ%s/shp/cb_%s_%s_bg_500k.zip",
+        url <- sprintf("https://www2.census.gov/geo/tiger/GENZ%s/shp/cb_%s_%s_bg_500k.zip",
                        cyear, cyear, state)
 
       } else {
 
-        url <- sprintf("http://www2.census.gov/geo/tiger/GENZ%s/cb_%s_%s_bg_500k.zip",
+        url <- sprintf("https://www2.census.gov/geo/tiger/GENZ%s/cb_%s_%s_bg_500k.zip",
                        cyear, cyear, state)
 
       }
@@ -456,7 +456,7 @@ block_groups <- function(state, county = NULL, cb = FALSE, year = NULL, ...) {
 
     } else {
 
-      url <- sprintf("http://www2.census.gov/geo/tiger/TIGER%s/BG/tl_%s_%s_bg.zip",
+      url <- sprintf("https://www2.census.gov/geo/tiger/TIGER%s/BG/tl_%s_%s_bg.zip",
                      cyear, cyear, state)
 
     }
@@ -558,7 +558,7 @@ zctas <- function(cb = FALSE, starts_with = NULL, year = NULL, state = NULL, ...
     } else if (year == 2010) {
       url <- "https://www2.census.gov/geo/tiger/GENZ2010/gz_2010_us_860_00_500k.zip"
     } else {
-      url <- sprintf("http://www2.census.gov/geo/tiger/GENZ%s/shp/cb_%s_us_zcta510_500k.zip",
+      url <- sprintf("https://www2.census.gov/geo/tiger/GENZ%s/shp/cb_%s_us_zcta510_500k.zip",
                      cyear, cyear)
 
       if (year == 2013) url <- gsub("shp/", "", url)
@@ -578,7 +578,7 @@ zctas <- function(cb = FALSE, starts_with = NULL, year = NULL, state = NULL, ...
                        cyear, state, suf)
       }
     } else {
-      url <- sprintf("http://www2.census.gov/geo/tiger/TIGER%s/ZCTA5/tl_%s_us_zcta510.zip",
+      url <- sprintf("https://www2.census.gov/geo/tiger/TIGER%s/ZCTA5/tl_%s_us_zcta510.zip",
                      cyear, cyear)
     }
 
@@ -674,14 +674,14 @@ blocks <- function(state, county = NULL, year = NULL, ...) {
   cyear <- as.character(year)
 
   if (year >= 2014) {
-    url <- sprintf("http://www2.census.gov/geo/tiger/TIGER%s/TABBLOCK/tl_%s_%s_tabblock10.zip",
+    url <- sprintf("https://www2.census.gov/geo/tiger/TIGER%s/TABBLOCK/tl_%s_%s_tabblock10.zip",
                    cyear, cyear, state)
   } else if (year %in% 2011:2013) {
-    url <- sprintf("http://www2.census.gov/geo/tiger/TIGER%s/TABBLOCK/tl_%s_%s_tabblock.zip",
+    url <- sprintf("https://www2.census.gov/geo/tiger/TIGER%s/TABBLOCK/tl_%s_%s_tabblock.zip",
                    cyear, cyear, state)
   } else if (year %in% c(2000, 2010)) {
     suf <- substr(cyear, 3, 4)
-    url <- sprintf("http://www2.census.gov/geo/tiger/TIGER2010/TABBLOCK/%s/tl_2010_%s_tabblock%s.zip",
+    url <- sprintf("https://www2.census.gov/geo/tiger/TIGER2010/TABBLOCK/%s/tl_2010_%s_tabblock%s.zip",
                    cyear, state, suf)
   } else {
     stop()
@@ -765,7 +765,7 @@ county_subdivisions <- function(state, county = NULL, cb = FALSE, year = NULL, .
 
   if (cb == TRUE) {
 
-    url <- sprintf("http://www2.census.gov/geo/tiger/GENZ%s/shp/cb_%s_%s_cousub_500k.zip",
+    url <- sprintf("https://www2.census.gov/geo/tiger/GENZ%s/shp/cb_%s_%s_cousub_500k.zip",
                    cyear, cyear, state)
 
     if (year == 2013) url <- gsub("shp/", "", url)
@@ -773,7 +773,7 @@ county_subdivisions <- function(state, county = NULL, cb = FALSE, year = NULL, .
 
   } else {
 
-    url <- sprintf("http://www2.census.gov/geo/tiger/TIGER%s/COUSUB/tl_%s_%s_cousub.zip",
+    url <- sprintf("https://www2.census.gov/geo/tiger/TIGER%s/COUSUB/tl_%s_%s_cousub.zip",
                    cyear, cyear, state)
   }
 

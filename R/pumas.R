@@ -65,14 +65,14 @@ pumas <- function(state, cb = FALSE, year = NULL, ...) {
   cyear <- as.character(year)
 
   if (cb == TRUE) {
-    url <- sprintf("http://www2.census.gov/geo/tiger/GENZ%s/shp/cb_%s_%s_puma10_500k.zip",
+    url <- sprintf("https://www2.census.gov/geo/tiger/GENZ%s/shp/cb_%s_%s_puma10_500k.zip",
                    cyear, cyear, state)
 
     if (year == 2013) url <- gsub("shp/", "", url)
 
 
   } else {
-    url <- sprintf("http://www2.census.gov/geo/tiger/TIGER%s/PUMA/tl_%s_%s_puma10.zip",
+    url <- sprintf("https://www2.census.gov/geo/tiger/TIGER%s/PUMA/tl_%s_%s_puma10.zip",
                   cyear, cyear, state)
   }
 

@@ -71,7 +71,7 @@ roads <- function(state, county, year = NULL, ...) {
 
   if (is.null(county)) stop("Invalid county", call. = FALSE)
 
-  url <- sprintf("http://www2.census.gov/geo/tiger/TIGER%s/ROADS/tl_%s_%s%s_roads.zip",
+  url <- sprintf("https://www2.census.gov/geo/tiger/TIGER%s/ROADS/tl_%s_%s%s_roads.zip",
                  as.character(year), as.character(year), state, county)
 
   return(load_tiger(url, tigris_type="road", ...))
@@ -120,7 +120,7 @@ primary_roads <- function(year = NULL, ...) {
 
   }
 
-  url <- sprintf("http://www2.census.gov/geo/tiger/TIGER%s/PRIMARYROADS/tl_%s_us_primaryroads.zip",
+  url <- sprintf("https://www2.census.gov/geo/tiger/TIGER%s/PRIMARYROADS/tl_%s_us_primaryroads.zip",
                  as.character(year), as.character(year))
 
   return(load_tiger(url, tigris_type="primary_roads", ...))
@@ -180,7 +180,7 @@ primary_secondary_roads <- function(state, year = NULL, ...) {
 
   if (is.null(state)) stop("Invalid state", call.=FALSE)
 
-  url <- sprintf("http://www2.census.gov/geo/tiger/TIGER%s/PRISECROADS/tl_%s_%s_prisecroads.zip",
+  url <- sprintf("https://www2.census.gov/geo/tiger/TIGER%s/PRISECROADS/tl_%s_%s_prisecroads.zip",
                 as.character(year), as.character(year), state)
 
   return(load_tiger(url, tigris_type="prim_sec_roads", ...))
@@ -227,7 +227,7 @@ rails <- function(year = NULL, ...) {
 
   }
 
-  url <- sprintf("http://www2.census.gov/geo/tiger/TIGER%s/RAILS/tl_%s_us_rails.zip",
+  url <- sprintf("https://www2.census.gov/geo/tiger/TIGER%s/RAILS/tl_%s_us_rails.zip",
                  as.character(year), as.character(year))
 
   return(load_tiger(url, tigris_type="rails", ...))

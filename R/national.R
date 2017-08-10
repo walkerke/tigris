@@ -44,7 +44,7 @@ regions <- function(resolution = '500k', year = NULL, ...) {
 
   cyear <- as.character(year)
 
-  url <- sprintf("http://www2.census.gov/geo/tiger/GENZ%s/shp/cb_%s_us_region_%s.zip",
+  url <- sprintf("https://www2.census.gov/geo/tiger/GENZ%s/shp/cb_%s_us_region_%s.zip",
                  cyear, cyear, resolution)
 
   rgns <- load_tiger(url, tigris_type = "region")
@@ -99,7 +99,7 @@ divisions <- function(resolution = '500k', year = NULL, ...) {
 
   cyear <- as.character(year)
 
-  url <- sprintf("http://www2.census.gov/geo/tiger/GENZ%s/shp/cb_%s_us_division_%s.zip",
+  url <- sprintf("https://www2.census.gov/geo/tiger/GENZ%s/shp/cb_%s_us_division_%s.zip",
                  cyear, cyear, resolution)
 
   div <- load_tiger(url, tigris_type = "division")
@@ -154,7 +154,7 @@ nation <- function(resolution = '5m', year = NULL) {
 
   cyear <- as.character(year)
 
-  url <- sprintf("http://www2.census.gov/geo/tiger/GENZ%s/shp/cb_%s_us_nation_%s.zip",
+  url <- sprintf("https://www2.census.gov/geo/tiger/GENZ%s/shp/cb_%s_us_nation_%s.zip",
                  cyear, cyear, resolution)
 
   nat <- load_tiger(url, tigris_type = "nation")
