@@ -61,7 +61,7 @@ append_geoid <- function(address, geoid_type = 'bl') {
 }
 
 
-#' Call gelocator for one address
+#' Call geolocator for one address
 #'
 #' @param street A character string indicating a street name and number
 #' @param city A character string indicating a city

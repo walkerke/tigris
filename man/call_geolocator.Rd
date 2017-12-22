@@ -2,7 +2,7 @@
 % Please edit documentation in R/geocode.R
 \name{call_geolocator}
 \alias{call_geolocator}
-\title{Call gelocator for one address}
+\title{Call geolocator for one address}
 \usage{
 call_geolocator(street, city, state)
 }
@@ -21,5 +21,5 @@ importFrom utils URLencode
 importFrom httr GET stop_for_status
 }
 \description{
-Call gelocator for one address
+Call geolocator for one address
 }

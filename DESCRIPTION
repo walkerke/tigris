@@ -1,8 +1,8 @@
 Package: tigris
 Type: Package
 Title: Load Census TIGER/Line Shapefiles into R
-Version: 0.5.9
-Date: 2017-08-10
+Version: 0.5.10
+Date: 2017-12-22
 Authors@R: c(
       person(given="Kyle", family="Walker", email="kyle.walker@tcu.edu", role=c("aut", "cre")),
       person(given="Bob", family="Rudis", email="bob@rudis.net", role="ctb")

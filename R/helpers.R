@@ -1,3 +1,40 @@
+#' Set the cache directory to store shapefiles with tigris
+#'
+#' @description By default, tigris uses the rappdirs package to determine a suitable location to store shapefiles
+#' on the user's computer.  However, it is possible that the user would want to store shapefiles in a custom
+#' location.  This function allows users to set the cache directory, and stores the result in the user's
+#' .Renviron so that tigris will remember the location.
+#'
+#' Windows users: please note that you'll need to use double-backslashes or forward slashes
+#' when specifying your cache directory's path in R.
+#'
+#' @param path The full path to the desired cache directory
+#' @export
+tigris_cache_dir <- function(path) {
+  home <- Sys.getenv("HOME")
+  renv <- file.path(home, ".Renviron")
+  if (!file.exists(renv)) {
+    file.create(renv)
+  }
+
+  check <- readLines(renv)
+
+  if (isTRUE(any(grepl("TIGRIS_CACHE_DIR", check)))) {
+    oldenv <- read.table(renv, stringsAsFactors = FALSE)
+    newenv <- oldenv[-grep("TIGRIS_CACHE_DIR", oldenv),]
+    write.table(newenv, renv, quote = FALSE, sep = "\n",
+                col.names = FALSE, row.names = FALSE)
+  }
+
+  var <- paste0("TIGRIS_CACHE_DIR=", "'", path, "'")
+
+  write(var, renv, sep = "\n", append = TRUE)
+  message(sprintf("Your new tigris cache directory is %s. \nTo use now, restart R or run `readRenviron('~/.Renviron')`", path))
+
+}
+
+
+
 # Helper function to download Census data
 #
 # uses a global option "tigris_refresh" to control re-download of shapefiles (def: FALSE)
@@ -18,8 +55,11 @@ load_tiger <- function(url,
   obj <- NULL
 
   if (use_cache) {
-
-    cache_dir <- user_cache_dir("tigris")
+    if (Sys.getenv("TIGRIS_CACHE_DIR") != "") {
+      cache_dir <- Sys.getenv("TIGRIS_CACHE_DIR")
+    } else {
+      cache_dir <- user_cache_dir("tigris")
+    }
     if (!file.exists(cache_dir)) {
       dir.create(cache_dir, recursive=TRUE)
     }
@@ -41,7 +81,7 @@ load_tiger <- function(url,
       shape <- gsub(".zip", "", tiger_file)
       shape <- gsub("_shp", "", shape) # for historic tracts
 
-      if (refresh | !file.exists(file.path(user_cache_dir("tigris"),
+      if (refresh | !file.exists(file.path(cache_dir,
                                  sprintf("%s.shp", shape)))) {
 
         unzip_tiger <- function() {
