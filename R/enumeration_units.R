@@ -651,6 +651,15 @@ zctas <- function(cb = FALSE, starts_with = NULL, year = NULL, state = NULL, ...
 #' }
 blocks <- function(state, county = NULL, year = NULL, ...) {
 
+  if (length(county) > 1 && year < 2011) {
+    p <- lapply(county, function(x) {
+      blocks(state = state, county = x, year = year)
+    }) %>%
+      rbind_tigris()
+
+    return(p)
+  }
+
   if (is.null(year)) {
 
     year <- getOption("tigris_year", 2015)
@@ -681,23 +690,31 @@ blocks <- function(state, county = NULL, year = NULL, ...) {
                    cyear, cyear, state)
   } else if (year %in% c(2000, 2010)) {
     suf <- substr(cyear, 3, 4)
-    url <- sprintf("https://www2.census.gov/geo/tiger/TIGER2010/TABBLOCK/%s/tl_2010_%s_tabblock%s.zip",
-                   cyear, state, suf)
+
+    if (!is.null(county)) {
+
+      county <- validate_county(state, county)
+
+      url <- sprintf("https://www2.census.gov/geo/tiger/TIGER2010/TABBLOCK/%s/tl_2010_%s%s_tabblock%s.zip",
+                     cyear, state, county, suf)
+    } else {
+
+      url <- sprintf("https://www2.census.gov/geo/tiger/TIGER2010/TABBLOCK/%s/tl_2010_%s_tabblock%s.zip",
+                     cyear, state, suf)
+    }
+
   } else {
     stop()
   }
 
   blks <- load_tiger(url, tigris_type="block", ...)
 
-  if (!is.null(county)) {
+  if (!is.null(county) && year > 2010) {
 
     county <- sapply(county, function(x) { validate_county(state, x) })
 
-    if (year > 2000) {
-      blks <- blks[blks$COUNTYFP10 %in% county, ]
-    } else if (year == 2000) {
-      blks <- blks[blks$COUNTYFP00 %in% county, ]
-    }
+    blks <- blks[blks$COUNTYFP10 %in% county, ]
+
   }
 
   attr(blks, "tigris") <- "block"
