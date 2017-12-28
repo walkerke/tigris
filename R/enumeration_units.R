@@ -132,6 +132,49 @@ counties <- function(state = NULL, cb = FALSE, resolution = '500k', year = NULL,
 
   }
 
+  # Dissolve polygons for 1990 and 2000 CB
+  if (cb && year %in% c(1990, 2000)) {
+    sclass <- class(ctys)
+    if (!any(sclass == "sf")) {
+      ctys <- st_as_sf(ctys)
+    }
+    if (year == 1990) {
+      ctys <- ctys %>%
+        mutate(id = paste0(ST, CO)) %>%
+        group_by(id) %>%
+        summarize(AREA = sum(AREA),
+                  PERIMETER = sum(PERIMETER),
+                  ST = first(ST),
+                  CO = first(CO),
+                  CO99_D90_ = first(CO99_D90_),
+                  CO99_D90_I = first(CO99_D90_I),
+                  NAME = first(NAME),
+                  COUNTYFP = first(COUNTYFP),
+                  STATEFP = first(STATEFP)) %>%
+        select(-id)
+
+    } else if (year == 2000) {
+      ctys <- ctys %>%
+        mutate(id = paste0(STATE, COUNTY)) %>%
+        group_by(id) %>%
+        summarize(AREA = sum(AREA),
+                  PERIMETER = sum(PERIMETER),
+                  STATE = first(STATE),
+                  COUNTY = first(COUNTY),
+                  CO99_D00_ = first(CO99_D00_),
+                  CO99_D00_I = first(CO99_D00_I),
+                  NAME = first(NAME),
+                  LSAD = first(LSAD),
+                  LSAD_TRANS = first(LSAD_TRANS),
+                  COUNTYFP = first(COUNTYFP),
+                  STATEFP = first(STATEFP)) %>%
+        select(-id)
+    }
+    if (any(sclass == "SpatialPolygonsDataFrame")) {
+      ctys <- as(ctys, "Spatial")
+    }
+  }
+
   attr(ctys, 'tigris') <- 'county'
 
   return(ctys)
