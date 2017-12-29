@@ -94,7 +94,41 @@ states <- function(cb = FALSE, resolution = '500k', year = NULL, ...) {
 
   }
 
-  return(load_tiger(url, tigris_type="state", ...))
+  st <- load_tiger(url, tigris_type="state", ...)
+
+  # Dissolve polygons for 1990 and 2000 CB
+  if (cb && year %in% c(1990, 2000)) {
+    sclass <- class(st)
+    if (!any(sclass == "sf")) {
+      st <- st_as_sf(st)
+    }
+    if (year == 1990) {
+      st <- st %>%
+        group_by(ST) %>%
+        summarize(AREA = sum(AREA),
+                  PERIMETER = sum(PERIMETER),
+                  ST99_D90_ = first(ST99_D90_),
+                  ST99_D90_I = first(ST99_D90_I),
+                  NAME = first(NAME))
+    } else if (year == 2000) {
+      st <- st %>%
+        group_by(STATE) %>%
+        summarize(AREA = sum(AREA),
+                  PERIMETER = sum(PERIMETER),
+                  ST99_D00_ = first(ST99_D00_),
+                  ST99_D00_I = first(ST99_D00_I),
+                  NAME = first(NAME),
+                  LSAD = first(LSAD),
+                  REGION = first(REGION),
+                  DIVISION = first(DIVISION),
+                  LSAD_TRANS = first(LSAD_TRANS))
+    }
+    if (any(sclass == "SpatialPolygonsDataFrame")) {
+      st <- as(st, "Spatial")
+    }
+  }
+
+  return(st)
 
 }
 #' Filter a \code{states} Spatial object for only those states matching the

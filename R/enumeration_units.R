@@ -309,6 +309,50 @@ tracts <- function(state, county = NULL, cb = FALSE, year = NULL, ...) {
 
   }
 
+
+# Dissolve polygons for 1990 and 2000 CB
+  if (cb && year %in% c(1990, 2000)) {
+    sclass <- class(trcts)
+    if (!any(sclass == "sf")) {
+      trcts <- st_as_sf(trcts)
+    }
+    if (year == 1990) {
+      trcts <- trcts %>%
+        mutate(TRACTSUF = ifelse(is.na(TRACTSUF), "00", TRACTSUF)) %>%
+        mutate(id = paste0(ST, CO, TRACTBASE, TRACTSUF)) %>%
+        group_by(id) %>%
+        summarize(AREA = sum(AREA),
+                  PERIMETER = sum(PERIMETER),
+                  ST = first(ST),
+                  CO = first(CO),
+                  TRACTBASE = first(TRACTBASE),
+                  TRACTSUF = first(TRACTSUF),
+                  TRACT_NAME = first(TRACT_NAME),
+                  COUNTYFP = first(COUNTYFP),
+                  STATEFP = first(STATEFP)) %>%
+        select(-id)
+
+    } else if (year == 2000) {
+      trcts <- trcts %>%
+        mutate(TRACT = str_pad(TRACT, 6, "right", "0")) %>%
+        mutate(id = paste0(STATE, COUNTY, TRACT)) %>%
+        group_by(id) %>%
+        summarize(AREA = sum(AREA),
+                  PERIMETER = sum(PERIMETER),
+                  STATE = first(STATE),
+                  COUNTY = first(COUNTY),
+                  TRACT = first(TRACT),
+                  NAME = first(NAME),
+                  LSAD = first(LSAD),
+                  COUNTYFP = first(COUNTYFP),
+                  STATEFP = first(STATEFP)) %>%
+        select(-id)
+    }
+    if (any(sclass == "SpatialPolygonsDataFrame")) {
+      trcts <- as(trcts, "Spatial")
+    }
+  }
+
   attr(trcts, "tigris") <- "tract"
 
   return(trcts)
@@ -515,6 +559,50 @@ block_groups <- function(state, county = NULL, cb = FALSE, year = NULL, ...) {
 
     bgs <- bgs[bgs$COUNTYFP %in% county, ]
 
+  }
+
+  # Dissolve polygons for 1990 and 2000 CB
+  if (cb && year %in% c(1990, 2000)) {
+    sclass <- class(bgs)
+    if (!any(sclass == "sf")) {
+      bgs <- st_as_sf(bgs)
+    }
+    if (year == 1990) {
+      bgs <- bgs %>%
+        group_by(GEOID) %>%
+        summarize(AREA = sum(AREA),
+                  PERIMETER = sum(PERIMETER),
+                  ST = first(ST),
+                  CO = first(CO),
+                  TRACT = first(TRACT),
+                  BG = first(BG),
+                  AREALAND = first(AREALAND),
+                  AREAWAT = first(AREAWAT),
+                  AREATOT = first(AREATOT),
+                  NAME = first(NAME),
+                  COUNTYFP = first(COUNTYFP),
+                  STATEFP = first(STATEFP))
+    } else if (year == 2000) {
+      bgs <- bgs %>%
+        mutate(TRACT = str_pad(TRACT, 6, "right", "0")) %>%
+        mutate(id = paste0(STATE, COUNTY, TRACT, BLKGROUP)) %>%
+        group_by(id) %>%
+        summarize(AREA = sum(AREA),
+                  PERIMETER = sum(PERIMETER),
+                  STATE = first(STATE),
+                  COUNTY = first(COUNTY),
+                  TRACT = first(TRACT),
+                  BLKGROUP = first(BLKGROUP),
+                  NAME = first(NAME),
+                  LSAD = first(LSAD),
+                  LSAD_TRANS = first(LSAD_TRANS),
+                  COUNTYFP = first(COUNTYFP),
+                  STATEFP = first(STATEFP)) %>%
+        select(-id)
+    }
+    if (any(sclass == "SpatialPolygonsDataFrame")) {
+      bgs <- as(bgs, "Spatial")
+    }
   }
 
   attr(bgs, "tigris") <- "block_group"
