@@ -109,7 +109,8 @@ states <- function(cb = FALSE, resolution = '500k', year = NULL, ...) {
                   PERIMETER = sum(PERIMETER),
                   ST99_D90_ = first(ST99_D90_),
                   ST99_D90_I = first(ST99_D90_I),
-                  NAME = first(NAME))
+                  NAME = first(NAME)) %>%
+        st_cast("MULTIPOLYGON")
     } else if (year == 2000) {
       st <- st %>%
         group_by(STATE) %>%
@@ -121,7 +122,8 @@ states <- function(cb = FALSE, resolution = '500k', year = NULL, ...) {
                   LSAD = first(LSAD),
                   REGION = first(REGION),
                   DIVISION = first(DIVISION),
-                  LSAD_TRANS = first(LSAD_TRANS))
+                  LSAD_TRANS = first(LSAD_TRANS)) %>%
+        st_cast("MULTIPOLYGON")
     }
     if (any(sclass == "SpatialPolygonsDataFrame")) {
       st <- as(st, "Spatial")

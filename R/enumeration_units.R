@@ -151,7 +151,8 @@ counties <- function(state = NULL, cb = FALSE, resolution = '500k', year = NULL,
                   NAME = first(NAME),
                   COUNTYFP = first(COUNTYFP),
                   STATEFP = first(STATEFP)) %>%
-        select(-id)
+        select(-id) %>%
+        st_cast("MULTIPOLYGON")
 
     } else if (year == 2000) {
       ctys <- ctys %>%
@@ -168,7 +169,8 @@ counties <- function(state = NULL, cb = FALSE, resolution = '500k', year = NULL,
                   LSAD_TRANS = first(LSAD_TRANS),
                   COUNTYFP = first(COUNTYFP),
                   STATEFP = first(STATEFP)) %>%
-        select(-id)
+        select(-id) %>%
+        st_cast("MULTIPOLYGON")
     }
     if (any(sclass == "SpatialPolygonsDataFrame")) {
       ctys <- as(ctys, "Spatial")
@@ -330,7 +332,8 @@ tracts <- function(state, county = NULL, cb = FALSE, year = NULL, ...) {
                   TRACT_NAME = first(TRACT_NAME),
                   COUNTYFP = first(COUNTYFP),
                   STATEFP = first(STATEFP)) %>%
-        select(-id)
+        select(-id) %>%
+        st_cast("MULTIPOLYGON")
 
     } else if (year == 2000) {
       trcts <- trcts %>%
@@ -346,7 +349,8 @@ tracts <- function(state, county = NULL, cb = FALSE, year = NULL, ...) {
                   LSAD = first(LSAD),
                   COUNTYFP = first(COUNTYFP),
                   STATEFP = first(STATEFP)) %>%
-        select(-id)
+        select(-id) %>%
+        st_cast("MULTIPOLYGON")
     }
     if (any(sclass == "SpatialPolygonsDataFrame")) {
       trcts <- as(trcts, "Spatial")
@@ -581,7 +585,8 @@ block_groups <- function(state, county = NULL, cb = FALSE, year = NULL, ...) {
                   AREATOT = first(AREATOT),
                   NAME = first(NAME),
                   COUNTYFP = first(COUNTYFP),
-                  STATEFP = first(STATEFP))
+                  STATEFP = first(STATEFP)) %>%
+        st_cast("MULTIPOLYGON")
     } else if (year == 2000) {
       bgs <- bgs %>%
         mutate(TRACT = str_pad(TRACT, 6, "right", "0")) %>%
@@ -598,7 +603,8 @@ block_groups <- function(state, county = NULL, cb = FALSE, year = NULL, ...) {
                   LSAD_TRANS = first(LSAD_TRANS),
                   COUNTYFP = first(COUNTYFP),
                   STATEFP = first(STATEFP)) %>%
-        select(-id)
+        select(-id) %>%
+        st_cast("MULTIPOLYGON")
     }
     if (any(sclass == "SpatialPolygonsDataFrame")) {
       bgs <- as(bgs, "Spatial")
