@@ -65,7 +65,7 @@ counties <- function(state = NULL, cb = FALSE, resolution = '500k', year = NULL,
 
   if (is.null(year)) {
 
-    year <- getOption("tigris_year", 2015)
+    year <- getOption("tigris_year", 2016)
 
   }
 
@@ -240,7 +240,7 @@ tracts <- function(state, county = NULL, cb = FALSE, year = NULL, ...) {
 
   if (is.null(year)) {
 
-    year <- getOption("tigris_year", 2015)
+    year <- getOption("tigris_year", 2016)
 
   }
 
@@ -406,7 +406,7 @@ school_districts <- function(state, type = 'unified', year = NULL, ...) {
 
   if (is.null(year)) {
 
-    year = getOption("tigris_year", 2015)
+    year = getOption("tigris_year", 2016)
 
   }
 
@@ -493,7 +493,7 @@ block_groups <- function(state, county = NULL, cb = FALSE, year = NULL, ...) {
 
   if (is.null(year)) {
 
-    year = getOption("tigris_year", 2015)
+    year = getOption("tigris_year", 2016)
 
   }
 
@@ -664,7 +664,7 @@ zctas <- function(cb = FALSE, starts_with = NULL, year = NULL, state = NULL, ...
 
   if (is.null(year)) {
 
-    year = getOption("tigris_year", 2015)
+    year = getOption("tigris_year", 2016)
 
   }
 
@@ -799,7 +799,7 @@ blocks <- function(state, county = NULL, year = NULL, ...) {
 
   if (is.null(year)) {
 
-    year <- getOption("tigris_year", 2015)
+    year <- getOption("tigris_year", 2016)
 
   }
 
@@ -896,7 +896,7 @@ county_subdivisions <- function(state, county = NULL, cb = FALSE, year = NULL, .
 
   if (is.null(year)) {
 
-    year <- getOption("tigris_year", 2015)
+    year <- getOption("tigris_year", 2016)
 
   }
 

@@ -23,7 +23,7 @@ regions <- function(resolution = '500k', year = NULL, ...) {
 
   if (is.null(year)) {
 
-    year <- getOption("tigris_year", 2015)
+    year <- getOption("tigris_year", 2016)
 
   }
 
@@ -78,7 +78,7 @@ divisions <- function(resolution = '500k', year = NULL, ...) {
 
   if (is.null(year)) {
 
-    year <- getOption("tigris_year", 2015)
+    year <- getOption("tigris_year", 2016)
 
   }
 
@@ -133,7 +133,7 @@ nation <- function(resolution = '5m', year = NULL) {
 
   if (is.null(year)) {
 
-    year <- getOption("tigris_year", 2015)
+    year <- getOption("tigris_year", 2016)
 
   }
 

@@ -39,7 +39,7 @@ congressional_districts <- function(cb = FALSE, resolution = '500k', year = NULL
 
   if (is.null(year)) {
 
-    year <- getOption("tigris_year", 2015)
+    year <- getOption("tigris_year", 2016)
 
   }
 
@@ -125,7 +125,7 @@ state_legislative_districts <- function(state, house = "upper", cb = FALSE, year
 
   if (is.null(year)) {
 
-    year <- getOption("tigris_year", 2015)
+    year <- getOption("tigris_year", 2016)
 
   }
 

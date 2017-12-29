@@ -38,7 +38,7 @@ states <- function(cb = FALSE, resolution = '500k', year = NULL, ...) {
 
   if (is.null(year)) {
 
-    year = getOption("tigris_year", 2015)
+    year = getOption("tigris_year", 2016)
 
   }
 
