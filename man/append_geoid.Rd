@@ -4,14 +4,14 @@
 \alias{append_geoid}
 \title{Retrieve GEOID from the Census Geocoder by address}
 \usage{
-append_geoid(address, geoid_type = "bl")
+append_geoid(address, geoid_type = "block")
 }
 \arguments{
 \item{address}{A tibble/data frame with (at a minimum, others can be present)
 either character columns street, city, and state OR numeric columns lat and
 lon. Lat/lon columns take priority.}
 
-\item{geoid_type}{GEOID level to return, \code{c('co', 'tr', 'bg', 'bl')}.
+\item{geoid_type}{GEOID level to return, \code{c('county', 'tract', 'block group', 'block')}.
 Defaults to block.}
 }
 \value{

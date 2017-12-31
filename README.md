@@ -18,13 +18,29 @@ Or, get the development version from GitHub:
 devtools::install_github('walkerke/tigris')
 ```
 
-__In Version 0.5.3__: 
+__In version 0.6__: 
 
-* tigris now downloads data to a temporary directory rather than creating a cache directory by default to conform with CRAN policies.  To enable caching of data, set `options(tigris_use_cache = TRUE)` in your R script or .Rprofile.
+* You are now able to specify a custom cache directory for your data.  To set the cache directory, use the new `tigris_cache_dir()` function: 
 
-* tigris now supports simple features!  To load your data as an object of class `sf`, specify `class = "sf"` in the function call, or set this globally with `options(tigris_class = "sf")`.  
+```r
+library(tigris)
+tigris_cache_dir("PATH TO YOUR CUSTOM CACHE DIRECTORY")
+# Restart R
+options(tigris_use_cache = TRUE)
+```
 
-* Historic boundaries are available for states, counties, Census tracts, block groups, and ZCTAs; 1990 (`cb = TRUE` only, and not for ZCTAs), 2000, and 2010 boundaries can be obtained with the `year` parameter in an associated function call.  
+* tigris now defaults to the 2016 TIGER/Line and cartographic boundary shapefiles. 
+
+* Thanks to contributors from Transport Foundry (https://github.com/transportfoundry), tigris now includes some geolocator functions.  For example, to find out the Census block ID of a given address: 
+
+```r
+call_geolocator("2850 S University Dr", "Fort Worth", "TX")
+
+Address (2850 S University Dr Fort Worth TX) returned more than one address match. The first match was returned.
+[1] "484391042014000"
+```
+
+* Stay tuned for batch geocoding support in a future release!
 
 To learn how to use the package, I'd recommend the following materials: 
 

@@ -1,3 +1,11 @@
+tigris 0.6
+-------------------------------------------------------
+* You are now able to specify a custom cache directory for your data.  To set the cache directory, use the new `tigris_cache_dir()` function.
+
+* tigris now defaults to the 2016 TIGER/Line and cartographic boundary shapefiles.
+
+* Thanks to contributors from Transport Foundry (https://github.com/transportfoundry), tigris now includes some geolocator functions.
+
 tigris 0.5.1
 -------------------------------------------------------
 * tigris now downloads data to a temporary directory rather than creating a cache directory by default to conform with CRAN policies.  To enable caching of data, set `options(tigris_use_cache = TRUE)` in your R script or .Rprofile.
