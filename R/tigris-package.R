@@ -20,14 +20,13 @@
 #' @importFrom stringr str_trim str_pad
 #' @import maptools
 #' @import rgdal
-#' @import rgeos
 #' @import sp
 #' @import utils
 #' @import rappdirs
 #' @import httr
 #' @import uuid
 #' @import sf
-#' @importFrom dplyr filter group_by_ row_number left_join inner_join mutate summarize group_by select
+#' @import dplyr
 NULL
 
 #' tigris exported operators

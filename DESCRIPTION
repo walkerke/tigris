@@ -14,19 +14,19 @@ Description: Download TIGER/Line shapefiles from the United States Census Bureau
 License: MIT + file LICENSE
 LazyData: TRUE
 Depends:
-    R (>= 3.0.0)
+    R (>= 3.3.0)
 Suggests:
     acs,
     testthat,
     ggplot2,
     ggthemes,
     leaflet,
-    knitr
+    knitr, 
+    rgeos
 Imports:
     stringr,
     magrittr,
     rgdal,
-    rgeos,
     sp,
     utils,
     rappdirs,

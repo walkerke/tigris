@@ -10,7 +10,7 @@
 #'        (case-insensitive).
 #' @param county The three-digit FIPS code of the county you'd like the water
 #'        features for.  Can also be a county name.
-#' @param year the data year (defaults to 2015).
+#' @param year the data year (defaults to 2016).
 #' @param ... arguments to be passed to the underlying `load_tiger` function, which is not exported.
 #'        Options include \code{refresh}, which specifies whether or not to re-download shapefiles
 #'        (defaults to \code{FALSE}).
@@ -76,7 +76,7 @@ area_water <- function(state, county, year = NULL, ...) {
 #'        (case-insensitive).
 #' @param county The three-digit FIPS code of the county you'd like the water
 #'        features for.  Can also be a county name.
-#' @param year the data year (defaults to 2015).
+#' @param year the data year (defaults to 2016).
 #' @param ... arguments to be passed to the underlying `load_tiger` function, which is not exported.
 #'        Options include \code{refresh}, which specifies whether or not to re-download shapefiles
 #'        (defaults to \code{FALSE}).
@@ -130,7 +130,7 @@ linear_water <- function(state, county, year = NULL, ...) {
 
 #' Download a shapefile of the US coastline into R
 #'
-#' @param year The year of the dataset (defaults to 2015)
+#' @param year The year of the dataset (defaults to 2016)
 #' @param ... arguments to be passed to the underlying `load_tiger` function, which is not exported.
 #'        Options include \code{refresh}, which specifies whether or not to re-download shapefiles
 #'        (defaults to \code{FALSE}).

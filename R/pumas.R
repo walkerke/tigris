@@ -17,7 +17,7 @@
 #'        be state name or state abbreviation.
 #' @param cb If cb is set to TRUE, download a generalized (1:500k)
 #'        states file.  Defaults to FALSE (the most detailed TIGER/Line file)
-#' @param year the data year (defaults to 2015).
+#' @param year the data year (defaults to 2016).
 #' @param ... arguments to be passed to the underlying `load_tiger` function, which is not exported.
 #'        Options include \code{refresh}, which specifies whether or not to re-download shapefiles
 #'        (defaults to \code{FALSE}).

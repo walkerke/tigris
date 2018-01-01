@@ -14,7 +14,7 @@ TIGER/Line file).}
 \item{resolution}{The resolution of the cartographic boundary file (if cb == TRUE).
 Defaults to '500k'; options include '5m' (1:5 million) and '20m' (1:20 million).}
 
-\item{year}{the data year (defaults to 2015).  To get boundaries for the 115th congress, set \code{year = 2016}.}
+\item{year}{the data year (defaults to 2016).  To get boundaries for the 115th congress, set \code{year = 2016}.}
 
 \item{...}{arguments to be passed to the underlying `load_tiger` function, which is not exported.
 Options include \code{refresh}, which specifies whether or not to re-download shapefiles

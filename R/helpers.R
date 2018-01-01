@@ -10,6 +10,13 @@
 #'
 #' @param path The full path to the desired cache directory
 #' @export
+#' @examples \dontrun{
+#' # Set the cache directory
+#' tigris_cache_dir('PATH TO MY NEW CACHE DIRECTORY')
+#'
+#' # Check to see if it has been set correctly
+#' Sys.getenv('TIGRIS_CACHE_DIR')
+#' }
 tigris_cache_dir <- function(path) {
   home <- Sys.getenv("HOME")
   renv <- file.path(home, ".Renviron")

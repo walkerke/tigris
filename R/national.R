@@ -2,7 +2,7 @@
 #'
 #' @param resolution The resolution of the cartographic boundary file.
 #'        Defaults to '500k'; options include '5m' (1:5 million) and '20m' (1:20 million).
-#' @param year the data year (defaults to 2015).
+#' @param year the data year (defaults to 2016).
 #' @param ... arguments to be passed to the underlying `load_tiger` function, which is not exported.
 #'        Options include \code{refresh}, which specifies whether or not to re-download shapefiles
 #'        (defaults to \code{FALSE}).
@@ -57,7 +57,7 @@ regions <- function(resolution = '500k', year = NULL, ...) {
 #'
 #' @param resolution The resolution of the cartographic boundary file.
 #'        Defaults to '500k'; options include '5m' (1:5 million) and '20m' (1:20 million).
-#' @param year the data year (defaults to 2015).
+#' @param year the data year (defaults to 2016).
 #' @param ... arguments to be passed to the underlying `load_tiger` function, which is not exported.
 #'        Options include \code{refresh}, which specifies whether or not to re-download shapefiles
 #'        (defaults to \code{FALSE}).
@@ -112,7 +112,7 @@ divisions <- function(resolution = '500k', year = NULL, ...) {
 #'
 #' @param resolution The resolution of the cartographic boundary file.
 #'        Defaults to '5m'; options include '5m' (1:5 million) and '20m' (1:20 million).
-#' @param year the data year (defaults to 2015).
+#' @param year the data year (defaults to 2016).
 #' @param ... arguments to be passed to the underlying `load_tiger` function, which is not exported.
 #'        Options include \code{refresh}, which specifies whether or not to re-download shapefiles
 #'        (defaults to \code{FALSE}).

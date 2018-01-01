@@ -18,7 +18,7 @@
 #'        TIGER/Line file).
 #' @param resolution The resolution of the cartographic boundary file (if cb == TRUE).
 #'        Defaults to '500k'; options include '5m' (1:5 million) and '20m' (1:20 million).
-#' @param year the data year (defaults to 2015).  To get boundaries for the 115th congress, set \code{year = 2016}.
+#' @param year the data year (defaults to 2016).  To get boundaries for the 115th congress, set \code{year = 2016}.
 #' @param ... arguments to be passed to the underlying `load_tiger` function, which is not exported.
 #'        Options include \code{refresh}, which specifies whether or not to re-download shapefiles
 #'        (defaults to \code{FALSE}).
@@ -103,7 +103,7 @@ congressional_districts <- function(cb = FALSE, resolution = '500k', year = NULL
 #' @param cb If cb is set to TRUE, download a generalized (1:500k)
 #'        cartographic boundary file.  Defaults to FALSE (the most detailed
 #'        TIGER/Line file).
-#' @param year the data year (defaults to 2015).
+#' @param year the data year (defaults to 2016).
 #' @param ... arguments to be passed to the underlying `load_tiger` function, which is not exported.
 #'        Options include \code{refresh}, which specifies whether or not to re-download shapefiles
 #'        (defaults to \code{FALSE}).

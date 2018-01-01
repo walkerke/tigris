@@ -14,7 +14,7 @@ download the water features for. Can also be state name or abbreviation
 \item{county}{The three-digit FIPS code of the county you'd like the water
 features for.  Can also be a county name.}
 
-\item{year}{the data year (defaults to 2015).}
+\item{year}{the data year (defaults to 2016).}
 
 \item{...}{arguments to be passed to the underlying `load_tiger` function, which is not exported.
 Options include \code{refresh}, which specifies whether or not to re-download shapefiles

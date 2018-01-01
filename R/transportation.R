@@ -10,7 +10,7 @@
 #'        (case-insensitive).
 #' @param county The three-digit FIPS code of the county you'd like the roads for.
 #'        Can also be a county name.
-#' @param year the data year (defaults to 2015).
+#' @param year the data year (defaults to 2016).
 #' @param ... arguments to be passed to the underlying `load_tiger` function, which is not exported.
 #'        Options include \code{refresh}, which specifies whether or not to re-download shapefiles
 #'        (defaults to \code{FALSE}).
@@ -86,7 +86,7 @@ roads <- function(state, county, year = NULL, ...) {
 #' presence of interchanges
 #' and are accessible by ramps and may include some toll highways."
 #'
-#' @param year the data year (defaults to 2015).
+#' @param year the data year (defaults to 2016).
 #' @param ... arguments to be passed to the underlying `load_tiger` function, which is not exported.
 #'        Options include \code{refresh}, which specifies whether or not to re-download shapefiles
 #'        (defaults to \code{FALSE}).
@@ -141,7 +141,7 @@ primary_roads <- function(year = NULL, ...) {
 #' @param state The two-digit FIPS code of the state of the county you'd like
 #'        to download the roads for. Can also be state name or abbreviation
 #'        (case-insensitive).
-#' @param year the data year (defaults to 2015).
+#' @param year the data year (defaults to 2016).
 #' @param ... arguments to be passed to the underlying `load_tiger` function, which is not exported.
 #'        Options include \code{refresh}, which specifies whether or not to re-download shapefiles
 #'        (defaults to \code{FALSE}).
@@ -192,7 +192,7 @@ primary_secondary_roads <- function(state, year = NULL, ...) {
 #' National dataset for US railroads, including carlines, streetcars,
 #' monorails, mass transit, cog rail, incline rail, and trams.
 #'
-#' @param year the data year (defaults to 2015).
+#' @param year the data year (defaults to 2016).
 #' @param ... arguments to be passed to the underlying `load_tiger` function, which is not exported.
 #'        Options include \code{refresh}, which specifies whether or not to re-download shapefiles
 #'        (defaults to \code{FALSE}).

@@ -55,7 +55,7 @@ append_geoid <- function(address, geoid_type = 'block') {
     end <- 15
   }
   address <- dplyr::mutate(address,
-                           geoid = ifelse(is.na(geoid), NA_character_, substr(geoid, 1, end)))
+                           geoid = ifelse(is.na(.data$geoid), NA_character_, substr(.data$geoid, 1, end)))
 
   return(address)
 }

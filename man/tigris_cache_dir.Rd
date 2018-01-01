@@ -18,3 +18,12 @@ location.  This function allows users to set the cache directory, and stores the
 Windows users: please note that you'll need to use double-backslashes or forward slashes
 when specifying your cache directory's path in R.
 }
+\examples{
+\dontrun{
+# Set the cache directory
+tigris_cache_dir('PATH TO MY NEW CACHE DIRECTORY')
+
+# Check to see if it has been set correctly
+Sys.getenv('TIGRIS_CACHE_DIR')
+}
+}
