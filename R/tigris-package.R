@@ -27,6 +27,7 @@
 #' @import uuid
 #' @import sf
 #' @import dplyr
+#' @importFrom methods as
 NULL
 
 #' tigris exported operators

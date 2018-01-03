@@ -173,7 +173,7 @@ counties <- function(state = NULL, cb = FALSE, resolution = '500k', year = NULL,
         st_cast("MULTIPOLYGON")
     }
     if (any(sclass == "SpatialPolygonsDataFrame")) {
-      ctys <- as_Spatial(ctys)
+      ctys <- as(ctys, "Spatial")
     }
   }
 
@@ -353,7 +353,7 @@ tracts <- function(state, county = NULL, cb = FALSE, year = NULL, ...) {
         st_cast("MULTIPOLYGON")
     }
     if (any(sclass == "SpatialPolygonsDataFrame")) {
-      trcts <- as_Spatial(trcts)
+      trcts <- as(trcts, "Spatial")
     }
   }
 
@@ -607,7 +607,7 @@ block_groups <- function(state, county = NULL, cb = FALSE, year = NULL, ...) {
         st_cast("MULTIPOLYGON")
     }
     if (any(sclass == "SpatialPolygonsDataFrame")) {
-      bgs <- as_Spatial(bgs)
+      bgs <- as(bgs, "Spatial")
     }
   }
 

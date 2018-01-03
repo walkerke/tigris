@@ -126,7 +126,7 @@ states <- function(cb = FALSE, resolution = '500k', year = NULL, ...) {
         st_cast("MULTIPOLYGON")
     }
     if (any(sclass == "SpatialPolygonsDataFrame")) {
-      st <- as_Spatial(st)
+      st <- as(st, "Spatial")
     }
   }
 
