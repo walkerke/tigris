@@ -10,16 +10,16 @@
 #' @return the original tibble with GEOIDs appended as a new column called
 #'   \code{geoid}.
 #'
-#' @examples
-#' airports <- dplyr::data_frame(
-#'   street = "700 Catalina Dr", city = "Daytona Beach", state = "FL"
-#' )
-#' append_geoid(airports, 'tr')
-#'
 #' @author Josie Kressner, \email{josie@@transportfoundry.com}
 #'
 #' @importFrom dplyr mutate
 #' @export
+#' @examples \dontrun{
+#' airports <- dplyr::data_frame(
+#'   street = "700 Catalina Dr", city = "Daytona Beach", state = "FL"
+#' )
+#' append_geoid(airports, 'tract')
+#' }
 append_geoid <- function(address, geoid_type = 'block') {
 
   if ("lat" %in% colnames(address) && "lon" %in% colnames(address)) {
