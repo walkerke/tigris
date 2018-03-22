@@ -64,6 +64,7 @@ load_tiger <- function(url,
   if (use_cache) {
     if (Sys.getenv("TIGRIS_CACHE_DIR") != "") {
       cache_dir <- Sys.getenv("TIGRIS_CACHE_DIR")
+      cache_dir <- path.expand(cache_dir)
     } else {
       cache_dir <- user_cache_dir("tigris")
     }

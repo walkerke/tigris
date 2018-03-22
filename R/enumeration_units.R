@@ -677,7 +677,7 @@ zctas <- function(cb = FALSE, starts_with = NULL, year = NULL, state = NULL, ...
 
   cache <- getOption("tigris_use_cache")
 
-  if (!cache) {
+  if (is.null(cache)) {
     message("ZCTAs can take several minutes to download.  To cache the data and avoid re-downloading in future R sessions, set `options(tigris_use_cache = TRUE)`")
   }
 
