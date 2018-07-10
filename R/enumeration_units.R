@@ -786,8 +786,7 @@ zctas <- function(cb = FALSE, starts_with = NULL, year = NULL, state = NULL, ...
 #'   addPolygons()
 #'
 #' }
-blocks <- function(state, county = NULL, year = NULL,
-                   class = getOption("tigris_class", "sp"), ...) {
+blocks <- function(state, county = NULL, year = NULL, ...) {
 
   if (is.null(year)) {
 
@@ -797,7 +796,7 @@ blocks <- function(state, county = NULL, year = NULL,
 
   if (length(county) > 1 && year < 2011) {
     p <- lapply(county, function(x) {
-      blocks(state = state, county = x, year = year, class = class)
+      blocks(state = state, county = x, year = year, ...)
     }) %>%
       rbind_tigris()
 
