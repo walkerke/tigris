@@ -786,21 +786,22 @@ zctas <- function(cb = FALSE, starts_with = NULL, year = NULL, state = NULL, ...
 #'   addPolygons()
 #'
 #' }
-blocks <- function(state, county = NULL, year = NULL, ...) {
-
-  if (length(county) > 1 && year < 2011) {
-    p <- lapply(county, function(x) {
-      blocks(state = state, county = x, year = year)
-    }) %>%
-      rbind_tigris()
-
-    return(p)
-  }
+blocks <- function(state, county = NULL, year = NULL,
+                   class = getOption("tigris_class", "sp"), ...) {
 
   if (is.null(year)) {
 
     year <- getOption("tigris_year", 2016)
 
+  }
+
+  if (length(county) > 1 && year < 2011) {
+    p <- lapply(county, function(x) {
+      blocks(state = state, county = x, year = year, class = class)
+    }) %>%
+      rbind_tigris()
+
+    return(p)
   }
 
   if (year < 2000) {
