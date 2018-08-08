@@ -224,7 +224,7 @@ state_legislative_districts <- function(state, house = "upper", cb = FALSE, year
 #' plot(ia)
 #'
 #' }
-voting_districts <- function(state) {
+voting_districts <- function(state, ...) {
 
   message("The voting districts shapefiles are from the 2012 TIGER/Line dataset.")
 
@@ -236,6 +236,6 @@ voting_districts <- function(state) {
                 state,
                 "_vtd10.zip")
 
-  return(load_tiger(url, tigris_type = 'voting_districts'))
+  return(load_tiger(url, tigris_type = 'voting_districts', ...))
 
 }
