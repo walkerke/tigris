@@ -4,7 +4,7 @@
 \alias{voting_districts}
 \title{Download a voting districts shapefile (2012 TIGER/Line) into R}
 \usage{
-voting_districts(state)
+voting_districts(state, ...)
 }
 \arguments{
 \item{state}{The state for which you'd like to retrieve data.  Can be a state name,
