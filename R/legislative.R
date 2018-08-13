@@ -239,3 +239,5 @@ voting_districts <- function(state, ...) {
   return(load_tiger(url, tigris_type = 'voting_districts', ...))
 
 }
+
+
