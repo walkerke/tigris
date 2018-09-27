@@ -4,7 +4,9 @@
 
 Download and use Census TIGER/Line shapefiles in R
 
-`tigris` is an R package that allows users to directly download and use TIGER/Line shapefiles (<https://www.census.gov/geo/maps-data/data/tiger-line.html>) from the US Census Bureau.  
+__tigris__ is an R package that allows users to directly download and use TIGER/Line shapefiles (<https://www.census.gov/geo/maps-data/data/tiger-line.html>) from the US Census Bureau.  
+
+Want to learn how to use __tigris__? [Take the DataCamp course _Analyzing US Census Data in R_!](https://www.datacamp.com/courses/analyzing-us-census-data-in-r)
 
 To install the package from CRAN, issue the following command in R: 
 
