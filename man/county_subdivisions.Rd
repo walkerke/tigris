@@ -4,7 +4,8 @@
 \alias{county_subdivisions}
 \title{Download a county subdivision shapefile into R}
 \usage{
-county_subdivisions(state, county = NULL, cb = FALSE, year = NULL, ...)
+county_subdivisions(state, county = NULL, cb = FALSE, year = NULL,
+  ...)
 }
 \arguments{
 \item{state}{The two-digit FIPS code (string) of the state you want. Can also
@@ -50,3 +51,4 @@ Other general area functions: \code{\link{block_groups}},
   \code{\link{school_districts}}, \code{\link{states}},
   \code{\link{tracts}}, \code{\link{zctas}}
 }
+\concept{general area functions}

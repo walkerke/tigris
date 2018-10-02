@@ -62,3 +62,4 @@ Other transportation functions: \code{\link{primary_roads}},
   \code{\link{primary_secondary_roads}},
   \code{\link{rails}}
 }
+\concept{transportation functions}

@@ -36,3 +36,4 @@ plot(rds)
 Other transportation functions: \code{\link{primary_secondary_roads}},
   \code{\link{rails}}, \code{\link{roads}}
 }
+\concept{transportation functions}

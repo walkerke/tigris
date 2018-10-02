@@ -4,7 +4,8 @@
 \alias{geo_join}
 \title{Easily merge a data frame to a spatial data frame}
 \usage{
-geo_join(spatial_data, data_frame, by_sp, by_df, by = NULL, how = "left")
+geo_join(spatial_data, data_frame, by_sp, by_df, by = NULL,
+  how = "left")
 }
 \arguments{
 \item{spatial_data}{A spatial data frame to which you want to merge data.}

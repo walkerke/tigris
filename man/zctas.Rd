@@ -4,7 +4,8 @@
 \alias{zctas}
 \title{Download a Zip Code Tabulation Area (ZCTA) shapefile into R}
 \usage{
-zctas(cb = FALSE, starts_with = NULL, year = NULL, state = NULL, ...)
+zctas(cb = FALSE, starts_with = NULL, year = NULL, state = NULL,
+  ...)
 }
 \arguments{
 \item{cb}{If cb is set to TRUE, download a generalized (1:500k)
@@ -62,3 +63,4 @@ Other general area functions: \code{\link{block_groups}},
   \code{\link{pumas}}, \code{\link{school_districts}},
   \code{\link{states}}, \code{\link{tracts}}
 }
+\concept{general area functions}
