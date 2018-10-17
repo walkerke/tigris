@@ -50,3 +50,4 @@ gg
 Other water functions: \code{\link{area_water}},
   \code{\link{linear_water}}
 }
+\concept{water functions}

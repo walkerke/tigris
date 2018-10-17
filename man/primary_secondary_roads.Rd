@@ -41,6 +41,8 @@ plot(rds)
 \seealso{
 \url{http://www2.census.gov/geo/pdfs/maps-data/data/tiger/tgrshp2015/TGRSHP2015_TechDoc.pdf}
 
-Other transportation functions: \code{\link{primary_roads}},
-  \code{\link{rails}}, \code{\link{roads}}
+Other transportation functions: \code{\link{address_ranges}},
+  \code{\link{primary_roads}}, \code{\link{rails}},
+  \code{\link{roads}}
 }
+\concept{transportation functions}

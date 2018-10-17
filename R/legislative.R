@@ -43,7 +43,9 @@ congressional_districts <- function(cb = FALSE, resolution = '500k', year = NULL
 
   }
 
-  if (year == 2016) {
+  if (year == 2018) {
+    congress <- "116"
+  } else if (year == 2016) {
     congress <- "115"
   } else if (year %in% 2014:2015) {
     congress <- "114"

@@ -4,8 +4,8 @@
 \alias{counties}
 \title{Download a US Counties shapefile into R, and optionally subset by state}
 \usage{
-counties(state = NULL, cb = FALSE, resolution = "500k", year = NULL,
-  ...)
+counties(state = NULL, cb = FALSE, resolution = "500k",
+  year = NULL, ...)
 }
 \arguments{
 \item{state}{The two-digit FIPS code (string) of the state you want, or a
@@ -79,3 +79,4 @@ Other general area functions: \code{\link{block_groups}},
   \code{\link{school_districts}}, \code{\link{states}},
   \code{\link{tracts}}, \code{\link{zctas}}
 }
+\concept{general area functions}

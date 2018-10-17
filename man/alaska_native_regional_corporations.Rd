@@ -31,3 +31,4 @@ Other native/tribal geometries functions: \code{\link{native_areas}},
   \code{\link{tribal_census_tracts}},
   \code{\link{tribal_subdivisions_national}}
 }
+\concept{native/tribal geometries functions}

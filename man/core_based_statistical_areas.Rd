@@ -4,8 +4,8 @@
 \alias{core_based_statistical_areas}
 \title{Download a core-based statistical area shapefile into R}
 \usage{
-core_based_statistical_areas(cb = FALSE, resolution = "500k", year = NULL,
-  ...)
+core_based_statistical_areas(cb = FALSE, resolution = "500k",
+  year = NULL, ...)
 }
 \arguments{
 \item{cb}{If cb is set to TRUE, download a generalized (1:500k)
@@ -36,3 +36,4 @@ Other metro area functions: \code{\link{combined_statistical_areas}},
   \code{\link{metro_divisions}}, \code{\link{new_england}},
   \code{\link{urban_areas}}
 }
+\concept{metro area functions}
