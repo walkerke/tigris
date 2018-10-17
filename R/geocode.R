@@ -66,6 +66,7 @@ append_geoid <- function(address, geoid_type = 'block') {
 #' @param street A character string indicating a street name and number
 #' @param city A character string indicating a city
 #' @param state A two-digit character string with a state postal code
+#' @param zip A five-digit character string with a postal zip code. Optional parameter.
 #'
 #' @return A character string representing the Census block of the supplied
 #'   address.
@@ -75,15 +76,35 @@ append_geoid <- function(address, geoid_type = 'block') {
 #'
 #' @export
 #'
-call_geolocator <- function(street, city, state) {
-  # Build url
+call_geolocator <- function(street, city, state, zip = NA) {
+
   call_start <- "https://geocoding.geo.census.gov/geocoder/geographies/address?"
 
-  url <- paste0(
-    "street=", utils::URLencode(street),
-    "&city=", utils::URLencode(city),
-    "&state=", state
-  )
+  if(is.na(zip)){
+    # Build url when zip is default/NA
+    url <- paste0(
+      "street=", utils::URLencode(street),
+      "&city=", utils::URLencode(city),
+      "&state=", state
+    )}
+
+  if(!is.na(zip)){
+    # Build url when zip is not default/NA
+    if(class(zip) == "character" & nchar(zip) == 5 & !grepl("\\D", zip)){
+      url <- paste0(
+        "street=", utils::URLencode(street),
+        "&city=", utils::URLencode(city),
+        "&state=", state,
+        "&zip=", zip
+      )} else {
+        message("'zip' (", paste0(zip), ") was not a 5-character-long string composed of :digits:. Using only street, city, state.")
+        url <- paste0(
+          "street=", utils::URLencode(street),
+          "&city=", utils::URLencode(city),
+          "&state=", state
+        )
+      }
+    }
 
   call_end <- "&benchmark=Public_AR_Census2010&vintage=Census2010_Census2010&layers=14&format=json"
 

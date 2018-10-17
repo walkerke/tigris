@@ -4,7 +4,7 @@
 \alias{call_geolocator}
 \title{Call geolocator for one address}
 \usage{
-call_geolocator(street, city, state)
+call_geolocator(street, city, state, zip = NA)
 }
 \arguments{
 \item{street}{A character string indicating a street name and number}
@@ -12,6 +12,8 @@ call_geolocator(street, city, state)
 \item{city}{A character string indicating a city}
 
 \item{state}{A two-digit character string with a state postal code}
+
+\item{zip}{A five-digit character string with a postal zip code. Optional paramater.}
 }
 \value{
 A character string representing the Census block of the supplied
