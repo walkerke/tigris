@@ -66,7 +66,7 @@ append_geoid <- function(address, geoid_type = 'block') {
 #' @param street A character string indicating a street name and number
 #' @param city A character string indicating a city
 #' @param state A two-digit character string with a state postal code
-#' @param zip A five-digit character string with a postal zip code. Optional paramater.
+#' @param zip A five-digit character string with a postal zip code. Optional parameter.
 #'
 #' @return A character string representing the Census block of the supplied
 #'   address.
