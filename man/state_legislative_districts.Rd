@@ -49,3 +49,4 @@ leaflet(leg) \%>\%
 Other legislative district functions: \code{\link{congressional_districts}},
   \code{\link{voting_districts}}
 }
+\concept{legislative district functions}

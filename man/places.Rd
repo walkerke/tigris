@@ -54,3 +54,4 @@ Other general area functions: \code{\link{block_groups}},
   \code{\link{school_districts}}, \code{\link{states}},
   \code{\link{tracts}}, \code{\link{zctas}}
 }
+\concept{general area functions}

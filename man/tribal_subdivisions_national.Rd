@@ -40,3 +40,4 @@ Other native/tribal geometries functions: \code{\link{alaska_native_regional_cor
   \code{\link{tribal_block_groups}},
   \code{\link{tribal_census_tracts}}
 }
+\concept{native/tribal geometries functions}

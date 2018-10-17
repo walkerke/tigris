@@ -43,3 +43,4 @@ plot(dallas_water)
 Other water functions: \code{\link{coastline}},
   \code{\link{linear_water}}
 }
+\concept{water functions}

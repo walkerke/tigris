@@ -4,7 +4,8 @@
 \alias{congressional_districts}
 \title{Download a congressional districts shapefile for the 114th Congress into R}
 \usage{
-congressional_districts(cb = FALSE, resolution = "500k", year = NULL, ...)
+congressional_districts(cb = FALSE, resolution = "500k", year = NULL,
+  ...)
 }
 \arguments{
 \item{cb}{If cb is set to TRUE, download a generalized (1:500k)
@@ -53,3 +54,4 @@ leaflet(cd114) \%>\%
 Other legislative district functions: \code{\link{state_legislative_districts}},
   \code{\link{voting_districts}}
 }
+\concept{legislative district functions}

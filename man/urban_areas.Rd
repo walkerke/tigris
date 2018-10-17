@@ -29,3 +29,4 @@ Other metro area functions: \code{\link{combined_statistical_areas}},
   \code{\link{core_based_statistical_areas}},
   \code{\link{metro_divisions}}, \code{\link{new_england}}
 }
+\concept{metro area functions}
