@@ -55,7 +55,8 @@ load_tiger <- function(url,
                        refresh=getOption("tigris_refresh", FALSE),
                        tigris_type=NULL,
                        class = getOption("tigris_class", "sp"),
-                       progress_bar = TRUE) {
+                       progress_bar = TRUE,
+                       query = NULL) {
 
   use_cache <- getOption("tigris_use_cache", FALSE)
   tiger_file <- basename(url)
@@ -172,7 +173,8 @@ load_tiger <- function(url,
       } else if (class == "sf") {
 
         obj <- st_read(dsn = cache_dir, layer = shape,
-                       quiet = TRUE, stringsAsFactors = FALSE)
+                       quiet = TRUE, stringsAsFactors = FALSE,
+                       query = query)
 
         if (is.na(st_crs(obj)$proj4string)) {
 
@@ -220,7 +222,8 @@ load_tiger <- function(url,
     } else if (class == "sf") {
 
       obj <- st_read(dsn = tmp, layer = shape,
-                     quiet = TRUE, stringsAsFactors = FALSE)
+                     quiet = TRUE, stringsAsFactors = FALSE,
+                     query = query)
 
       if (is.na(st_crs(obj)$proj4string)) {
 
