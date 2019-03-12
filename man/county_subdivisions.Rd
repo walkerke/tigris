@@ -18,11 +18,12 @@ Can also be a county name or vector of names.}
 \item{cb}{If cb is set to TRUE, download a generalized (1:500k)
 file.  Defaults to FALSE (the most detailed TIGER/Line file)}
 
-\item{year}{the data year (defaults to 2016).}
+\item{year}{the data year (defaults to 2017).}
 
-\item{...}{arguments to be passed to the underlying `load_tiger` function, which is not
-exported. Options include \code{refresh}, which specifies whether or not to re-download
-shapefiles (defaults to \code{FALSE}).}
+\item{...}{arguments to be passed to the underlying `load_tiger` function, which is not exported.
+Options include \code{class}, which can be set to \code{"sp"} (the default) or \code{"sf"} to
+request sp or sf class objects, and \code{refresh}, which specifies whether or
+not to re-download shapefiles (defaults to \code{FALSE}).}
 }
 \description{
 From the US Census Bureau (see link for source, and more information): "County subdivisions

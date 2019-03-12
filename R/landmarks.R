@@ -12,10 +12,11 @@
 #' Although almost all military installations have assigned 8-character National Standard (GNIS) codes, the
 #' Census Bureau has not loaded most of this data into the MAF/TIGER database. The 2015 military
 #' shapefiles contain few values in the ANSICODE field.
-#' @param year the data year (defaults to 2016).
+#' @param year the data year (defaults to 2017).
 #' @param ... arguments to be passed to the underlying `load_tiger` function, which is not exported.
-#'        Options include \code{refresh}, which specifies whether or not to re-download shapefiles
-#'        (defaults to \code{FALSE}).
+#'        Options include \code{class}, which can be set to \code{"sp"} (the default) or \code{"sf"} to
+#'        request sp or sf class objects, and \code{refresh}, which specifies whether or
+#'        not to re-download shapefiles (defaults to \code{FALSE}).
 #' @seealso \url{http://www2.census.gov/geo/pdfs/maps-data/data/tiger/tgrshp2015/TGRSHP2015_TechDoc_Ch3.pdf}
 #' @export
 
@@ -23,7 +24,7 @@ military <- function(year = NULL, ...) {
 
   if (is.null(year)) {
 
-    year <- getOption("tigris_year", 2016)
+    year <- getOption("tigris_year", 2017)
 
   }
 
@@ -72,16 +73,17 @@ military <- function(year = NULL, ...) {
 #'
 #' @param state The state for which you'd like to download the landmarks
 #' @param type Whether you would like to download point landmarks (\code{"point"}) or area landmarks (\code{"area"}). #'                Defaults to \code{"point"}.
-#' @param year the data year (defaults to 2016).
+#' @param year the data year (defaults to 2017).
 #' @param ... arguments to be passed to the underlying `load_tiger` function, which is not exported.
-#'        Options include \code{refresh}, which specifies whether or not to re-download shapefiles
-#'        (defaults to \code{FALSE}).
+#'        Options include \code{class}, which can be set to \code{"sp"} (the default) or \code{"sf"} to
+#'        request sp or sf class objects, and \code{refresh}, which specifies whether or
+#'        not to re-download shapefiles (defaults to \code{FALSE}).
 #' @export
 landmarks <- function(state, type = "point", year = NULL, ...) {
 
   if (is.null(year)) {
 
-    year <- getOption("tigris_year", 2016)
+    year <- getOption("tigris_year", 2017)
 
   }
 

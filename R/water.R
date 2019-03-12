@@ -10,10 +10,11 @@
 #'        (case-insensitive).
 #' @param county The three-digit FIPS code of the county you'd like the water
 #'        features for.  Can also be a county name.
-#' @param year the data year (defaults to 2016).
+#' @param year the data year (defaults to 2017).
 #' @param ... arguments to be passed to the underlying `load_tiger` function, which is not exported.
-#'        Options include \code{refresh}, which specifies whether or not to re-download shapefiles
-#'        (defaults to \code{FALSE}).
+#'        Options include \code{class}, which can be set to \code{"sp"} (the default) or \code{"sf"} to
+#'        request sp or sf class objects, and \code{refresh}, which specifies whether or
+#'        not to re-download shapefiles (defaults to \code{FALSE}).).
 #' @family water functions
 #' @seealso \url{http://www2.census.gov/geo/pdfs/maps-data/data/tiger/tgrshp2015/TGRSHP2015_TechDoc.pdf}
 #' @export
@@ -30,7 +31,7 @@ area_water <- function(state, county, year = NULL, ...) {
 
   if (is.null(year)) {
 
-    year <- getOption("tigris_year", 2016)
+    year <- getOption("tigris_year", 2017)
 
   }
 
@@ -76,10 +77,11 @@ area_water <- function(state, county, year = NULL, ...) {
 #'        (case-insensitive).
 #' @param county The three-digit FIPS code of the county you'd like the water
 #'        features for.  Can also be a county name.
-#' @param year the data year (defaults to 2016).
+#' @param year the data year (defaults to 2017).
 #' @param ... arguments to be passed to the underlying `load_tiger` function, which is not exported.
-#'        Options include \code{refresh}, which specifies whether or not to re-download shapefiles
-#'        (defaults to \code{FALSE}).
+#'        Options include \code{class}, which can be set to \code{"sp"} (the default) or \code{"sf"} to
+#'        request sp or sf class objects, and \code{refresh}, which specifies whether or
+#'        not to re-download shapefiles (defaults to \code{FALSE}).).
 #' @family water functions
 #' @seealso \url{http://www2.census.gov/geo/pdfs/maps-data/data/tiger/tgrshp2015/TGRSHP2015_TechDoc.pdf}
 #' @export
@@ -96,7 +98,7 @@ linear_water <- function(state, county, year = NULL, ...) {
 
   if (is.null(year)) {
 
-    year <- getOption("tigris_year", 2016)
+    year <- getOption("tigris_year", 2017)
 
   }
 
@@ -130,10 +132,11 @@ linear_water <- function(state, county, year = NULL, ...) {
 
 #' Download a shapefile of the US coastline into R
 #'
-#' @param year The year of the dataset (defaults to 2016)
+#' @param year The year of the dataset (defaults to 2017)
 #' @param ... arguments to be passed to the underlying `load_tiger` function, which is not exported.
-#'        Options include \code{refresh}, which specifies whether or not to re-download shapefiles
-#'        (defaults to \code{FALSE}).
+#'        Options include \code{class}, which can be set to \code{"sp"} (the default) or \code{"sf"} to
+#'        request sp or sf class objects, and \code{refresh}, which specifies whether or
+#'        not to re-download shapefiles (defaults to \code{FALSE}).).
 #' @export
 #' @family water functions
 #' @examples \dontrun{
@@ -168,7 +171,7 @@ coastline <- function(year = NULL, ...) {
 
   if (is.null(year)) {
 
-    year <- getOption("tigris_year", 2016)
+    year <- getOption("tigris_year", 2017)
 
   }
 

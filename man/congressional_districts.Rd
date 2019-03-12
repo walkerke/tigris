@@ -15,18 +15,19 @@ TIGER/Line file).}
 \item{resolution}{The resolution of the cartographic boundary file (if cb == TRUE).
 Defaults to '500k'; options include '5m' (1:5 million) and '20m' (1:20 million).}
 
-\item{year}{the data year (defaults to 2016).  To get boundaries for the 115th congress, set \code{year = 2016}.}
+\item{year}{the data year (defaults to 2017).  To get boundaries for the 115th congress, set \code{year = 2017}.}
 
 \item{...}{arguments to be passed to the underlying `load_tiger` function, which is not exported.
-Options include \code{refresh}, which specifies whether or not to re-download shapefiles
-(defaults to \code{FALSE}).}
+Options include \code{class}, which can be set to \code{"sp"} (the default) or \code{"sf"} to
+request sp or sf class objects, and \code{refresh}, which specifies whether
+or not to re-download shapefiles (defaults to \code{FALSE}).}
 }
 \description{
 Description from the US Census Bureau (see link for source):
-The 2015 TIGER/Line Shapefiles contain the 114th Congressional Districts. All congressional districts
-appearing in the 2015 TIGER/Line Shapefiles reflect the information provided to the Census Bureau by
-the states by May 1, 2014. The 114th Congressional District shapefile contains the areas in effect
-January 2015 to 2017.
+The 2017 TIGER/Line Shapefiles contain the 115th Congressional Districts. All congressional districts
+appearing in the 2017 TIGER/Line Shapefiles reflect the information provided to the Census Bureau by
+the states by May 1, 2016. The 115th Congressional District shapefile contains the areas in effect from
+January 2017 to 2019.
 }
 \details{
 Congressional districts are the 435 areas from which people are elected to the U.S. House of
@@ -49,7 +50,7 @@ leaflet(cd114) \%>\%
 }
 }
 \seealso{
-\url{http://www2.census.gov/geo/pdfs/maps-data/data/tiger/tgrshp2015/TGRSHP2015_TechDoc.pdf}
+\url{http://www2.census.gov/geo/pdfs/maps-data/data/tiger/tgrshp2017/TGRSHP2017_TechDoc.pdf}
 
 Other legislative district functions: \code{\link{state_legislative_districts}},
   \code{\link{voting_districts}}
