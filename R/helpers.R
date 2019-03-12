@@ -173,8 +173,7 @@ load_tiger <- function(url,
       } else if (class == "sf") {
 
         obj <- st_read(dsn = cache_dir, layer = shape,
-                       quiet = TRUE, stringsAsFactors = FALSE,
-                       query = query)
+                       quiet = TRUE, stringsAsFactors = FALSE)
 
         if (is.na(st_crs(obj)$proj4string)) {
 
@@ -222,8 +221,7 @@ load_tiger <- function(url,
     } else if (class == "sf") {
 
       obj <- st_read(dsn = tmp, layer = shape,
-                     quiet = TRUE, stringsAsFactors = FALSE,
-                     query = query)
+                     quiet = TRUE, stringsAsFactors = FALSE)
 
       if (is.na(st_crs(obj)$proj4string)) {
 
