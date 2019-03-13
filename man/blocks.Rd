@@ -14,11 +14,12 @@ be state name or state abbreviation.}
 subset for, or a vector of FIPS codes if you desire multiple counties.
 Can also be a county name or vector of names.}
 
-\item{year}{The year for which you'd like to download data (defaults to 2016).}
+\item{year}{The year for which you'd like to download data (defaults to 2017).}
 
 \item{...}{arguments to be passed to the underlying `load_tiger` function, which is not exported.
-Options include \code{refresh}, which specifies whether or not to re-download shapefiles
-(defaults to \code{FALSE}).}
+Options include \code{class}, which can be set to \code{"sp"} (the default) or \code{"sf"} to
+request sp or sf class objects, and \code{refresh}, which specifies whether or
+not to re-download shapefiles (defaults to \code{FALSE}).}
 }
 \description{
 Description from the US Census Bureau (see link for source): Census blocks are statistical areas

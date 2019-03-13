@@ -10,10 +10,11 @@
 #'        (case-insensitive).
 #' @param county The three-digit FIPS code of the county you'd like the roads for.
 #'        Can also be a county name.
-#' @param year the data year (defaults to 2016).
+#' @param year the data year (defaults to 2017).
 #' @param ... arguments to be passed to the underlying `load_tiger` function, which is not exported.
-#'        Options include \code{refresh}, which specifies whether or not to re-download shapefiles
-#'        (defaults to \code{FALSE}).
+#'        Options include \code{class}, which can be set to \code{"sp"} (the default) or \code{"sf"} to
+#'        request sp or sf class objects, and \code{refresh}, which specifies whether or
+#'        not to re-download shapefiles (defaults to \code{FALSE}).
 #' @family transportation functions
 #' @seealso \url{http://www2.census.gov/geo/pdfs/maps-data/data/tiger/tgrshp2015/TGRSHP2015_TechDoc.pdf}
 #' @export
@@ -48,7 +49,7 @@ roads <- function(state, county, year = NULL, ...) {
 
   if (is.null(year)) {
 
-    year <- getOption("tigris_year", 2016)
+    year <- getOption("tigris_year", 2017)
 
   }
 
@@ -86,10 +87,11 @@ roads <- function(state, county, year = NULL, ...) {
 #' presence of interchanges
 #' and are accessible by ramps and may include some toll highways."
 #'
-#' @param year the data year (defaults to 2016).
+#' @param year the data year (defaults to 2017).
 #' @param ... arguments to be passed to the underlying `load_tiger` function, which is not exported.
-#'        Options include \code{refresh}, which specifies whether or not to re-download shapefiles
-#'        (defaults to \code{FALSE}).
+#'        Options include \code{class}, which can be set to \code{"sp"} (the default) or \code{"sf"} to
+#'        request sp or sf class objects, and \code{refresh}, which specifies whether or
+#'        not to re-download shapefiles (defaults to \code{FALSE}).
 #' @family transportation functions
 #' @seealso \url{http://www2.census.gov/geo/pdfs/maps-data/data/tiger/tgrshp2015/TGRSHP2015_TechDoc.pdf}
 #' @export
@@ -105,7 +107,7 @@ primary_roads <- function(year = NULL, ...) {
 
   if (is.null(year)) {
 
-    year <- getOption("tigris_year", 2016)
+    year <- getOption("tigris_year", 2017)
 
   }
 
@@ -141,10 +143,11 @@ primary_roads <- function(year = NULL, ...) {
 #' @param state The two-digit FIPS code of the state of the county you'd like
 #'        to download the roads for. Can also be state name or abbreviation
 #'        (case-insensitive).
-#' @param year the data year (defaults to 2016).
+#' @param year the data year (defaults to 2017).
 #' @param ... arguments to be passed to the underlying `load_tiger` function, which is not exported.
-#'        Options include \code{refresh}, which specifies whether or not to re-download shapefiles
-#'        (defaults to \code{FALSE}).
+#'        Options include \code{class}, which can be set to \code{"sp"} (the default) or \code{"sf"} to
+#'        request sp or sf class objects, and \code{refresh}, which specifies whether or
+#'        not to re-download shapefiles (defaults to \code{FALSE}).
 #' @family transportation functions
 #' @seealso \url{http://www2.census.gov/geo/pdfs/maps-data/data/tiger/tgrshp2015/TGRSHP2015_TechDoc.pdf}
 #' @export
@@ -161,7 +164,7 @@ primary_secondary_roads <- function(state, year = NULL, ...) {
 
   if (is.null(year)) {
 
-    year <- getOption("tigris_year", 2016)
+    year <- getOption("tigris_year", 2017)
 
   }
 
@@ -192,10 +195,11 @@ primary_secondary_roads <- function(state, year = NULL, ...) {
 #' National dataset for US railroads, including carlines, streetcars,
 #' monorails, mass transit, cog rail, incline rail, and trams.
 #'
-#' @param year the data year (defaults to 2016).
+#' @param year the data year (defaults to 2017).
 #' @param ... arguments to be passed to the underlying `load_tiger` function, which is not exported.
-#'        Options include \code{refresh}, which specifies whether or not to re-download shapefiles
-#'        (defaults to \code{FALSE}).
+#'        Options include \code{class}, which can be set to \code{"sp"} (the default) or \code{"sf"} to
+#'        request sp or sf class objects, and \code{refresh}, which specifies whether or
+#'        not to re-download shapefiles (defaults to \code{FALSE}).
 #' @family transportation functions
 #' @seealso \url{http://www2.census.gov/geo/pdfs/maps-data/data/tiger/tgrshp2015/TGRSHP2015_TechDoc.pdf}
 #' @export
@@ -212,7 +216,7 @@ rails <- function(year = NULL, ...) {
 
   if (is.null(year)) {
 
-    year <- getOption("tigris_year", 2016)
+    year <- getOption("tigris_year", 2017)
 
   }
 
@@ -242,10 +246,11 @@ rails <- function(year = NULL, ...) {
 #'        (case-insensitive).
 #' @param county The three-digit FIPS code of the county you'd like the roads for.
 #'        Can also be a county name.
-#' @param year the data year (defaults to 2016).
+#' @param year the data year (defaults to 2017).
 #' @param ... arguments to be passed to the underlying `load_tiger` function, which is not exported.
-#'        Options include \code{refresh}, which specifies whether or not to re-download shapefiles
-#'        (defaults to \code{FALSE}).
+#'        Options include \code{class}, which can be set to \code{"sp"} (the default) or \code{"sf"} to
+#'        request sp or sf class objects, and \code{refresh}, which specifies whether or
+#'        not to re-download shapefiles (defaults to \code{FALSE}).
 #' @family transportation functions
 #' @seealso \url{http://www2.census.gov/geo/pdfs/maps-data/data/tiger/tgrshp2015/TGRSHP2015_TechDoc.pdf}
 #' @export
@@ -253,7 +258,7 @@ address_ranges <- function(state, county, year = NULL, ...) {
 
   if (is.null(year)) {
 
-    year <- getOption("tigris_year", 2016)
+    year <- getOption("tigris_year", 2017)
 
   }
 

@@ -10,10 +10,11 @@
 #'        states file.  Defaults to FALSE (the most detailed TIGER/Line file)
 #' @param resolution The resolution of the cartographic boundary file (if cb == TRUE).
 #'        Defaults to '500k'; options include '5m' (1:5 million) and '20m' (1:20 million).
-#' @param year the year of the data download (defaults to 2016)
+#' @param year the year of the data download (defaults to 2017)
 #' @param ... arguments to be passed to the underlying `load_tiger` function, which is not exported.
-#'        Options include \code{refresh}, which specifies whether or not to re-download shapefiles
-#'        (defaults to \code{FALSE}).
+#'        Options include \code{class}, which can be set to \code{"sp"} (the default) or \code{"sf"} to
+#'        request sp or sf class objects, and \code{refresh}, which specifies whether or
+#'        not to re-download shapefiles (defaults to \code{FALSE}).
 #' @export
 #' @family general area functions
 #' @seealso \url{https://www.census.gov/geo/reference/gtc/gtc_state.html}
@@ -38,7 +39,7 @@ states <- function(cb = FALSE, resolution = '500k', year = NULL, ...) {
 
   if (is.null(year)) {
 
-    year = getOption("tigris_year", 2016)
+    year = getOption("tigris_year", 2017)
 
   }
 

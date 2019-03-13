@@ -11,8 +11,9 @@ voting_districts(state, ...)
 state abbreviation, or FIPS code.}
 
 \item{...}{arguments to be passed to the underlying `load_tiger` function, which is not exported.
-Options include \code{refresh}, which specifies whether or not to re-download shapefiles
-(defaults to \code{FALSE}).}
+Options include \code{class}, which can be set to \code{"sp"} (the default) or \code{"sf"} to
+request sp or sf class objects, and \code{refresh}, which specifies whether or not
+to re-download shapefiles (defaults to \code{FALSE}).}
 }
 \description{
 This function allows you to download a voting districts boundary file into R.  The voting districts

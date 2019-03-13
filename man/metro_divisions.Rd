@@ -7,12 +7,12 @@
 metro_divisions(year = NULL, ...)
 }
 \arguments{
-\item{year}{The data year (defaults to 2016).}
+\item{year}{The data year (defaults to 2017).}
 
 \item{...}{arguments to be passed to the underlying `load_tiger` function, which is not exported.
-Options include \code{refresh}, which specifies whether or not to re-download shapefiles
-(defaults to \code{FALSE}), and \code{year}, the year for which you'd like to download data
-(defaults to 2016).}
+Options include \code{class}, which can be set to \code{"sp"} (the default) or \code{"sf"} to
+request sp or sf class objects, and \code{refresh}, which specifies whether or
+not to re-download shapefiles (defaults to \code{FALSE}).}
 }
 \description{
 Metropolitan divisions are subdivisions of metropolitan areas with population of at least 2.5 million.  Please note:

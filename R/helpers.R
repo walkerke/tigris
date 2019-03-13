@@ -55,7 +55,8 @@ load_tiger <- function(url,
                        refresh=getOption("tigris_refresh", FALSE),
                        tigris_type=NULL,
                        class = getOption("tigris_class", "sp"),
-                       progress_bar = TRUE) {
+                       progress_bar = TRUE,
+                       query = NULL) {
 
   use_cache <- getOption("tigris_use_cache", FALSE)
   tiger_file <- basename(url)

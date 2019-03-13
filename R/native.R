@@ -8,10 +8,11 @@
 #'
 #' @param cb If cb is set to TRUE, download a generalized (1:500k)
 #'        file.  Defaults to FALSE (the most detailed TIGER/Line file)
-#' @param year the data year (defaults to 2016).
+#' @param year the data year (defaults to 2017).
 #' @param ... arguments to be passed to the underlying `load_tiger` function, which is not exported.
-#'        Options include \code{refresh}, which specifies whether or not to re-download shapefiles
-#'        (defaults to \code{FALSE}).
+#'        Options include \code{class}, which can be set to \code{"sp"} (the default) or \code{"sf"} to
+#'        request sp or sf class objects, and \code{refresh}, which specifies whether or
+#'        not to re-download shapefiles (defaults to \code{FALSE}).
 #' @family native/tribal geometries functions
 #' @seealso \url{http://www2.census.gov/geo/pdfs/maps-data/data/tiger/tgrshp2015/TGRSHP2015_TechDoc.pdf}
 #' @export
@@ -37,7 +38,7 @@ native_areas <- function(cb = FALSE, year = NULL, ...) {
 
   if (is.null(year)) {
 
-    year <- getOption("tigris_year", 2016)
+    year <- getOption("tigris_year", 2017)
 
   }
 
@@ -77,10 +78,11 @@ native_areas <- function(cb = FALSE, year = NULL, ...) {
 #' recognized American Indian reservations and/or off-reservation trust lands or Oklahoma tribal statistical
 #' areas (OTSAs)."  For more information, please see the link provided.
 #'
-#' @param year The year for which you'd like to download data (defaults to 2016).
-#' @param ... arguments to be passed to the underlying `load_tiger` function, which is not exported.
-#'        Options include \code{refresh}, which specifies whether or not to re-download shapefiles
-#'        (defaults to \code{FALSE}).
+#' @param year The year for which you'd like to download data (defaults to 2017).
+#' @param ...arguments to be passed to the underlying `load_tiger` function, which is not exported.
+#'        Options include \code{class}, which can be set to \code{"sp"} (the default) or \code{"sf"} to
+#'        request sp or sf class objects, and \code{refresh}, which specifies whether or
+#'        not to re-download shapefiles (defaults to \code{FALSE}).
 #' @family native/tribal geometries functions
 #' @seealso \url{http://www2.census.gov/geo/pdfs/maps-data/data/tiger/tgrshp2015/TGRSHP2015_TechDoc.pdf}
 #' @export
@@ -99,7 +101,7 @@ tribal_subdivisions_national <- function(year = NULL, ...) {
 
   if (is.null(year)) {
 
-    year <- getOption("tigris_year", 2016)
+    year <- getOption("tigris_year", 2017)
 
   }
 
@@ -142,10 +144,11 @@ tribal_subdivisions_national <- function(year = NULL, ...) {
 #'
 #' @param cb If cb is set to TRUE, download a generalized (1:500k)
 #'        file.  Defaults to FALSE (the most detailed TIGER/Line file)
-#' @param year the data year (defaults to 2016).
+#' @param year the data year (defaults to 2017).
 #' @param ... arguments to be passed to the underlying `load_tiger` function, which is not exported.
-#'        Options include \code{refresh}, which specifies whether or not to re-download shapefiles
-#'        (defaults to \code{FALSE}).
+#'        Options include \code{class}, which can be set to \code{"sp"} (the default) or \code{"sf"} to
+#'        request sp or sf class objects, and \code{refresh}, which specifies whether or
+#'        not to re-download shapefiles (defaults to \code{FALSE}).
 #' @family native/tribal geometries functions
 #' @seealso \url{http://www2.census.gov/geo/pdfs/maps-data/data/tiger/tgrshp2015/TGRSHP2015_TechDoc.pdf}
 #' @export
@@ -153,7 +156,7 @@ alaska_native_regional_corporations <- function(cb = FALSE, year = NULL, ...) {
 
   if (is.null(year)) {
 
-    year <- getOption("tigris_year", 2016)
+    year <- getOption("tigris_year", 2017)
 
   }
 
@@ -203,10 +206,11 @@ alaska_native_regional_corporations <- function(cb = FALSE, year = NULL, ...) {
 #' but may contain blocks from several different
 #' standard census block groups."  For more information, please see the link provided.
 #'
-#' @param year the data year (defaults to 2016).
+#' @param year the data year (defaults to 2017).
 #' @param ... arguments to be passed to the underlying `load_tiger` function, which is not exported.
-#'        Options include \code{refresh}, which specifies whether or not to re-download shapefiles
-#'        (defaults to \code{FALSE}).
+#'        Options include \code{class}, which can be set to \code{"sp"} (the default) or \code{"sf"} to
+#'        request sp or sf class objects, and \code{refresh}, which specifies whether or
+#'        not to re-download shapefiles (defaults to \code{FALSE}).
 #' @family native/tribal geometries functions
 #' @seealso \url{http://www2.census.gov/geo/pdfs/maps-data/data/tiger/tgrshp2015/TGRSHP2015_TechDoc.pdf}
 #' @export
@@ -225,7 +229,7 @@ tribal_block_groups <- function(year = NULL, ...) {
 
   if (is.null(year)) {
 
-    year <- getOption("tigris_year", 2016)
+    year <- getOption("tigris_year", 2017)
 
   }
 
@@ -259,10 +263,11 @@ tribal_block_groups <- function(year = NULL, ...) {
 #' census tracts. Unlike standard census tracts, however, tribal census tracts may cross state, county, and
 #' standard census tract boundaries." For more information, please view the link provided.
 #'
-#' @param year the data year (defaults to 2016).
+#' @param year the data year (defaults to 2017).
 #' @param ... arguments to be passed to the underlying `load_tiger` function, which is not exported.
-#'        Options include \code{refresh}, which specifies whether or not to re-download shapefiles
-#'        (defaults to \code{FALSE}).
+#'        Options include \code{class}, which can be set to \code{"sp"} (the default) or \code{"sf"} to
+#'        request sp or sf class objects, and \code{refresh}, which specifies whether or
+#'        not to re-download shapefiles (defaults to \code{FALSE}).
 #' @family native/tribal geometries functions
 #' @seealso \url{http://www2.census.gov/geo/pdfs/maps-data/data/tiger/tgrshp2015/TGRSHP2015_TechDoc.pdf}
 #' @export
@@ -281,7 +286,7 @@ tribal_census_tracts <- function(year = NULL, ...) {
 
   if (is.null(year)) {
 
-    year <- getOption("tigris_year", 2016)
+    year <- getOption("tigris_year", 2017)
 
   }
 

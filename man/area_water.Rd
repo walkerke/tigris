@@ -14,11 +14,12 @@ download the water features for.  Can also be state name or abbreviation
 \item{county}{The three-digit FIPS code of the county you'd like the water
 features for.  Can also be a county name.}
 
-\item{year}{the data year (defaults to 2016).}
+\item{year}{the data year (defaults to 2017).}
 
 \item{...}{arguments to be passed to the underlying `load_tiger` function, which is not exported.
-Options include \code{refresh}, which specifies whether or not to re-download shapefiles
-(defaults to \code{FALSE}).}
+Options include \code{class}, which can be set to \code{"sp"} (the default) or \code{"sf"} to
+request sp or sf class objects, and \code{refresh}, which specifies whether or
+not to re-download shapefiles (defaults to \code{FALSE}).).}
 }
 \description{
 From the US Census Bureau: "The area hydrography shapefile contains the geometry

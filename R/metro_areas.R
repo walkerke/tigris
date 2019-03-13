@@ -13,10 +13,11 @@
 #'        TIGER/Line file).
 #' @param resolution The resolution of the cartographic boundary file (if cb == TRUE).
 #'        Defaults to '500k'; options include '5m' (1:5 million) and '20m' (1:20 million).
-#' @param year the data year (defaults to 2016).
+#' @param year the data year (defaults to 2017).
 #' @param ... arguments to be passed to the underlying `load_tiger` function, which is not exported.
-#'        Options include \code{refresh}, which specifies whether or not to re-download shapefiles
-#'        (defaults to \code{FALSE}).
+#'        Options include \code{class}, which can be set to \code{"sp"} (the default) or \code{"sf"} to
+#'        request sp or sf class objects, and \code{refresh}, which specifies whether or
+#'        not to re-download shapefiles (defaults to \code{FALSE}).
 #' @family metro area functions
 #' @seealso \url{http://www.census.gov/population/metro/}
 #' @export
@@ -24,7 +25,7 @@ core_based_statistical_areas <- function(cb = FALSE, resolution = '500k', year =
 
   if (is.null(year)) {
 
-    year <- getOption("tigris_year", 2016)
+    year <- getOption("tigris_year", 2017)
 
   }
 
@@ -83,10 +84,11 @@ core_based_statistical_areas <- function(cb = FALSE, resolution = '500k', year =
 #' @param cb If cb is set to TRUE, download a generalized (1:500k)
 #'        cartographic boundary file.  Defaults to FALSE (the most detailed
 #'        TIGER/Line file).
-#' @param year the data year (defaults to 2016).
+#' @param year the data year (defaults to 2017).
 #' @param ... arguments to be passed to the underlying `load_tiger` function, which is not exported.
-#'        Options include \code{refresh}, which specifies whether or not to re-download shapefiles
-#'        (defaults to \code{FALSE}).
+#'        Options include \code{class}, which can be set to \code{"sp"} (the default) or \code{"sf"} to
+#'        request sp or sf class objects, and \code{refresh}, which specifies whether or
+#'        not to re-download shapefiles (defaults to \code{FALSE}).
 #' @family metro area functions
 #' @seealso \url{http://www2.census.gov/geo/pdfs/maps-data/data/tiger/tgrshp2015/TGRSHP2015_TechDoc.pdf}
 #' @export
@@ -94,7 +96,7 @@ urban_areas <- function(cb = FALSE, year = NULL, ...) {
 
   if (is.null(year)) {
 
-    year <- getOption("tigris_year", 2016)
+    year <- getOption("tigris_year", 2017)
 
   }
 
@@ -138,10 +140,11 @@ urban_areas <- function(cb = FALSE, year = NULL, ...) {
 #'        TIGER/Line file).
 #' @param resolution The resolution of the cartographic boundary file (if cb == TRUE).
 #'        Defaults to '500k'; options include '5m' (1:5 million) and '20m' (1:20 million).
-#' @param year the data year (defaults to 2016).
+#' @param year the data year (defaults to 2017).
 #' @param ... arguments to be passed to the underlying `load_tiger` function, which is not exported.
-#'        Options include \code{refresh}, which specifies whether or not to re-download shapefiles
-#'        (defaults to \code{FALSE}).
+#'        Options include \code{class}, which can be set to \code{"sp"} (the default) or \code{"sf"} to
+#'        request sp or sf class objects, and \code{refresh}, which specifies whether or
+#'        not to re-download shapefiles (defaults to \code{FALSE}).
 #' @family metro area functions
 #' @seealso \url{http://www2.census.gov/geo/pdfs/maps-data/data/tiger/tgrshp2015/TGRSHP2015_TechDoc.pdf}
 #' @export
@@ -149,7 +152,7 @@ combined_statistical_areas <- function(cb = FALSE, resolution = '500k', year = N
 
   if (is.null(year)) {
 
-    year <- getOption("tigris_year", 2016)
+    year <- getOption("tigris_year", 2017)
 
   }
 
@@ -190,11 +193,11 @@ combined_statistical_areas <- function(cb = FALSE, resolution = '500k', year = N
 #' Metropolitan divisions are subdivisions of metropolitan areas with population of at least 2.5 million.  Please note:
 #' not all metropolitan areas have metropolitan divisions.
 #'
-#' @param year The data year (defaults to 2016).
+#' @param year The data year (defaults to 2017).
 #' @param ... arguments to be passed to the underlying `load_tiger` function, which is not exported.
-#'        Options include \code{refresh}, which specifies whether or not to re-download shapefiles
-#'        (defaults to \code{FALSE}), and \code{year}, the year for which you'd like to download data
-#'        (defaults to 2016).
+#'        Options include \code{class}, which can be set to \code{"sp"} (the default) or \code{"sf"} to
+#'        request sp or sf class objects, and \code{refresh}, which specifies whether or
+#'        not to re-download shapefiles (defaults to \code{FALSE}).
 #' @family metro area functions
 #' @seealso \url{http://www2.census.gov/geo/pdfs/maps-data/data/tiger/tgrshp2015/TGRSHP2015_TechDoc.pdf}
 #' @export
@@ -202,7 +205,7 @@ metro_divisions <- function(year = NULL, ...) {
 
   if (is.null(year)) {
 
-    year <- getOption("tigris_year", 2016)
+    year <- getOption("tigris_year", 2017)
 
   }
 
@@ -244,11 +247,11 @@ metro_divisions <- function(year = NULL, ...) {
 #' @param cb If cb is set to TRUE, download a generalized (1:500k)
 #'        cartographic boundary file.  Defaults to FALSE (the most detailed
 #'        TIGER/Line file).  Only available when \code{type = 'necta'}.
-#' @param year The data year (defaults to 2016).
+#' @param year The data year (defaults to 2017).
 #' @param ... arguments to be passed to the underlying `load_tiger` function, which is not exported.
-#'        Options include \code{refresh}, which specifies whether or not to re-download shapefiles
-#'        (defaults to \code{FALSE}), and \code{year}, the year for which you'd like to download data
-#'        (defaults to 2016).
+#'        Options include \code{class}, which can be set to \code{"sp"} (the default) or \code{"sf"} to
+#'        request sp or sf class objects, and \code{refresh}, which specifies whether or
+#'        not to re-download shapefiles (defaults to \code{FALSE}).
 #' @family metro area functions
 #' @seealso \url{http://www2.census.gov/geo/pdfs/maps-data/data/tiger/tgrshp2015/TGRSHP2015_TechDoc.pdf}
 #' @export
@@ -265,7 +268,7 @@ new_england <- function(type = 'necta', cb = FALSE, year = NULL, ...) {
 
   if (is.null(year)) {
 
-    year <- getOption("tigris_year", 2016)
+    year <- getOption("tigris_year", 2017)
 
   }
 
