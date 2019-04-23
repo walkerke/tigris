@@ -13,7 +13,7 @@ call_geolocator(street, city, state, zip = NA)
 
 \item{state}{A two-digit character string with a state postal code}
 
-\item{zip}{A five-digit character string with a postal zip code. Optional paramater.}
+\item{zip}{A five-digit character string with a postal zip code. Optional parameter.}
 }
 \value{
 A character string representing the Census block of the supplied

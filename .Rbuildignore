@@ -2,3 +2,6 @@
 ^\.Rproj\.user$
 ^data-raw$
 ^\.travis\.yml$
+^tigris\.Rcheck$
+^tigris.*\.tar\.gz$
+^tigris.*\.tgz$

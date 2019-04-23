@@ -664,8 +664,7 @@ block_groups <- function(state, county = NULL, cb = FALSE, year = NULL, ...) {
 #' plot(mem_zcta)
 #'
 #' }
-zctas <- function(cb = FALSE, starts_with = NULL, year = NULL, state = NULL,
-                  county = NULL, ...) {
+zctas <- function(cb = FALSE, starts_with = NULL, year = NULL, state = NULL, ...) {
 
   if (is.null(year)) {
 
