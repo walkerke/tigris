@@ -2,22 +2,28 @@
 % Please edit documentation in R/geocode.R
 \name{call_geolocator_latlon}
 \alias{call_geolocator_latlon}
-\title{Call geolocator for one address with lat/lon}
+\title{Call geolocator for one address with lat/lon, adds option to set benchmark and vintage if not provided defualts to most recent.}
 \usage{
-call_geolocator_latlon(lat, lon)
+call_geolocator_latlon(lat, lon, benchmark, vintage)
 }
 \arguments{
 \item{lat}{A numeric value}
 
 \item{lon}{A numeric value}
+
+\item{benchmark}{time period when a snapshot of address ranges was taken}
+
+\item{vintage}{census or survey that the address range relates to}
 }
 \value{
 A character string representing the Census block of the supplied
   lat/lon.
 }
 \description{
-Call geolocator for one address with lat/lon
+Call geolocator for one address with lat/lon, adds option to set benchmark and vintage if not provided defualts to most recent.
 }
 \author{
 Josie Kressner, \email{josie@transportfoundry.com}
+
+Mark Richards, \email{Mark.Richards.002@gmail.com}
 }
