@@ -48,7 +48,7 @@ tigris_cache_dir <- function(path) {
 # also uses global option "tigris_use_cache" to determine whether new data files will
 # be cached or not. (def: TRUE)
 #
-# Year currently defaults to 2015; give option to download other years
+# Year currently defaults to 2018; give option to download other years
 
 
 load_tiger <- function(url,
