@@ -177,8 +177,15 @@ coastline <- function(year = NULL, ...) {
 
   cyear <- as.character(year)
 
-  url <- sprintf("https://www2.census.gov/geo/tiger/TIGER%s/COAST/tl_%s_us_coastline.zip",
-                 cyear, cyear)
+  if (year > 2016) {
+    url <- sprintf("https://www2.census.gov/geo/tiger/TIGER%s/COASTLINE/tl_%s_us_coastline.zip",
+                   cyear, cyear)
+  } else {
+    url <- sprintf("https://www2.census.gov/geo/tiger/TIGER%s/COAST/tl_%s_us_coastline.zip",
+                   cyear, cyear)
+  }
+
+
 
   return(load_tiger(url, tigris_type="coastline", ...))
 
