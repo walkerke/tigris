@@ -13,7 +13,7 @@ be state name or state abbreviation.}
 \item{cb}{If cb is set to TRUE, download a generalized (1:500k)
 states file.  Defaults to FALSE (the most detailed TIGER/Line file)}
 
-\item{year}{the data year (defaults to 2017).}
+\item{year}{the data year (defaults to 2018).}
 
 \item{...}{arguments to be passed to the underlying `load_tiger` function, which is not exported.
 Options include \code{class}, which can be set to \code{"sp"} (the default) or \code{"sf"} to

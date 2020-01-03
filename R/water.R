@@ -10,7 +10,7 @@
 #'        (case-insensitive).
 #' @param county The three-digit FIPS code of the county you'd like the water
 #'        features for.  Can also be a county name.
-#' @param year the data year (defaults to 2017).
+#' @param year the data year (defaults to 2018).
 #' @param ... arguments to be passed to the underlying `load_tiger` function, which is not exported.
 #'        Options include \code{class}, which can be set to \code{"sp"} (the default) or \code{"sf"} to
 #'        request sp or sf class objects, and \code{refresh}, which specifies whether or
@@ -31,7 +31,7 @@ area_water <- function(state, county, year = NULL, ...) {
 
   if (is.null(year)) {
 
-    year <- getOption("tigris_year", 2017)
+    year <- getOption("tigris_year", 2018)
 
   }
 
@@ -77,7 +77,7 @@ area_water <- function(state, county, year = NULL, ...) {
 #'        (case-insensitive).
 #' @param county The three-digit FIPS code of the county you'd like the water
 #'        features for.  Can also be a county name.
-#' @param year the data year (defaults to 2017).
+#' @param year the data year (defaults to 2018).
 #' @param ... arguments to be passed to the underlying `load_tiger` function, which is not exported.
 #'        Options include \code{class}, which can be set to \code{"sp"} (the default) or \code{"sf"} to
 #'        request sp or sf class objects, and \code{refresh}, which specifies whether or
@@ -98,7 +98,7 @@ linear_water <- function(state, county, year = NULL, ...) {
 
   if (is.null(year)) {
 
-    year <- getOption("tigris_year", 2017)
+    year <- getOption("tigris_year", 2018)
 
   }
 
@@ -132,7 +132,7 @@ linear_water <- function(state, county, year = NULL, ...) {
 
 #' Download a shapefile of the US coastline into R
 #'
-#' @param year The year of the dataset (defaults to 2017)
+#' @param year The year of the dataset (defaults to 2018)
 #' @param ... arguments to be passed to the underlying `load_tiger` function, which is not exported.
 #'        Options include \code{class}, which can be set to \code{"sp"} (the default) or \code{"sf"} to
 #'        request sp or sf class objects, and \code{refresh}, which specifies whether or
@@ -171,14 +171,21 @@ coastline <- function(year = NULL, ...) {
 
   if (is.null(year)) {
 
-    year <- getOption("tigris_year", 2017)
+    year <- getOption("tigris_year", 2018)
 
   }
 
   cyear <- as.character(year)
 
-  url <- sprintf("https://www2.census.gov/geo/tiger/TIGER%s/COAST/tl_%s_us_coastline.zip",
-                 cyear, cyear)
+  if (year > 2016) {
+    url <- sprintf("https://www2.census.gov/geo/tiger/TIGER%s/COASTLINE/tl_%s_us_coastline.zip",
+                   cyear, cyear)
+  } else {
+    url <- sprintf("https://www2.census.gov/geo/tiger/TIGER%s/COAST/tl_%s_us_coastline.zip",
+                   cyear, cyear)
+  }
+
+
 
   return(load_tiger(url, tigris_type="coastline", ...))
 

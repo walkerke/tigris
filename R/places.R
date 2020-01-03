@@ -28,7 +28,7 @@
 #' @param cb If cb is set to TRUE, download a generalized (1:500k)
 #'        cartographic boundary file.  Defaults to FALSE (the most detailed
 #'        TIGER/Line file).
-#' @param year the data year (defaults to 2017).
+#' @param year the data year (defaults to 2018).
 #' @param ... arguments to be passed to the underlying `load_tiger` function, which is not exported.
 #'        Options include \code{class}, which can be set to \code{"sp"} (the default) or \code{"sf"} to
 #'        request sp or sf class objects, and \code{refresh}, which specifies whether or
@@ -49,7 +49,7 @@ places <- function(state, cb = FALSE, year = NULL, ...) {
 
   if (is.null(year)) {
 
-    year <- getOption("tigris_year", 2017)
+    year <- getOption("tigris_year", 2018)
 
   }
 
