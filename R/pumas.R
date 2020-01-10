@@ -24,7 +24,7 @@
 #'        not to re-download shapefiles (defaults to \code{FALSE}).
 #' @export
 #' @family general area functions
-#' @seealso \url{http://www.census.gov/geo/reference/puma.html}
+#' @seealso \url{https://www.census.gov/programs-surveys/geography/guidance/geo-areas/pumas.html}
 #' @examples \dontrun{
 #' library(tigris)
 #' library(sp)

@@ -24,10 +24,12 @@ Urban areas include both "urbanized areas," which are densely developed areas wi
 please see the link provided.
 }
 \seealso{
-\url{http://www2.census.gov/geo/pdfs/maps-data/data/tiger/tgrshp2015/TGRSHP2015_TechDoc.pdf}
+\url{https://www.census.gov/programs-surveys/geography/guidance/geo-areas/urban-rural.html}
 
-Other metro area functions: \code{\link{combined_statistical_areas}},
-  \code{\link{core_based_statistical_areas}},
-  \code{\link{metro_divisions}}, \code{\link{new_england}}
+Other metro area functions: 
+\code{\link{combined_statistical_areas}()},
+\code{\link{core_based_statistical_areas}()},
+\code{\link{metro_divisions}()},
+\code{\link{new_england}()}
 }
 \concept{metro area functions}

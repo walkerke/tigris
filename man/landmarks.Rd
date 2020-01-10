@@ -41,5 +41,5 @@ Landmarks may be identified by a MAF/TIGER feature class code only and may not h
 landmark has a unique area landmark identifier (AREAID) or point landmark identifier (POINTID) value.
 }
 \seealso{
-\url{https://www2.census.gov/geo/pdfs/maps-data/data/tiger/tgrshp2015/TGRSHP2015_TechDoc_Ch3.pdf}
+\url{https://www2.census.gov/geo/pdfs/maps-data/data/tiger/tgrshp2018/TGRSHP2018_TechDoc_Ch3.pdf}
 }

@@ -24,7 +24,7 @@
 #'        request sp or sf class objects, and \code{refresh}, which specifies whether
 #'        or not to re-download shapefiles (defaults to \code{FALSE}).
 #' @family legislative district functions
-#' @seealso \url{http://www2.census.gov/geo/pdfs/maps-data/data/tiger/tgrshp2017/TGRSHP2017_TechDoc.pdf}
+#' @seealso \url{https://www.census.gov/programs-surveys/geography/guidance/geo-areas/congressional-dist.html}
 #' @export
 #' @examples \dontrun{
 #' library(tigris)
@@ -112,6 +112,7 @@ congressional_districts <- function(cb = FALSE, resolution = '500k', year = NULL
 #'        request sp or sf class objects, and code{refresh}, which specifies whether or not to re-download
 #'        shapefiles (defaults to \code{FALSE}).
 #' @family legislative district functions
+#' @seealso \url{https://www.census.gov/programs-surveys/geography/guidance/geo-areas/state-legis-dist.html}
 #' @export
 #' @examples \dontrun{
 #' library(tigris)

@@ -4,8 +4,7 @@
 \alias{county_subdivisions}
 \title{Download a county subdivision shapefile into R}
 \usage{
-county_subdivisions(state, county = NULL, cb = FALSE, year = NULL,
-  ...)
+county_subdivisions(state, county = NULL, cb = FALSE, year = NULL, ...)
 }
 \arguments{
 \item{state}{The two-digit FIPS code (string) of the state you want. Can also
@@ -26,12 +25,12 @@ request sp or sf class objects, and \code{refresh}, which specifies whether or
 not to re-download shapefiles (defaults to \code{FALSE}).}
 }
 \description{
-From the US Census Bureau (see link for source, and more information): "County subdivisions
-are the primary divisions of counties and their equivalent entities for the reporting of
-decennial census data. They include census county divisions, census subareas, minor civil
-divisions, and unorganized territories. They may represent legal or statistical entities.
-The 2015 TIGER/Line Shapefiles contain a 5-character FIPS code field for county subdivisions
-and an 8-character National Standards (GNIS) code."
+From the US Census Bureau (see link for source, and more information): "All counties and
+statistically equivalent entities consist of one or more geographic units that the Bureau
+of the Census recognizes as county subdivisions. The two major types of county subdivisions
+ are minor civil divisions(MCDs) and census county divisions (CCDs).
+ A State has either MCDs or their statistical equivalents, or CCDs; it cannot
+ contain both."
 }
 \examples{
 \dontrun{
@@ -44,12 +43,17 @@ plot(or)
 }
 }
 \seealso{
-\url{http://www2.census.gov/geo/pdfs/maps-data/data/tiger/tgrshp2015/TGRSHP2015_TechDoc.pdf}
+\url{https://www2.census.gov/geo/pdfs/reference/GARM/Ch8GARM.pdf}
 
-Other general area functions: \code{\link{block_groups}},
-  \code{\link{blocks}}, \code{\link{counties}},
-  \code{\link{places}}, \code{\link{pumas}},
-  \code{\link{school_districts}}, \code{\link{states}},
-  \code{\link{tracts}}, \code{\link{zctas}}
+Other general area functions: 
+\code{\link{block_groups}()},
+\code{\link{blocks}()},
+\code{\link{counties}()},
+\code{\link{places}()},
+\code{\link{pumas}()},
+\code{\link{school_districts}()},
+\code{\link{states}()},
+\code{\link{tracts}()},
+\code{\link{zctas}()}
 }
 \concept{general area functions}

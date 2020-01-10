@@ -36,7 +36,8 @@ plot(ia)
 }
 }
 \seealso{
-Other legislative district functions: \code{\link{congressional_districts}},
-  \code{\link{state_legislative_districts}}
+Other legislative district functions: 
+\code{\link{congressional_districts}()},
+\code{\link{state_legislative_districts}()}
 }
 \concept{legislative district functions}

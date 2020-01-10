@@ -14,7 +14,7 @@
 #'        request sp or sf class objects, and \code{refresh}, which specifies whether or
 #'        not to re-download shapefiles (defaults to \code{FALSE}).
 #' @family native/tribal geometries functions
-#' @seealso \url{http://www2.census.gov/geo/pdfs/maps-data/data/tiger/tgrshp2015/TGRSHP2015_TechDoc.pdf}
+#' @seealso \url{https://www2.census.gov/geo/pdfs/reference/GARM/Ch5GARM.pdf}
 #' @export
 #' @examples \dontrun{
 #' library(tigris)
@@ -84,7 +84,7 @@ native_areas <- function(cb = FALSE, year = NULL, ...) {
 #'        request sp or sf class objects, and \code{refresh}, which specifies whether or
 #'        not to re-download shapefiles (defaults to \code{FALSE}).
 #' @family native/tribal geometries functions
-#' @seealso \url{http://www2.census.gov/geo/pdfs/maps-data/data/tiger/tgrshp2015/TGRSHP2015_TechDoc.pdf}
+#' @seealso \url{https://www2.census.gov/geo/pdfs/reference/GARM/Ch5GARM.pdf}
 #' @export
 #' @examples \dontrun{
 #' library(tigris)
@@ -150,7 +150,7 @@ tribal_subdivisions_national <- function(year = NULL, ...) {
 #'        request sp or sf class objects, and \code{refresh}, which specifies whether or
 #'        not to re-download shapefiles (defaults to \code{FALSE}).
 #' @family native/tribal geometries functions
-#' @seealso \url{http://www2.census.gov/geo/pdfs/maps-data/data/tiger/tgrshp2015/TGRSHP2015_TechDoc.pdf}
+#' @seealso \url{https://www2.census.gov/geo/pdfs/reference/GARM/Ch5GARM.pdf}
 #' @export
 alaska_native_regional_corporations <- function(cb = FALSE, year = NULL, ...) {
 
@@ -212,7 +212,7 @@ alaska_native_regional_corporations <- function(cb = FALSE, year = NULL, ...) {
 #'        request sp or sf class objects, and \code{refresh}, which specifies whether or
 #'        not to re-download shapefiles (defaults to \code{FALSE}).
 #' @family native/tribal geometries functions
-#' @seealso \url{http://www2.census.gov/geo/pdfs/maps-data/data/tiger/tgrshp2015/TGRSHP2015_TechDoc.pdf}
+#' @seealso \url{https://www2.census.gov/geo/pdfs/reference/GARM/Ch5GARM.pdf}
 #' @export
 #' @examples \dontrun{
 #' library(tigris)
@@ -269,7 +269,7 @@ tribal_block_groups <- function(year = NULL, ...) {
 #'        request sp or sf class objects, and \code{refresh}, which specifies whether or
 #'        not to re-download shapefiles (defaults to \code{FALSE}).
 #' @family native/tribal geometries functions
-#' @seealso \url{http://www2.census.gov/geo/pdfs/maps-data/data/tiger/tgrshp2015/TGRSHP2015_TechDoc.pdf}
+#' @seealso \url{https://www2.census.gov/geo/pdfs/reference/GARM/Ch5GARM.pdf}
 #' @export
 #' @examples \dontrun{
 #' library(tigris)

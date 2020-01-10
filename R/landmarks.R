@@ -10,14 +10,14 @@
 #' This file does not include the three point landmarks identified as military installation features in the
 #' MAF/TIGER database. These point landmarks are included in the point landmark shapefile.
 #' Although almost all military installations have assigned 8-character National Standard (GNIS) codes, the
-#' Census Bureau has not loaded most of this data into the MAF/TIGER database. The 2015 military
+#' Census Bureau has not loaded most of this data into the MAF/TIGER database. The 2018 military
 #' shapefiles contain few values in the ANSICODE field.
 #' @param year the data year (defaults to 2018).
 #' @param ... arguments to be passed to the underlying `load_tiger` function, which is not exported.
 #'        Options include \code{class}, which can be set to \code{"sp"} (the default) or \code{"sf"} to
 #'        request sp or sf class objects, and \code{refresh}, which specifies whether or
 #'        not to re-download shapefiles (defaults to \code{FALSE}).
-#' @seealso \url{http://www2.census.gov/geo/pdfs/maps-data/data/tiger/tgrshp2015/TGRSHP2015_TechDoc_Ch3.pdf}
+#' @seealso \url{http://www2.census.gov/geo/pdfs/maps-data/data/tiger/tgrshp2018/TGRSHP2018_TechDoc_Ch3.pdf}
 #' @export
 
 military <- function(year = NULL, ...) {
@@ -69,7 +69,7 @@ military <- function(year = NULL, ...) {
 #' Landmarks may be identified by a MAF/TIGER feature class code only and may not have a name. Each
 #' landmark has a unique area landmark identifier (AREAID) or point landmark identifier (POINTID) value.
 #'
-#' @seealso \url{https://www2.census.gov/geo/pdfs/maps-data/data/tiger/tgrshp2015/TGRSHP2015_TechDoc_Ch3.pdf}
+#' @seealso \url{https://www2.census.gov/geo/pdfs/maps-data/data/tiger/tgrshp2018/TGRSHP2018_TechDoc_Ch3.pdf}
 #'
 #' @param state The state for which you'd like to download the landmarks
 #' @param type Whether you would like to download point landmarks (\code{"point"}) or area landmarks (\code{"area"}). #'                Defaults to \code{"point"}.

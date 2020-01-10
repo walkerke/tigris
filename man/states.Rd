@@ -43,12 +43,17 @@ leaflet(states) \%>\%
 }
 }
 \seealso{
-\url{https://www.census.gov/geo/reference/gtc/gtc_state.html}
+\url{https://www2.census.gov/geo/pdfs/reference/GARM/Ch4GARM.pdf}
 
-Other general area functions: \code{\link{block_groups}},
-  \code{\link{blocks}}, \code{\link{counties}},
-  \code{\link{county_subdivisions}}, \code{\link{places}},
-  \code{\link{pumas}}, \code{\link{school_districts}},
-  \code{\link{tracts}}, \code{\link{zctas}}
+Other general area functions: 
+\code{\link{block_groups}()},
+\code{\link{blocks}()},
+\code{\link{counties}()},
+\code{\link{county_subdivisions}()},
+\code{\link{places}()},
+\code{\link{pumas}()},
+\code{\link{school_districts}()},
+\code{\link{tracts}()},
+\code{\link{zctas}()}
 }
 \concept{general area functions}

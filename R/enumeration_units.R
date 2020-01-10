@@ -41,7 +41,7 @@
 #'        not to re-download shapefiles (defaults to \code{FALSE}).
 #' @export
 #' @family general area functions
-#' @seealso \url{https://www.census.gov/geo/reference/gtc/gtc_cou.html}
+#' @seealso \url{https://www2.census.gov/geo/pdfs/reference/GARM/Ch4GARM.pdf}
 #' @examples \dontrun{
 #' library(tigris)
 #' library(ggplot2)
@@ -226,7 +226,7 @@ counties <- function(state = NULL, cb = FALSE, resolution = '500k', year = NULL,
 #'        request sp or sf class objects, and \code{refresh}, which specifies whether or
 #'        not to re-download shapefiles (defaults to \code{FALSE}).
 #' @family general area functions
-#' @seealso \url{https://www.census.gov/geo/reference/gtc/gtc_ct.html}
+#' @seealso \url{https://www2.census.gov/geo/pdfs/reference/GARM/Ch10GARM.pdf}
 #' @export
 #' @examples \dontrun{
 #' library(tigris)
@@ -391,7 +391,7 @@ tracts <- function(state, county = NULL, cb = FALSE, year = NULL, ...) {
 #'        request sp or sf class objects, and \code{refresh}, which specifies whether or
 #'        not to re-download shapefiles (defaults to \code{FALSE}).
 #' @family general area functions
-#' @seealso \url{http://www2.census.gov/geo/pdfs/maps-data/data/tiger/tgrshp2015/TGRSHP2015_TechDoc.pdf}
+#' @seealso \url{http://www2.census.gov/geo/pdfs/maps-data/data/tiger/tgrshp2018/TGRSHP2018_TechDoc.pdf}
 #' @export
 #' @examples \dontrun{
 #' library(tigris)
@@ -483,7 +483,7 @@ school_districts <- function(state, type = 'unified', year = NULL, ...) {
 #'        Options include \code{refresh}, which specifies whether or not to re-download shapefiles
 #'        (defaults to \code{FALSE}).
 #' @family general area functions
-#' @seealso \url{http://www2.census.gov/geo/pdfs/maps-data/data/tiger/tgrshp2015/TGRSHP2015_TechDoc.pdf}
+#' @seealso \url{http://www2.census.gov/geo/pdfs/maps-data/data/tiger/tgrshp2018/TGRSHP2018_TechDoc.pdf}
 #' @export
 #' @examples \dontrun{
 #' library(tigris)
@@ -644,7 +644,7 @@ block_groups <- function(state, county = NULL, cb = FALSE, year = NULL, ...) {
 #'        request sp or sf class objects, and \code{refresh}, which specifies whether or
 #'        not to re-download shapefiles (defaults to \code{FALSE}).
 #' @family general area functions
-#' @seealso \url{https://www.census.gov/geo/reference/zctas.html}
+#' @seealso \url{https://www.census.gov/programs-surveys/geography/guidance/geo-areas/zctas.html}
 #' @export
 #' @examples \dontrun{
 #' # Example: get ZCTAs that intersect the Memphis, TN urbanized area
@@ -775,7 +775,7 @@ zctas <- function(cb = FALSE, starts_with = NULL, year = NULL, state = NULL, ...
 #'        request sp or sf class objects, and \code{refresh}, which specifies whether or
 #'        not to re-download shapefiles (defaults to \code{FALSE}).
 #' @family general area functions
-#' @seealso \url{http://www2.census.gov/geo/pdfs/maps-data/data/tiger/tgrshp2015/TGRSHP2015_TechDoc.pdf}
+#' @seealso \url{http://www2.census.gov/geo/pdfs/maps-data/data/tiger/tgrshp2018/TGRSHP2018_TechDoc.pdf}
 #' @export
 #' @examples \dontrun{
 #' # Simple example using Rose Island, American Samoa
@@ -867,12 +867,12 @@ blocks <- function(state, county = NULL, year = NULL, ...) {
 
 #' Download a county subdivision shapefile into R
 #'
-#' From the US Census Bureau (see link for source, and more information): "County subdivisions
-#' are the primary divisions of counties and their equivalent entities for the reporting of
-#' decennial census data. They include census county divisions, census subareas, minor civil
-#' divisions, and unorganized territories. They may represent legal or statistical entities.
-#' The 2015 TIGER/Line Shapefiles contain a 5-character FIPS code field for county subdivisions
-#' and an 8-character National Standards (GNIS) code."
+#' From the US Census Bureau (see link for source, and more information): "All counties and
+#' statistically equivalent entities consist of one or more geographic units that the Bureau
+#' of the Census recognizes as county subdivisions. The two major types of county subdivisions
+#'  are minor civil divisions(MCDs) and census county divisions (CCDs).
+#'  A State has either MCDs or their statistical equivalents, or CCDs; it cannot
+#'  contain both."
 #'
 #' @param state The two-digit FIPS code (string) of the state you want. Can also
 #'        be state name or state abbreviation.
@@ -887,7 +887,7 @@ blocks <- function(state, county = NULL, year = NULL, ...) {
 #'        request sp or sf class objects, and \code{refresh}, which specifies whether or
 #'        not to re-download shapefiles (defaults to \code{FALSE}).
 #' @family general area functions
-#' @seealso \url{http://www2.census.gov/geo/pdfs/maps-data/data/tiger/tgrshp2015/TGRSHP2015_TechDoc.pdf}
+#' @seealso \url{https://www2.census.gov/geo/pdfs/reference/GARM/Ch8GARM.pdf}
 #' @export
 #'
 #' @examples \dontrun{

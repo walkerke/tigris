@@ -45,10 +45,12 @@ plot(ne)
 }
 }
 \seealso{
-\url{http://www2.census.gov/geo/pdfs/maps-data/data/tiger/tgrshp2015/TGRSHP2015_TechDoc.pdf}
+\url{http://www2.census.gov/geo/pdfs/maps-data/data/tiger/tgrshp2018/TGRSHP2018_TechDoc.pdf}
 
-Other metro area functions: \code{\link{combined_statistical_areas}},
-  \code{\link{core_based_statistical_areas}},
-  \code{\link{metro_divisions}}, \code{\link{urban_areas}}
+Other metro area functions: 
+\code{\link{combined_statistical_areas}()},
+\code{\link{core_based_statistical_areas}()},
+\code{\link{metro_divisions}()},
+\code{\link{urban_areas}()}
 }
 \concept{metro area functions}

@@ -34,7 +34,7 @@
 #'        request sp or sf class objects, and \code{refresh}, which specifies whether or
 #'        not to re-download shapefiles (defaults to \code{FALSE}).
 #' @family general area functions
-#' @seealso \url{https://www.census.gov/geo/reference/gtc/gtc_place.html}
+#' @seealso \url{https://www2.census.gov/geo/pdfs/reference/GARM/Ch9GARM.pdf}
 #' @export
 places <- function(state, cb = FALSE, year = NULL, ...) {
 

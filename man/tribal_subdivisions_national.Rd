@@ -34,11 +34,12 @@ leaflet(trib) \%>\%
 }
 }
 \seealso{
-\url{http://www2.census.gov/geo/pdfs/maps-data/data/tiger/tgrshp2015/TGRSHP2015_TechDoc.pdf}
+\url{https://www2.census.gov/geo/pdfs/reference/GARM/Ch5GARM.pdf}
 
-Other native/tribal geometries functions: \code{\link{alaska_native_regional_corporations}},
-  \code{\link{native_areas}},
-  \code{\link{tribal_block_groups}},
-  \code{\link{tribal_census_tracts}}
+Other native/tribal geometries functions: 
+\code{\link{alaska_native_regional_corporations}()},
+\code{\link{native_areas}()},
+\code{\link{tribal_block_groups}()},
+\code{\link{tribal_census_tracts}()}
 }
 \concept{native/tribal geometries functions}

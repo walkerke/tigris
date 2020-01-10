@@ -4,8 +4,7 @@
 \alias{zctas}
 \title{Download a Zip Code Tabulation Area (ZCTA) shapefile into R}
 \usage{
-zctas(cb = FALSE, starts_with = NULL, year = NULL, state = NULL,
-  ...)
+zctas(cb = FALSE, starts_with = NULL, year = NULL, state = NULL, ...)
 }
 \arguments{
 \item{cb}{If cb is set to TRUE, download a generalized (1:500k)
@@ -56,12 +55,17 @@ plot(mem_zcta)
 }
 }
 \seealso{
-\url{https://www.census.gov/geo/reference/zctas.html}
+\url{https://www.census.gov/programs-surveys/geography/guidance/geo-areas/zctas.html}
 
-Other general area functions: \code{\link{block_groups}},
-  \code{\link{blocks}}, \code{\link{counties}},
-  \code{\link{county_subdivisions}}, \code{\link{places}},
-  \code{\link{pumas}}, \code{\link{school_districts}},
-  \code{\link{states}}, \code{\link{tracts}}
+Other general area functions: 
+\code{\link{block_groups}()},
+\code{\link{blocks}()},
+\code{\link{counties}()},
+\code{\link{county_subdivisions}()},
+\code{\link{places}()},
+\code{\link{pumas}()},
+\code{\link{school_districts}()},
+\code{\link{states}()},
+\code{\link{tracts}()}
 }
 \concept{general area functions}

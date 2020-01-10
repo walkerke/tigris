@@ -3,7 +3,6 @@
 \docType{package}
 \name{tigris}
 \alias{tigris}
-\alias{tigris-package}
 \title{Download and use U.S. Census TIGER shapefiles in R}
 \description{
 Use option \code{tigris_use_cache} to tell \code{tigris} to cache

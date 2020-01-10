@@ -57,11 +57,12 @@ gg
 }
 }
 \seealso{
-\url{http://www2.census.gov/geo/pdfs/maps-data/data/tiger/tgrshp2015/TGRSHP2015_TechDoc.pdf}
+\url{http://www2.census.gov/geo/pdfs/maps-data/data/tiger/tgrshp2018/TGRSHP2018_TechDoc.pdf}
 
-Other transportation functions: \code{\link{address_ranges}},
-  \code{\link{primary_roads}},
-  \code{\link{primary_secondary_roads}},
-  \code{\link{rails}}
+Other transportation functions: 
+\code{\link{address_ranges}()},
+\code{\link{primary_roads}()},
+\code{\link{primary_secondary_roads}()},
+\code{\link{rails}()}
 }
 \concept{transportation functions}

@@ -17,7 +17,7 @@
 #'        not to re-download shapefiles (defaults to \code{FALSE}).
 #' @export
 #' @family general area functions
-#' @seealso \url{https://www.census.gov/geo/reference/gtc/gtc_state.html}
+#' @seealso \url{https://www2.census.gov/geo/pdfs/reference/GARM/Ch4GARM.pdf}
 #' @examples \dontrun{
 #' library(tigris)
 #' library(leaflet)

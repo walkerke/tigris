@@ -25,10 +25,12 @@ not to re-download shapefiles (defaults to \code{FALSE}).}
 Download an address range features shapefile into R
 }
 \seealso{
-\url{http://www2.census.gov/geo/pdfs/maps-data/data/tiger/tgrshp2015/TGRSHP2015_TechDoc.pdf}
+\url{http://www2.census.gov/geo/pdfs/maps-data/data/tiger/tgrshp2018/TGRSHP2018_TechDoc.pdf}
 
-Other transportation functions: \code{\link{primary_roads}},
-  \code{\link{primary_secondary_roads}},
-  \code{\link{rails}}, \code{\link{roads}}
+Other transportation functions: 
+\code{\link{primary_roads}()},
+\code{\link{primary_secondary_roads}()},
+\code{\link{rails}()},
+\code{\link{roads}()}
 }
 \concept{transportation functions}

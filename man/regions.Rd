@@ -33,7 +33,8 @@ leaflet(us_regions) \%>\%
 }
 }
 \seealso{
-Other national cartographic boundary functions: \code{\link{divisions}},
-  \code{\link{nation}}
+Other national cartographic boundary functions: 
+\code{\link{divisions}()},
+\code{\link{nation}()}
 }
 \concept{national cartographic boundary functions}

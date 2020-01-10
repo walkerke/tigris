@@ -39,9 +39,10 @@ plot(dallas_water)
 }
 }
 \seealso{
-\url{http://www2.census.gov/geo/pdfs/maps-data/data/tiger/tgrshp2015/TGRSHP2015_TechDoc.pdf}
+\url{http://www2.census.gov/geo/pdfs/maps-data/data/tiger/tgrshp2018/TGRSHP2018_TechDoc.pdf}
 
-Other water functions: \code{\link{coastline}},
-  \code{\link{linear_water}}
+Other water functions: 
+\code{\link{coastline}()},
+\code{\link{linear_water}()}
 }
 \concept{water functions}

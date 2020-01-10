@@ -52,12 +52,17 @@ plot(us_pumas)
 }
 }
 \seealso{
-\url{http://www.census.gov/geo/reference/puma.html}
+\url{https://www.census.gov/programs-surveys/geography/guidance/geo-areas/pumas.html}
 
-Other general area functions: \code{\link{block_groups}},
-  \code{\link{blocks}}, \code{\link{counties}},
-  \code{\link{county_subdivisions}}, \code{\link{places}},
-  \code{\link{school_districts}}, \code{\link{states}},
-  \code{\link{tracts}}, \code{\link{zctas}}
+Other general area functions: 
+\code{\link{block_groups}()},
+\code{\link{blocks}()},
+\code{\link{counties}()},
+\code{\link{county_subdivisions}()},
+\code{\link{places}()},
+\code{\link{school_districts}()},
+\code{\link{states}()},
+\code{\link{tracts}()},
+\code{\link{zctas}()}
 }
 \concept{general area functions}

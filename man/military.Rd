@@ -26,9 +26,9 @@ see Section 3.12, Landmarks (Area and Point)."
 This file does not include the three point landmarks identified as military installation features in the
 MAF/TIGER database. These point landmarks are included in the point landmark shapefile.
 Although almost all military installations have assigned 8-character National Standard (GNIS) codes, the
-Census Bureau has not loaded most of this data into the MAF/TIGER database. The 2015 military
+Census Bureau has not loaded most of this data into the MAF/TIGER database. The 2018 military
 shapefiles contain few values in the ANSICODE field.
 }
 \seealso{
-\url{http://www2.census.gov/geo/pdfs/maps-data/data/tiger/tgrshp2015/TGRSHP2015_TechDoc_Ch3.pdf}
+\url{http://www2.census.gov/geo/pdfs/maps-data/data/tiger/tgrshp2018/TGRSHP2018_TechDoc_Ch3.pdf}
 }

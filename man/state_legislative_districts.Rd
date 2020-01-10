@@ -4,8 +4,13 @@
 \alias{state_legislative_districts}
 \title{Download a state legislative districts shapefile into R - upper or lower}
 \usage{
-state_legislative_districts(state, house = "upper", cb = FALSE,
-  year = NULL, ...)
+state_legislative_districts(
+  state,
+  house = "upper",
+  cb = FALSE,
+  year = NULL,
+  ...
+)
 }
 \arguments{
 \item{state}{The two-digit FIPS code (string) of the state. Can also be state
@@ -47,7 +52,10 @@ leaflet(leg) \%>\%
 }
 }
 \seealso{
-Other legislative district functions: \code{\link{congressional_districts}},
-  \code{\link{voting_districts}}
+\url{https://www.census.gov/programs-surveys/geography/guidance/geo-areas/state-legis-dist.html}
+
+Other legislative district functions: 
+\code{\link{congressional_districts}()},
+\code{\link{voting_districts}()}
 }
 \concept{legislative district functions}
