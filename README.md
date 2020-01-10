@@ -18,7 +18,7 @@ Or, get the development version from GitHub:
 devtools::install_github('walkerke/tigris')
 ```
 
-As of version 0.9, tigris defaults to the 2018 TIGER/Line and Cartographic Boundary shapefiles.  
+As of version 0.9.1, tigris defaults to the 2018 TIGER/Line and Cartographic Boundary shapefiles.  
 
 To learn how to use the package, I'd recommend the following materials: 
 
