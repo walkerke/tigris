@@ -1,6 +1,6 @@
 # tigris
 
-[![Travis-CI Build Status](https://travis-ci.org/walkerke/tigris.svg?branch=master)](https://travis-ci.org/walkerke/tigris)  ![](http://www.r-pkg.org/badges/version/tigris)  ![](http://cranlogs.r-pkg.org/badges/tigris)
+[![Travis-CI Build Status](https://travis-ci.org/walkerke/tigris.svg?branch=master)](https://travis-ci.org/walkerke/tigris) ![](http://cranlogs.r-pkg.org/badges/tigris)
 
 Download and use Census TIGER/Line shapefiles in R
 
