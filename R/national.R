@@ -132,7 +132,7 @@ divisions <- function(resolution = '500k', year = NULL, ...) {
 #'    addTiles() %>%
 #'    addPolygons()
 #' }
-nation <- function(resolution = '5m', year = NULL) {
+nation <- function(resolution = '5m', year = NULL, ...) {
 
   if (is.null(year)) {
 
