@@ -385,6 +385,8 @@ tracts <- function(state, county = NULL, cb = FALSE, year = NULL, ...) {
 #' @param type Specify whether you want to return a unified school district (the default, \code{'unified'}),
 #'        an elementary school district (\code{'elementary'}), or a secondary school district (\code{'secondary'}).
 #'        Please note: elementary and secondary school districts do not exist in all states
+#' @param cb if TRUE, download a generalized (1:500k)
+#'        school districts file.  Defaults to FALSE (the most detailed TIGER/Line file)
 #' @param year the data year; defaults to 2018
 #' @param ... arguments to be passed to the underlying `load_tiger` function, which is not exported.
 #'        Options include \code{class}, which can be set to \code{"sp"} (the default) or \code{"sf"} to
@@ -405,7 +407,8 @@ tracts <- function(state, county = NULL, cb = FALSE, year = NULL, ...) {
 #'               color = "black",
 #'               weight = 0.5)
 #' }
-school_districts <- function(state, type = 'unified', year = NULL, ...) {
+school_districts <- function(state, type = 'unified',
+                             cb = FALSE, year = NULL, ...) {
 
   if (is.null(year)) {
 
@@ -440,8 +443,17 @@ school_districts <- function(state, type = 'unified', year = NULL, ...) {
 
   cyear <- as.character(year)
 
-  url <- sprintf("https://www2.census.gov/geo/tiger/TIGER%s/%s/tl_%s_%s_%s.zip",
-                 cyear, toupper(type), cyear, state, type)
+  if (cb) {
+
+    url <- sprintf("https://www2.census.gov/geo/tiger/GENZ%s/shp/cb_%s_%s_%s_500k.zip",
+                   cyear, cyear, state, type)
+
+  } else {
+
+    url <- sprintf("https://www2.census.gov/geo/tiger/TIGER%s/%s/tl_%s_%s_%s.zip",
+                   cyear, toupper(type), cyear, state, type)
+
+  }
 
   return(load_tiger(url, tigris_type = type, ...))
 
