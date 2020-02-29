@@ -1,24 +1,18 @@
-#' Download a congressional districts shapefile for the 114th Congress into R
+#' Download a congressional districts shapefile into R
 #'
 #' Description from the US Census Bureau (see link for source):
-#' The 2017 TIGER/Line Shapefiles contain the 115th Congressional Districts. All congressional districts
-#' appearing in the 2017 TIGER/Line Shapefiles reflect the information provided to the Census Bureau by
-#' the states by May 1, 2016. The 115th Congressional District shapefile contains the areas in effect from
-#' January 2017 to 2019.
+#' Congressional districts are the 435 areas from which members are elected to the U.S. House of Representatives. After the apportionment of congressional seats among the states, which is based on decennial census population counts, each state with multiple seats is responsible for establishing congressional districts for the purpose of electing representatives. Each congressional district is to be as equal in population to all other congressional districts in a state as practicable. The boundaries and numbers shown for the congressional districts are those specified in the state laws or court orders establishing the districts within each state.
 #'
-#' Congressional districts are the 435 areas from which people are elected to the U.S. House of
-#' Representatives and the five areas with nonvoting delegates from state equivalents. After the
-#' apportionment of congressional seats among the states based on decennial census population counts,
-#' each state is responsible for establishing the boundaries of the congressional districts for the purpose of
-#' electing representatives. Each congressional district is to be as equal in population to all other
-#' congressional districts in a state as practicable.
+#' Congressional districts for the 108th through 112th sessions were established by the states based on the result of the 2000 Census. Congressional districts for the 113th through 116th sessions were established by the states based on the result of the 2010 Census. Boundaries are effective until January of odd number years (for example, January 2015, January 2017, etc.), unless a state initiative or court ordered redistricting requires a change. All states established new congressional districts in 2011-2012, with the exception of the seven single member states (Alaska, Delaware, Montana, North Dakota, South Dakota, Vermont, and Wyoming).
+#'
+#' The current default in tigris is the 116th Congress, which is available when \code{year = 2018} or \code{year = 2019}.  Older congressional district boundaries back to 2011 can be obtained by supplying the appropriate year.
 #'
 #' @param cb If cb is set to TRUE, download a generalized (1:500k)
 #'        cartographic boundary file.  Defaults to FALSE (the most detailed
 #'        TIGER/Line file).
 #' @param resolution The resolution of the cartographic boundary file (if cb == TRUE).
 #'        Defaults to '500k'; options include '5m' (1:5 million) and '20m' (1:20 million).
-#' @param year the data year (defaults to 2017).  To get boundaries for the 115th congress, set \code{year = 2017}.
+#' @param year the data year (defaults to 2018).
 #' @param ... arguments to be passed to the underlying `load_tiger` function, which is not exported.
 #'        Options include \code{class}, which can be set to \code{"sp"} (the default) or \code{"sf"} to
 #'        request sp or sf class objects, and \code{refresh}, which specifies whether
@@ -30,9 +24,9 @@
 #' library(tigris)
 #' library(leaflet)
 #'
-#' cd114 <- congressional_districts(cb = TRUE, resolution = '20m')
+#' cd116 <- congressional_districts(cb = TRUE, resolution = '20m')
 #'
-#' leaflet(cd114) %>%
+#' leaflet(cd116) %>%
 #'    addTiles() %>%
 #'    addPolygons()
 #' }
