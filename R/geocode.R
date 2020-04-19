@@ -72,7 +72,7 @@ append_geoid <- function(address, geoid_type = 'block') {
 #'   address.
 #'
 #' importFrom utils URLencode
-#' importFrom httr GET stop_for_status
+#' @importFrom httr RETRY stop_for_status
 #'
 #' @export
 #'
@@ -111,7 +111,7 @@ call_geolocator <- function(street, city, state, zip = NA) {
   url_full <- paste0(call_start, url, call_end)
 
   # Check response
-  r <- httr::GET(url_full)
+  r <- httr::RETRY('GET', url_full, terminate_on = c(404))
   httr::stop_for_status(r)
   response <- httr::content(r)
   if (length(response$result$addressMatches) == 0) {
@@ -141,7 +141,7 @@ call_geolocator <- function(street, city, state, zip = NA) {
 #'   lat/lon.
 #'
 #' @importFrom utils URLencode
-#' @importFrom httr GET stop_for_status
+#' @importFrom httr RETRY stop_for_status
 #'
 #' @author Josie Kressner, \email{josie@@transportfoundry.com}
 #' @author Mark Richards, \email{Mark.Richards.002@@gmail.com}
@@ -168,7 +168,7 @@ call_geolocator_latlon <- function(lat, lon, benchmark, vintage) {
   url_full <- paste0(call_start, url, benchmark0, vintage0)
   #print(url_full)
   # Check response
-  r <- httr::GET(url_full)
+  r <- httr::RETRY('GET', url_full, terminate_on = c(404))
   httr::stop_for_status(r)
   response <- httr::content(r)
   if (length(response$result$geographies$`2010 Census Blocks`[[1]]$GEOID) == 0) {

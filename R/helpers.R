@@ -84,11 +84,11 @@ load_tiger <- function(url,
         # Change back if you get additional info.
 
         if (progress_bar) {
-          try(GET(url,
+          try(RETRY("GET", url,
                   write_disk(file_loc, overwrite=refresh),
                   progress(type="down")), silent=TRUE)
         } else {
-          try(GET(url,
+          try(RETRY("GET", url,
                   write_disk(file_loc, overwrite=refresh)),
                   silent=TRUE)
         }
@@ -121,11 +121,11 @@ load_tiger <- function(url,
             # try(download.file(url, file_loc, mode = "wb"))
 
             if (progress_bar) {
-              try(GET(url,
+              try(RETRY("GET", url,
                       write_disk(file_loc, overwrite=TRUE),
                       progress(type="down")), silent=TRUE)
             } else {
-              try(GET(url,
+              try(RETRY("GET", url,
                       write_disk(file_loc, overwrite=TRUE)),
                       silent=TRUE)
             }
@@ -193,10 +193,10 @@ load_tiger <- function(url,
     file_loc <- file.path(tmp, tiger_file)
 
     if (progress_bar) {
-      try(GET(url, write_disk(file_loc),
+      try(RETRY("GET", url, write_disk(file_loc),
               progress(type = "down")), silent = TRUE)
     } else {
-      try(GET(url, write_disk(file_loc)),
+      try(RETRY("GET", url, write_disk(file_loc)),
               silent = TRUE)
     }
 
