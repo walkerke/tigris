@@ -1,8 +1,8 @@
 Package: tigris
 Type: Package
 Title: Load Census TIGER/Line Shapefiles
-Version: 0.9.4
-Date: 2020-04-01
+Version: 0.9.9.9000
+Date: 2020-05-12
 Authors@R: c(
       person(given="Kyle", family="Walker", email="kyle.walker@tcu.edu", role=c("aut", "cre")),
       person(given="Bob", family="Rudis", email="bob@rudis.net", role="ctb")
@@ -17,7 +17,6 @@ Encoding: UTF-8
 Depends:
     R (>= 3.3.0)
 Suggests:
-    acs,
     testthat,
     ggplot2,
     ggthemes,
