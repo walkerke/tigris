@@ -45,17 +45,12 @@
 #' @examples \dontrun{
 #' library(tigris)
 #' library(ggplot2)
-#' library(ggthemes)
 #'
 #' me <- counties("Maine", cb = TRUE)
-#' me_map <- fortify(me)
 #'
 #' gg <- ggplot()
-#' gg <- gg + geom_map(data=me_map, map=me_map,
-#'                     aes(x=long, y=lat, map_id=id),
-#'                     color="black", fill="white", size=0.25)
-#' gg <- gg + coord_map()
-#' gg <- gg + theme_map()
+#' gg <- gg + geom_sf(data = me, color="black",
+#'                    fill="white", size=0.25)
 #' gg
 #' }
 counties <- function(state = NULL, cb = FALSE, resolution = '500k', year = NULL, ...) {
@@ -502,7 +497,7 @@ school_districts <- function(state, type = 'unified',
 #'
 #' benton_bgs <- block_groups("Oregon", "Benton")
 #'
-#' plot(benton_bgs)
+#' plot(benton_bgs$geometry)
 #' }
 block_groups <- function(state, county = NULL, cb = FALSE, year = NULL, ...) {
 
@@ -662,18 +657,15 @@ block_groups <- function(state, county = NULL, cb = FALSE, year = NULL, ...) {
 #' # Example: get ZCTAs that intersect the Memphis, TN urbanized area
 #'
 #' library(tigris)
-#' library(rgeos)
-#' library(sp)
-#'
-#' df <- zctas(cb = TRUE, starts_with = c("37", "38", "72"))
+#' zcta1 <- zctas(cb = TRUE, starts_with = c("37", "38", "72"))
 #'
 #' uas <- urban_areas()
 #'
 #' memphis_ua <- uas[grep("Memphis", uas$NAME10), ]
 #'
-#' mem_zcta <- df[as.vector(gIntersects(df, memphis_ua, byid = TRUE)), ]
+#' mem_zcta <- zcta1[memphis_ua, ]
 #'
-#' plot(mem_zcta)
+#' plot(mem_zcta$geometry)
 #'
 #' }
 zctas <- function(cb = FALSE, starts_with = NULL, year = NULL, state = NULL, ...) {
@@ -907,7 +899,7 @@ blocks <- function(state, county = NULL, year = NULL, ...) {
 #'
 #' or <- county_subdivisions('Oregon', c('Linn', 'Benton'))
 #'
-#' plot(or)
+#' plot(or$geometry)
 #'
 #' }
 county_subdivisions <- function(state, county = NULL, cb = FALSE, year = NULL, ...) {
