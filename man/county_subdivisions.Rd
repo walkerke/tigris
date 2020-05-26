@@ -38,7 +38,7 @@ library(tigris)
 
 or <- county_subdivisions('Oregon', c('Linn', 'Benton'))
 
-plot(or)
+plot(or$geometry)
 
 }
 }

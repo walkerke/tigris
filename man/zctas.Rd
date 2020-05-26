@@ -39,18 +39,15 @@ differences between ZCTAs and ZIP Codes.
 # Example: get ZCTAs that intersect the Memphis, TN urbanized area
 
 library(tigris)
-library(rgeos)
-library(sp)
-
-df <- zctas(cb = TRUE, starts_with = c("37", "38", "72"))
+zcta1 <- zctas(cb = TRUE, starts_with = c("37", "38", "72"))
 
 uas <- urban_areas()
 
 memphis_ua <- uas[grep("Memphis", uas$NAME10), ]
 
-mem_zcta <- df[as.vector(gIntersects(df, memphis_ua, byid = TRUE)), ]
+mem_zcta <- zcta1[memphis_ua, ]
 
-plot(mem_zcta)
+plot(mem_zcta$geometry)
 
 }
 }

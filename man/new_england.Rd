@@ -40,7 +40,7 @@ library(sp)
 
 ne <- new_england(cb = TRUE)
 
-plot(ne)
+plot(ne$geometry)
 
 }
 }

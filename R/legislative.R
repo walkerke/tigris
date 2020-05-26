@@ -221,7 +221,7 @@ state_legislative_districts <- function(state, house = "upper", cb = FALSE, year
 #'
 #' ia <- voting_districts("Iowa")
 #'
-#' plot(ia)
+#' plot(ia$geometry)
 #'
 #' }
 voting_districts <- function(state, ...) {

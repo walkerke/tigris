@@ -52,7 +52,7 @@ library(tigris)
 
 benton_bgs <- block_groups("Oregon", "Benton")
 
-plot(benton_bgs)
+plot(benton_bgs$geometry)
 }
 }
 \seealso{

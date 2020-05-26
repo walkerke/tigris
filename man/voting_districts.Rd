@@ -31,7 +31,7 @@ library(sp)
 
 ia <- voting_districts("Iowa")
 
-plot(ia)
+plot(ia$geometry)
 
 }
 }

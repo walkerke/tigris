@@ -261,7 +261,7 @@ metro_divisions <- function(year = NULL, ...) {
 #'
 #' ne <- new_england(cb = TRUE)
 #'
-#' plot(ne)
+#' plot(ne$geometry)
 #'
 #' }
 new_england <- function(type = 'necta', cb = FALSE, year = NULL, ...) {
