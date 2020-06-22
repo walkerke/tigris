@@ -24,8 +24,8 @@ with 75 or 76.  Defaults to NULL, which will return all ZCTAs in the US.}
 \item{state}{the state for which you are requesting data; only available for 2000 and 2010}
 
 \item{...}{arguments to be passed to the underlying `load_tiger` function, which is not exported.
-Options include \code{class}, which can be set to \code{"sp"} (the default) or \code{"sf"} to
-request sp or sf class objects, and \code{refresh}, which specifies whether or
+Options include \code{class}, which can be set to \code{"sf"} (the default) or \code{"sp"} to
+request sf or sp class objects, and \code{refresh}, which specifies whether or
 not to re-download shapefiles (defaults to \code{FALSE}).}
 }
 \description{
@@ -39,18 +39,15 @@ differences between ZCTAs and ZIP Codes.
 # Example: get ZCTAs that intersect the Memphis, TN urbanized area
 
 library(tigris)
-library(rgeos)
-library(sp)
-
-df <- zctas(cb = TRUE, starts_with = c("37", "38", "72"))
+zcta1 <- zctas(cb = TRUE, starts_with = c("37", "38", "72"))
 
 uas <- urban_areas()
 
 memphis_ua <- uas[grep("Memphis", uas$NAME10), ]
 
-mem_zcta <- df[as.vector(gIntersects(df, memphis_ua, byid = TRUE)), ]
+mem_zcta <- zcta1[memphis_ua, ]
 
-plot(mem_zcta)
+plot(mem_zcta$geometry)
 
 }
 }

@@ -14,9 +14,9 @@
 #'        Defaults to '500k'; options include '5m' (1:5 million) and '20m' (1:20 million).
 #' @param year the data year (defaults to 2018).
 #' @param ... arguments to be passed to the underlying `load_tiger` function, which is not exported.
-#'        Options include \code{class}, which can be set to \code{"sp"} (the default) or \code{"sf"} to
-#'        request sp or sf class objects, and \code{refresh}, which specifies whether
-#'        or not to re-download shapefiles (defaults to \code{FALSE}).
+#'        Options include \code{class}, which can be set to \code{"sf"} (the default) or \code{"sp"} to
+#'        request sf or sp class objects, and \code{refresh}, which specifies whether or
+#'        not to re-download shapefiles (defaults to \code{FALSE}).
 #' @family legislative district functions
 #' @seealso \url{https://www.census.gov/programs-surveys/geography/guidance/geo-areas/congressional-dist.html}
 #' @export
@@ -102,9 +102,9 @@ congressional_districts <- function(cb = FALSE, resolution = '500k', year = NULL
 #'        TIGER/Line file).
 #' @param year the data year (defaults to 2017).
 #' @param ... arguments to be passed to the underlying `load_tiger` function, which is not exported.
-#'        Options include \code{class}, which can be set to \code{"sp"} (the default) or \code{"sf"} to
-#'        request sp or sf class objects, and code{refresh}, which specifies whether or not to re-download
-#'        shapefiles (defaults to \code{FALSE}).
+#'        Options include \code{class}, which can be set to \code{"sf"} (the default) or \code{"sp"} to
+#'        request sf or sp class objects, and \code{refresh}, which specifies whether or
+#'        not to re-download shapefiles (defaults to \code{FALSE}).
 #' @family legislative district functions
 #' @seealso \url{https://www.census.gov/programs-surveys/geography/guidance/geo-areas/state-legis-dist.html}
 #' @export
@@ -209,9 +209,9 @@ state_legislative_districts <- function(state, house = "upper", cb = FALSE, year
 #' @param state The state for which you'd like to retrieve data.  Can be a state name,
 #'        state abbreviation, or FIPS code.
 #' @param ... arguments to be passed to the underlying `load_tiger` function, which is not exported.
-#'        Options include \code{class}, which can be set to \code{"sp"} (the default) or \code{"sf"} to
-#'        request sp or sf class objects, and \code{refresh}, which specifies whether or not
-#'        to re-download shapefiles (defaults to \code{FALSE}).
+#'        Options include \code{class}, which can be set to \code{"sf"} (the default) or \code{"sp"} to
+#'        request sf or sp class objects, and \code{refresh}, which specifies whether or
+#'        not to re-download shapefiles (defaults to \code{FALSE}).
 #'
 #' @family legislative district functions
 #' @export
@@ -221,7 +221,7 @@ state_legislative_districts <- function(state, house = "upper", cb = FALSE, year
 #'
 #' ia <- voting_districts("Iowa")
 #'
-#' plot(ia)
+#' plot(ia$geometry)
 #'
 #' }
 voting_districts <- function(state, ...) {

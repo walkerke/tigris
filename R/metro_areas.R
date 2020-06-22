@@ -15,8 +15,8 @@
 #'        Defaults to '500k'; options include '5m' (1:5 million) and '20m' (1:20 million).
 #' @param year the data year (defaults to 2018).
 #' @param ... arguments to be passed to the underlying `load_tiger` function, which is not exported.
-#'        Options include \code{class}, which can be set to \code{"sp"} (the default) or \code{"sf"} to
-#'        request sp or sf class objects, and \code{refresh}, which specifies whether or
+#'        Options include \code{class}, which can be set to \code{"sf"} (the default) or \code{"sp"} to
+#'        request sf or sp class objects, and \code{refresh}, which specifies whether or
 #'        not to re-download shapefiles (defaults to \code{FALSE}).
 #' @family metro area functions
 #' @seealso \url{https://www.census.gov/programs-surveys/metro-micro.html}
@@ -86,8 +86,8 @@ core_based_statistical_areas <- function(cb = FALSE, resolution = '500k', year =
 #'        TIGER/Line file).
 #' @param year the data year (defaults to 2018).
 #' @param ... arguments to be passed to the underlying `load_tiger` function, which is not exported.
-#'        Options include \code{class}, which can be set to \code{"sp"} (the default) or \code{"sf"} to
-#'        request sp or sf class objects, and \code{refresh}, which specifies whether or
+#'        Options include \code{class}, which can be set to \code{"sf"} (the default) or \code{"sp"} to
+#'        request sf or sp class objects, and \code{refresh}, which specifies whether or
 #'        not to re-download shapefiles (defaults to \code{FALSE}).
 #' @family metro area functions
 #' @seealso \url{https://www.census.gov/programs-surveys/geography/guidance/geo-areas/urban-rural.html}
@@ -142,8 +142,8 @@ urban_areas <- function(cb = FALSE, year = NULL, ...) {
 #'        Defaults to '500k'; options include '5m' (1:5 million) and '20m' (1:20 million).
 #' @param year the data year (defaults to 2018).
 #' @param ... arguments to be passed to the underlying `load_tiger` function, which is not exported.
-#'        Options include \code{class}, which can be set to \code{"sp"} (the default) or \code{"sf"} to
-#'        request sp or sf class objects, and \code{refresh}, which specifies whether or
+#'        Options include \code{class}, which can be set to \code{"sf"} (the default) or \code{"sp"} to
+#'        request sf or sp class objects, and \code{refresh}, which specifies whether or
 #'        not to re-download shapefiles (defaults to \code{FALSE}).
 #' @family metro area functions
 #' @seealso \url{http://www2.census.gov/geo/pdfs/maps-data/data/tiger/tgrshp2018/TGRSHP2018_TechDoc.pdf}
@@ -195,8 +195,8 @@ combined_statistical_areas <- function(cb = FALSE, resolution = '500k', year = N
 #'
 #' @param year The data year (defaults to 2018).
 #' @param ... arguments to be passed to the underlying `load_tiger` function, which is not exported.
-#'        Options include \code{class}, which can be set to \code{"sp"} (the default) or \code{"sf"} to
-#'        request sp or sf class objects, and \code{refresh}, which specifies whether or
+#'        Options include \code{class}, which can be set to \code{"sf"} (the default) or \code{"sp"} to
+#'        request sf or sp class objects, and \code{refresh}, which specifies whether or
 #'        not to re-download shapefiles (defaults to \code{FALSE}).
 #' @family metro area functions
 #' @seealso \url{http://www2.census.gov/geo/pdfs/maps-data/data/tiger/tgrshp2018/TGRSHP2018_TechDoc.pdf}
@@ -249,19 +249,18 @@ metro_divisions <- function(year = NULL, ...) {
 #'        TIGER/Line file).  Only available when \code{type = 'necta'}.
 #' @param year The data year (defaults to 2018).
 #' @param ... arguments to be passed to the underlying `load_tiger` function, which is not exported.
-#'        Options include \code{class}, which can be set to \code{"sp"} (the default) or \code{"sf"} to
-#'        request sp or sf class objects, and \code{refresh}, which specifies whether or
+#'        Options include \code{class}, which can be set to \code{"sf"} (the default) or \code{"sp"} to
+#'        request sf or sp class objects, and \code{refresh}, which specifies whether or
 #'        not to re-download shapefiles (defaults to \code{FALSE}).
 #' @family metro area functions
 #' @seealso \url{http://www2.census.gov/geo/pdfs/maps-data/data/tiger/tgrshp2018/TGRSHP2018_TechDoc.pdf}
 #' @export
 #' @examples \dontrun{
 #' library(tigris)
-#' library(sp)
 #'
 #' ne <- new_england(cb = TRUE)
 #'
-#' plot(ne)
+#' plot(ne$geometry)
 #'
 #' }
 new_england <- function(type = 'necta', cb = FALSE, year = NULL, ...) {

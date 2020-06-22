@@ -20,8 +20,9 @@ file.  Defaults to FALSE (the most detailed TIGER/Line file)}
 \item{year}{the data download year (defaults to 2018)}
 
 \item{...}{arguments to be passed to the underlying `load_tiger` function, which is not exported.
-Options include \code{refresh}, which specifies whether or not to re-download shapefiles
-(defaults to \code{FALSE}).}
+Options include \code{class}, which can be set to \code{"sf"} (the default) or \code{"sp"} to
+request sf or sp class objects, and \code{refresh}, which specifies whether or
+not to re-download shapefiles (defaults to \code{FALSE}).}
 }
 \description{
 Description from the US Census Bureau (see link for source):Standard block groups are clusters of
@@ -52,7 +53,7 @@ library(tigris)
 
 benton_bgs <- block_groups("Oregon", "Benton")
 
-plot(benton_bgs)
+plot(benton_bgs$geometry)
 }
 }
 \seealso{

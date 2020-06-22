@@ -10,8 +10,8 @@
 #'        file.  Defaults to FALSE (the most detailed TIGER/Line file)
 #' @param year the data year (defaults to 2018).
 #' @param ... arguments to be passed to the underlying `load_tiger` function, which is not exported.
-#'        Options include \code{class}, which can be set to \code{"sp"} (the default) or \code{"sf"} to
-#'        request sp or sf class objects, and \code{refresh}, which specifies whether or
+#'        Options include \code{class}, which can be set to \code{"sf"} (the default) or \code{"sp"} to
+#'        request sf or sp class objects, and \code{refresh}, which specifies whether or
 #'        not to re-download shapefiles (defaults to \code{FALSE}).
 #' @family native/tribal geometries functions
 #' @seealso \url{https://www2.census.gov/geo/pdfs/reference/GARM/Ch5GARM.pdf}
@@ -23,13 +23,9 @@
 #'
 #' nat <- native_areas(cb = TRUE)
 #'
-#' nat_map <- fortify(nat)
-#'
 #' gg <- ggplot()
-#' gg <- gg + geom_map(data=nat_map, map=nat_map,
-#'                     aes(x=long, y=lat, map_id=id),
-#'                     color="black", fill="white", size=0.25)
-#' gg <- gg + coord_map(xlim=c(-179.1506, -129.9795),  # alaska
+#' gg <- gg + geom_sf(data = nat, color="black", fill="white", size=0.25)
+#' gg <- gg + coord_sf(xlim=c(-179.1506, -129.9795),  # alaska
 #'                      ylim=c(51.2097, 71.4410))
 #' gg <- gg + theme_map()
 #' gg
@@ -80,8 +76,8 @@ native_areas <- function(cb = FALSE, year = NULL, ...) {
 #'
 #' @param year The year for which you'd like to download data (defaults to 2018).
 #' @param ... arguments to be passed to the underlying `load_tiger` function, which is not exported.
-#'        Options include \code{class}, which can be set to \code{"sp"} (the default) or \code{"sf"} to
-#'        request sp or sf class objects, and \code{refresh}, which specifies whether or
+#'        Options include \code{class}, which can be set to \code{"sf"} (the default) or \code{"sp"} to
+#'        request sf or sp class objects, and \code{refresh}, which specifies whether or
 #'        not to re-download shapefiles (defaults to \code{FALSE}).
 #' @family native/tribal geometries functions
 #' @seealso \url{https://www2.census.gov/geo/pdfs/reference/GARM/Ch5GARM.pdf}
@@ -146,8 +142,8 @@ tribal_subdivisions_national <- function(year = NULL, ...) {
 #'        file.  Defaults to FALSE (the most detailed TIGER/Line file)
 #' @param year the data year (defaults to 2018).
 #' @param ... arguments to be passed to the underlying `load_tiger` function, which is not exported.
-#'        Options include \code{class}, which can be set to \code{"sp"} (the default) or \code{"sf"} to
-#'        request sp or sf class objects, and \code{refresh}, which specifies whether or
+#'        Options include \code{class}, which can be set to \code{"sf"} (the default) or \code{"sp"} to
+#'        request sf or sp class objects, and \code{refresh}, which specifies whether or
 #'        not to re-download shapefiles (defaults to \code{FALSE}).
 #' @family native/tribal geometries functions
 #' @seealso \url{https://www2.census.gov/geo/pdfs/reference/GARM/Ch5GARM.pdf}
@@ -208,8 +204,8 @@ alaska_native_regional_corporations <- function(cb = FALSE, year = NULL, ...) {
 #'
 #' @param year the data year (defaults to 2018).
 #' @param ... arguments to be passed to the underlying `load_tiger` function, which is not exported.
-#'        Options include \code{class}, which can be set to \code{"sp"} (the default) or \code{"sf"} to
-#'        request sp or sf class objects, and \code{refresh}, which specifies whether or
+#'        Options include \code{class}, which can be set to \code{"sf"} (the default) or \code{"sp"} to
+#'        request sf or sp class objects, and \code{refresh}, which specifies whether or
 #'        not to re-download shapefiles (defaults to \code{FALSE}).
 #' @family native/tribal geometries functions
 #' @seealso \url{https://www2.census.gov/geo/pdfs/reference/GARM/Ch5GARM.pdf}
@@ -265,8 +261,8 @@ tribal_block_groups <- function(year = NULL, ...) {
 #'
 #' @param year the data year (defaults to 2018).
 #' @param ... arguments to be passed to the underlying `load_tiger` function, which is not exported.
-#'        Options include \code{class}, which can be set to \code{"sp"} (the default) or \code{"sf"} to
-#'        request sp or sf class objects, and \code{refresh}, which specifies whether or
+#'        Options include \code{class}, which can be set to \code{"sf"} (the default) or \code{"sp"} to
+#'        request sf or sp class objects, and \code{refresh}, which specifies whether or
 #'        not to re-download shapefiles (defaults to \code{FALSE}).
 #' @family native/tribal geometries functions
 #' @seealso \url{https://www2.census.gov/geo/pdfs/reference/GARM/Ch5GARM.pdf}

@@ -36,8 +36,8 @@
 #'        Defaults to '500k'; options include '5m' (1:5 million) and '20m' (1:20 million).
 #' @param year the data year; defaults to 2018
 #' @param ... arguments to be passed to the underlying `load_tiger` function, which is not exported.
-#'        Options include \code{class}, which can be set to \code{"sp"} (the default) or \code{"sf"} to
-#'        request sp or sf class objects, and \code{refresh}, which specifies whether or
+#'        Options include \code{class}, which can be set to \code{"sf"} (the default) or \code{"sp"} to
+#'        request sf or sp class objects, and \code{refresh}, which specifies whether or
 #'        not to re-download shapefiles (defaults to \code{FALSE}).
 #' @export
 #' @family general area functions
@@ -217,8 +217,8 @@ counties <- function(state = NULL, cb = FALSE, resolution = '500k', year = NULL,
 #'        tracts file.  Defaults to FALSE (the most detailed TIGER/Line file)
 #' @param year defaults to 2018
 #' @param ... arguments to be passed to the underlying `load_tiger` function, which is not exported.
-#'        Options include \code{class}, which can be set to \code{"sp"} (the default) or \code{"sf"} to
-#'        request sp or sf class objects, and \code{refresh}, which specifies whether or
+#'        Options include \code{class}, which can be set to \code{"sf"} (the default) or \code{"sp"} to
+#'        request sf or sp class objects, and \code{refresh}, which specifies whether or
 #'        not to re-download shapefiles (defaults to \code{FALSE}).
 #' @family general area functions
 #' @seealso \url{https://www2.census.gov/geo/pdfs/reference/GARM/Ch10GARM.pdf}
@@ -384,8 +384,8 @@ tracts <- function(state, county = NULL, cb = FALSE, year = NULL, ...) {
 #'        school districts file.  Defaults to FALSE (the most detailed TIGER/Line file)
 #' @param year the data year; defaults to 2018
 #' @param ... arguments to be passed to the underlying `load_tiger` function, which is not exported.
-#'        Options include \code{class}, which can be set to \code{"sp"} (the default) or \code{"sf"} to
-#'        request sp or sf class objects, and \code{refresh}, which specifies whether or
+#'        Options include \code{class}, which can be set to \code{"sf"} (the default) or \code{"sp"} to
+#'        request sf or sp class objects, and \code{refresh}, which specifies whether or
 #'        not to re-download shapefiles (defaults to \code{FALSE}).
 #' @family general area functions
 #' @seealso \url{http://www2.census.gov/geo/pdfs/maps-data/data/tiger/tgrshp2018/TGRSHP2018_TechDoc.pdf}
@@ -487,8 +487,9 @@ school_districts <- function(state, type = 'unified',
 #'        file.  Defaults to FALSE (the most detailed TIGER/Line file)
 #' @param year the data download year (defaults to 2018)
 #' @param ... arguments to be passed to the underlying `load_tiger` function, which is not exported.
-#'        Options include \code{refresh}, which specifies whether or not to re-download shapefiles
-#'        (defaults to \code{FALSE}).
+#'        Options include \code{class}, which can be set to \code{"sf"} (the default) or \code{"sp"} to
+#'        request sf or sp class objects, and \code{refresh}, which specifies whether or
+#'        not to re-download shapefiles (defaults to \code{FALSE}).
 #' @family general area functions
 #' @seealso \url{http://www2.census.gov/geo/pdfs/maps-data/data/tiger/tgrshp2018/TGRSHP2018_TechDoc.pdf}
 #' @export
@@ -647,8 +648,8 @@ block_groups <- function(state, county = NULL, cb = FALSE, year = NULL, ...) {
 #' @param year the data year (defaults to 2018).
 #' @param state the state for which you are requesting data; only available for 2000 and 2010
 #' @param ... arguments to be passed to the underlying `load_tiger` function, which is not exported.
-#'        Options include \code{class}, which can be set to \code{"sp"} (the default) or \code{"sf"} to
-#'        request sp or sf class objects, and \code{refresh}, which specifies whether or
+#'        Options include \code{class}, which can be set to \code{"sf"} (the default) or \code{"sp"} to
+#'        request sf or sp class objects, and \code{refresh}, which specifies whether or
 #'        not to re-download shapefiles (defaults to \code{FALSE}).
 #' @family general area functions
 #' @seealso \url{https://www.census.gov/programs-surveys/geography/guidance/geo-areas/zctas.html}
@@ -775,8 +776,8 @@ zctas <- function(cb = FALSE, starts_with = NULL, year = NULL, state = NULL, ...
 #'        Can also be a county name or vector of names.
 #' @param year The year for which you'd like to download data (defaults to 2018).
 #' @param ... arguments to be passed to the underlying `load_tiger` function, which is not exported.
-#'        Options include \code{class}, which can be set to \code{"sp"} (the default) or \code{"sf"} to
-#'        request sp or sf class objects, and \code{refresh}, which specifies whether or
+#'        Options include \code{class}, which can be set to \code{"sf"} (the default) or \code{"sp"} to
+#'        request sf or sp class objects, and \code{refresh}, which specifies whether or
 #'        not to re-download shapefiles (defaults to \code{FALSE}).
 #' @family general area functions
 #' @seealso \url{http://www2.census.gov/geo/pdfs/maps-data/data/tiger/tgrshp2018/TGRSHP2018_TechDoc.pdf}
@@ -887,8 +888,8 @@ blocks <- function(state, county = NULL, year = NULL, ...) {
 #'        file.  Defaults to FALSE (the most detailed TIGER/Line file)
 #' @param year the data year (defaults to 2018).
 #' @param ... arguments to be passed to the underlying `load_tiger` function, which is not exported.
-#'        Options include \code{class}, which can be set to \code{"sp"} (the default) or \code{"sf"} to
-#'        request sp or sf class objects, and \code{refresh}, which specifies whether or
+#'        Options include \code{class}, which can be set to \code{"sf"} (the default) or \code{"sp"} to
+#'        request sf or sp class objects, and \code{refresh}, which specifies whether or
 #'        not to re-download shapefiles (defaults to \code{FALSE}).
 #' @family general area functions
 #' @seealso \url{https://www2.census.gov/geo/pdfs/reference/GARM/Ch8GARM.pdf}

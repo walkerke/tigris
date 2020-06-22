@@ -16,8 +16,8 @@ states file.  Defaults to FALSE (the most detailed TIGER/Line file)}
 \item{year}{the data year (defaults to 2018).}
 
 \item{...}{arguments to be passed to the underlying `load_tiger` function, which is not exported.
-Options include \code{class}, which can be set to \code{"sp"} (the default) or \code{"sf"} to
-request sp or sf class objects, and \code{refresh}, which specifies whether or
+Options include \code{class}, which can be set to \code{"sf"} (the default) or \code{"sp"} to
+request sf or sp class objects, and \code{refresh}, which specifies whether or
 not to re-download shapefiles (defaults to \code{FALSE}).}
 }
 \description{
@@ -37,7 +37,6 @@ and American Samoa do not contain any 2010 PUMAs.
 \examples{
 \dontrun{
 library(tigris)
-library(sp)
 
 us_states <- unique(fips_codes$state)[1:51]
 
@@ -48,7 +47,7 @@ pumas_list <- lapply(continental_states, function(x) {
 
 us_pumas <- rbind_tigris(pumas_list)
 
-plot(us_pumas)
+plot(us_pumas$geometry)
 }
 }
 \seealso{
