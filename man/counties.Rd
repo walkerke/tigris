@@ -56,12 +56,17 @@ eight-digit National Standard feature identifier.
 \dontrun{
 library(tigris)
 library(ggplot2)
+library(ggthemes)
 
 me <- counties("Maine", cb = TRUE)
+me_map <- fortify(me)
 
 gg <- ggplot()
-gg <- gg + geom_sf(data = me, color="black",
-                   fill="white", size=0.25)
+gg <- gg + geom_map(data=me_map, map=me_map,
+                    aes(x=long, y=lat, map_id=id),
+                    color="black", fill="white", size=0.25)
+gg <- gg + coord_map()
+gg <- gg + theme_map()
 gg
 }
 }
