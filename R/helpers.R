@@ -54,7 +54,7 @@ tigris_cache_dir <- function(path) {
 load_tiger <- function(url,
                        refresh=getOption("tigris_refresh", FALSE),
                        tigris_type=NULL,
-                       class = getOption("tigris_class", "sp"),
+                       class = getOption("tigris_class", "sf"),
                        progress_bar = TRUE,
                        query = NULL) {
 

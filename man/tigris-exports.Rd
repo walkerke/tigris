@@ -3,11 +3,9 @@
 \name{tigris-exports}
 \alias{tigris-exports}
 \alias{\%>\%}
-\alias{plot}
 \title{tigris exported operators}
 \description{
-The following functions are imported and then re-exported
-from the tigris package to enable use of the magrittr
-pipe operator and the sp plot method without any additional
-library calls
+tigris exported operators
+
+Pipe operator
 }

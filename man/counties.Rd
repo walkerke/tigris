@@ -20,8 +20,8 @@ Defaults to '500k'; options include '5m' (1:5 million) and '20m' (1:20 million).
 \item{year}{the data year; defaults to 2018}
 
 \item{...}{arguments to be passed to the underlying `load_tiger` function, which is not exported.
-Options include \code{class}, which can be set to \code{"sp"} (the default) or \code{"sf"} to
-request sp or sf class objects, and \code{refresh}, which specifies whether or
+Options include \code{class}, which can be set to \code{"sf"} (the default) or \code{"sp"} to
+request sf or sp class objects, and \code{refresh}, which specifies whether or
 not to re-download shapefiles (defaults to \code{FALSE}).}
 }
 \description{
@@ -56,17 +56,12 @@ eight-digit National Standard feature identifier.
 \dontrun{
 library(tigris)
 library(ggplot2)
-library(ggthemes)
 
 me <- counties("Maine", cb = TRUE)
-me_map <- fortify(me)
 
 gg <- ggplot()
-gg <- gg + geom_map(data=me_map, map=me_map,
-                    aes(x=long, y=lat, map_id=id),
-                    color="black", fill="white", size=0.25)
-gg <- gg + coord_map()
-gg <- gg + theme_map()
+gg <- gg + geom_sf(data = me, color="black",
+                   fill="white", size=0.25)
 gg
 }
 }

@@ -32,10 +32,6 @@ NULL
 
 #' tigris exported operators
 #'
-#' The following functions are imported and then re-exported
-#' from the tigris package to enable use of the magrittr
-#' pipe operator and the sp plot method without any additional
-#' library calls
 #'
 #' @name tigris-exports
 NULL
@@ -48,10 +44,4 @@ NULL
 #' @rdname tigris-exports
 NULL
 
-#' Spatial plotting
-#'
-#' @importFrom sp plot
-#' @name plot
-#' @export
-#' @rdname tigris-exports
-NULL
+

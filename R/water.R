@@ -12,19 +12,18 @@
 #'        features for.  Can also be a county name.
 #' @param year the data year (defaults to 2018).
 #' @param ... arguments to be passed to the underlying `load_tiger` function, which is not exported.
-#'        Options include \code{class}, which can be set to \code{"sp"} (the default) or \code{"sf"} to
-#'        request sp or sf class objects, and \code{refresh}, which specifies whether or
-#'        not to re-download shapefiles (defaults to \code{FALSE}).).
+#'        Options include \code{class}, which can be set to \code{"sf"} (the default) or \code{"sp"} to
+#'        request sf or sp class objects, and \code{refresh}, which specifies whether or
+#'        not to re-download shapefiles (defaults to \code{FALSE}).
 #' @family water functions
 #' @seealso \url{http://www2.census.gov/geo/pdfs/maps-data/data/tiger/tgrshp2018/TGRSHP2018_TechDoc.pdf}
 #' @export
 #' @examples \dontrun{
 #' library(tigris)
-#' library(sp)
 #'
 #' dallas_water <- area_water("TX", "Dallas")
 #'
-#' plot(dallas_water)
+#' plot(dallas_water$geometry)
 #'
 #' }
 area_water <- function(state, county, year = NULL, ...) {
@@ -79,19 +78,18 @@ area_water <- function(state, county, year = NULL, ...) {
 #'        features for.  Can also be a county name.
 #' @param year the data year (defaults to 2018).
 #' @param ... arguments to be passed to the underlying `load_tiger` function, which is not exported.
-#'        Options include \code{class}, which can be set to \code{"sp"} (the default) or \code{"sf"} to
-#'        request sp or sf class objects, and \code{refresh}, which specifies whether or
-#'        not to re-download shapefiles (defaults to \code{FALSE}).).
+#'        Options include \code{class}, which can be set to \code{"sf"} (the default) or \code{"sp"} to
+#'        request sf or sp class objects, and \code{refresh}, which specifies whether or
+#'        not to re-download shapefiles (defaults to \code{FALSE}).
 #' @family water functions
 #' @seealso \url{http://www2.census.gov/geo/pdfs/maps-data/data/tiger/tgrshp2018/TGRSHP2018_TechDoc.pdf}
 #' @export
 #' @examples \dontrun{
 #' library(tigris)
-#' library(sp)
 #'
 #' dallas_water <- linear_water("TX", "Dallas")
 #'
-#' plot(dallas_water)
+#' plot(dallas_water$geometry)
 #'
 #' }
 linear_water <- function(state, county, year = NULL, ...) {
@@ -139,34 +137,6 @@ linear_water <- function(state, county, year = NULL, ...) {
 #'        not to re-download shapefiles (defaults to \code{FALSE}).).
 #' @export
 #' @family water functions
-#' @examples \dontrun{
-#' library(tigris)
-#' library(ggplot2)
-#' library(ggthemes)
-#' library(rgeos)
-#' library(sp)
-#'
-#' coast <- coastline()
-#'
-#' # ggplot really doesn't like a ton of detailed lines so
-#' # we use rgeos::gSimplify to get the structure to a reasonable size
-#' # but we also lose the SpatialLinesDataFrame, so re-bind the
-#' # data from the original spatial structure so we can use fortify
-#'
-#' coast_simp <- gSimplify(coast, tol=1/200, topologyPreserve=TRUE)
-#' coast_simp <- SpatialLinesDataFrame(coast_simp, coast@@data)
-#'
-#' coast_map <- fortify(coast_simp)
-#'
-#' gg <- ggplot()
-#' gg <- gg + geom_map(data=coast_map, map=coast_map,
-#'                     aes(x=long, y=lat, map_id=id),
-#'                     color="black", fill="white", size=0.25)
-#' gg <- gg + coord_map(xlim=c(-125.0011, -66.9326),
-#'                      ylim=c(24.9493, 49.5904))
-#' gg <- gg + theme_map()
-#' gg
-#' }
 coastline <- function(year = NULL, ...) {
 
   if (is.null(year)) {
