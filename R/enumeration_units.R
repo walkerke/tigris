@@ -911,12 +911,11 @@ county_subdivisions <- function(state, county = NULL, cb = FALSE, year = NULL, .
 
   }
 
-  if (year < 2011) {
+  if (year < 2010) {
 
     fname <- as.character(match.call())[[1]]
 
-    msg <- sprintf("%s is not currently available for years prior to 2011.  To request this feature,
-                   file an issue at https://github.com/walkerke/tigris.", fname)
+    msg <- sprintf("%s is not currently available for years prior to 2010.", fname)
 
     stop(msg, call. = FALSE)
 
@@ -930,16 +929,28 @@ county_subdivisions <- function(state, county = NULL, cb = FALSE, year = NULL, .
 
   if (cb == TRUE) {
 
-    url <- sprintf("https://www2.census.gov/geo/tiger/GENZ%s/shp/cb_%s_%s_cousub_500k.zip",
-                   cyear, cyear, state)
+    if (year == 2010) {
+      url <- sprintf("https://www2.census.gov/geo/tiger/GENZ2010/gz_2010_%s_060_00_500k.zip",
+                     state)
+    } else {
 
-    if (year == 2013) url <- gsub("shp/", "", url)
+      url <- sprintf("https://www2.census.gov/geo/tiger/GENZ%s/shp/cb_%s_%s_cousub_500k.zip",
+                     cyear, cyear, state)
 
+      if (year == 2013) url <- gsub("shp/", "", url)
+
+    }
 
   } else {
 
-    url <- sprintf("https://www2.census.gov/geo/tiger/TIGER%s/COUSUB/tl_%s_%s_cousub.zip",
-                   cyear, cyear, state)
+    if (year == 2010) {
+      url <- sprintf("https://www2.census.gov/geo/tiger/TIGER2010/COUSUB/2010/tl_2010_%s_cousub10.zip", state)
+    } else {
+      url <- sprintf("https://www2.census.gov/geo/tiger/TIGER%s/COUSUB/tl_%s_%s_cousub.zip",
+                     cyear, cyear, state)
+    }
+
+
   }
 
   cs <- load_tiger(url, tigris_type="county_subdivision", ...)
