@@ -50,6 +50,15 @@ roads <- function(state, county, year = NULL, ...) {
 
   }
 
+  if (length(county) > 1) {
+    r <- lapply(county, function(x) {
+      roads(state = state, county = x, year = year, ...)
+    }) %>%
+      rbind_tigris()
+
+    return(r)
+  }
+
   state <- validate_state(state)
 
   county <- validate_county(state, county)

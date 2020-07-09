@@ -40,7 +40,7 @@ places <- function(state, cb = FALSE, year = NULL, ...) {
 
   if (length(state) > 1) {
     p <- lapply(state, function(x) {
-      places(state = x, cb = cb, year = year)
+      places(state = x, cb = cb, year = year, ...)
     }) %>%
       rbind_tigris()
 

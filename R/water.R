@@ -45,6 +45,15 @@ area_water <- function(state, county, year = NULL, ...) {
 
   }
 
+  if (length(county) > 1) {
+    w <- lapply(county, function(x) {
+      area_water(state = state, county = x, year = year, ...)
+    }) %>%
+      rbind_tigris()
+
+    return(w)
+  }
+
   state <- validate_state(state)
 
   county <- validate_county(state, county)
@@ -109,6 +118,15 @@ linear_water <- function(state, county, year = NULL, ...) {
 
     stop(msg, call. = FALSE)
 
+  }
+
+  if (length(county) > 1) {
+    w <- lapply(county, function(x) {
+      linear_water(state = state, county = x, year = year, ...)
+    }) %>%
+      rbind_tigris()
+
+    return(w)
   }
 
   state <- validate_state(state)
