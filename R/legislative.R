@@ -34,8 +34,13 @@ congressional_districts <- function(cb = FALSE, resolution = '500k', year = NULL
 
   if (is.null(year)) {
 
-    year <- getOption("tigris_year", 2017)
+    year <- getOption("tigris_year", 2018)
 
+  }
+
+  if (year < 2013 && cb == TRUE) {
+    stop("`cb = TRUE` for congressional districts is unavailable prior to 2013. Regular TIGER/Line files are available for 2010 through 2010 with `cb = FALSE`",
+         call. = FALSE)
   }
 
   if (year %in% 2018:2019) {
@@ -48,14 +53,15 @@ congressional_districts <- function(cb = FALSE, resolution = '500k', year = NULL
     congress <- "113"
   } else if (year %in% 2011:2012) {
     congress <- "112"
+  } else if (year == 2010) {
+    congress <- "111"
   }
 
-  if (year < 2011) {
+  if (year < 2010) {
 
     fname <- as.character(match.call())[[1]]
 
-    msg <- sprintf("%s is not currently available for years prior to 2011.  To request this feature,
-                   file an issue at https://github.com/walkerke/tigris.", fname)
+    msg <- sprintf("%s is not currently available for years prior to 2010.", fname)
 
     stop(msg, call. = FALSE)
 
@@ -124,7 +130,7 @@ state_legislative_districts <- function(state, house = "upper", cb = FALSE, year
 
   if (is.null(year)) {
 
-    year <- getOption("tigris_year", 2017)
+    year <- getOption("tigris_year", 2018)
 
   }
 
