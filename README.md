@@ -1,6 +1,6 @@
 # tigris
 
-<img src=img/tigris_sticker.png style="width: 50%">
+<img src=img/tigris_sticker.png width="50%">
 
 [![Build Status](https://travis-ci.org/walkerke/tigris.svg?branch=master)](https://travis-ci.org/walkerke/tigris) ![CRAN Badge](http://www.r-pkg.org/badges/version/tigris)  ![CRAN Downloads](http://cranlogs.r-pkg.org/badges/tigris)
 
