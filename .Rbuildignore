@@ -5,3 +5,5 @@
 ^tigris\.Rcheck$
 ^tigris.*\.tar\.gz$
 ^tigris.*\.tgz$
+^img$
+
