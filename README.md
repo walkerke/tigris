@@ -18,7 +18,7 @@ Or, get the development version from GitHub:
 devtools::install_github('walkerke/tigris')
 ```
 
-As of version 1.0 (released in July 2020), tigris functions return [simple features objects](https://r-spatial.github.io/sf/) with a default year of 2019. To get started, choose a function from the table below and use it with a state and/or county if required. You'll get back an sf object for use in your mapping and spatial analysis projects: 
+As of version 1.0 (released in July 2020), __tigris__ functions return [simple features objects](https://r-spatial.github.io/sf/) with a default year of 2019. To get started, choose a function from the table below and use it with a state and/or county if required. You'll get back an sf object for use in your mapping and spatial analysis projects: 
 
 ```r
 library(tigris)
@@ -33,9 +33,9 @@ ggplot(manhattan_roads) +
 
 <img src=tools/readme/ny_roads.png>
 
-tigris only returns feature geometries for US Census data which default to the coordinate reference system NAD 1983 (EPSG: 4269). For US Census demographic data (optionally pre-joined to tigris geometries), try the [tidycensus package](https://walker-data.com/tidycensus/).  For help deciding on an appropriate coordinate reference system for your project, take a look at the [crsuggest package](https://github.com/walkerke/crsuggest).  
+__tigris__ only returns feature geometries for US Census data which default to the coordinate reference system NAD 1983 (EPSG: 4269). For US Census demographic data (optionally pre-joined to tigris geometries), try the [tidycensus package](https://walker-data.com/tidycensus/).  For help deciding on an appropriate coordinate reference system for your project, take a look at the [crsuggest package](https://github.com/walkerke/crsuggest).  
 
-Updated documentation for tigris is coming later this year in the book _Analyzing the US Census with R_. In the meantime, I'd recommend the following materials to learn about conceptual foundations of the package:
+Updated documentation for __tigris__ is coming later this year in the book _Analyzing the US Census with R_. In the meantime, I'd recommend the following materials to learn about conceptual foundations of the package:
 
 * My article in _The R Journal_, ["tigris: An R Package to Access and Work with Geographic Data from the US Census Bureau"](https://journal.r-project.org/archive/2016/RJ-2016-043/index.html)
 * [A webinar I gave with Ari Lamstein on tigris in April 2017](https://www.youtube.com/watch?v=lZuVxVONK9g&__s=hpmyiy9wyzwapfzug5q9)
