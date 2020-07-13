@@ -7,7 +7,7 @@
 tribal_block_groups(year = NULL, ...)
 }
 \arguments{
-\item{year}{the data year (defaults to 2018).}
+\item{year}{the data year (defaults to 2019).}
 
 \item{...}{arguments to be passed to the underlying `load_tiger` function, which is not exported.
 Options include \code{class}, which can be set to \code{"sf"} (the default) or \code{"sp"} to

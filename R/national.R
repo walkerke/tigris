@@ -2,7 +2,7 @@
 #'
 #' @param resolution The resolution of the cartographic boundary file.
 #'        Defaults to '500k'; options include '5m' (1:5 million) and '20m' (1:20 million).
-#' @param year the data year (defaults to 2018).
+#' @param year the data year (defaults to 2019).
 #' @param ... arguments to be passed to the underlying `load_tiger` function, which is not exported.
 #'        Options include \code{class}, which can be set to \code{"sf"} (the default) or \code{"sp"} to
 #'        request sf or sp class objects, and \code{refresh}, which specifies whether or
@@ -24,7 +24,7 @@ regions <- function(resolution = '500k', year = NULL, ...) {
 
   if (is.null(year)) {
 
-    year <- getOption("tigris_year", 2018)
+    year <- getOption("tigris_year", 2019)
 
   }
 
@@ -58,7 +58,7 @@ regions <- function(resolution = '500k', year = NULL, ...) {
 #'
 #' @param resolution The resolution of the cartographic boundary file.
 #'        Defaults to '500k'; options include '5m' (1:5 million) and '20m' (1:20 million).
-#' @param year the data year (defaults to 2018).
+#' @param year the data year (defaults to 2019).
 #' @param ... arguments to be passed to the underlying `load_tiger` function, which is not exported.
 #'        Options include \code{class}, which can be set to \code{"sf"} (the default) or \code{"sp"} to
 #'        request sf or sp class objects, and \code{refresh}, which specifies whether or
@@ -80,7 +80,7 @@ divisions <- function(resolution = '500k', year = NULL, ...) {
 
   if (is.null(year)) {
 
-    year <- getOption("tigris_year", 2018)
+    year <- getOption("tigris_year", 2019)
 
   }
 
@@ -114,7 +114,7 @@ divisions <- function(resolution = '500k', year = NULL, ...) {
 #'
 #' @param resolution The resolution of the cartographic boundary file.
 #'        Defaults to '5m'; options include '5m' (1:5 million) and '20m' (1:20 million).
-#' @param year the data year (defaults to 2018).
+#' @param year the data year (defaults to 2019).
 #' @param ... arguments to be passed to the underlying `load_tiger` function, which is not exported.
 #'        Options include \code{class}, which can be set to \code{"sf"} (the default) or \code{"sp"} to
 #'        request sf or sp class objects, and \code{refresh}, which specifies whether or
@@ -136,7 +136,7 @@ nation <- function(resolution = '5m', year = NULL, ...) {
 
   if (is.null(year)) {
 
-    year <- getOption("tigris_year", 2018)
+    year <- getOption("tigris_year", 2019)
 
   }
 

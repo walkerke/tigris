@@ -1,8 +1,8 @@
 Package: tigris
 Type: Package
 Title: Load Census TIGER/Line Shapefiles
-Version: 0.9.9.9001
-Date: 2020-07-09
+Version: 1.0
+Date: 2020-07-13
 Authors@R: c(
       person(given="Kyle", family="Walker", email="kyle@walker-data.com", role=c("aut", "cre")),
       person(given="Bob", family="Rudis", email="bob@rudis.net", role="ctb")
@@ -10,7 +10,7 @@ Authors@R: c(
 URL: https://github.com/walkerke/tigris
 BugReports: https://github.com/walkerke/tigris/issues
 Description: Download TIGER/Line shapefiles from the United States Census Bureau 
-    (<https://www.census.gov/geo/maps-data/data/tiger-line.html>) and load into R as 'SpatialDataFrame' or 'sf' objects.
+    (<https://www.census.gov/geo/maps-data/data/tiger-line.html>) and load into R as 'sf' objects.
 License: MIT + file LICENSE
 LazyData: TRUE
 Encoding: UTF-8

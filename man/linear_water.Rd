@@ -14,7 +14,7 @@ download the water features for. Can also be state name or abbreviation
 \item{county}{The three-digit FIPS code of the county you'd like the water
 features for.  Can also be a county name.}
 
-\item{year}{the data year (defaults to 2018).}
+\item{year}{the data year (defaults to 2019).}
 
 \item{...}{arguments to be passed to the underlying `load_tiger` function, which is not exported.
 Options include \code{class}, which can be set to \code{"sf"} (the default) or \code{"sp"} to
@@ -40,7 +40,7 @@ plot(dallas_water$geometry)
 }
 }
 \seealso{
-\url{http://www2.census.gov/geo/pdfs/maps-data/data/tiger/tgrshp2018/TGRSHP2018_TechDoc.pdf}
+\url{http://www2.census.gov/geo/pdfs/maps-data/data/tiger/tgrshp2019/TGRSHP2019_TechDoc.pdf}
 
 Other water functions: 
 \code{\link{area_water}()},

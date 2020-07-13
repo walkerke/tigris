@@ -7,7 +7,7 @@
 primary_roads(year = NULL, ...)
 }
 \arguments{
-\item{year}{the data year (defaults to 2018).}
+\item{year}{the data year (defaults to 2019).}
 
 \item{...}{arguments to be passed to the underlying `load_tiger` function, which is not exported.
 Options include \code{class}, which can be set to \code{"sf"} (the default) or \code{"sp"} to
@@ -32,7 +32,7 @@ plot(rds$geometry)
 }
 }
 \seealso{
-\url{http://www2.census.gov/geo/pdfs/maps-data/data/tiger/tgrshp2018/TGRSHP2018_TechDoc.pdf}
+\url{http://www2.census.gov/geo/pdfs/maps-data/data/tiger/tgrshp2019/TGRSHP2019_TechDoc.pdf}
 
 Other transportation functions: 
 \code{\link{address_ranges}()},

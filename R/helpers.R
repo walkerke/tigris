@@ -48,7 +48,7 @@ tigris_cache_dir <- function(path) {
 # also uses global option "tigris_use_cache" to determine whether new data files will
 # be cached or not. (def: TRUE)
 #
-# Year currently defaults to 2018; give option to download other years
+# Year currently defaults to 2019; give option to download other years
 
 
 load_tiger <- function(url,
@@ -79,9 +79,6 @@ load_tiger <- function(url,
       file_loc <- file.path(cache_dir, tiger_file)
 
       if (refresh | !file.exists(file_loc)) {
-        # try(download.file(url, file_loc, mode = "wb"))
-        # GET requests not working at the moment.
-        # Change back if you get additional info.
 
         if (progress_bar) {
           try(GET(url,
@@ -117,8 +114,6 @@ load_tiger <- function(url,
 
             message(sprintf("Previous download failed.  Re-download attempt %s of 3...",
                             as.character(i)))
-
-            # try(download.file(url, file_loc, mode = "wb"))
 
             if (progress_bar) {
               try(GET(url,
@@ -200,8 +195,6 @@ load_tiger <- function(url,
               silent = TRUE)
     }
 
-
-    # download.file(url, tiger_file, mode = 'wb')
     unzip(file_loc, exdir = tmp)
     shape <- gsub(".zip", "", tiger_file)
     shape <- gsub("_shp", "", shape) # for historic tracts
