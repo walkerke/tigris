@@ -4,9 +4,19 @@
 \alias{congressional_districts}
 \title{Download a congressional districts shapefile into R}
 \usage{
-congressional_districts(cb = FALSE, resolution = "500k", year = NULL, ...)
+congressional_districts(
+  state = NULL,
+  cb = FALSE,
+  resolution = "500k",
+  year = NULL,
+  ...
+)
 }
 \arguments{
+\item{state}{The two-digit FIPS code (string) of the state you want, or a
+vector of codes if you want multiple states. Can also be state name
+or state abbreviation.  If \code{NULL} (the default), returns the entire United States.}
+
 \item{cb}{If cb is set to TRUE, download a generalized (1:500k)
 cartographic boundary file.  Defaults to FALSE (the most detailed
 TIGER/Line file).}

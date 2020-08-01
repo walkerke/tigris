@@ -7,6 +7,9 @@
 #'
 #' The current default in tigris is the 116th Congress, which is available when \code{year = 2018} or \code{year = 2019}.  Older congressional district boundaries back to 2011 can be obtained by supplying the appropriate year.
 #'
+#' @param state The two-digit FIPS code (string) of the state you want, or a
+#'        vector of codes if you want multiple states. Can also be state name
+#'        or state abbreviation.  If \code{NULL} (the default), returns the entire United States.
 #' @param cb If cb is set to TRUE, download a generalized (1:500k)
 #'        cartographic boundary file.  Defaults to FALSE (the most detailed
 #'        TIGER/Line file).
@@ -30,7 +33,7 @@
 #'    addTiles() %>%
 #'    addPolygons()
 #' }
-congressional_districts <- function(cb = FALSE, resolution = '500k', year = NULL, ...) {
+congressional_districts <- function(state = NULL, cb = FALSE, resolution = '500k', year = NULL, ...) {
 
   if (is.null(year)) {
 
@@ -87,7 +90,17 @@ congressional_districts <- function(cb = FALSE, resolution = '500k', year = NULL
 
   }
 
-  return(load_tiger(url, tigris_type="congressional_districts", ...))
+  cds <- load_tiger(url, tigris_type="congressional_districts", ...)
+
+  state <- unlist(sapply(state, validate_state, USE.NAMES=FALSE))
+
+  if (!is.null(state)) {
+
+    cds <- cds[cds$STATEFP %in% state,]
+
+  }
+
+  return(cds)
 
 }
 
