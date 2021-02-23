@@ -19,7 +19,7 @@ the original tibble with GEOIDs appended as a new column called
   \code{geoid}.
 }
 \description{
-Returns GEOID for 2010 geographies.
+Returns GEOID for 2020 geographies.
 }
 \examples{
 \dontrun{

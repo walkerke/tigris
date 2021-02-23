@@ -1,6 +1,6 @@
 #' Retrieve GEOID from the Census Geocoder by address
 #'
-#' Returns GEOID for 2010 geographies.
+#' Returns GEOID for 2020 geographies.
 #'
 #' @param address A tibble/data frame with (at a minimum, others can be present)
 #'   either character columns street, city, and state OR numeric columns lat and
@@ -106,7 +106,7 @@ call_geolocator <- function(street, city, state, zip = NA) {
       }
     }
 
-  call_end <- "&benchmark=Public_AR_Census2010&vintage=Census2010_Census2010&layers=14&format=json"
+  call_end <- "&benchmark=Public_AR_Census2020&vintage=Census2020_Census2020&layers=14&format=json"
 
   url_full <- paste0(call_start, url, call_end)
 
@@ -160,26 +160,26 @@ call_geolocator_latlon <- function(lat, lon, benchmark, vintage) {
   }
   # Build url
   call_start <- "https://geocoding.geo.census.gov/geocoder/geographies/coordinates?"
-  
+
   url <- paste0("x=", lon,"&y=", lat)
   benchmark0 <- paste0("&benchmark=", benchmark)
   vintage0 <- paste0("&vintage=", vintage, "&format=json")
-  
+
   url_full <- paste0(call_start, url, benchmark0, vintage0)
   #print(url_full)
   # Check response
   r <- httr::GET(url_full)
   httr::stop_for_status(r)
   response <- httr::content(r)
-  if (length(response$result$geographies$`2010 Census Blocks`[[1]]$GEOID) == 0) {
+  if (length(response$result$geographies$`2020 Census Blocks`[[1]]$GEOID) == 0) {
     message(paste0("Lat/lon (", lat, ", ", lon,
                    ") returned no geocodes. An NA was returned."))
     return(NA_character_)
   } else {
-    if (length(response$result$geographies$`2010 Census Blocks`[[1]]$GEOID) > 1) {
+    if (length(response$result$geographies$`2020 Census Blocks`[[1]]$GEOID) > 1) {
       message(paste0("Lat/lon (", lat, ", ", lon,
                      ") returned more than geocode. The first match was returned."))
     }
-    return(response$result$geographies$`2010 Census Blocks`[[1]]$GEOID)
+    return(response$result$geographies$`2020 Census Blocks`[[1]]$GEOID)
   }
 }
