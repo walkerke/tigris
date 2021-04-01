@@ -21,7 +21,8 @@ with 75 or 76.  Defaults to NULL, which will return all ZCTAs in the US.}
 
 \item{year}{the data year (defaults to 2019).}
 
-\item{state}{the state for which you are requesting data; only available for 2000 and 2010}
+\item{state}{the state for which you are requesting data; only available for 2000 (TIGER/Line
+and CB shapefiles) and 2010 (TIGER/Line shapefiles only)}
 
 \item{...}{arguments to be passed to the underlying `load_tiger` function, which is not exported.
 Options include \code{class}, which can be set to \code{"sf"} (the default) or \code{"sp"} to

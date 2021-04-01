@@ -646,7 +646,8 @@ block_groups <- function(state, county = NULL, cb = FALSE, year = NULL, ...) {
 #'        \code{starts_with = c("75", "76")} will return only those ZCTAs that begin
 #'        with 75 or 76.  Defaults to NULL, which will return all ZCTAs in the US.
 #' @param year the data year (defaults to 2019).
-#' @param state the state for which you are requesting data; only available for 2000 and 2010
+#' @param state the state for which you are requesting data; only available for 2000 (TIGER/Line
+#'              and CB shapefiles) and 2010 (TIGER/Line shapefiles only)
 #' @param ... arguments to be passed to the underlying `load_tiger` function, which is not exported.
 #'        Options include \code{class}, which can be set to \code{"sf"} (the default) or \code{"sp"} to
 #'        request sf or sp class objects, and \code{refresh}, which specifies whether or
@@ -677,6 +678,14 @@ zctas <- function(cb = FALSE, starts_with = NULL, year = NULL, state = NULL, ...
 
   }
 
+  if (!is.null(state) && year > 2010) {
+    stop("ZCTAs are only available by state for 2000 and 2010.")
+  }
+
+  if (!is.null(state) && year == 2010 && cb == TRUE) {
+    stop("ZCTAs are only available by state for 2010 when cb = FALSE.", call. = FALSE)
+  }
+
   if (year == 1990) {
     stop("Zip Code Tabulation Areas are only available beginning with the 2000 Census.",
          call. = FALSE)
@@ -702,6 +711,7 @@ zctas <- function(cb = FALSE, starts_with = NULL, year = NULL, state = NULL, ...
                        state)
       }
     } else if (year == 2010) {
+
       url <- "https://www2.census.gov/geo/tiger/GENZ2010/gz_2010_us_860_00_500k.zip"
     } else {
       url <- sprintf("https://www2.census.gov/geo/tiger/GENZ%s/shp/cb_%s_us_zcta510_500k.zip",
