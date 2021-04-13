@@ -194,3 +194,99 @@ call_geolocator_latlon <- function(lat, lon, benchmark, vintage) {
   }
   
 }
+
+
+#' Batch Geocoder for the Census API
+#' 
+call_geolocator_batch <- function(data, Street, City, State, ZIP, benchmark="Public_AR_Current", vintage="Current_Current", batch_size=1000) {
+  if(missing(data)) {
+    return(message("Must Specify dataframe"))
+  }
+  if(missing(Street)) {
+    return("Must specify 'Street' Column name in dataframe.")
+  }
+  if(missing(City)) {
+    return("Must specify 'City' Column name in dataframe.")
+  }
+  if(missing(State)) {
+    return("Must specify 'State' Column name in dataframe.")
+  }
+  if(missing(ZIP)) {
+    return("Must specify 'ZIP code' Column name in dataframe.")
+  }
+  if(batch_size>10000) {
+    batch_size<-10000
+    message("The batch size upper limit is 10,000 entries at a time")
+  }
+  
+  
+  #Add unique ID for each row, required for API call
+  data$Census_batch_UID <- seq.int(nrow(data))
+  
+  #Remove extra data before API call
+  data2<-data[,c('Census_batch_UID',
+                 Street,
+                 City,
+                 State,
+                 ZIP)]
+  
+  #Split the data into batches
+  data2<-split(data2, rep(1:ceiling(nrow(data2)/batch_size),each=batch_size)[1:nrow(data2)])
+  
+  #set up Prgoress bar
+  pb = txtProgressBar(min = 0, max = length(data2), initial = 0, style = 3) 
+  setTxtProgressBar(pb,length(data2)*.01)
+  
+  #Create data frame to hold results
+  returned<-data.frame()
+  
+  #Make API call for each list element
+  for(i in names(data2)){
+    
+    #use write.table becuase write.csv does not properly remove column headers and the API call cant handle them
+    write.table(data2[[i]], file = paste0(tempdir(), "/", "Census_batch.csv"), row.names = FALSE, col.names = FALSE, sep=',')
+    #call the API
+    a<-POST("https://geocoding.geo.census.gov/geocoder/locations/addressbatch ", body = list(
+      addressFile = upload_file(paste0(tempdir(), "/", "Census_batch.csv")),
+      benchmark="Public_AR_Current",
+      vintage="Current_Current"),
+      returntype="geographies",
+      write_disk(addr <- tempfile(fileext = ".csv")))
+    tmp<-read.csv(addr, header = FALSE, fill = TRUE, col.names=c("Census_batch_UID",
+                                                                 "Address",
+                                                                 "Match",
+                                                                 "Match_type",
+                                                                 "Match_Addr",
+                                                                 "LatLon",
+                                                                 "x",
+                                                                 "xx"))
+    returned<-rbind(returned,tmp)
+    
+    #increase progrss bar
+    setTxtProgressBar(pb,as.numeric(i))
+  }
+  rm(i, tmp, pb)
+  
+  #separate out LAT, LON and put in separate columns
+  returned$split<-str_split(returned$LatLon, pattern = ",")
+  for(i in 1:nrow(returned)){
+    returned$lon[i]<-returned$split[i][[1]][1]
+    returned$lat[i]<-returned$split[i][[1]][2]
+  }
+  
+  #Drop extra data
+  returned<-returned[,c("Census_batch_UID",
+                        "Match",
+                        "Match_type",
+                        "Match_Addr",
+                        "lon",
+                        "lat")]
+  
+  #merge data back together
+  data<-merge(data, returned, by='Census_batch_UID')
+  
+  #drop Function generated unique IDs
+  data$Census_batch_UID<-NULL
+  
+  return(data)
+}
