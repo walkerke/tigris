@@ -233,7 +233,7 @@ call_geolocator_batch <- function(data, Street, City, State, ZIP, benchmark="Pub
   #Split the data into batches
   data2<-split(data2, rep(1:ceiling(nrow(data2)/batch_size),each=batch_size)[1:nrow(data2)])
   
-  #set up Prgoress bar
+  #set up progress bar
   pb = txtProgressBar(min = 0, max = length(data2), initial = 0, style = 3) 
   setTxtProgressBar(pb,length(data2)*.01)
   
@@ -248,10 +248,18 @@ call_geolocator_batch <- function(data, Street, City, State, ZIP, benchmark="Pub
     #call the API
     a<-POST("https://geocoding.geo.census.gov/geocoder/locations/addressbatch ", body = list(
       addressFile = upload_file(paste0(tempdir(), "/", "Census_batch.csv")),
-      benchmark="Public_AR_Current",
-      vintage="Current_Current"),
+      benchmark=benchmark,
+      vintage=vintage),
       returntype="geographies",
       write_disk(addr <- tempfile(fileext = ".csv")))
+    
+    #add error handling for no result
+    if(a$status_code != 200){
+      message("\nAPI call error. Please check that the address column names, benchmark, and vintage are set correctly")
+      return(NA_character_)
+    }
+    
+    #read in results
     tmp<-read.csv(addr, header = FALSE, fill = TRUE, col.names=c("Census_batch_UID",
                                                                  "Address",
                                                                  "Match",
@@ -260,6 +268,8 @@ call_geolocator_batch <- function(data, Street, City, State, ZIP, benchmark="Pub
                                                                  "LatLon",
                                                                  "x",
                                                                  "xx"))
+    
+    
     returned<-rbind(returned,tmp)
     
     #increase progrss bar
