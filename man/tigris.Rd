@@ -6,7 +6,7 @@
 \title{Download and use U.S. Census TIGER shapefiles in R}
 \description{
 Use option \code{tigris_use_cache} to tell \code{tigris} to cache
-Census shapefile downloads. This is \code{TRUE} by default. e.g.
+Census shapefile downloads. This is \code{FALSE} by default. e.g.
 \code{options(tigris_use_cache=TRUE)}
 }
 \details{
@@ -14,7 +14,7 @@ Use option \code{tigris_refresh} to force a refresh of cached \code{tigris}
 Shapefiles. e.g. \code{options(tigris_refresh=TRUE)}
 
 Use option \code{tigris_year} to change the year for which you'd like to download data.
-e.g. \code{options(tigris_year = 2013)}.  The default year for the package is 2015, the most
+e.g. \code{options(tigris_year = 2017)}.  The default year for the package is 2019, the most
 recent year for which data are available.
 }
 \note{
