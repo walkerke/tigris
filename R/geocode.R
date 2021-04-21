@@ -130,7 +130,7 @@ call_geolocator <- function(street, city, state, zip = NA) {
 }
 
 
-#' Call geolocator for one address with lat/lon, adds option to set benchmark and vintage if not provided defualts to most recent.
+#' Call geolocator for one address with lat/lon, adds option to set benchmark and vintage if not provided it will default to the most recent.
 #'
 #' @param lat A numeric value
 #' @param lon A numeric value
@@ -161,7 +161,8 @@ call_geolocator_latlon <- function(lat, lon, benchmark, vintage) {
   # Build url
   call_start <- "https://geocoding.geo.census.gov/geocoder/geographies/coordinates?"
 
-  url <- paste0("x=", lon,"&y=", lat)
+  url <- paste0("x=", lat,"&y=", lon)
+
   benchmark0 <- paste0("&benchmark=", benchmark)
   vintage0 <- paste0("&vintage=", vintage, "&format=json")
 
@@ -176,10 +177,134 @@ call_geolocator_latlon <- function(lat, lon, benchmark, vintage) {
                    ") returned no geocodes. An NA was returned."))
     return(NA_character_)
   } else {
-    if (length(response$result$geographies$`2020 Census Blocks`[[1]]$GEOID) > 1) {
+
+  #regex search for block group geography in response
+  response_block<-grep(response[["result"]][["geographies"]], pattern = ".Block.")
+
+  #check If a block group result is found or return NA
+  #If block group response is found check GEOID length and return either NA for missing data or the value
+  if(length(response_block) == 0){
+    return(NA_character_)
+  } else {
+    if (length(response[["result"]][["geographies"]][[response_block]][[1]]$GEOID) == 0) {
       message(paste0("Lat/lon (", lat, ", ", lon,
-                     ") returned more than geocode. The first match was returned."))
+                     ") returned no geocodes. An NA was returned."))
+      return(NA_character_)
+    } else {
+      if (length(response[["result"]][["geographies"]][[response_block]][[1]]$GEOID) > 1) {
+        message(paste0("Lat/lon (", lat, ", ", lon,
+                       ") returned more than geocode. The first match was returned."))
+      }
+      return(response[["result"]][["geographies"]][[response_block]][[1]]$GEOID)
+    }
+  }
+
+  }
+}
+
+
+#' Batch Geocoder for the Census API
+#'
+call_geolocator_batch <- function(data, Street, City, State, ZIP, benchmark="Public_AR_Current", vintage="Current_Current", batch_size=1000) {
+  if(missing(data)) {
+    return(message("Must Specify dataframe"))
+  }
+  if(missing(Street)) {
+    return("Must specify 'Street' Column name in dataframe.")
+  }
+  if(missing(City)) {
+    return("Must specify 'City' Column name in dataframe.")
+  }
+  if(missing(State)) {
+    return("Must specify 'State' Column name in dataframe.")
+  }
+  if(missing(ZIP)) {
+    return("Must specify 'ZIP code' Column name in dataframe.")
+  }
+  if(batch_size>10000) {
+    batch_size<-10000
+    message("The batch size upper limit is 10,000 entries at a time")
+  }
+
+
+  #Add unique ID for each row, required for API call
+  data$Census_batch_UID <- seq.int(nrow(data))
+
+  #Remove extra data before API call
+  data2<-data[,c('Census_batch_UID',
+                 Street,
+                 City,
+                 State,
+                 ZIP)]
+
+  #Split the data into batches
+  data2<-split(data2, rep(1:ceiling(nrow(data2)/batch_size),each=batch_size)[1:nrow(data2)])
+
+  #set up progress bar
+  pb = txtProgressBar(min = 0, max = length(data2), initial = 0, style = 3)
+  setTxtProgressBar(pb,length(data2)*.01)
+
+  #Create data frame to hold results
+  returned<-data.frame()
+
+  #Make API call for each list element
+  for(i in names(data2)){
+
+    #use write.table becuase write.csv does not properly remove column headers and the API call cant handle them
+    write.table(data2[[i]], file = paste0(tempdir(), "/", "Census_batch.csv"), row.names = FALSE, col.names = FALSE, sep=',')
+    #call the API
+    a<-POST("https://geocoding.geo.census.gov/geocoder/locations/addressbatch ", body = list(
+      addressFile = upload_file(paste0(tempdir(), "/", "Census_batch.csv")),
+      benchmark=benchmark,
+      vintage=vintage),
+      returntype="geographies",
+      write_disk(addr <- tempfile(fileext = ".csv")))
+
+    #add error handling for no result
+    if(a$status_code != 200){
+      message("\nAPI call error. Please check that the address column names, benchmark, and vintage are set correctly")
+      return(NA_character_)
     }
     return(response$result$geographies$`2020 Census Blocks`[[1]]$GEOID)
+
+    #read in results
+    tmp<-read.csv(addr, header = FALSE, fill = TRUE, col.names=c("Census_batch_UID",
+                                                                 "Address",
+                                                                 "Match",
+                                                                 "Match_type",
+                                                                 "Match_Addr",
+                                                                 "LatLon",
+                                                                 "x",
+                                                                 "xx"))
+
+
+    returned<-rbind(returned,tmp)
+
+    #increase progrss bar
+    setTxtProgressBar(pb,as.numeric(i))
   }
+  rm(i, tmp, pb)
+
+  #separate out LAT, LON and put in separate columns
+  returned$split<-str_split(returned$LatLon, pattern = ",")
+  for(i in 1:nrow(returned)){
+    returned$lon[i]<-returned$split[i][[1]][1]
+    returned$lat[i]<-returned$split[i][[1]][2]
+  }
+
+  #Drop extra data
+  returned<-returned[,c("Census_batch_UID",
+                        "Match",
+                        "Match_type",
+                        "Match_Addr",
+                        "lon",
+                        "lat")]
+
+  #merge data back together
+  data<-merge(data, returned, by='Census_batch_UID')
+
+  #drop Function generated unique IDs
+  data$Census_batch_UID<-NULL
+
+  return(data)
 }
