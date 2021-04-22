@@ -97,10 +97,13 @@ shift_geometry <- function(input_sf,
       st_sfc(st_point(position))
   }
 
+  cont_us <- dplyr::filter(minimal_states, !GEOID %in% c("02", "15", "72")) %>%
+    sf::st_transform('ESRI:102003')
+
   us_lower48 <- dplyr::filter(input_sf, !state_fips %in% c("02", "15", "72")) %>%
     sf::st_transform('ESRI:102003')
 
-  bb <- sf::st_bbox(us_lower48)
+  bb <- sf::st_bbox(cont_us)
 
   us_alaska <- dplyr::filter(input_sf, state_fips == "02")
 
