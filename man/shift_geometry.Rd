@@ -2,7 +2,7 @@
 % Please edit documentation in R/shift_geometry.R
 \name{shift_geometry}
 \alias{shift_geometry}
-\title{Shift and rescale Alaska and Hawaii in a US-wide sf object}
+\title{Shift and rescale Alaska, Hawaii, and Puerto Rico in a US-wide sf object}
 \usage{
 shift_geometry(input_sf, state_column = NULL, preserve_area = FALSE)
 }
@@ -12,13 +12,13 @@ shift_geometry(input_sf, state_column = NULL, preserve_area = FALSE)
 \item{state_column}{The column representing state IDs (optional). If NULL, a GEOID column
 like those included in tigris or tidycensus is required.}
 
-\item{preserve_area}{If TRUE, the area of Alaska and Hawaii relative to the continental US
-will be preserved.  Defaults to FALSE (Alaska is proportionally smaller)
-and Hawaii is proportionally larger.}
+\item{preserve_area}{If TRUE, the areas of Alaska/Hawaii/Puerto Rico relative to the continental US
+will be preserved.  Defaults to FALSE where Alaska is proportionally smaller
+and Hawaii/Puerto Rico are proportionally larger.}
 }
 \value{
 The input sf object with transformed geometry
 }
 \description{
-Shift and rescale Alaska and Hawaii in a US-wide sf object
+Shift and rescale Alaska, Hawaii, and Puerto Rico in a US-wide sf object
 }
