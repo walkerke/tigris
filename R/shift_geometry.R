@@ -92,9 +92,9 @@ shift_geometry <- function(input_sf,
 
   # Parse the geometries (thanks to Claus Wilke for code samples & inspiration)
   place_geometry_wilke <- function(geometry, position,
-                                   scale = 1, centroid = st_centroid(geometry)) {
+                                   scale = 1, centroid = sf::st_centroid(geometry)) {
     (geometry - centroid) * scale +
-      st_sfc(st_point(position))
+      sf::st_sfc(st_point(position))
   }
 
   cont_us <- dplyr::filter(minimal_states, !GEOID %in% c("02", "15", "72")) %>%
@@ -111,52 +111,70 @@ shift_geometry <- function(input_sf,
 
   us_puerto_rico <- dplyr::filter(input_sf, state_fips == "72")
 
-  # TODO: add option for Puerto Rico
+  # Initialize the list in which shapes will be stored
+  shapes_list <- list(us_lower48)
 
   # Area not preserved (Alaska smaller, Hawaii bigger)
   if (!preserve_area) {
 
-    # Rescale and shift Alaska
-    ak_rescaled <- sf::st_transform(us_alaska, ak_crs)
+    if(any(ak_check)) {
+      # Rescale and shift Alaska
+      ak_rescaled <- sf::st_transform(us_alaska, ak_crs)
 
-    st_geometry(ak_rescaled) <- place_geometry_wilke(
-      sf::st_geometry(ak_rescaled),
-      c(bb$xmin + 0.08*(bb$xmax - bb$xmin),
-        bb$ymin + 0.07*(bb$ymax - bb$ymin)),
-      scale = 0.5,
-      centroid = ak_centroid
-    )
+      st_geometry(ak_rescaled) <- place_geometry_wilke(
+        sf::st_geometry(ak_rescaled),
+        c(bb$xmin + 0.08*(bb$xmax - bb$xmin),
+          bb$ymin + 0.07*(bb$ymax - bb$ymin)),
+        scale = 0.5,
+        centroid = ak_centroid
+      )
 
-    sf::st_crs(ak_rescaled) <- 'ESRI:102003'
+      sf::st_crs(ak_rescaled) <- 'ESRI:102003'
 
-    # Rescale and shift Hawaii
-    hi_rescaled <- sf::st_transform(us_hawaii, hi_crs)
+      shapes_list <- c(shapes_list, list(ak_rescaled))
+    }
 
-    sf::st_geometry(hi_rescaled) <- place_geometry_wilke(
-      sf::st_geometry(hi_rescaled),
-      c(bb$xmin + 0.35*(bb$xmax - bb$xmin),
-        bb$ymin + 0.*(bb$ymax - bb$ymin)),
-      scale = 1.5,
-      centroid = hi_centroid
-    )
+    if(any(hi_check)) {
 
-    st_crs(hi_rescaled) <- 'ESRI:102003'
+      # Rescale and shift Hawaii
+      hi_rescaled <- sf::st_transform(us_hawaii, hi_crs)
 
-    # Rescale and shift Puerto Rico
-    pr_rescaled <- sf::st_transform(us_puerto_rico, pr_crs)
+      sf::st_geometry(hi_rescaled) <- place_geometry_wilke(
+        sf::st_geometry(hi_rescaled),
+        c(bb$xmin + 0.35*(bb$xmax - bb$xmin),
+          bb$ymin + 0.*(bb$ymax - bb$ymin)),
+        scale = 1.5,
+        centroid = hi_centroid
+      )
 
-    sf::st_geometry(pr_rescaled) <- place_geometry_wilke(
-      sf::st_geometry(pr_rescaled),
-      c(bb$xmin + 0.65*(bb$xmax - bb$xmin),
-        bb$ymin + 0.*(bb$ymax - bb$ymin)),
-      scale = 2.5,
-      centroid = pr_centroid
-    )
+      st_crs(hi_rescaled) <- 'ESRI:102003'
 
-    st_crs(pr_rescaled) <- 'ESRI:102003'
+      shapes_list <- c(shapes_list, list(hi_rescaled))
 
-    output_data <- dplyr::bind_rows(us_lower48, ak_rescaled, hi_rescaled, pr_rescaled) %>%
-      select(-state_fips)
+    }
+
+
+    if(any(pr_check)) {
+      # Rescale and shift Puerto Rico
+      pr_rescaled <- sf::st_transform(us_puerto_rico, pr_crs)
+
+      sf::st_geometry(pr_rescaled) <- place_geometry_wilke(
+        sf::st_geometry(pr_rescaled),
+        c(bb$xmin + 0.65*(bb$xmax - bb$xmin),
+          bb$ymin + 0.*(bb$ymax - bb$ymin)),
+        scale = 2.5,
+        centroid = pr_centroid
+      )
+
+      st_crs(pr_rescaled) <- 'ESRI:102003'
+
+      shapes_list <- c(shapes_list, list(pr_rescaled))
+    }
+
+
+    output_data <- shapes_list %>%
+      dplyr::bind_rows() %>%
+      dplyr::select(-state_fips)
 
     return(output_data)
 
@@ -164,48 +182,63 @@ shift_geometry <- function(input_sf,
 
     # Area preserved (Alaska and Hawaii are true to size)
 
-    # Shift Alaska but do not rescale
-    ak_shifted <- sf::st_transform(us_alaska, 3338)
+    if(any(ak_check)) {
+      # Shift Alaska but do not rescale
+      ak_shifted <- sf::st_transform(us_alaska, 3338)
 
-    st_geometry(ak_shifted) <- place_geometry_wilke(
-      sf::st_geometry(ak_shifted),
-      c(bb$xmin + 0.2*(bb$xmax - bb$xmin),
-        bb$ymin - 0.13*(bb$ymax - bb$ymin)),
-      scale = 1,
-      centroid = ak_centroid
-    )
+      st_geometry(ak_shifted) <- place_geometry_wilke(
+        sf::st_geometry(ak_shifted),
+        c(bb$xmin + 0.2*(bb$xmax - bb$xmin),
+          bb$ymin - 0.13*(bb$ymax - bb$ymin)),
+        scale = 1,
+        centroid = ak_centroid
+      )
 
-    sf::st_crs(ak_shifted) <- 'ESRI:102003'
+      sf::st_crs(ak_shifted) <- 'ESRI:102003'
+
+      shapes_list <- c(shapes_list, list(ak_shifted))
+    }
+
 
     # Shift Hawaii but do not rescale
+    if(any(hi_check)) {
+      hi_shifted <- sf::st_transform(us_hawaii, 'ESRI:102007')
 
-    hi_shifted <- sf::st_transform(us_hawaii, 'ESRI:102007')
+      sf::st_geometry(hi_shifted) <- place_geometry_wilke(
+        sf::st_geometry(hi_shifted),
+        c(bb$xmin + 0.6*(bb$xmax - bb$xmin),
+          bb$ymin - 0.1*(bb$ymax - bb$ymin)),
+        scale = 1,
+        centroid = hi_centroid
+      )
 
-    sf::st_geometry(hi_shifted) <- place_geometry_wilke(
-      sf::st_geometry(hi_shifted),
-      c(bb$xmin + 0.6*(bb$xmax - bb$xmin),
-        bb$ymin - 0.1*(bb$ymax - bb$ymin)),
-      scale = 1,
-      centroid = hi_centroid
-    )
+      st_crs(hi_shifted) <- 'ESRI:102003'
 
-    st_crs(hi_shifted) <- 'ESRI:102003'
+      shapes_list <- c(shapes_list, list(hi_shifted))
+    }
 
-    # Shift Puerto Rico but do not rescale
-    pr_shifted <- sf::st_transform(us_puerto_rico, pr_crs)
+    if(any(pr_check)) {
 
-    sf::st_geometry(pr_shifted) <- place_geometry_wilke(
-      sf::st_geometry(pr_shifted),
-      c(bb$xmin + 0.75*(bb$xmax - bb$xmin),
-        bb$ymin - 0.1*(bb$ymax - bb$ymin)),
-      scale = 1,
-      centroid = pr_centroid
-    )
+      # Shift Puerto Rico but do not rescale
+      pr_shifted <- sf::st_transform(us_puerto_rico, pr_crs)
 
-    st_crs(pr_shifted) <- 'ESRI:102003'
+      sf::st_geometry(pr_shifted) <- place_geometry_wilke(
+        sf::st_geometry(pr_shifted),
+        c(bb$xmin + 0.75*(bb$xmax - bb$xmin),
+          bb$ymin - 0.1*(bb$ymax - bb$ymin)),
+        scale = 1,
+        centroid = pr_centroid
+      )
 
-    output_data <- dplyr::bind_rows(us_lower48, ak_shifted, hi_shifted, pr_shifted) %>%
-      select(-state_fips)
+      st_crs(pr_shifted) <- 'ESRI:102003'
+
+      shapes_list <- c(shapes_list, list(pr_shifted))
+
+    }
+
+    output_data <- shapes_list %>%
+      dplyr::bind_rows() %>%
+      dplyr::select(-state_fips)
 
     return(output_data)
 
