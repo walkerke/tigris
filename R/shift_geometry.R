@@ -1,8 +1,8 @@
 #' Shift and rescale Alaska, Hawaii, and Puerto Rico in a US-wide sf object
 #'
 #' @param input_sf The input sf dataset
-#' @param state_column The column representing state IDs (optional). If NULL, a GEOID column
-#'                     like those included in tigris or tidycensus is required.
+#' @param geoid_column The GEOID column of the dataset that contains a state ID.  If used, will speed up
+#'                     processing and avoid spatial overlay to infer locations.  Defaults to \code{NULL}.
 #' @param preserve_area If TRUE, the areas of Alaska/Hawaii/Puerto Rico relative to the continental US
 #'                      will be preserved.  Defaults to FALSE where Alaska is proportionally smaller
 #'                      and Hawaii/Puerto Rico are proportionally larger.
@@ -10,7 +10,7 @@
 #' @return The input sf object with transformed geometry
 #' @export
 shift_geometry <- function(input_sf,
-                           state_column = NULL,
+                           geoid_column = NULL,
                            preserve_area = FALSE) {
 
   # Check to see if the input is an sf object, otherwise exit
@@ -18,22 +18,55 @@ shift_geometry <- function(input_sf,
     stop("The input dataset must be an sf object.", call = FALSE)
   }
 
-  # Check to see if there is a GEOID column to identify state information
-  # If not, validate the state
-  if (!is.null(state_column)) {
-    input_sf$state_fips <- suppressWarnings(suppressMessages(tigris:::validate_state(input_sf[[state_column]])))
-  } else {
-    if (!"GEOID" %in% names(input_sf)) {
-      stop("A GEOID column must be present in your data if the state_column argument is NULL",
-           call. = FALSE)
-    } else {
-      input_sf$state_fips <- stringr::str_sub(input_sf$GEOID, 1, 2)
-    }
+  # Get a set of minimal states which we'll need to use throughout the function
+  minimal_states <- tigris::states(cb = TRUE, resolution = "20m", progress_bar = FALSE)
+
+  # Make some bboxes to check to see if shifting geometry even makes sense
+  ak_bbox <- minimal_states %>%
+    dplyr::filter(GEOID == "02") %>%
+    sf::st_bbox() %>%
+    sf::st_as_sfc()
+
+  hi_bbox <- minimal_states %>%
+    dplyr::filter(GEOID == "15") %>%
+    sf::st_bbox() %>%
+    sf::st_as_sfc()
+
+  pr_bbox <- minimal_states %>%
+    dplyr::filter(GEOID == "72") %>%
+    sf::st_bbox() %>%
+    sf::st_as_sfc()
+
+  input_sf <- sf::st_transform(input_sf, sf::st_crs(minimal_states))
+
+  ak_check <- suppressMessages(sf::st_intersects(input_sf, ak_bbox, sparse = FALSE)[,1])
+  hi_check <- suppressMessages(sf::st_intersects(input_sf, hi_bbox, sparse = FALSE)[,1])
+  pr_check <- suppressMessages(sf::st_intersects(input_sf, pr_bbox, sparse = FALSE)[,1])
+
+  if (!any(ak_check) && !any(hi_check) && !any(pr_check)) {
+    stop("None of your features are in Alaska, Hawaii, or Puerto Rico; shifting geometry isn't necessary.",
+         call. = FALSE)
   }
+  # Check to see if there is a GEOID column to identify state information
+  # If it is a GEOID that works (e.g. counties, tracts), then use it and avoid spatial inferences
+  if (!is.null(geoid_column)) {
+    input_sf$state_fips <- stringr::str_sub(input_sf[[geoid_column]], 1, 2)
+  } else {
+      # This is where we need to infer the location of the features
+      # We can do this by checking to see where the input features intersect
+      # the AK/HI/PR bounding boxes
+      input_sf <- input_sf %>%
+        sf::st_transform(sf::st_crs(minimal_states)) %>%
+        dplyr::mutate(state_fips = dplyr::case_when(
+          suppressMessages(sf::st_intersects(input_sf, ak_bbox, sparse = FALSE)[,1]) ~ "02",
+          suppressMessages(sf::st_intersects(input_sf, hi_bbox, sparse = FALSE)[,1]) ~ "15",
+          suppressMessages(sf::st_intersects(input_sf, pr_bbox, sparse = FALSE)[,1]) ~ "72",
+          TRUE ~ "00"
+        ))
+    }
+
 
   # Alaska/Hawaii/PR centroids are necessary to put any dataset in the correct location
-  minimal_states <- tigris::states(cb = TRUE, resolution = "20m")
-
   ak_crs <- 3338
   hi_crs <- 'ESRI:102007'
   pr_crs <- 32161

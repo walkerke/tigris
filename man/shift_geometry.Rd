@@ -4,13 +4,13 @@
 \alias{shift_geometry}
 \title{Shift and rescale Alaska, Hawaii, and Puerto Rico in a US-wide sf object}
 \usage{
-shift_geometry(input_sf, state_column = NULL, preserve_area = FALSE)
+shift_geometry(input_sf, geoid_column = NULL, preserve_area = FALSE)
 }
 \arguments{
 \item{input_sf}{The input sf dataset}
 
-\item{state_column}{The column representing state IDs (optional). If NULL, a GEOID column
-like those included in tigris or tidycensus is required.}
+\item{geoid_column}{The GEOID column of the dataset that contains a state ID.  If used, will speed up
+processing and avoid spatial overlay to infer locations.  Defaults to \code{NULL}.}
 
 \item{preserve_area}{If TRUE, the areas of Alaska/Hawaii/Puerto Rico relative to the continental US
 will be preserved.  Defaults to FALSE where Alaska is proportionally smaller
