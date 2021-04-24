@@ -44,8 +44,13 @@ shift_geometry <- function(input_sf,
   pr_check <- suppressMessages(sf::st_intersects(input_sf, pr_bbox, sparse = FALSE)[,1])
 
   if (!any(ak_check) && !any(hi_check) && !any(pr_check)) {
-    stop("None of your features are in Alaska, Hawaii, or Puerto Rico; shifting geometry isn't necessary.",
+    warning("None of your features are in Alaska, Hawaii, or Puerto Rico, so no geometries will be shifted.\nTransforming your object's CRS to 'ESRI:102003'",
          call. = FALSE)
+
+    transformed_output <- sf::st_transform(input_sf, 'ESRI:102003')
+
+    return(transformed_output)
+
   }
   # Check to see if there is a GEOID column to identify state information
   # If it is a GEOID that works (e.g. counties, tracts), then use it and avoid spatial inferences
