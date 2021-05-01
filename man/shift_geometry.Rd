@@ -4,7 +4,12 @@
 \alias{shift_geometry}
 \title{Shift and rescale Alaska, Hawaii, and Puerto Rico in a US-wide sf object}
 \usage{
-shift_geometry(input_sf, geoid_column = NULL, preserve_area = FALSE)
+shift_geometry(
+  input_sf,
+  geoid_column = NULL,
+  preserve_area = FALSE,
+  position = c("below", "outside")
+)
 }
 \arguments{
 \item{input_sf}{The input sf dataset}
@@ -15,6 +20,11 @@ processing and avoid spatial overlay to infer locations.  Defaults to \code{NULL
 \item{preserve_area}{If TRUE, the areas of Alaska/Hawaii/Puerto Rico relative to the continental US
 will be preserved.  Defaults to FALSE where Alaska is proportionally smaller
 and Hawaii/Puerto Rico are proportionally larger.}
+
+\item{position}{One of \code{"below"} (the default) or \code{"outside"}.  If \code{"below"}, Alaska, Hawaii,
+and Puerto Rico will be placed below the continental United States.  If \code{"outside"},
+features will be moved outside the continental US; Alaska will be northwest of Washington,
+Hawaii southwest of California, and Puerto Rico southeast of Florida.}
 }
 \value{
 The input sf object with transformed geometry
