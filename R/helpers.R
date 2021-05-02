@@ -76,6 +76,9 @@ load_tiger <- function(url,
 
     if (file.exists(cache_dir)) {
 
+      shape <- gsub(".zip", "", tiger_file)
+      shape <- gsub("_shp", "", shape) # for historic tracts
+
       file_loc <- file.path(cache_dir, tiger_file)
 
       if (refresh | !file.exists(file_loc)) {
@@ -92,9 +95,6 @@ load_tiger <- function(url,
 
 
       }
-
-      shape <- gsub(".zip", "", tiger_file)
-      shape <- gsub("_shp", "", shape) # for historic tracts
 
       if (refresh | !file.exists(file.path(cache_dir,
                                  sprintf("%s.shp", shape)))) {
@@ -124,11 +124,6 @@ load_tiger <- function(url,
                       write_disk(file_loc, overwrite=TRUE)),
                       silent=TRUE)
             }
-
-
-
-            shape <- gsub(".zip", "", tiger_file)
-            shape <- gsub("_shp", "", shape)
 
             t <- tryCatch(unzip_tiger(), warning = function(w) w)
 
