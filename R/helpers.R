@@ -80,8 +80,9 @@ load_tiger <- function(url,
       shape <- gsub("_shp", "", shape) # for historic tracts
 
       file_loc <- file.path(cache_dir, tiger_file)
+      shp_loc  <- file.path(cache_dir, sprintf("%s.shp", shape))
 
-      if (refresh | !file.exists(file_loc)) {
+      if (refresh | !file.exists(shp_loc)) {
 
         if (progress_bar) {
           try(GET(url,
@@ -96,8 +97,7 @@ load_tiger <- function(url,
 
       }
 
-      if (refresh | !file.exists(file.path(cache_dir,
-                                 sprintf("%s.shp", shape)))) {
+      if (refresh | !file.exists(shp_loc)) {
 
         unzip_tiger <- function() {
           unzip(file_loc, exdir = cache_dir, overwrite=TRUE)
