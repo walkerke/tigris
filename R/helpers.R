@@ -102,6 +102,11 @@ load_tiger <- function(url,
         unzip_tiger <- function() {
           unzip(file_loc, exdir = cache_dir, overwrite=TRUE)
         }
+        remove_zip_tiger <- function() {
+          if (file.exists(file_loc) && file.exists(shp_loc)) {
+            invisible(file.remove(file_loc))
+          }
+        }
 
         # Logic for handling download errors and re-downloading
         t <- tryCatch(unzip_tiger(), warning = function(w) w)
@@ -144,6 +149,7 @@ load_tiger <- function(url,
         } else {
 
           unzip_tiger()
+          remove_zip_tiger()
 
         }
 
