@@ -17,7 +17,7 @@
 #'        Options include \code{class}, which can be set to \code{"sf"} (the default) or \code{"sp"} to
 #'        request sf or sp class objects, and \code{refresh}, which specifies whether or
 #'        not to re-download shapefiles (defaults to \code{FALSE}).
-#' @seealso \url{http://www2.census.gov/geo/pdfs/maps-data/data/tiger/tgrshp2019/TGRSHP2019_TechDoc_Ch3.pdf}
+#' @seealso \url{https://www2.census.gov/geo/pdfs/maps-data/data/tiger/tgrshp2019/TGRSHP2019_TechDoc_Ch3.pdf}
 #' @export
 
 military <- function(year = NULL, ...) {

@@ -146,7 +146,7 @@ urban_areas <- function(cb = FALSE, year = NULL, ...) {
 #'        request sf or sp class objects, and \code{refresh}, which specifies whether or
 #'        not to re-download shapefiles (defaults to \code{FALSE}).
 #' @family metro area functions
-#' @seealso \url{http://www2.census.gov/geo/pdfs/maps-data/data/tiger/tgrshp2019/TGRSHP2019_TechDoc.pdf}
+#' @seealso \url{https://www2.census.gov/geo/pdfs/maps-data/data/tiger/tgrshp2019/TGRSHP2019_TechDoc.pdf}
 #' @export
 combined_statistical_areas <- function(cb = FALSE, resolution = '500k', year = NULL, ...) {
 
@@ -199,7 +199,7 @@ combined_statistical_areas <- function(cb = FALSE, resolution = '500k', year = N
 #'        request sf or sp class objects, and \code{refresh}, which specifies whether or
 #'        not to re-download shapefiles (defaults to \code{FALSE}).
 #' @family metro area functions
-#' @seealso \url{http://www2.census.gov/geo/pdfs/maps-data/data/tiger/tgrshp2019/TGRSHP2019_TechDoc.pdf}
+#' @seealso \url{https://www2.census.gov/geo/pdfs/maps-data/data/tiger/tgrshp2019/TGRSHP2019_TechDoc.pdf}
 #' @export
 metro_divisions <- function(year = NULL, ...) {
 
@@ -253,7 +253,7 @@ metro_divisions <- function(year = NULL, ...) {
 #'        request sf or sp class objects, and \code{refresh}, which specifies whether or
 #'        not to re-download shapefiles (defaults to \code{FALSE}).
 #' @family metro area functions
-#' @seealso \url{http://www2.census.gov/geo/pdfs/maps-data/data/tiger/tgrshp2019/TGRSHP2019_TechDoc.pdf}
+#' @seealso \url{https://www2.census.gov/geo/pdfs/maps-data/data/tiger/tgrshp2019/TGRSHP2019_TechDoc.pdf}
 #' @export
 #' @examples \dontrun{
 #' library(tigris)

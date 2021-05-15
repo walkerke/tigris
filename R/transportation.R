@@ -16,7 +16,7 @@
 #'        request sf or sp class objects, and \code{refresh}, which specifies whether or
 #'        not to re-download shapefiles (defaults to \code{FALSE}).
 #' @family transportation functions
-#' @seealso \url{http://www2.census.gov/geo/pdfs/maps-data/data/tiger/tgrshp2019/TGRSHP2019_TechDoc.pdf}
+#' @seealso \url{https://www2.census.gov/geo/pdfs/maps-data/data/tiger/tgrshp2019/TGRSHP2019_TechDoc.pdf}
 #' @export
 #' @examples \dontrun{
 #' library(tigris)
@@ -88,7 +88,7 @@ roads <- function(state, county, year = NULL, ...) {
 #'        request sf or sp class objects, and \code{refresh}, which specifies whether or
 #'        not to re-download shapefiles (defaults to \code{FALSE}).
 #' @family transportation functions
-#' @seealso \url{http://www2.census.gov/geo/pdfs/maps-data/data/tiger/tgrshp2019/TGRSHP2019_TechDoc.pdf}
+#' @seealso \url{https://www2.census.gov/geo/pdfs/maps-data/data/tiger/tgrshp2019/TGRSHP2019_TechDoc.pdf}
 #' @export
 #' @examples \dontrun{
 #' library(tigris)
@@ -144,7 +144,7 @@ primary_roads <- function(year = NULL, ...) {
 #'        request sf or sp class objects, and \code{refresh}, which specifies whether or
 #'        not to re-download shapefiles (defaults to \code{FALSE}).
 #' @family transportation functions
-#' @seealso \url{http://www2.census.gov/geo/pdfs/maps-data/data/tiger/tgrshp2019/TGRSHP2019_TechDoc.pdf}
+#' @seealso \url{https://www2.census.gov/geo/pdfs/maps-data/data/tiger/tgrshp2019/TGRSHP2019_TechDoc.pdf}
 #' @export
 #' @examples \dontrun{
 #' library(tigris)
@@ -195,7 +195,7 @@ primary_secondary_roads <- function(state, year = NULL, ...) {
 #'        request sf or sp class objects, and \code{refresh}, which specifies whether or
 #'        not to re-download shapefiles (defaults to \code{FALSE}).
 #' @family transportation functions
-#' @seealso \url{http://www2.census.gov/geo/pdfs/maps-data/data/tiger/tgrshp2019/TGRSHP2019_TechDoc.pdf}
+#' @seealso \url{https://www2.census.gov/geo/pdfs/maps-data/data/tiger/tgrshp2019/TGRSHP2019_TechDoc.pdf}
 #' @export
 #' @examples \dontrun{
 #' library(tigris)
@@ -245,7 +245,7 @@ rails <- function(year = NULL, ...) {
 #'        request sp or sf class objects, and \code{refresh}, which specifies whether or
 #'        not to re-download shapefiles (defaults to \code{FALSE}).
 #' @family transportation functions
-#' @seealso \url{http://www2.census.gov/geo/pdfs/maps-data/data/tiger/tgrshp2019/TGRSHP2019_TechDoc.pdf}
+#' @seealso \url{https://www2.census.gov/geo/pdfs/maps-data/data/tiger/tgrshp2019/TGRSHP2019_TechDoc.pdf}
 #' @export
 address_ranges <- function(state, county, year = NULL, ...) {
 

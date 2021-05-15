@@ -19,7 +19,7 @@ Metropolitan divisions are subdivisions of metropolitan areas with population of
 not all metropolitan areas have metropolitan divisions.
 }
 \seealso{
-\url{http://www2.census.gov/geo/pdfs/maps-data/data/tiger/tgrshp2019/TGRSHP2019_TechDoc.pdf}
+\url{https://www2.census.gov/geo/pdfs/maps-data/data/tiger/tgrshp2019/TGRSHP2019_TechDoc.pdf}
 
 Other metro area functions: 
 \code{\link{combined_statistical_areas}()},

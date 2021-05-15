@@ -388,7 +388,7 @@ tracts <- function(state, county = NULL, cb = FALSE, year = NULL, ...) {
 #'        request sf or sp class objects, and \code{refresh}, which specifies whether or
 #'        not to re-download shapefiles (defaults to \code{FALSE}).
 #' @family general area functions
-#' @seealso \url{http://www2.census.gov/geo/pdfs/maps-data/data/tiger/tgrshp2019/TGRSHP2019_TechDoc.pdf}
+#' @seealso \url{https://www2.census.gov/geo/pdfs/maps-data/data/tiger/tgrshp2019/TGRSHP2019_TechDoc.pdf}
 #' @export
 #' @examples \dontrun{
 #' library(tigris)
@@ -491,7 +491,7 @@ school_districts <- function(state, type = 'unified',
 #'        request sf or sp class objects, and \code{refresh}, which specifies whether or
 #'        not to re-download shapefiles (defaults to \code{FALSE}).
 #' @family general area functions
-#' @seealso \url{http://www2.census.gov/geo/pdfs/maps-data/data/tiger/tgrshp2019/TGRSHP2019_TechDoc.pdf}
+#' @seealso \url{https://www2.census.gov/geo/pdfs/maps-data/data/tiger/tgrshp2019/TGRSHP2019_TechDoc.pdf}
 #' @export
 #' @examples \dontrun{
 #' library(tigris)
@@ -790,7 +790,7 @@ zctas <- function(cb = FALSE, starts_with = NULL, year = NULL, state = NULL, ...
 #'        request sf or sp class objects, and \code{refresh}, which specifies whether or
 #'        not to re-download shapefiles (defaults to \code{FALSE}).
 #' @family general area functions
-#' @seealso \url{http://www2.census.gov/geo/pdfs/maps-data/data/tiger/tgrshp2019/TGRSHP2019_TechDoc.pdf}
+#' @seealso \url{https://www2.census.gov/geo/pdfs/maps-data/data/tiger/tgrshp2019/TGRSHP2019_TechDoc.pdf}
 #' @export
 #' @examples \dontrun{
 #' # Simple example using Rose Island, American Samoa

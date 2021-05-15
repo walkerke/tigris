@@ -27,7 +27,7 @@ employment interchanges."  In turn, CSAs are composed of multiple metropolitan a
 not be compared with individual core-based statistical areas.
 }
 \seealso{
-\url{http://www2.census.gov/geo/pdfs/maps-data/data/tiger/tgrshp2019/TGRSHP2019_TechDoc.pdf}
+\url{https://www2.census.gov/geo/pdfs/maps-data/data/tiger/tgrshp2019/TGRSHP2019_TechDoc.pdf}
 
 Other metro area functions: 
 \code{\link{core_based_statistical_areas}()},

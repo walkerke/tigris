@@ -30,5 +30,5 @@ Census Bureau has not loaded most of this data into the MAF/TIGER database. The 
 shapefiles contain few values in the ANSICODE field.
 }
 \seealso{
-\url{http://www2.census.gov/geo/pdfs/maps-data/data/tiger/tgrshp2019/TGRSHP2019_TechDoc_Ch3.pdf}
+\url{https://www2.census.gov/geo/pdfs/maps-data/data/tiger/tgrshp2019/TGRSHP2019_TechDoc_Ch3.pdf}
 }
