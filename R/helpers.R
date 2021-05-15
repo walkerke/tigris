@@ -56,6 +56,7 @@ load_tiger <- function(url,
                        tigris_type=NULL,
                        class = getOption("tigris_class", "sf"),
                        progress_bar = TRUE,
+                       keep_zipped_shapefile = FALSE,
                        query = NULL) {
 
   use_cache <- getOption("tigris_use_cache", FALSE)
@@ -76,9 +77,13 @@ load_tiger <- function(url,
 
     if (file.exists(cache_dir)) {
 
-      file_loc <- file.path(cache_dir, tiger_file)
+      shape <- gsub(".zip", "", tiger_file)
+      shape <- gsub("_shp", "", shape) # for historic tracts
 
-      if (refresh | !file.exists(file_loc)) {
+      file_loc <- file.path(cache_dir, tiger_file)
+      shp_loc  <- file.path(cache_dir, sprintf("%s.shp", shape))
+
+      if (refresh | !file.exists(shp_loc)) {
 
         if (progress_bar) {
           try(GET(url,
@@ -93,14 +98,15 @@ load_tiger <- function(url,
 
       }
 
-      shape <- gsub(".zip", "", tiger_file)
-      shape <- gsub("_shp", "", shape) # for historic tracts
-
-      if (refresh | !file.exists(file.path(cache_dir,
-                                 sprintf("%s.shp", shape)))) {
+      if (refresh | !file.exists(shp_loc)) {
 
         unzip_tiger <- function() {
           unzip(file_loc, exdir = cache_dir, overwrite=TRUE)
+        }
+        remove_zip_tiger <- function() {
+          if (file.exists(file_loc) && file.exists(shp_loc)) {
+            invisible(file.remove(file_loc))
+          }
         }
 
         # Logic for handling download errors and re-downloading
@@ -125,11 +131,6 @@ load_tiger <- function(url,
                       silent=TRUE)
             }
 
-
-
-            shape <- gsub(".zip", "", tiger_file)
-            shape <- gsub("_shp", "", shape)
-
             t <- tryCatch(unzip_tiger(), warning = function(w) w)
 
             if ("warning" %in% class(t)) {
@@ -149,6 +150,12 @@ load_tiger <- function(url,
         } else {
 
           unzip_tiger()
+
+          if (!keep_zipped_shapefile) {
+
+            remove_zip_tiger()
+
+          }
 
         }
 
@@ -177,8 +184,6 @@ load_tiger <- function(url,
         }
 
       }
-
-
 
     }
 
