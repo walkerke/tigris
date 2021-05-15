@@ -106,7 +106,7 @@ call_geolocator <- function(street, city, state, zip = NA) {
       }
     }
 
-  call_end <- "&benchmark=Public_AR_Census2020&vintage=Census2020_Census2020&layers=14&format=json"
+  call_end <- "&benchmark=Public_AR_Census2020&vintage=Census2020_Census2020&layers=10&format=json"
 
   url_full <- paste0(call_start, url, call_end)
 
@@ -161,7 +161,7 @@ call_geolocator_latlon <- function(lat, lon, benchmark, vintage) {
   # Build url
   call_start <- "https://geocoding.geo.census.gov/geocoder/geographies/coordinates?"
 
-  url <- paste0("x=", lat,"&y=", lon)
+  url <- paste0("x=", lon,"&y=", lat)
 
   benchmark0 <- paste0("&benchmark=", benchmark)
   vintage0 <- paste0("&vintage=", vintage, "&format=json")
