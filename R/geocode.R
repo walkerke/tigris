@@ -106,7 +106,7 @@ call_geolocator <- function(street, city, state, zip = NA) {
       }
     }
 
-  call_end <- "&benchmark=Public_AR_Census2020&vintage=Census2020_Census2020&layers=14&format=json"
+  call_end <- "&benchmark=Public_AR_Census2020&vintage=Census2020_Census2020&layers=10&format=json"
 
   url_full <- paste0(call_start, url, call_end)
 
@@ -130,7 +130,7 @@ call_geolocator <- function(street, city, state, zip = NA) {
 }
 
 
-#' Call geolocator for one address with lat/lon, adds option to set benchmark and vintage if not provided defualts to most recent.
+#' Call geolocator for one address with lat/lon, adds option to set benchmark and vintage if not provided it will default to the most recent.
 #'
 #' @param lat A numeric value
 #' @param lon A numeric value
@@ -162,6 +162,7 @@ call_geolocator_latlon <- function(lat, lon, benchmark, vintage) {
   call_start <- "https://geocoding.geo.census.gov/geocoder/geographies/coordinates?"
 
   url <- paste0("x=", lon,"&y=", lat)
+
   benchmark0 <- paste0("&benchmark=", benchmark)
   vintage0 <- paste0("&vintage=", vintage, "&format=json")
 
@@ -176,10 +177,27 @@ call_geolocator_latlon <- function(lat, lon, benchmark, vintage) {
                    ") returned no geocodes. An NA was returned."))
     return(NA_character_)
   } else {
-    if (length(response$result$geographies$`2020 Census Blocks`[[1]]$GEOID) > 1) {
+
+  #regex search for block group geography in response
+  response_block<-grep(response[["result"]][["geographies"]], pattern = ".Block.")
+
+  #check If a block group result is found or return NA
+  #If block group response is found check GEOID length and return either NA for missing data or the value
+  if(length(response_block) == 0){
+    return(NA_character_)
+  } else {
+    if (length(response[["result"]][["geographies"]][[response_block]][[1]]$GEOID) == 0) {
       message(paste0("Lat/lon (", lat, ", ", lon,
-                     ") returned more than geocode. The first match was returned."))
+                     ") returned no geocodes. An NA was returned."))
+      return(NA_character_)
+    } else {
+      if (length(response[["result"]][["geographies"]][[response_block]][[1]]$GEOID) > 1) {
+        message(paste0("Lat/lon (", lat, ", ", lon,
+                       ") returned more than geocode. The first match was returned."))
+      }
+      return(response[["result"]][["geographies"]][[response_block]][[1]]$GEOID)
     }
-    return(response$result$geographies$`2020 Census Blocks`[[1]]$GEOID)
+  }
+
   }
 }

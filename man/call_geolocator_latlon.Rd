@@ -2,7 +2,7 @@
 % Please edit documentation in R/geocode.R
 \name{call_geolocator_latlon}
 \alias{call_geolocator_latlon}
-\title{Call geolocator for one address with lat/lon, adds option to set benchmark and vintage if not provided defualts to most recent.}
+\title{Call geolocator for one address with lat/lon, adds option to set benchmark and vintage if not provided it will default to the most recent.}
 \usage{
 call_geolocator_latlon(lat, lon, benchmark, vintage)
 }
@@ -20,7 +20,7 @@ A character string representing the Census block of the supplied
   lat/lon.
 }
 \description{
-Call geolocator for one address with lat/lon, adds option to set benchmark and vintage if not provided defualts to most recent.
+Call geolocator for one address with lat/lon, adds option to set benchmark and vintage if not provided it will default to the most recent.
 }
 \author{
 Josie Kressner, \email{josie@transportfoundry.com}
