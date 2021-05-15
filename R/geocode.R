@@ -198,6 +198,61 @@ call_geolocator_latlon <- function(lat, lon, benchmark, vintage) {
 
 #' Batch Geocoder for the Census API
 #' 
+#' Takes a dataframe of address data (street, city, state, zip) and breaks it into batches that are sent to the Census bureaus batch geocoding API. It returns the provided data frame with geocoding results attached as additional columns. 
+#' 
+#' @param data Is the dataframe of address data. Should have columns that contain street number and name, City name, State, and ZIP code
+#' @param Street This is the name of the column inside the provided dataframe that contains the street name and number. This should be given in quotes. Ex. "addr1"
+#' @param City This is the name of the column inside the provided dataframe that contains the City name. This should be given in quotes. Ex. "City"
+#' @param State This is the name of the column inside the provided dataframe that contains the State name. This should be given in quotes. Ex. "State"
+#' @param ZIP This is the name of the column inside the provided dataframe that contains the ZIP code number. This should be given in quotes. Ex. "Zip5"
+#' @param benchmark This is the version of the Census bureaus master address file that you would like to use to search your addresses. This function defaults to the most current version but allows for searching others. The full list of available benchmarks can be found here \href{https://geocoding.geo.census.gov/geocoder/benchmarks}{Census Benchmarks}
+#' @param vintage This is the version of geographies inside the benchmark that you would like to use to search your addresses. This function defaults to the most current version but allows for searching others. The full list of vintages can eb found here \href{https://geocoding.geo.census.gov/geocoder/vintages?form}{Census Vintages}
+#' @param batch_size This determines how many records will be included in each batch. This has implications for memory usage as the splitting of your dataframe is turned into a list that then gets sent one at a time to the API. Another consideration is that setting this value too high may cause timeouts while waiting for the API to process your request. The API limits this to a maximum of 10,000 records in a single batch. The function defaults to 1,000 in a single batch
+#' 
+#' @details This function will take the provided dataframe and format it so that it can be processed by the Census batch Geocoding API. The API requires a very specific format of Unique ID value, Street Address, City, State, Zip with no column headers. To achieve this an index value is attached to each record and a duplicate of the dataframe is made. Any extra data is removed from the duplicate dataframe and it is split into batches that are held in a list. The function then writes a batch to a temprary CSV file that it submits to the API. It then saves the results and moves on to the next batch in the list. When all of the batches have been sent and all results have been recieved the function combines the batch results into one large dataframe that it then joins to the originally provided data by matching the index values. This means that with large datasets this function may become memory intensive. Limiting the amount of additional data or the number of records in a dataframe when sending it to this function may provide a workaround to any memory constraints.
+#' 
+#' @return The returned dataframe will contain five additional columns
+#' \itemize{
+#' \item{\strong{Match} - }{A column indicating if a match was found}
+#' \item{\strong{Match_type} - }{A column indicating if the match was an exact or appromiate match}
+#' \item{\strong{Match_addr} - }{A column showing the address that the API was able to match to}
+#' \item{\strong{Lon} - }{A column showing the longitude of a matched address}
+#' \item{\strong{Lat} - }{A column showing the latitude of a matched address}
+#' }
+#' 
+#' @references The web interface for the API can be found here:
+#' \href{https://geocoding.geo.census.gov/geocoder/locations/addressbatch?form}{Census Batch Geolocator}
+#'
+#' @seealso Here you can read the API documentation: \href{https://geocoding.geo.census.gov/geocoder/Geocoding_Services_API.pdf}{Census API Documentation}
+#'
+#'         
+#' @examples #Generate some test data
+#' Test_Batch<-data.frame(uid=c(1,2),
+#'                       Street=c('4600 Silver Hill Road','400 15th St SE'),
+#'                       City=c('Washington','Washington'),
+#'                       State=c('DC','DC'),
+#'                       ZIP=c(20233,20003))
+#'
+#' #call the function with the test data
+#' call_geolocator_batch(data=Test_Batch,
+#'                      Street = 'Street',
+#'                      City = 'City',
+#'                      State = 'State',
+#'                      ZIP = 'ZIP',
+#'                      benchmark = 'Public_AR_Current',
+#'                      vintage = 'Current_Current',
+#'                      batch_size=10)
+#'                      
+#' #Expected output                     
+#' \tabular{cccccccccc}{
+#' \strong{Index} \tab \strong{Street} \tab \strong{City} \tab \strong{State} \tab \strong{ZIP} \tab \strong{Match} \tab \strong{Match_type} \tab \strong{Match_Addr} \tab \strong{lon} \tab \strong{lat} \cr
+#' 1 \tab 4600 Silver Hill Road \tab Washington \tab DC \tab 20233 \tab Match \tab Exact \tab 4600 SILVER HILL RD, WASHINGTON, DC, 20233 \tab -76.92744 \tab 38.845985 \cr
+#' 2 \tab 400 15th St SE \tab Washington \tab DC \tab 20003 \tab Match \tab Exact \tab 400 15TH ST SE, WASHINGTON, DC, 20003 \tab -76.98365 \tab 38.884
+#' }
+#'
+#' 
+#' @author Mark Richards, \email{Mark.Richards.002@gmail.com}
+#' 
 call_geolocator_batch <- function(data, Street, City, State, ZIP, benchmark="Public_AR_Current", vintage="Current_Current", batch_size=1000) {
   if(missing(data)) {
     return(message("Must Specify dataframe"))
