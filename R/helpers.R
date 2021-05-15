@@ -56,6 +56,7 @@ load_tiger <- function(url,
                        tigris_type=NULL,
                        class = getOption("tigris_class", "sf"),
                        progress_bar = TRUE,
+                       keep_zipped_shapefile = FALSE,
                        query = NULL) {
 
   use_cache <- getOption("tigris_use_cache", FALSE)
@@ -149,7 +150,12 @@ load_tiger <- function(url,
         } else {
 
           unzip_tiger()
-          remove_zip_tiger()
+
+          if (!keep_zipped_shapefile) {
+
+            remove_zip_tiger()
+
+          }
 
         }
 
@@ -178,8 +184,6 @@ load_tiger <- function(url,
         }
 
       }
-
-
 
     }
 
