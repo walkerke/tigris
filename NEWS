@@ -1,3 +1,15 @@
+tigris 1.4
+-------------------------------------------------------
+* The new function shift_geometry() will shift and optionally rescale features in Alaska, Hawaii, and Puerto Rico for better thematic mapping of the United States.  See ?shift_geometry for more details.
+
+* 2020 geographies are available (TIGER/Line only) by specifying the argument year = 2020.
+
+* Various bux fixes and improvements; thanks to Maria Paula Caldas and Mark Richards for submitting pull requests.
+
+tigris 1.0
+-------------------------------------------------------
+* As of version 1.0 (released in July 2020), tigris functions return simple features objects with a default year of 2019.
+
 tigris 0.6
 -------------------------------------------------------
 * You are now able to specify a custom cache directory for your data.  To set the cache directory, use the new `tigris_cache_dir()` function.
