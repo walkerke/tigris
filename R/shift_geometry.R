@@ -1,5 +1,29 @@
 #' Shift and rescale Alaska, Hawaii, and Puerto Rico in a US-wide sf object
 #'
+#' This function will shift and optionally rescale a US dataset for thematic mapping of Alaska,
+#' Hawaii, and Puerto Rico with respect to the continental United States.  Features in the continental
+#' United States will have their CRS transformed to USA Contiguous Albers Equal Area Conic ('ESRI:102003').
+#' Alaska, Hawaii, and Puerto Rico features are transformed to appropriate coordinate systems for those areas,
+#' then shifted and optionally re-scaled before being assigned the 'ESRI:102003' CRS.  Options for users
+#' include \code{preserve_area} which allows for preservation of the area of AK/HI/PR relative to the
+#' continental US if desired, and two possible arrangements which are specified with \code{position = "below"}
+#' or \code{position = "outside"}
+#'
+#' \code{shift_geometry()}, while designed for use with objects from the tigris package, will work with any US
+#' dataset. If aligning datasets from multiple sources, you must take care to ensure that your options
+#' specified in \code{preserve_area} and \code{position} are identical across layers.  Otherwise your layers
+#' will not align correctly.
+#'
+#' The function is also designed to work exclusively with features in the continental United States,
+#' Alaska, Hawaii, and Puerto Rico.  If your dataset includes features outside these areas (e.g. other
+#' US territories or other countries), you may get unworkable results.  It is advisable to filter out
+#' those features before using \code{shift_geometry()}.
+#'
+#' Work on this function is inspired by and adapts some code from Claus Wilke's book \emph{Fundamentals of
+#' Data Visualization} (\url{https://clauswilke.com/dataviz/geospatial-data.html}); Bob Rudis's
+#' albersusa R package (\url{https://github.com/hrbrmstr/albersusa}); and the ggcart R package
+#' (\url{https://uncoast-unconf.github.io/ggcart/}).
+#'
 #' @param input_sf The input sf dataset
 #' @param geoid_column The GEOID column of the dataset that contains a state ID.  If used, will speed up
 #'                     processing and avoid spatial overlay to infer locations.  Defaults to \code{NULL}.
@@ -39,6 +63,7 @@
 #'   geometry = TRUE
 #' ) %>%
 #'   shift_geometry()
+#'
 #
 #' ggplot() +
 #'   geom_sf(data = income_by_metro, aes(fill = estimate), color = NA) +
