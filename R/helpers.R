@@ -300,6 +300,10 @@ load_tiger <- function(url,
 #' }
 geo_join <- function(spatial_data, data_frame, by_sp, by_df, by = NULL, how = 'left') {
 
+  .Deprecated("dplyr::left_join()",
+              package = "tigris",
+              msg = "We recommend using the dplyr::*_join() family of functions instead.")
+
   if (!is.null(by)) {
     by_sp <- by
     by_df <- by

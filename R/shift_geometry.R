@@ -82,6 +82,8 @@ shift_geometry <- function(input_sf,
                            preserve_area = FALSE,
                            position = c("below", "outside")) {
 
+  # sf::sf_use_s2(FALSE)
+
   # Check to see if the input is an sf object, otherwise exit
   if (!any(grepl("sf", class(input_sf)))) {
     stop("The input dataset must be an sf object.", call = FALSE)
@@ -90,7 +92,9 @@ shift_geometry <- function(input_sf,
   position <- match.arg(position)
 
   # Get a set of minimal states which we'll need to use throughout the function
-  minimal_states <- tigris::states(cb = TRUE, resolution = "20m", progress_bar = FALSE)
+  # Do the CRS transformation here to avoid S2 issues with sf 1.0
+  minimal_states <- tigris::states(cb = TRUE, resolution = "20m", progress_bar = FALSE) %>%
+    sf::st_transform('ESRI:102003')
 
   # Make some bboxes to check to see if shifting geometry even makes sense
   ak_bbox <- minimal_states %>%
