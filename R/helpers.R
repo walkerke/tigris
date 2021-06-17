@@ -28,7 +28,7 @@ tigris_cache_dir <- function(path) {
 
   if (isTRUE(any(grepl("TIGRIS_CACHE_DIR", check)))) {
     oldenv <- read.table(renv, stringsAsFactors = FALSE)
-    newenv <- oldenv[-grep("TIGRIS_CACHE_DIR", oldenv),]
+    newenv <- oldenv[!grepl("TIGRIS_CACHE_DIR", oldenv$V1), ]
     write.table(newenv, renv, quote = FALSE, sep = "\n",
                 col.names = FALSE, row.names = FALSE)
   }
