@@ -42,13 +42,13 @@ Updated documentation for __tigris__ is coming later this year in the book _Anal
 
 __Available datasets:__
 
-Please note: cartographic boundary files in __tigris__ are not available for 2011 and 2012.  While many datasets are available for 2020 geographies, the cartographic boundary shapefiles for 2020 have not yet been released as of May 2021.  
+Please note: cartographic boundary files in __tigris__ are not available for 2011 and 2012.  
 
 | Function | Datasets available | Years available |
 |------------------------------------------|------------------------------------------------|------------------------------|
-| `nation()` | cartographic (1:5m; 1:20m) | 2013-2019 |
-| `divisions()` | cartographic (1:500k; 1:5m; 1:20m) | 2013-2019 |
-| `regions()` | cartographic (1:500k; 1:5m; 1:20m) | 2013-2019 |
+| `nation()` | cartographic (1:5m; 1:20m) | 2013-2020 |
+| `divisions()` | cartographic (1:500k; 1:5m; 1:20m) | 2013-2020 |
+| `regions()` | cartographic (1:500k; 1:5m; 1:20m) | 2013-2020 |
 | `states()` | TIGER/Line; cartographic (1:500k; 1:5m; 1:20m) | 1990, 2000, 2010-2020 |
 | `counties()` | TIGER/Line; cartographic (1:500k; 1:5m; 1:20m) | 1990, 2000, 2010-2020 |
 | `tracts()` | TIGER/Line; cartographic (1:500k) | 1990, 2000, 2010-2020 |
