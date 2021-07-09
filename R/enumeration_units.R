@@ -840,8 +840,20 @@ blocks <- function(state, county = NULL, year = NULL, ...) {
   cyear <- as.character(year)
 
   if (year >= 2014) {
-    url <- sprintf("https://www2.census.gov/geo/tiger/TIGER%s/TABBLOCK/tl_%s_%s_tabblock10.zip",
-                   cyear, cyear, state)
+
+    if (year == 2020) {
+
+      # New block logic for 2020
+      url <- sprintf("https://www2.census.gov/geo/tiger/TIGER%s/TABBLOCK20/tl_%s_%s_tabblock20.zip",
+                     cyear, cyear, state)
+
+    } else {
+
+      url <- sprintf("https://www2.census.gov/geo/tiger/TIGER%s/TABBLOCK/tl_%s_%s_tabblock10.zip",
+                     cyear, cyear, state)
+
+    }
+
   } else if (year %in% 2011:2013) {
     url <- sprintf("https://www2.census.gov/geo/tiger/TIGER%s/TABBLOCK/tl_%s_%s_tabblock.zip",
                    cyear, cyear, state)
