@@ -16,8 +16,21 @@ new_counties <- data.frame(state = c('SD', 'AK'), state_code = c('46', '02'),
                            state_name = c('South Dakota', 'Alaska'), county_code = c('102', '158'),
                            county = c('Oglala Lakota County', 'Kusilvak Census Area'))
 
-fips_codes <- rbind(fips_codes, new_counties) %>%
-  arrange(state_code, county_code)
+defunct_counties <- data.frame(state = c("AK", "AK", "AK", "VA", "AK", "FL", "MT", "VA"),
+                               state_code = c("02", "02", "02", "51", "02", "12", "30", "51"),
+                               state_name = c("Alaska", "Alaska", "Alaska", "Virginia", "Alaska",
+                                              "Florida", "Montana", "Virginia"),
+                               county_code = c("201", "232", "280", "560", "231",
+                                               "025", "113", "780"),
+                               county = c("Prince of Wales-Outer Ketchikan Census Area",
+                                          "Skagway-Hoonah-Angoon Census Area",
+                                          "Wrangell-Petersburg Census Area", "Clifton Forge city",
+                                          "Skagway-Yakutat-Angoon Census Area", "Dade County",
+                                          "Yellowstone National Park", "South Boston city"))
+
+fips_codes <- rbind(fips_codes, new_counties, defunct_counties) %>%
+  arrange(state_code, county_code) %>%
+  unique()
 
 
 save(fips_codes, file = "data/fips_codes.rda")
