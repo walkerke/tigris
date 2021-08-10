@@ -125,7 +125,7 @@ call_geolocator <- function(street, city, state, zip = NA) {
                      street, " ", city, " ", state,
                      ") returned more than one address match. The first match was returned."))
     }
-    return(response$result$addressMatches[[1]]$geographies$`Census Blocks`[[1]]$GEOID)
+    return(response$result$addressMatches[[1]]$geographies$`Census Block Groups`[[1]]$GEOID)
   }
 }
 
