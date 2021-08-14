@@ -880,9 +880,17 @@ blocks <- function(state, county = NULL, year = NULL, ...) {
 
   if (!is.null(county) && year > 2010) {
 
-    county <- sapply(county, function(x) { validate_county(state, x) })
+    if (year >= 2020) {
+      county <- sapply(county, function(x) { validate_county(state, x) })
 
-    blks <- blks[blks$COUNTYFP10 %in% county, ]
+      blks <- blks[blks$COUNTYFP20 %in% county, ]
+    } else {
+
+      county <- sapply(county, function(x) { validate_county(state, x) })
+
+      blks <- blks[blks$COUNTYFP10 %in% county, ]
+
+    }
 
   }
 
