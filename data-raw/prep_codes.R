@@ -33,4 +33,4 @@ fips_codes <- rbind(fips_codes, new_counties, defunct_counties) %>%
   unique()
 
 
-save(fips_codes, file = "data/fips_codes.rda", compress = TRUE)
+usethis::use_data(fips_codes, overwrite = TRUE)
