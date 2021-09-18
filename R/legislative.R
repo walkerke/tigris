@@ -215,47 +215,93 @@ state_legislative_districts <- function(state, house = "upper", cb = FALSE, year
 
 }
 
-#' Download a voting districts shapefile (2012 TIGER/Line) into R
+#' Download a voting districts shapefile into R
 #'
-#' This function allows you to download a voting districts boundary file into R.  The voting districts
-#' shapefile is found in the 2012 TIGER/Line dataset, and has not been updated since then. The Census Bureau (see link
-#' for source) describes voting districts as follows: " 'Voting district' is the generic name for geographic
-#' entities such as precincts, wards, and election districts established by state and local governments for
-#' the purpose of conducting elections. States participating in the Census 2010 Redistricting Data Programs
-#' as part of Public Law 94-171 (1975) provided the Census Bureau with boundaries, codes, and names
-#' for their voting districts."
+#' The US Census Bureau describes \emph{voting districts} as follows:
+#'
+#' Voting district (VTD) is a generic term adopted by the Bureau of the Census
+#' to include the wide variety of small polling areas, such as election districts,
+#' precincts, or wards, that State and local governments create for the purpose
+#' of administering elections. Some States also use groupings of these entities
+#' to define their State and local legislative districts, as well as the districts they
+#' define for election of members to the U.S. House of Representatives. In a
+#' nationwide cooperative program for the 1980 census, the Census Bureau
+#' gave States the opportunity to request use of these election precinct boundaries as the boundaries of #' census enumeration districts (EDs) or, in some areas, census blocks.
+#'
+#' Support for voting districts in tigris 1.5 and higher is aligned with the 2020 PL redistricting
+#' data.  The argument \code{cb = FALSE} retrieves voting districts from the TIGER/Line PL
+#' shapefiles.  A generalized version from the cartographic boundary dataset is available with the
+#' argument \code{cb = TRUE}.
 #'
 #' @param state The state for which you'd like to retrieve data.  Can be a state name,
 #'        state abbreviation, or FIPS code.
+#' @param county The county for which you are requesting data.  Can be a county name or
+#'               FIPS code.  If \code{NULL} (the default), data for the entire state will
+#'               be returned.
+#' @param cb If cb is set to TRUE, download a generalized (1:500k)
+#'        cartographic boundary file.  Defaults to FALSE (the most detailed
+#'        TIGER/Line file).
+#' @param year The data year.  Defaults to 2020; the function will error for different years.
+#'             A prior version of this function accessed an older voting districts dataset for
+#'             2012; that year is no longer supported.
 #' @param ... arguments to be passed to the underlying `load_tiger` function, which is not exported.
 #'        Options include \code{class}, which can be set to \code{"sf"} (the default) or \code{"sp"} to
 #'        request sf or sp class objects, and \code{refresh}, which specifies whether or
 #'        not to re-download shapefiles (defaults to \code{FALSE}).
 #'
 #' @family legislative district functions
+#' @seealso \url{https://www2.census.gov/geo/pdfs/reference/GARM/Ch14GARM.pdf}
 #' @export
 #' @examples \dontrun{#'
 #' library(tigris)
-#' library(sp)
 #'
 #' ia <- voting_districts("Iowa")
 #'
 #' plot(ia$geometry)
 #'
 #' }
-voting_districts <- function(state, ...) {
+voting_districts <- function(state, county = NULL, cb = FALSE, year = 2020, ...) {
 
-  message("The voting districts shapefiles are from the 2012 TIGER/Line dataset.")
+  if (year != 2020) {
+    stop("As of tigris version 1.5, the `voting_districts()` function only supports 2020 for the `year` argument.", call. = FALSE)
+  }
 
   state <- validate_state(state)
 
   if (is.null(state)) stop("Invalid state", call.=FALSE)
 
-  url <- paste0("https://www2.census.gov/geo/tiger/TIGER2012/VTD/tl_2012_",
-                state,
-                "_vtd10.zip")
+  if (cb) {
 
-  return(load_tiger(url, tigris_type = 'voting_districts', ...))
+    url <- sprintf("https://www2.census.gov/geo/tiger/GENZ2020/shp/cb_2020_%s_vtd_500k.zip", state)
+
+    vtds <- load_tiger(url, tigris_type = "voting_districts", ...)
+
+    if (is.null(county)) {
+      return(vtds)
+    } else {
+      county = validate_county(state, county)
+      vtds_sub <- vtds[vtds$COUNTYFP20 == county,]
+      return(vtds_sub)
+    }
+
+  } else {
+
+    if (!is.null(county)) {
+
+      county <- validate_county(state, county)
+
+      url <- sprintf("https://www2.census.gov/geo/tiger/TIGER2020PL/LAYER/VTD/2020/tl_2020_%s%s_vtd20.zip",
+                     state, county)
+    } else {
+      url <- sprintf("https://www2.census.gov/geo/tiger/TIGER2020PL/LAYER/VTD/2020/tl_2020_%s_vtd20.zip",
+                     state)
+    }
+
+    return(load_tiger(url, tigris_type = 'voting_districts', ...))
+
+  }
+
+
 
 }
 
