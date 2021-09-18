@@ -703,6 +703,10 @@ zctas <- function(cb = FALSE, starts_with = NULL, year = NULL, state = NULL, ...
 
   if (cb == TRUE) {
 
+    if (year >= 2020) {
+      stop("ZCTA CB files are not yet available for 2020 and later", call. = FALSE)
+    }
+
     if (year == 2000) {
       if (is.null(state)) {
         url <- "https://www2.census.gov/geo/tiger/PREVGENZ/zt/z500shp/zt99_d00_shp.zip"
@@ -722,20 +726,27 @@ zctas <- function(cb = FALSE, starts_with = NULL, year = NULL, state = NULL, ...
 
   } else {
 
-    if (year %in% c(2000, 2010)) {
-
-      suf <- substr(cyear, 3, 4)
-
-      if (is.null(state)) {
-        url <- sprintf("https://www2.census.gov/geo/tiger/TIGER2010/ZCTA5/%s/tl_2010_us_zcta5%s.zip",
-                       cyear, suf)
-      } else {
-        url <- sprintf("https://www2.census.gov/geo/tiger/TIGER2010/ZCTA5/%s/tl_2010_%s_zcta5%s.zip",
-                       cyear, state, suf)
-      }
-    } else {
-      url <- sprintf("https://www2.census.gov/geo/tiger/TIGER%s/ZCTA5/tl_%s_us_zcta510.zip",
+    if (year >= 2020) {
+      url <- sprintf("https://www2.census.gov/geo/tiger/TIGER%s/ZCTA520/tl_%s_us_zcta520.zip",
                      cyear, cyear)
+    } else {
+
+      if (year %in% c(2000, 2010)) {
+
+        suf <- substr(cyear, 3, 4)
+
+        if (is.null(state)) {
+          url <- sprintf("https://www2.census.gov/geo/tiger/TIGER2010/ZCTA5/%s/tl_2010_us_zcta5%s.zip",
+                         cyear, suf)
+        } else {
+          url <- sprintf("https://www2.census.gov/geo/tiger/TIGER2010/ZCTA5/%s/tl_2010_%s_zcta5%s.zip",
+                         cyear, state, suf)
+        }
+      } else {
+        url <- sprintf("https://www2.census.gov/geo/tiger/TIGER%s/ZCTA5/tl_%s_us_zcta510.zip",
+                       cyear, cyear)
+      }
+
     }
 
   }
