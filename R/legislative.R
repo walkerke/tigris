@@ -217,8 +217,10 @@ state_legislative_districts <- function(state, house = "upper", cb = FALSE, year
 
 #' Download a voting districts shapefile into R
 #'
-#' The US Census Bureau describes \emph{voting districts} as follows:
+#' Obtain feature geometry for 2020 voting districts, which align with voting districts for the
+#' 2020 PL-94171 redistricting data from the US Census Bureau.
 #'
+#' The US Census Bureau describes \emph{voting districts} as follows:
 #' Voting district (VTD) is a generic term adopted by the Bureau of the Census
 #' to include the wide variety of small polling areas, such as election districts,
 #' precincts, or wards, that State and local governments create for the purpose
