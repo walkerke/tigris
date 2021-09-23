@@ -4,11 +4,12 @@
 \alias{pumas}
 \title{Download a Public Use Microdata Area (PUMA) shapefile into R}
 \usage{
-pumas(state, cb = FALSE, year = NULL, ...)
+pumas(state = NULL, cb = FALSE, year = NULL, ...)
 }
 \arguments{
 \item{state}{The two-digit FIPS code (string) of the state you want. Can also
-be state name or state abbreviation.}
+be state name or state abbreviation. When \code{NULL} and combined with
+\code{cb = TRUE}, a national dataset of PUMAs will be returned for 2019.}
 
 \item{cb}{If cb is set to TRUE, download a generalized (1:500k)
 states file.  Defaults to FALSE (the most detailed TIGER/Line file)}

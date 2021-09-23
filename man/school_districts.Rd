@@ -4,11 +4,13 @@
 \alias{school_districts}
 \title{Download a school district shapefile into R}
 \usage{
-school_districts(state, type = "unified", cb = FALSE, year = NULL, ...)
+school_districts(state = NULL, type = "unified", cb = FALSE, year = NULL, ...)
 }
 \arguments{
 \item{state}{The two-digit FIPS code (string) of the state you want. Can also
-be state name or state abbreviation.}
+be state name or state abbreviation. When \code{NULL} and combined with
+\code{cb = TRUE}, a national dataset of school districts will be returned for
+years 2019 and later.}
 
 \item{type}{Specify whether you want to return a unified school district (the default, \code{'unified'}),
 an elementary school district (\code{'elementary'}), or a secondary school district (\code{'secondary'}).

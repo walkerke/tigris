@@ -4,11 +4,13 @@
 \alias{block_groups}
 \title{Download a Census block groups shapefile into R, and optionally subset by county}
 \usage{
-block_groups(state, county = NULL, cb = FALSE, year = NULL, ...)
+block_groups(state = NULL, county = NULL, cb = FALSE, year = NULL, ...)
 }
 \arguments{
 \item{state}{The two-digit FIPS code (string) of the state you want. Can also
-be state name or state abbreviation.}
+be state name or state abbreviation.  When \code{NULL} and combined with
+\code{cb = TRUE}, a national dataset of block groups will be returned for
+years 2019 and later.}
 
 \item{county}{The three-digit FIPS code (string) of the county you'd like to
 subset for, or a vector of FIPS codes if you desire multiple counties.

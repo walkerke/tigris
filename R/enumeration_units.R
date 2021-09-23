@@ -194,7 +194,7 @@ counties <- function(state = NULL, cb = FALSE, resolution = '500k', year = NULL,
 #' Census tracts generally have a population size between 1,200 and 8,000 people,
 #' with an optimum size of 4,000 people. A census tract usually covers a
 #' contiguous area; however, the spatial size of census tracts varies widely
-#' depending on the density of settlement.Census tract boundaries are
+#' depending on the density of settlement.  Census tract boundaries are
 #' delineated with the intention of being maintained over a long time so that
 #' statistical comparisons can be made from census to census. Census tracts
 #' occasionally are split due to population growth or merged as a result of
@@ -209,7 +209,9 @@ counties <- function(state = NULL, cb = FALSE, resolution = '500k', year = NULL,
 #' geographic hierarchy.
 #'
 #' @param state The two-digit FIPS code (string) of the state you want. Can also
-#'        be state name or state abbreviation.
+#'        be state name or state abbreviation. When \code{NULL} and combined with
+#'        \code{cb = TRUE}, a national dataset of Census tracts will be returned for
+#'        years 2019 and later.
 #' @param county The three-digit FIPS code (string) of the county you'd like to
 #'        subset for, or a vector of FIPS codes if you desire multiple counties.
 #'        Can also be a county name or vector of names.
@@ -233,7 +235,7 @@ counties <- function(state = NULL, cb = FALSE, resolution = '500k', year = NULL,
 #'   addTiles() %>%
 #'   addPolygons(popup = ~NAME)
 #' }
-tracts <- function(state, county = NULL, cb = FALSE, year = NULL, ...) {
+tracts <- function(state = NULL, county = NULL, cb = FALSE, year = NULL, ...) {
 
   if (is.null(year)) {
 
@@ -241,9 +243,19 @@ tracts <- function(state, county = NULL, cb = FALSE, year = NULL, ...) {
 
   }
 
-  state <- validate_state(state)
+  if (is.null(state)) {
+    if (year > 2018 && cb == TRUE) {
+      state <- "us"
+      message("Retrieving Census tracts for the entire United States")
+    } else {
+      stop("A state must be specified for this year/dataset combination.",
+           call. = FALSE)
+    }
+  } else {
+    state <- validate_state(state)
 
-  if (is.null(state)) stop("Invalid state", call.=FALSE)
+    if (is.null(state)) stop("Invalid state", call.=FALSE)
+  }
 
   if (cb == TRUE) {
 
@@ -376,7 +388,9 @@ tracts <- function(state, county = NULL, cb = FALSE, year = NULL, ...) {
 #' Please see the link for more information on how the Census Bureau creates the school district shapefiles.
 #'
 #' @param state The two-digit FIPS code (string) of the state you want. Can also
-#'        be state name or state abbreviation.
+#'        be state name or state abbreviation. When \code{NULL} and combined with
+#'        \code{cb = TRUE}, a national dataset of school districts will be returned for
+#'        years 2019 and later.
 #' @param type Specify whether you want to return a unified school district (the default, \code{'unified'}),
 #'        an elementary school district (\code{'elementary'}), or a secondary school district (\code{'secondary'}).
 #'        Please note: elementary and secondary school districts do not exist in all states
@@ -402,13 +416,27 @@ tracts <- function(state, county = NULL, cb = FALSE, year = NULL, ...) {
 #'               color = "black",
 #'               weight = 0.5)
 #' }
-school_districts <- function(state, type = 'unified',
+school_districts <- function(state = NULL, type = 'unified',
                              cb = FALSE, year = NULL, ...) {
 
   if (is.null(year)) {
 
     year = getOption("tigris_year", 2019)
 
+  }
+
+  if (is.null(state)) {
+    if (year > 2018 && cb == TRUE) {
+      state <- "us"
+      message("Retrieving school districts for the entire United States")
+    } else {
+      stop("A state must be specified for this year/dataset combination.",
+           call. = FALSE)
+    }
+  } else {
+    state <- validate_state(state)
+
+    if (is.null(state)) stop("Invalid state", call.=FALSE)
   }
 
   if (year < 2011) {
@@ -421,10 +449,6 @@ school_districts <- function(state, type = 'unified',
     stop(msg, call. = FALSE)
 
   }
-
-  state <- validate_state(state)
-
-  if (is.null(state)) stop("Invalid state", call.=FALSE)
 
   if (type == 'unified') {
     type <- 'unsd'
@@ -479,7 +503,9 @@ school_districts <- function(state, type = 'unified',
 #'
 #'
 #' @param state The two-digit FIPS code (string) of the state you want. Can also
-#'        be state name or state abbreviation.
+#'        be state name or state abbreviation.  When \code{NULL} and combined with
+#'        \code{cb = TRUE}, a national dataset of block groups will be returned for
+#'        years 2019 and later.
 #' @param county The three-digit FIPS code (string) of the county you'd like to
 #'        subset for, or a vector of FIPS codes if you desire multiple counties.
 #'        Can also be a county name or vector of names.
@@ -500,7 +526,7 @@ school_districts <- function(state, type = 'unified',
 #'
 #' plot(benton_bgs$geometry)
 #' }
-block_groups <- function(state, county = NULL, cb = FALSE, year = NULL, ...) {
+block_groups <- function(state = NULL, county = NULL, cb = FALSE, year = NULL, ...) {
 
   if (is.null(year)) {
 
@@ -510,9 +536,19 @@ block_groups <- function(state, county = NULL, cb = FALSE, year = NULL, ...) {
 
     cyear <- as.character(year)
 
-  state <- validate_state(state)
+  if (is.null(state)) {
+    if (year > 2018 && cb == TRUE) {
+      state <- "us"
+      message("Retrieving Census block groups for the entire United States")
+    } else {
+      stop("A state must be specified for this year/dataset combination.",
+           call. = FALSE)
+    }
+  } else {
+    state <- validate_state(state)
 
-  if (is.null(state)) stop("Invalid state", call.=FALSE)
+    if (is.null(state)) stop("Invalid state", call.=FALSE)
+  }
 
   if (cb == TRUE) {
 

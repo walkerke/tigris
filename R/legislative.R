@@ -113,7 +113,8 @@ congressional_districts <- function(state = NULL, cb = FALSE, resolution = '500k
 #' has a unicameral state legislature.
 #'
 #' @param state The two-digit FIPS code (string) of the state. Can also be state
-#'        name or abbreviation (case-insensitive)
+#'        name or abbreviation (case-insensitive). When \code{NULL} and combined with
+#'        \code{cb = TRUE}, a national dataset of state legislative districts will be returned.
 #' @param house Specify here whether you want boundaries for the \code{upper} or
 #'        \code{lower} house.  Defaults to \code{upper}.
 #' @param cb If cb is set to TRUE, download a generalized (1:500k)
@@ -139,7 +140,8 @@ congressional_districts <- function(state = NULL, cb = FALSE, resolution = '500k
 #'               color = "black",
 #'               weight = 0.5)
 #' }
-state_legislative_districts <- function(state, house = "upper", cb = FALSE, year = NULL, ...) {
+state_legislative_districts <- function(state= NULL, house = "upper",
+                                        cb = FALSE, year = NULL, ...) {
 
   if (is.null(year)) {
 
@@ -158,9 +160,19 @@ state_legislative_districts <- function(state, house = "upper", cb = FALSE, year
 
   }
 
-  state <- validate_state(state)
+  if (is.null(state)) {
+    if (year > 2018 && cb == TRUE) {
+      state <- "us"
+      message("Retrieving state legislative districts for the entire United States")
+    } else {
+      stop("A state must be specified for this year/dataset combination.",
+           call. = FALSE)
+    }
+  } else {
+    state <- validate_state(state)
 
-  if (is.null(state)) stop("Invalid state", call.=FALSE)
+    if (is.null(state)) stop("Invalid state", call.=FALSE)
+  }
 
   if (!house %in% c("upper", "lower"))
     stop("Must specify 'upper' or 'lower' for 'house' parameter", call.=FALSE)
@@ -236,7 +248,8 @@ state_legislative_districts <- function(state, house = "upper", cb = FALSE, year
 #' argument \code{cb = TRUE}.
 #'
 #' @param state The state for which you'd like to retrieve data.  Can be a state name,
-#'        state abbreviation, or FIPS code.
+#'        state abbreviation, or FIPS code. When \code{NULL} and combined with
+#'        \code{cb = TRUE}, a national dataset of voting districts will be returned.
 #' @param county The county for which you are requesting data.  Can be a county name or
 #'               FIPS code.  If \code{NULL} (the default), data for the entire state will
 #'               be returned.
@@ -262,15 +275,25 @@ state_legislative_districts <- function(state, house = "upper", cb = FALSE, year
 #' plot(ia$geometry)
 #'
 #' }
-voting_districts <- function(state, county = NULL, cb = FALSE, year = 2020, ...) {
+voting_districts <- function(state = NULL, county = NULL, cb = FALSE, year = 2020, ...) {
 
   if (year != 2020) {
     stop("As of tigris version 1.5, the `voting_districts()` function only supports 2020 for the `year` argument.", call. = FALSE)
   }
 
-  state <- validate_state(state)
+  if (is.null(state)) {
+    if (year > 2018 && cb == TRUE) {
+      state <- "us"
+      message("Retrieving voting districts for the entire United States")
+    } else {
+      stop("A state must be specified for this year/dataset combination.",
+           call. = FALSE)
+    }
+  } else {
+    state <- validate_state(state)
 
-  if (is.null(state)) stop("Invalid state", call.=FALSE)
+    if (is.null(state)) stop("Invalid state", call.=FALSE)
+  }
 
   if (cb) {
 

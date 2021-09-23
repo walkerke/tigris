@@ -5,7 +5,7 @@
 \title{Download a state legislative districts shapefile into R - upper or lower}
 \usage{
 state_legislative_districts(
-  state,
+  state = NULL,
   house = "upper",
   cb = FALSE,
   year = NULL,
@@ -14,7 +14,8 @@ state_legislative_districts(
 }
 \arguments{
 \item{state}{The two-digit FIPS code (string) of the state. Can also be state
-name or abbreviation (case-insensitive)}
+name or abbreviation (case-insensitive). When \code{NULL} and combined with
+\code{cb = TRUE}, a national dataset of state legislative districts will be returned.}
 
 \item{house}{Specify here whether you want boundaries for the \code{upper} or
 \code{lower} house.  Defaults to \code{upper}.}

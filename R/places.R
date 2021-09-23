@@ -24,7 +24,9 @@
 #' There are no population size requirements for CDPs.
 #'
 #' @param state The two-digit FIPS code (string) of the state you want. Can also
-#'        be state name or state abbreviation.
+#'        be state name or state abbreviation. When \code{NULL} and combined with
+#'        \code{cb = TRUE}, a national dataset of places will be returned for years
+#'        2019 and later.
 #' @param cb If cb is set to TRUE, download a generalized (1:500k)
 #'        cartographic boundary file.  Defaults to FALSE (the most detailed
 #'        TIGER/Line file).
@@ -36,7 +38,7 @@
 #' @family general area functions
 #' @seealso \url{https://www2.census.gov/geo/pdfs/reference/GARM/Ch9GARM.pdf}
 #' @export
-places <- function(state, cb = FALSE, year = NULL, ...) {
+places <- function(state = NULL, cb = FALSE, year = NULL, ...) {
 
   if (length(state) > 1) {
     p <- lapply(state, function(x) {
@@ -64,9 +66,19 @@ places <- function(state, cb = FALSE, year = NULL, ...) {
 
   }
 
-  state <- validate_state(state)
+  if (is.null(state)) {
+    if (year > 2018 && cb == TRUE) {
+      state <- "us"
+      message("Retrieving Census-designated places for the entire United States")
+    } else {
+      stop("A state must be specified for this year/dataset combination.",
+           call. = FALSE)
+    }
+  } else {
+    state <- validate_state(state)
 
-  if (is.null(state)) stop("Invalid state", call.=FALSE)
+    if (is.null(state)) stop("Invalid state", call.=FALSE)
+  }
 
   cyear <- as.character(year)
 

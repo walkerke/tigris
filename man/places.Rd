@@ -4,11 +4,13 @@
 \alias{places}
 \title{Download a Census-designated places shapefile into R}
 \usage{
-places(state, cb = FALSE, year = NULL, ...)
+places(state = NULL, cb = FALSE, year = NULL, ...)
 }
 \arguments{
 \item{state}{The two-digit FIPS code (string) of the state you want. Can also
-be state name or state abbreviation.}
+be state name or state abbreviation. When \code{NULL} and combined with
+\code{cb = TRUE}, a national dataset of places will be returned for years
+2019 and later.}
 
 \item{cb}{If cb is set to TRUE, download a generalized (1:500k)
 cartographic boundary file.  Defaults to FALSE (the most detailed

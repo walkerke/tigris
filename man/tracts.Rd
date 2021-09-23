@@ -4,11 +4,13 @@
 \alias{tracts}
 \title{Download a Census tracts shapefile into R, and optionally subset by county}
 \usage{
-tracts(state, county = NULL, cb = FALSE, year = NULL, ...)
+tracts(state = NULL, county = NULL, cb = FALSE, year = NULL, ...)
 }
 \arguments{
 \item{state}{The two-digit FIPS code (string) of the state you want. Can also
-be state name or state abbreviation.}
+be state name or state abbreviation. When \code{NULL} and combined with
+\code{cb = TRUE}, a national dataset of Census tracts will be returned for
+years 2019 and later.}
 
 \item{county}{The three-digit FIPS code (string) of the county you'd like to
 subset for, or a vector of FIPS codes if you desire multiple counties.
@@ -39,7 +41,7 @@ of statistical data.
 Census tracts generally have a population size between 1,200 and 8,000 people,
 with an optimum size of 4,000 people. A census tract usually covers a
 contiguous area; however, the spatial size of census tracts varies widely
-depending on the density of settlement.Census tract boundaries are
+depending on the density of settlement.  Census tract boundaries are
 delineated with the intention of being maintained over a long time so that
 statistical comparisons can be made from census to census. Census tracts
 occasionally are split due to population growth or merged as a result of

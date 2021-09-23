@@ -14,7 +14,8 @@
 #' and American Samoa do not contain any 2010 PUMAs.
 #'
 #' @param state The two-digit FIPS code (string) of the state you want. Can also
-#'        be state name or state abbreviation.
+#'        be state name or state abbreviation. When \code{NULL} and combined with
+#'        \code{cb = TRUE}, a national dataset of PUMAs will be returned for 2019.
 #' @param cb If cb is set to TRUE, download a generalized (1:500k)
 #'        states file.  Defaults to FALSE (the most detailed TIGER/Line file)
 #' @param year the data year (defaults to 2019).
@@ -39,7 +40,7 @@
 #'
 #' plot(us_pumas$geometry)
 #' }
-pumas <- function(state, cb = FALSE, year = NULL, ...) {
+pumas <- function(state = NULL, cb = FALSE, year = NULL, ...) {
 
   if (is.null(year)) {
 
@@ -58,9 +59,19 @@ pumas <- function(state, cb = FALSE, year = NULL, ...) {
 
   }
 
-  state <- validate_state(state)
+  if (is.null(state)) {
+    if (year == 2019 && cb == TRUE) {
+      state <- "us"
+      message("Retrieving PUMAs for the entire United States")
+    } else {
+      stop("A state must be specified for this year/dataset combination.",
+           call. = FALSE)
+    }
+  } else {
+    state <- validate_state(state)
 
-  if (is.null(state)) stop("Invalid state", call.=FALSE)
+    if (is.null(state)) stop("Invalid state", call.=FALSE)
+  }
 
   cyear <- as.character(year)
 

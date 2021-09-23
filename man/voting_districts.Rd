@@ -4,11 +4,12 @@
 \alias{voting_districts}
 \title{Download a voting districts shapefile into R}
 \usage{
-voting_districts(state, county = NULL, cb = FALSE, year = 2020, ...)
+voting_districts(state = NULL, county = NULL, cb = FALSE, year = 2020, ...)
 }
 \arguments{
 \item{state}{The state for which you'd like to retrieve data.  Can be a state name,
-state abbreviation, or FIPS code.}
+state abbreviation, or FIPS code. When \code{NULL} and combined with
+\code{cb = TRUE}, a national dataset of voting districts will be returned.}
 
 \item{county}{The county for which you are requesting data.  Can be a county name or
 FIPS code.  If \code{NULL} (the default), data for the entire state will
