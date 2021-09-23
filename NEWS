@@ -1,10 +1,19 @@
+tigris 1.5
+-------------------------------------------------------
+* tigris now correctly supports 2020 US Census shapefiles across its functions.
+
+* An updated voting_districts() function retrieves voting districts to assist with redistricting analyses.
+
+* National cartographic boundary files for Census tracts, block groups, places, PUMAs, state legislative districts, school districts, and voting districts are now available.
+
+
 tigris 1.4
 -------------------------------------------------------
 * The new function shift_geometry() will shift and optionally rescale features in Alaska, Hawaii, and Puerto Rico for better thematic mapping of the United States.  See ?shift_geometry for more details.
 
 * 2020 geographies are available (TIGER/Line only) by specifying the argument year = 2020.
 
-* Various bux fixes and improvements; thanks to Maria Paula Caldas and Mark Richards for submitting pull requests.
+* Various bug fixes and improvements; thanks to Maria Paula Caldas and Mark Richards for submitting pull requests.
 
 tigris 1.0
 -------------------------------------------------------
