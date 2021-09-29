@@ -256,9 +256,8 @@ state_legislative_districts <- function(state= NULL, house = "upper",
 #' @param cb If cb is set to TRUE, download a generalized (1:500k)
 #'        cartographic boundary file.  Defaults to FALSE (the most detailed
 #'        TIGER/Line file).
-#' @param year The data year.  Defaults to 2020; the function will error for different years.
-#'             A prior version of this function accessed an older voting districts dataset for
-#'             2012; that year is no longer supported.
+#' @param year The data year; defaults to 2020.  An older voting districts dataset from the
+#'             2012 TIGER/Line shapefiles is available with \code{year = 2012}.
 #' @param ... arguments to be passed to the underlying `load_tiger` function, which is not exported.
 #'        Options include \code{class}, which can be set to \code{"sf"} (the default) or \code{"sp"} to
 #'        request sf or sp class objects, and \code{refresh}, which specifies whether or
@@ -277,8 +276,9 @@ state_legislative_districts <- function(state= NULL, house = "upper",
 #' }
 voting_districts <- function(state = NULL, county = NULL, cb = FALSE, year = 2020, ...) {
 
-  if (year != 2020) {
-    stop("As of tigris version 1.5, the `voting_districts()` function only supports 2020 for the `year` argument.", call. = FALSE)
+  if (year != 2020 && cb == TRUE) {
+    stop("Cartographic boundary voting districts files are only available for 2020.",
+         call. = FALSE)
   }
 
   if (is.null(state)) {
@@ -311,23 +311,27 @@ voting_districts <- function(state = NULL, county = NULL, cb = FALSE, year = 202
 
   } else {
 
-    if (!is.null(county)) {
+    if (year == 2012) {
 
-      county <- validate_county(state, county)
-
-      url <- sprintf("https://www2.census.gov/geo/tiger/TIGER2020PL/LAYER/VTD/2020/tl_2020_%s%s_vtd20.zip",
-                     state, county)
+      url <- paste0("https://www2.census.gov/geo/tiger/TIGER2012/VTD/tl_2012_",
+                    state,
+                    "_vtd10.zip")
     } else {
-      url <- sprintf("https://www2.census.gov/geo/tiger/TIGER2020PL/LAYER/VTD/2020/tl_2020_%s_vtd20.zip",
-                     state)
+      if (!is.null(county)) {
+
+        county <- validate_county(state, county)
+
+        url <- sprintf("https://www2.census.gov/geo/tiger/TIGER2020PL/LAYER/VTD/2020/tl_2020_%s%s_vtd20.zip",
+                       state, county)
+      } else {
+        url <- sprintf("https://www2.census.gov/geo/tiger/TIGER2020PL/LAYER/VTD/2020/tl_2020_%s_vtd20.zip",
+                       state)
+      }
     }
 
     return(load_tiger(url, tigris_type = 'voting_districts', ...))
 
   }
-
-
-
 }
 
 

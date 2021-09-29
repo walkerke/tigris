@@ -19,9 +19,8 @@ be returned.}
 cartographic boundary file.  Defaults to FALSE (the most detailed
 TIGER/Line file).}
 
-\item{year}{The data year.  Defaults to 2020; the function will error for different years.
-A prior version of this function accessed an older voting districts dataset for
-2012; that year is no longer supported.}
+\item{year}{The data year; defaults to 2020.  An older voting districts dataset from the
+2012 TIGER/Line shapefiles is available with \code{year = 2012}.}
 
 \item{...}{arguments to be passed to the underlying `load_tiger` function, which is not exported.
 Options include \code{class}, which can be set to \code{"sf"} (the default) or \code{"sp"} to
