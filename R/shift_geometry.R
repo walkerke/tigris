@@ -226,8 +226,13 @@ shift_geometry <- function(input_sf,
 
     if(any(hi_check)) {
 
-      # Rescale and shift Hawaii
-      hi_rescaled <- sf::st_transform(us_hawaii, hi_crs)
+      # Clip to the Hawaii bbox to take care of the long archipelago
+      # then rescale and shift Hawaii
+      hi_rescaled <- suppressWarnings(
+        us_hawaii %>%
+          sf::st_intersection(hi_bbox) %>%
+          sf::st_transform(hi_crs)
+      )
 
       if (position == "below") {
 
