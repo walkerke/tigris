@@ -2,9 +2,9 @@
 #'
 #' This function will shift and optionally rescale a US dataset for thematic mapping of Alaska,
 #' Hawaii, and Puerto Rico with respect to the continental United States.  Features in the continental
-#' United States will have their CRS transformed to USA Contiguous Albers Equal Area Conic ('ESRI:102003').
+#' United States will have their CRS transformed to USA Contiguous Albers Equal Area Conic ('EPSG:5070').
 #' Alaska, Hawaii, and Puerto Rico features are transformed to appropriate coordinate systems for those areas,
-#' then shifted and optionally re-scaled before being assigned the 'ESRI:102003' CRS.  Options for users
+#' then shifted and optionally re-scaled before being assigned the 'EPSG:5070' CRS.  Options for users
 #' include \code{preserve_area} which allows for preservation of the area of AK/HI/PR relative to the
 #' continental US if desired, and two possible arrangements which are specified with \code{position = "below"}
 #' or \code{position = "outside"}
@@ -94,7 +94,7 @@ shift_geometry <- function(input_sf,
   # Get a set of minimal states which we'll need to use throughout the function
   # Do the CRS transformation here to avoid S2 issues with sf 1.0
   minimal_states <- tigris::states(cb = TRUE, resolution = "20m", progress_bar = FALSE) %>%
-    sf::st_transform('ESRI:102003')
+    sf::st_transform(5070)
 
   # Make some bboxes to check to see if shifting geometry even makes sense
   ak_bbox <- minimal_states %>%
@@ -119,10 +119,10 @@ shift_geometry <- function(input_sf,
   pr_check <- suppressMessages(sf::st_intersects(input_sf, pr_bbox, sparse = FALSE)[,1])
 
   if (!any(ak_check) && !any(hi_check) && !any(pr_check)) {
-    warning("None of your features are in Alaska, Hawaii, or Puerto Rico, so no geometries will be shifted.\nTransforming your object's CRS to 'ESRI:102003'",
+    warning("None of your features are in Alaska, Hawaii, or Puerto Rico, so no geometries will be shifted.\nTransforming your object's CRS to 'EPSG:5070'",
          call. = FALSE)
 
-    transformed_output <- sf::st_transform(input_sf, 'ESRI:102003')
+    transformed_output <- sf::st_transform(input_sf, 5070)
 
     return(transformed_output)
 
@@ -148,7 +148,7 @@ shift_geometry <- function(input_sf,
 
   # Alaska/Hawaii/PR centroids are necessary to put any dataset in the correct location
   ak_crs <- 3338
-  hi_crs <- 'ESRI:102007'
+  hi_crs <- 5070
   pr_crs <- 32161
 
   ak_centroid <- minimal_states %>%
@@ -178,10 +178,10 @@ shift_geometry <- function(input_sf,
   }
 
   cont_us <- dplyr::filter(minimal_states, !GEOID %in% c("02", "15", "72")) %>%
-    sf::st_transform('ESRI:102003')
+    sf::st_transform(5070)
 
   us_lower48 <- dplyr::filter(input_sf, !state_fips %in% c("02", "15", "72")) %>%
-    sf::st_transform('ESRI:102003')
+    sf::st_transform(5070)
 
   bb <- sf::st_bbox(cont_us)
 
@@ -202,7 +202,7 @@ shift_geometry <- function(input_sf,
       ak_rescaled <- sf::st_transform(us_alaska, ak_crs)
 
       if (position == "below") {
-        st_geometry(ak_rescaled) <- place_geometry_wilke(
+        sf::st_geometry(ak_rescaled) <- place_geometry_wilke(
           sf::st_geometry(ak_rescaled),
           c(bb$xmin + 0.08*(bb$xmax - bb$xmin),
             bb$ymin + 0.07*(bb$ymax - bb$ymin)),
@@ -210,7 +210,7 @@ shift_geometry <- function(input_sf,
           centroid = ak_centroid
         )
       } else if (position == "outside") {
-        st_geometry(ak_rescaled) <- place_geometry_wilke(
+        sf::st_geometry(ak_rescaled) <- place_geometry_wilke(
           sf::st_geometry(ak_rescaled),
           c(bb$xmin - 0.08*(bb$xmax - bb$xmin),
             bb$ymin + 1.2*(bb$ymax - bb$ymin)),
@@ -219,7 +219,7 @@ shift_geometry <- function(input_sf,
         )
       }
 
-      sf::st_crs(ak_rescaled) <- 'ESRI:102003'
+      sf::st_crs(ak_rescaled) <- 5070
 
       shapes_list <- c(shapes_list, list(ak_rescaled))
     }
@@ -256,7 +256,7 @@ shift_geometry <- function(input_sf,
 
       }
 
-      st_crs(hi_rescaled) <- 'ESRI:102003'
+      sf::st_crs(hi_rescaled) <- 5070
 
       shapes_list <- c(shapes_list, list(hi_rescaled))
 
@@ -285,7 +285,7 @@ shift_geometry <- function(input_sf,
         )
       }
 
-      st_crs(pr_rescaled) <- 'ESRI:102003'
+      sf::st_crs(pr_rescaled) <- 5070
 
       shapes_list <- c(shapes_list, list(pr_rescaled))
     }
@@ -306,7 +306,7 @@ shift_geometry <- function(input_sf,
       ak_shifted <- sf::st_transform(us_alaska, ak_crs)
 
       if (position == "below") {
-        st_geometry(ak_shifted) <- place_geometry_wilke(
+        sf::st_geometry(ak_shifted) <- place_geometry_wilke(
           sf::st_geometry(ak_shifted),
           c(bb$xmin + 0.2*(bb$xmax - bb$xmin),
             bb$ymin - 0.13*(bb$ymax - bb$ymin)),
@@ -314,7 +314,7 @@ shift_geometry <- function(input_sf,
           centroid = ak_centroid
         )
       } else if (position == "outside") {
-        st_geometry(ak_shifted) <- place_geometry_wilke(
+        sf::st_geometry(ak_shifted) <- place_geometry_wilke(
           sf::st_geometry(ak_shifted),
           c(bb$xmin - 0.25*(bb$xmax - bb$xmin),
             bb$ymin + 1.35*(bb$ymax - bb$ymin)),
@@ -325,7 +325,7 @@ shift_geometry <- function(input_sf,
 
 
 
-      sf::st_crs(ak_shifted) <- 'ESRI:102003'
+      sf::st_crs(ak_shifted) <- 5070
 
       shapes_list <- c(shapes_list, list(ak_shifted))
     }
@@ -353,7 +353,7 @@ shift_geometry <- function(input_sf,
         )
       }
 
-      st_crs(hi_shifted) <- 'ESRI:102003'
+      sf::st_crs(hi_shifted) <- 5070
 
       shapes_list <- c(shapes_list, list(hi_shifted))
     }
@@ -381,7 +381,7 @@ shift_geometry <- function(input_sf,
         )
       }
 
-      st_crs(pr_shifted) <- 'ESRI:102003'
+      sf::st_crs(pr_shifted) <- 5070
 
       shapes_list <- c(shapes_list, list(pr_shifted))
 
