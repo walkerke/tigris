@@ -2,7 +2,7 @@ Package: tigris
 Type: Package
 Title: Load Census TIGER/Line Shapefiles
 Version: 1.5.0.9000
-Date: 2021-10-01
+Date: 2022-02-04
 Authors@R: c(
       person(given="Kyle", family="Walker", email="kyle@walker-data.com", role=c("aut", "cre")),
       person(given="Bob", family="Rudis", email="bob@rudis.net", role="ctb")
@@ -38,4 +38,4 @@ Imports:
     sf, 
     dplyr, 
     methods
-RoxygenNote: 7.1.1
+RoxygenNote: 7.1.2

@@ -12,9 +12,12 @@ fips_codes <- left_join(county_codes, state_codes, by = "state_code")
 
 fips_codes <- select(fips_codes, state = state.x, state_code, state_name, county_code, county)
 
-new_counties <- data.frame(state = c('SD', 'AK'), state_code = c('46', '02'),
-                           state_name = c('South Dakota', 'Alaska'), county_code = c('102', '158'),
-                           county = c('Oglala Lakota County', 'Kusilvak Census Area'))
+new_counties <- data.frame(state = c('SD', 'AK', 'AK', 'AK'),
+                           state_code = c('46', '02', '02', '02'),
+                           state_name = c('South Dakota', 'Alaska', 'Alaska', 'Alaska'),
+                           county_code = c('102', '158', '063', '066'),
+                           county = c('Oglala Lakota County', 'Kusilvak Census Area',
+                                      'Chugach Census Area', 'Copper River Census Area'))
 
 defunct_counties <- data.frame(state = c("AK", "AK", "AK", "VA", "AK", "FL", "MT", "VA"),
                                state_code = c("02", "02", "02", "51", "02", "12", "30", "51"),
