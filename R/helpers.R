@@ -651,7 +651,7 @@ rbind_tigris <- function(...) {
 #' The function works by identifying US counties that intersect the input polygon layer,
 #' then requesting water polygons (using \code{tigris::area_water()}) to be erased from
 #' those input polygons. The \code{area_threshold} parameter can be tuned to determine the
-#' proportion of bodies of water to erase; the default is to erase the largest 50 percent of
+#' proportion of bodies of water to erase; the default is to erase the largest 25 percent of
 #' water bodies in the region.
 #'
 #' Analysts will ideally have transformed the input coordinate reference system (CRS) of their data
@@ -734,6 +734,7 @@ erase_water <- function(input_sf,
     sf::st_transform(sf::st_crs(input_sf)) %>%
     dplyr::filter(dplyr::percent_rank(AWATER) >= area_threshold)
 
+  message("Erasing water area...\nIf this is slow, try a larger area threshold.")
   erased_sf <- st_erase(input_sf, my_water)
 
   return(erased_sf)

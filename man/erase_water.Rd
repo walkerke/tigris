@@ -28,7 +28,7 @@ might otherwise incorrectly assume that polygons across bodies of water are neig
 The function works by identifying US counties that intersect the input polygon layer,
 then requesting water polygons (using \code{tigris::area_water()}) to be erased from
 those input polygons. The \code{area_threshold} parameter can be tuned to determine the
-proportion of bodies of water to erase; the default is to erase the largest 50 percent of
+proportion of bodies of water to erase; the default is to erase the largest 25 percent of
 water bodies in the region.
 
 Analysts will ideally have transformed the input coordinate reference system (CRS) of their data
