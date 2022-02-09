@@ -734,7 +734,7 @@ erase_water <- function(input_sf,
     sf::st_transform(sf::st_crs(input_sf)) %>%
     dplyr::filter(dplyr::percent_rank(AWATER) >= area_threshold)
 
-  message("Erasing water area...\nIf this is slow, try a larger area threshold.")
+  message("Erasing water area...\nIf this is slow, try a larger area threshold value.")
   erased_sf <- st_erase(input_sf, my_water)
 
   return(erased_sf)
