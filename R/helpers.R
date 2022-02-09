@@ -639,4 +639,105 @@ rbind_tigris <- function(...) {
 
 }
 
+#' Erase water area from an input polygon dataset
+#'
+#' This function 'erases' water area from an input polygon dataset (typically a Census dataset).
+#' 'Erase' is defined in the traditional GIS sense as the removal of areas in an input layer
+#' from an erase layer, returning the modified input layer. A common use-case is to improve
+#' cartographic representation of locations where US Census polygons include more water area
+#' than desired (e.g. New York City, Seattle) or to support contiguity-based spatial analyses that
+#' might otherwise incorrectly assume that polygons across bodies of water are neighbors.
+#'
+#' The function works by identifying US counties that intersect the input polygon layer,
+#' then requesting water polygons (using \code{tigris::area_water()}) to be erased from
+#' those input polygons. The \code{area_threshold} parameter can be tuned to determine the
+#' proportion of bodies of water to erase; the default is to erase the largest 50 percent of
+#' water bodies in the region.
+#'
+#' Analysts will ideally have transformed the input coordinate reference system (CRS) of their data
+#' to a projected CRS to improve performance; see \url{https://walker-data.com/census-r/census-geographic-data-and-applications-in-r.html#coordinate-reference-systems} for more information on
+#' how to perform CRS transformations.  Analysts should also use this function with caution;
+#' the function may generate sliver polygons or irregular geometries in the output layer,
+#' especially if the input sf object was not obtained with the tigris package.  Also, the operation
+#' may be quite slow for large input areas.
+#'
+#' @param input_sf An input sf object, ideally obtained with the tigris package or through tidycensus.
+#' @param area_threshold The proportion of water areas to use in the erase operation, ranked by area. Defaults to 0.75, representing the largest 25 percent of water areas.
+#' @param year The year to use for the water layer; defaults to 2020 unless the \code{tigris_year} option is otherwise set.
+#'
+#' @return An output sf object representing the polygons in \code{input_sf} with water areas erased.
+#' @export
+#'
+#' @examples \dontrun{
+#'
+#' library(tigris)
+#' library(sf)
+#'
+#' king_tracts <- tracts(state = "WA", county = "King", year = 2020)
+#'
+#' # CRS: NAD 1983 / Washington North (State Plane)
+#' king_erased <- king_tracts %>%
+#'   st_transform(32148) %>%
+#'   erase_water(area_threshold = 0.9)
+#'
+#' plot(king_erased$geometry)
+#'
+#' }
+erase_water <- function(input_sf,
+                        area_threshold = 0.75,
+                        year = NULL) {
+
+  # if (is.null(attr(input_sf, "tigris"))) {
+  #   warning("Your input object does not appear to have been obtained with the tigris package.\nThis is likely to introduce sliver polygons or irregular geometries.\nPlease proceed with caution.")
+  # }
+
+  if (!"sf" %in% class(input_sf)) {
+    stop("The input dataset is not an sf object.", call. = FALSE)
+  }
+
+  if (is.null(year)) {
+    year <- getOption("tigris_year", 2020)
+  }
+
+  # Define st_erase function internally
+  st_erase <- function(x, y) {
+    sf::st_difference(x, sf::st_union(y))
+  }
+
+  # Grab a dataset of counties quietly
+  us_counties <- tigris::counties(cb = TRUE, resolution = "20m", progress_bar = FALSE,
+                                  year = year)
+
+  # Identify the counties that overlap the input sf object
+  county_overlay <- us_counties %>%
+    sf::st_transform(sf::st_crs(input_sf)) %>%
+    sf::st_filter(input_sf)
+
+  # If nothing returned, exit
+  if (nrow(county_overlay) == 0) {
+    stop("Your dataset does not appear to be in the United States; this function is not appropriate for your data.", call. = FALSE)
+  }
+
+  # Get a list of GEOIDs
+  county_GEOIDs <- county_overlay$GEOID
+
+  # Fetch water for those GEOIDs
+  message("Fetching area water data for your dataset's location...")
+  my_water <- lapply(county_GEOIDs, function(cty) {
+    suppressMessages(tigris::area_water(
+      state = stringr::str_sub(cty, 1, 2),
+      county = stringr::str_sub(cty, 3, 5),
+      progress_bar = FALSE
+    ))
+  }) %>%
+    dplyr::bind_rows() %>%
+    sf::st_transform(sf::st_crs(input_sf)) %>%
+    dplyr::filter(dplyr::percent_rank(AWATER) >= area_threshold)
+
+  erased_sf <- st_erase(input_sf, my_water)
+
+  return(erased_sf)
+
+}
+
 
