@@ -4,9 +4,12 @@
 \alias{tribal_subdivisions_national}
 \title{Download an American Indian Tribal Subdivision National shapefile into R.}
 \usage{
-tribal_subdivisions_national(year = NULL, ...)
+tribal_subdivisions_national(cb = FALSE, year = NULL, ...)
 }
 \arguments{
+\item{cb}{If cb is set to TRUE, download a generalized (1:500k)
+file.  Defaults to FALSE (the most detailed TIGER/Line file)}
+
 \item{year}{The year for which you'd like to download data (defaults to 2019).}
 
 \item{...}{arguments to be passed to the underlying `load_tiger` function, which is not exported.

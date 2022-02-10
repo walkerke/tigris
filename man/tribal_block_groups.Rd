@@ -4,9 +4,12 @@
 \alias{tribal_block_groups}
 \title{Download a Tribal block groups shapefile into R.}
 \usage{
-tribal_block_groups(year = NULL, ...)
+tribal_block_groups(cb = TRUE, year = NULL, ...)
 }
 \arguments{
+\item{cb}{If cb is set to TRUE, download a generalized (1:500k)
+file.  Defaults to FALSE (the most detailed TIGER/Line file)}
+
 \item{year}{the data year (defaults to 2019).}
 
 \item{...}{arguments to be passed to the underlying `load_tiger` function, which is not exported.

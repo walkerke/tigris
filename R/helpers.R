@@ -705,7 +705,7 @@ erase_water <- function(input_sf,
   }
 
   # Grab a dataset of counties quietly
-  us_counties <- tigris::counties(cb = TRUE, resolution = "20m", progress_bar = FALSE,
+  us_counties <- tigris::counties(cb = TRUE, resolution = "500k", progress_bar = FALSE,
                                   year = year)
 
   # Identify the counties that overlap the input sf object
