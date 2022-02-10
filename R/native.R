@@ -63,7 +63,7 @@ native_areas <- function(cb = FALSE, year = NULL, ...) {
 
   }
 
-  return(load_tiger(url, ...))
+  return(load_tiger(url, tigris_type = "native areas", ...))
 
 }
 
