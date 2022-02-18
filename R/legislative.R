@@ -46,7 +46,7 @@ congressional_districts <- function(state = NULL, cb = FALSE, resolution = '500k
          call. = FALSE)
   }
 
-  if (year %in% 2018:2020) {
+  if (year %in% 2018:2021) {
     congress <- "116"
   } else if (year %in% 2016:2017) {
     congress <- "115"
