@@ -10,21 +10,21 @@
 #' This file does not include the three point landmarks identified as military installation features in the
 #' MAF/TIGER database. These point landmarks are included in the point landmark shapefile.
 #' Although almost all military installations have assigned 8-character National Standard (GNIS) codes, the
-#' Census Bureau has not loaded most of this data into the MAF/TIGER database. The 2019 military
+#' Census Bureau has not loaded most of this data into the MAF/TIGER database. The 2020 military
 #' shapefiles contain few values in the ANSICODE field.
-#' @param year the data year (defaults to 2019).
+#' @param year the data year (defaults to 2020).
 #' @param ... arguments to be passed to the underlying `load_tiger` function, which is not exported.
 #'        Options include \code{class}, which can be set to \code{"sf"} (the default) or \code{"sp"} to
 #'        request sf or sp class objects, and \code{refresh}, which specifies whether or
 #'        not to re-download shapefiles (defaults to \code{FALSE}).
-#' @seealso \url{https://www2.census.gov/geo/pdfs/maps-data/data/tiger/tgrshp2019/TGRSHP2019_TechDoc_Ch3.pdf}
+#' @seealso \url{https://www2.census.gov/geo/pdfs/maps-data/data/tiger/tgrshp2020/TGRSHP2020_TechDoc_Ch3.pdf}
 #' @export
 
 military <- function(year = NULL, ...) {
 
   if (is.null(year)) {
 
-    year <- getOption("tigris_year", 2019)
+    year <- getOption("tigris_year", 2020)
 
   }
 
@@ -69,11 +69,11 @@ military <- function(year = NULL, ...) {
 #' Landmarks may be identified by a MAF/TIGER feature class code only and may not have a name. Each
 #' landmark has a unique area landmark identifier (AREAID) or point landmark identifier (POINTID) value.
 #'
-#' @seealso \url{https://www2.census.gov/geo/pdfs/maps-data/data/tiger/tgrshp2019/TGRSHP2019_TechDoc_Ch3.pdf}
+#' @seealso \url{https://www2.census.gov/geo/pdfs/maps-data/data/tiger/tgrshp2020/TGRSHP2020_TechDoc_Ch3.pdf}
 #'
 #' @param state The state for which you'd like to download the landmarks
 #' @param type Whether you would like to download point landmarks (\code{"point"}) or area landmarks (\code{"area"}). #'                Defaults to \code{"point"}.
-#' @param year the data year (defaults to 2019).
+#' @param year the data year (defaults to 2020).
 #' @param ... arguments to be passed to the underlying `load_tiger` function, which is not exported.
 #'        Options include \code{class}, which can be set to \code{"sf"} (the default) or \code{"sp"} to
 #'        request sf or sp class objects, and \code{refresh}, which specifies whether or
@@ -83,7 +83,7 @@ landmarks <- function(state, type = "point", year = NULL, ...) {
 
   if (is.null(year)) {
 
-    year <- getOption("tigris_year", 2019)
+    year <- getOption("tigris_year", 2020)
 
   }
 

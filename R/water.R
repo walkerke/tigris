@@ -10,13 +10,13 @@
 #'        (case-insensitive).
 #' @param county The three-digit FIPS code of the county you'd like the water
 #'        features for.  Can also be a county name.
-#' @param year the data year (defaults to 2019).
+#' @param year the data year (defaults to 2020).
 #' @param ... arguments to be passed to the underlying `load_tiger` function, which is not exported.
 #'        Options include \code{class}, which can be set to \code{"sf"} (the default) or \code{"sp"} to
 #'        request sf or sp class objects, and \code{refresh}, which specifies whether or
 #'        not to re-download shapefiles (defaults to \code{FALSE}).
 #' @family water functions
-#' @seealso \url{https://www2.census.gov/geo/pdfs/maps-data/data/tiger/tgrshp2019/TGRSHP2019_TechDoc.pdf}
+#' @seealso \url{https://www2.census.gov/geo/pdfs/maps-data/data/tiger/tgrshp2020/TGRSHP2020_TechDoc.pdf}
 #' @export
 #' @examples \dontrun{
 #' library(tigris)
@@ -30,7 +30,9 @@ area_water <- function(state, county, year = NULL, ...) {
 
   if (is.null(year)) {
 
-    year <- getOption("tigris_year", 2019)
+    year <- getOption("tigris_year", 2020)
+
+    message(sprintf("Retrieving data for the year %s", year))
 
   }
 
@@ -85,13 +87,13 @@ area_water <- function(state, county, year = NULL, ...) {
 #'        (case-insensitive).
 #' @param county The three-digit FIPS code of the county you'd like the water
 #'        features for.  Can also be a county name.
-#' @param year the data year (defaults to 2019).
+#' @param year the data year (defaults to 2020).
 #' @param ... arguments to be passed to the underlying `load_tiger` function, which is not exported.
 #'        Options include \code{class}, which can be set to \code{"sf"} (the default) or \code{"sp"} to
 #'        request sf or sp class objects, and \code{refresh}, which specifies whether or
 #'        not to re-download shapefiles (defaults to \code{FALSE}).
 #' @family water functions
-#' @seealso \url{https://www2.census.gov/geo/pdfs/maps-data/data/tiger/tgrshp2019/TGRSHP2019_TechDoc.pdf}
+#' @seealso \url{https://www2.census.gov/geo/pdfs/maps-data/data/tiger/tgrshp2020/TGRSHP2020_TechDoc.pdf}
 #' @export
 #' @examples \dontrun{
 #' library(tigris)
@@ -105,7 +107,9 @@ linear_water <- function(state, county, year = NULL, ...) {
 
   if (is.null(year)) {
 
-    year <- getOption("tigris_year", 2019)
+    year <- getOption("tigris_year", 2020)
+
+    message(sprintf("Retrieving data for the year %s", year))
 
   }
 
@@ -148,7 +152,7 @@ linear_water <- function(state, county, year = NULL, ...) {
 
 #' Download a shapefile of the US coastline into R
 #'
-#' @param year The year of the dataset (defaults to 2019)
+#' @param year The year of the dataset (defaults to 2020)
 #' @param ... arguments to be passed to the underlying `load_tiger` function, which is not exported.
 #'        Options include \code{class}, which can be set to \code{"sp"} (the default) or \code{"sf"} to
 #'        request sp or sf class objects, and \code{refresh}, which specifies whether or
@@ -159,7 +163,9 @@ coastline <- function(year = NULL, ...) {
 
   if (is.null(year)) {
 
-    year <- getOption("tigris_year", 2019)
+    year <- getOption("tigris_year", 2020)
+
+    message(sprintf("Retrieving data for the year %s", year))
 
   }
 

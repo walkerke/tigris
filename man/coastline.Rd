@@ -7,7 +7,7 @@
 coastline(year = NULL, ...)
 }
 \arguments{
-\item{year}{The year of the dataset (defaults to 2019)}
+\item{year}{The year of the dataset (defaults to 2020)}
 
 \item{...}{arguments to be passed to the underlying `load_tiger` function, which is not exported.
 Options include \code{class}, which can be set to \code{"sp"} (the default) or \code{"sf"} to

@@ -34,7 +34,7 @@
 #'        counties file.  Defaults to FALSE (the most detailed TIGER file).
 #' @param resolution The resolution of the cartographic boundary file (if cb == TRUE).
 #'        Defaults to '500k'; options include '5m' (1:5 million) and '20m' (1:20 million).
-#' @param year the data year; defaults to 2019
+#' @param year the data year; defaults to 2020
 #' @param ... arguments to be passed to the underlying `load_tiger` function, which is not exported.
 #'        Options include \code{class}, which can be set to \code{"sf"} (the default) or \code{"sp"} to
 #'        request sf or sp class objects, and \code{refresh}, which specifies whether or
@@ -61,7 +61,7 @@ counties <- function(state = NULL, cb = FALSE, resolution = '500k', year = NULL,
 
   if (is.null(year)) {
 
-    year <- getOption("tigris_year", 2019)
+    year <- getOption("tigris_year", 2020)
 
   }
 
@@ -217,7 +217,7 @@ counties <- function(state = NULL, cb = FALSE, resolution = '500k', year = NULL,
 #'        Can also be a county name or vector of names.
 #' @param cb If cb is set to TRUE, download a generalized (1:500k)
 #'        tracts file.  Defaults to FALSE (the most detailed TIGER/Line file)
-#' @param year defaults to 2019
+#' @param year defaults to 2020
 #' @param ... arguments to be passed to the underlying `load_tiger` function, which is not exported.
 #'        Options include \code{class}, which can be set to \code{"sf"} (the default) or \code{"sp"} to
 #'        request sf or sp class objects, and \code{refresh}, which specifies whether or
@@ -239,7 +239,7 @@ tracts <- function(state = NULL, county = NULL, cb = FALSE, year = NULL, ...) {
 
   if (is.null(year)) {
 
-    year <- getOption("tigris_year", 2019)
+    year <- getOption("tigris_year", 2020)
 
   }
 
@@ -396,13 +396,13 @@ tracts <- function(state = NULL, county = NULL, cb = FALSE, year = NULL, ...) {
 #'        Please note: elementary and secondary school districts do not exist in all states
 #' @param cb if TRUE, download a generalized (1:500k)
 #'        school districts file.  Defaults to FALSE (the most detailed TIGER/Line file)
-#' @param year the data year; defaults to 2019
+#' @param year the data year; defaults to 2020
 #' @param ... arguments to be passed to the underlying `load_tiger` function, which is not exported.
 #'        Options include \code{class}, which can be set to \code{"sf"} (the default) or \code{"sp"} to
 #'        request sf or sp class objects, and \code{refresh}, which specifies whether or
 #'        not to re-download shapefiles (defaults to \code{FALSE}).
 #' @family general area functions
-#' @seealso \url{https://www2.census.gov/geo/pdfs/maps-data/data/tiger/tgrshp2019/TGRSHP2019_TechDoc.pdf}
+#' @seealso \url{https://www2.census.gov/geo/pdfs/maps-data/data/tiger/tgrshp2020/TGRSHP2020_TechDoc.pdf}
 #' @export
 #' @examples \dontrun{
 #' library(tigris)
@@ -421,7 +421,7 @@ school_districts <- function(state = NULL, type = 'unified',
 
   if (is.null(year)) {
 
-    year = getOption("tigris_year", 2019)
+    year = getOption("tigris_year", 2020)
 
   }
 
@@ -511,13 +511,13 @@ school_districts <- function(state = NULL, type = 'unified',
 #'        Can also be a county name or vector of names.
 #' @param cb If cb is set to TRUE, download a generalized (1:500k)
 #'        file.  Defaults to FALSE (the most detailed TIGER/Line file)
-#' @param year the data download year (defaults to 2019)
+#' @param year the data download year (defaults to 2020)
 #' @param ... arguments to be passed to the underlying `load_tiger` function, which is not exported.
 #'        Options include \code{class}, which can be set to \code{"sf"} (the default) or \code{"sp"} to
 #'        request sf or sp class objects, and \code{refresh}, which specifies whether or
 #'        not to re-download shapefiles (defaults to \code{FALSE}).
 #' @family general area functions
-#' @seealso \url{https://www2.census.gov/geo/pdfs/maps-data/data/tiger/tgrshp2019/TGRSHP2019_TechDoc.pdf}
+#' @seealso \url{https://www2.census.gov/geo/pdfs/maps-data/data/tiger/tgrshp2020/TGRSHP2020_TechDoc.pdf}
 #' @export
 #' @examples \dontrun{
 #' library(tigris)
@@ -530,7 +530,7 @@ block_groups <- function(state = NULL, county = NULL, cb = FALSE, year = NULL, .
 
   if (is.null(year)) {
 
-    year = getOption("tigris_year", 2019)
+    year = getOption("tigris_year", 2020)
 
   }
 
@@ -681,7 +681,7 @@ block_groups <- function(state = NULL, county = NULL, cb = FALSE, year = NULL, .
 #'        ZCTAs you want to return.  For example, supplying the argument
 #'        \code{starts_with = c("75", "76")} will return only those ZCTAs that begin
 #'        with 75 or 76.  Defaults to NULL, which will return all ZCTAs in the US.
-#' @param year the data year (defaults to 2019).
+#' @param year the data year (defaults to 2020).
 #' @param state the state for which you are requesting data; only available for 2000 (TIGER/Line
 #'              and CB shapefiles) and 2010 (TIGER/Line shapefiles only)
 #' @param ... arguments to be passed to the underlying `load_tiger` function, which is not exported.
@@ -710,7 +710,7 @@ zctas <- function(cb = FALSE, starts_with = NULL, year = NULL, state = NULL, ...
 
   if (is.null(year)) {
 
-    year = getOption("tigris_year", 2019)
+    year = getOption("tigris_year", 2020)
 
   }
 
@@ -831,13 +831,13 @@ zctas <- function(cb = FALSE, starts_with = NULL, year = NULL, state = NULL, ...
 #' @param county The three-digit FIPS code (string) of the county you'd like to
 #'        subset for, or a vector of FIPS codes if you desire multiple counties.
 #'        Can also be a county name or vector of names.
-#' @param year The year for which you'd like to download data (defaults to 2019).
+#' @param year The year for which you'd like to download data (defaults to 2020).
 #' @param ... arguments to be passed to the underlying `load_tiger` function, which is not exported.
 #'        Options include \code{class}, which can be set to \code{"sf"} (the default) or \code{"sp"} to
 #'        request sf or sp class objects, and \code{refresh}, which specifies whether or
 #'        not to re-download shapefiles (defaults to \code{FALSE}).
 #' @family general area functions
-#' @seealso \url{https://www2.census.gov/geo/pdfs/maps-data/data/tiger/tgrshp2019/TGRSHP2019_TechDoc.pdf}
+#' @seealso \url{https://www2.census.gov/geo/pdfs/maps-data/data/tiger/tgrshp2020/TGRSHP2020_TechDoc.pdf}
 #' @export
 #' @examples \dontrun{
 #' # Simple example using Rose Island, American Samoa
@@ -857,7 +857,7 @@ blocks <- function(state, county = NULL, year = NULL, ...) {
 
   if (is.null(year)) {
 
-    year <- getOption("tigris_year", 2019)
+    year <- getOption("tigris_year", 2020)
 
   }
 
@@ -963,7 +963,7 @@ blocks <- function(state, county = NULL, year = NULL, ...) {
 #'        Can also be a county name or vector of names.
 #' @param cb If cb is set to TRUE, download a generalized (1:500k)
 #'        file.  Defaults to FALSE (the most detailed TIGER/Line file)
-#' @param year the data year (defaults to 2019).
+#' @param year the data year (defaults to 2020).
 #' @param ... arguments to be passed to the underlying `load_tiger` function, which is not exported.
 #'        Options include \code{class}, which can be set to \code{"sf"} (the default) or \code{"sp"} to
 #'        request sf or sp class objects, and \code{refresh}, which specifies whether or
@@ -984,7 +984,7 @@ county_subdivisions <- function(state, county = NULL, cb = FALSE, year = NULL, .
 
   if (is.null(year)) {
 
-    year <- getOption("tigris_year", 2019)
+    year <- getOption("tigris_year", 2020)
 
   }
 

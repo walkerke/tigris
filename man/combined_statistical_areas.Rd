@@ -14,7 +14,7 @@ TIGER/Line file).}
 \item{resolution}{The resolution of the cartographic boundary file (if cb == TRUE).
 Defaults to '500k'; options include '5m' (1:5 million) and '20m' (1:20 million).}
 
-\item{year}{the data year (defaults to 2019).}
+\item{year}{the data year (defaults to 2020).}
 
 \item{...}{arguments to be passed to the underlying `load_tiger` function, which is not exported.
 Options include \code{class}, which can be set to \code{"sf"} (the default) or \code{"sp"} to
@@ -27,7 +27,7 @@ employment interchanges."  In turn, CSAs are composed of multiple metropolitan a
 not be compared with individual core-based statistical areas.
 }
 \seealso{
-\url{https://www2.census.gov/geo/pdfs/maps-data/data/tiger/tgrshp2019/TGRSHP2019_TechDoc.pdf}
+\url{https://www2.census.gov/geo/pdfs/maps-data/data/tiger/tgrshp2020/TGRSHP2020_TechDoc.pdf}
 
 Other metro area functions: 
 \code{\link{core_based_statistical_areas}()},

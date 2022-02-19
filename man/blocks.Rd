@@ -14,7 +14,7 @@ be state name or state abbreviation.}
 subset for, or a vector of FIPS codes if you desire multiple counties.
 Can also be a county name or vector of names.}
 
-\item{year}{The year for which you'd like to download data (defaults to 2019).}
+\item{year}{The year for which you'd like to download data (defaults to 2020).}
 
 \item{...}{arguments to be passed to the underlying `load_tiger` function, which is not exported.
 Options include \code{class}, which can be set to \code{"sf"} (the default) or \code{"sp"} to
@@ -57,7 +57,7 @@ leaflet(rose_island) \%>\%
 }
 }
 \seealso{
-\url{https://www2.census.gov/geo/pdfs/maps-data/data/tiger/tgrshp2019/TGRSHP2019_TechDoc.pdf}
+\url{https://www2.census.gov/geo/pdfs/maps-data/data/tiger/tgrshp2020/TGRSHP2020_TechDoc.pdf}
 
 Other general area functions: 
 \code{\link{block_groups}()},

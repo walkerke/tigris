@@ -30,7 +30,7 @@
 #' @param cb If cb is set to TRUE, download a generalized (1:500k)
 #'        cartographic boundary file.  Defaults to FALSE (the most detailed
 #'        TIGER/Line file).
-#' @param year the data year (defaults to 2019).
+#' @param year the data year (defaults to 2020).
 #' @param ... arguments to be passed to the underlying `load_tiger` function, which is not exported.
 #'        Options include \code{class}, which can be set to \code{"sf"} (the default) or \code{"sp"} to
 #'        request sf or sp class objects, and \code{refresh}, which specifies whether or
@@ -51,7 +51,7 @@ places <- function(state = NULL, cb = FALSE, year = NULL, ...) {
 
   if (is.null(year)) {
 
-    year <- getOption("tigris_year", 2019)
+    year <- getOption("tigris_year", 2020)
 
   }
 
@@ -139,7 +139,7 @@ grep_place <- function(places, term) {
 #' }
 list_places <- function(places, sorted=TRUE) {
   if (is_tigris(places) & tigris_type(places) == "place") {
-    if (sorted) return(sort(places@data$NAME))
-    return(places@data$NAME)
+    if (sorted) return(sort(places$NAME))
+    return(places$NAME)
   }
 }

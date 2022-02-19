@@ -9,12 +9,13 @@ pumas(state = NULL, cb = FALSE, year = NULL, ...)
 \arguments{
 \item{state}{The two-digit FIPS code (string) of the state you want. Can also
 be state name or state abbreviation. When \code{NULL} and combined with
-\code{cb = TRUE}, a national dataset of PUMAs will be returned for 2019.}
+\code{cb = TRUE}, a national dataset of PUMAs will be returned when
+\code{year = 2019} only.}
 
 \item{cb}{If cb is set to TRUE, download a generalized (1:500k)
 states file.  Defaults to FALSE (the most detailed TIGER/Line file)}
 
-\item{year}{the data year (defaults to 2019).}
+\item{year}{the data year (defaults to 2020).}
 
 \item{...}{arguments to be passed to the underlying `load_tiger` function, which is not exported.
 Options include \code{class}, which can be set to \code{"sf"} (the default) or \code{"sp"} to
@@ -43,7 +44,7 @@ us_states <- unique(fips_codes$state)[1:51]
 
 continental_states <- us_states[!us_states \%in\% c("AK", "HI")]
 pumas_list <- lapply(continental_states, function(x) {
-  pumas(state = x, cb = TRUE)
+  pumas(state = x, cb = TRUE, year = 2017)
   })
 
 us_pumas <- rbind_tigris(pumas_list)

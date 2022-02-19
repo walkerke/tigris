@@ -11,7 +11,7 @@ urban_areas(cb = FALSE, year = NULL, ...)
 cartographic boundary file.  Defaults to FALSE (the most detailed
 TIGER/Line file).}
 
-\item{year}{the data year (defaults to 2019).}
+\item{year}{the data year (defaults to 2020).}
 
 \item{...}{arguments to be passed to the underlying `load_tiger` function, which is not exported.
 Options include \code{class}, which can be set to \code{"sf"} (the default) or \code{"sp"} to

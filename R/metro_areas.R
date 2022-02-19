@@ -13,7 +13,7 @@
 #'        TIGER/Line file).
 #' @param resolution The resolution of the cartographic boundary file (if cb == TRUE).
 #'        Defaults to '500k'; options include '5m' (1:5 million) and '20m' (1:20 million).
-#' @param year the data year (defaults to 2019).
+#' @param year the data year (defaults to 2020).
 #' @param ... arguments to be passed to the underlying `load_tiger` function, which is not exported.
 #'        Options include \code{class}, which can be set to \code{"sf"} (the default) or \code{"sp"} to
 #'        request sf or sp class objects, and \code{refresh}, which specifies whether or
@@ -25,7 +25,7 @@ core_based_statistical_areas <- function(cb = FALSE, resolution = '500k', year =
 
   if (is.null(year)) {
 
-    year <- getOption("tigris_year", 2019)
+    year <- getOption("tigris_year", 2020)
 
   }
 
@@ -84,7 +84,7 @@ core_based_statistical_areas <- function(cb = FALSE, resolution = '500k', year =
 #' @param cb If cb is set to TRUE, download a generalized (1:500k)
 #'        cartographic boundary file.  Defaults to FALSE (the most detailed
 #'        TIGER/Line file).
-#' @param year the data year (defaults to 2019).
+#' @param year the data year (defaults to 2020).
 #' @param ... arguments to be passed to the underlying `load_tiger` function, which is not exported.
 #'        Options include \code{class}, which can be set to \code{"sf"} (the default) or \code{"sp"} to
 #'        request sf or sp class objects, and \code{refresh}, which specifies whether or
@@ -96,7 +96,7 @@ urban_areas <- function(cb = FALSE, year = NULL, ...) {
 
   if (is.null(year)) {
 
-    year <- getOption("tigris_year", 2019)
+    year <- getOption("tigris_year", 2020)
 
   }
 
@@ -140,19 +140,19 @@ urban_areas <- function(cb = FALSE, year = NULL, ...) {
 #'        TIGER/Line file).
 #' @param resolution The resolution of the cartographic boundary file (if cb == TRUE).
 #'        Defaults to '500k'; options include '5m' (1:5 million) and '20m' (1:20 million).
-#' @param year the data year (defaults to 2019).
+#' @param year the data year (defaults to 2020).
 #' @param ... arguments to be passed to the underlying `load_tiger` function, which is not exported.
 #'        Options include \code{class}, which can be set to \code{"sf"} (the default) or \code{"sp"} to
 #'        request sf or sp class objects, and \code{refresh}, which specifies whether or
 #'        not to re-download shapefiles (defaults to \code{FALSE}).
 #' @family metro area functions
-#' @seealso \url{https://www2.census.gov/geo/pdfs/maps-data/data/tiger/tgrshp2019/TGRSHP2019_TechDoc.pdf}
+#' @seealso \url{https://www2.census.gov/geo/pdfs/maps-data/data/tiger/tgrshp2020/TGRSHP2020_TechDoc.pdf}
 #' @export
 combined_statistical_areas <- function(cb = FALSE, resolution = '500k', year = NULL, ...) {
 
   if (is.null(year)) {
 
-    year <- getOption("tigris_year", 2019)
+    year <- getOption("tigris_year", 2020)
 
   }
 
@@ -193,19 +193,19 @@ combined_statistical_areas <- function(cb = FALSE, resolution = '500k', year = N
 #' Metropolitan divisions are subdivisions of metropolitan areas with population of at least 2.5 million.  Please note:
 #' not all metropolitan areas have metropolitan divisions.
 #'
-#' @param year The data year (defaults to 2019).
+#' @param year The data year (defaults to 2020).
 #' @param ... arguments to be passed to the underlying `load_tiger` function, which is not exported.
 #'        Options include \code{class}, which can be set to \code{"sf"} (the default) or \code{"sp"} to
 #'        request sf or sp class objects, and \code{refresh}, which specifies whether or
 #'        not to re-download shapefiles (defaults to \code{FALSE}).
 #' @family metro area functions
-#' @seealso \url{https://www2.census.gov/geo/pdfs/maps-data/data/tiger/tgrshp2019/TGRSHP2019_TechDoc.pdf}
+#' @seealso \url{https://www2.census.gov/geo/pdfs/maps-data/data/tiger/tgrshp2020/TGRSHP2020_TechDoc.pdf}
 #' @export
 metro_divisions <- function(year = NULL, ...) {
 
   if (is.null(year)) {
 
-    year <- getOption("tigris_year", 2019)
+    year <- getOption("tigris_year", 2020)
 
   }
 
@@ -247,13 +247,13 @@ metro_divisions <- function(year = NULL, ...) {
 #' @param cb If cb is set to TRUE, download a generalized (1:500k)
 #'        cartographic boundary file.  Defaults to FALSE (the most detailed
 #'        TIGER/Line file).  Only available when \code{type = 'necta'}.
-#' @param year The data year (defaults to 2019).
+#' @param year The data year (defaults to 2020).
 #' @param ... arguments to be passed to the underlying `load_tiger` function, which is not exported.
 #'        Options include \code{class}, which can be set to \code{"sf"} (the default) or \code{"sp"} to
 #'        request sf or sp class objects, and \code{refresh}, which specifies whether or
 #'        not to re-download shapefiles (defaults to \code{FALSE}).
 #' @family metro area functions
-#' @seealso \url{https://www2.census.gov/geo/pdfs/maps-data/data/tiger/tgrshp2019/TGRSHP2019_TechDoc.pdf}
+#' @seealso \url{https://www2.census.gov/geo/pdfs/maps-data/data/tiger/tgrshp2020/TGRSHP2020_TechDoc.pdf}
 #' @export
 #' @examples \dontrun{
 #' library(tigris)
@@ -267,7 +267,7 @@ new_england <- function(type = 'necta', cb = FALSE, year = NULL, ...) {
 
   if (is.null(year)) {
 
-    year <- getOption("tigris_year", 2019)
+    year <- getOption("tigris_year", 2020)
 
   }
 

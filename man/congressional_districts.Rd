@@ -24,7 +24,7 @@ TIGER/Line file).}
 \item{resolution}{The resolution of the cartographic boundary file (if cb == TRUE).
 Defaults to '500k'; options include '5m' (1:5 million) and '20m' (1:20 million).}
 
-\item{year}{the data year (defaults to 2019).}
+\item{year}{the data year (defaults to 2020).}
 
 \item{...}{arguments to be passed to the underlying `load_tiger` function, which is not exported.
 Options include \code{class}, which can be set to \code{"sf"} (the default) or \code{"sp"} to
@@ -38,7 +38,7 @@ Congressional districts are the 435 areas from which members are elected to the 
 \details{
 Congressional districts for the 108th through 112th sessions were established by the states based on the result of the 2000 Census. Congressional districts for the 113th through 116th sessions were established by the states based on the result of the 2010 Census. Boundaries are effective until January of odd number years (for example, January 2015, January 2017, etc.), unless a state initiative or court ordered redistricting requires a change. All states established new congressional districts in 2011-2012, with the exception of the seven single member states (Alaska, Delaware, Montana, North Dakota, South Dakota, Vermont, and Wyoming).
 
-The current default in tigris is the 116th Congress, which is available when \code{year = 2018} or \code{year = 2019}.  Older congressional district boundaries back to 2011 can be obtained by supplying the appropriate year.
+The current default in tigris reflects boundaries for the 116th Congress, which is available as of February 2021 for years 2018 through 2021.  Older congressional district boundaries back to 2011 can be obtained by supplying the appropriate year.
 }
 \examples{
 \dontrun{

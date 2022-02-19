@@ -15,10 +15,11 @@
 #'
 #' @param state The two-digit FIPS code (string) of the state you want. Can also
 #'        be state name or state abbreviation. When \code{NULL} and combined with
-#'        \code{cb = TRUE}, a national dataset of PUMAs will be returned for 2019.
+#'        \code{cb = TRUE}, a national dataset of PUMAs will be returned when
+#'        \code{year = 2019} only.
 #' @param cb If cb is set to TRUE, download a generalized (1:500k)
 #'        states file.  Defaults to FALSE (the most detailed TIGER/Line file)
-#' @param year the data year (defaults to 2019).
+#' @param year the data year (defaults to 2020).
 #' @param ... arguments to be passed to the underlying `load_tiger` function, which is not exported.
 #'        Options include \code{class}, which can be set to \code{"sf"} (the default) or \code{"sp"} to
 #'        request sf or sp class objects, and \code{refresh}, which specifies whether or
@@ -33,7 +34,7 @@
 #'
 #' continental_states <- us_states[!us_states %in% c("AK", "HI")]
 #' pumas_list <- lapply(continental_states, function(x) {
-#'   pumas(state = x, cb = TRUE)
+#'   pumas(state = x, cb = TRUE, year = 2017)
 #'   })
 #'
 #' us_pumas <- rbind_tigris(pumas_list)
@@ -44,7 +45,7 @@ pumas <- function(state = NULL, cb = FALSE, year = NULL, ...) {
 
   if (is.null(year)) {
 
-    year <- getOption("tigris_year", 2019)
+    year <- getOption("tigris_year", 2020)
 
   }
 
@@ -76,6 +77,11 @@ pumas <- function(state = NULL, cb = FALSE, year = NULL, ...) {
   cyear <- as.character(year)
 
   if (cb == TRUE) {
+
+    if (year > 2019) {
+      stop("Cartographic boundary PUMAs are not yet available for years after 2019. Use the argument `year = 2019` instead to request your data.", call. = FALSE)
+    }
+
     url <- sprintf("https://www2.census.gov/geo/tiger/GENZ%s/shp/cb_%s_%s_puma10_500k.zip",
                    cyear, cyear, state)
 

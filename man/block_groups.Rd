@@ -19,7 +19,7 @@ Can also be a county name or vector of names.}
 \item{cb}{If cb is set to TRUE, download a generalized (1:500k)
 file.  Defaults to FALSE (the most detailed TIGER/Line file)}
 
-\item{year}{the data download year (defaults to 2019)}
+\item{year}{the data download year (defaults to 2020)}
 
 \item{...}{arguments to be passed to the underlying `load_tiger` function, which is not exported.
 Options include \code{class}, which can be set to \code{"sf"} (the default) or \code{"sp"} to
@@ -59,7 +59,7 @@ plot(benton_bgs$geometry)
 }
 }
 \seealso{
-\url{https://www2.census.gov/geo/pdfs/maps-data/data/tiger/tgrshp2019/TGRSHP2019_TechDoc.pdf}
+\url{https://www2.census.gov/geo/pdfs/maps-data/data/tiger/tgrshp2020/TGRSHP2020_TechDoc.pdf}
 
 Other general area functions: 
 \code{\link{blocks}()},
