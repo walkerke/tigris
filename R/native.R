@@ -36,6 +36,8 @@ native_areas <- function(cb = FALSE, year = NULL, ...) {
 
     year <- getOption("tigris_year", 2020)
 
+    message(sprintf("Retrieving data for the year %s", year))
+
   }
 
   if (year < 2011) {
@@ -101,6 +103,8 @@ tribal_subdivisions_national <- function(cb = FALSE, year = NULL, ...) {
 
     year <- getOption("tigris_year", 2020)
 
+    message(sprintf("Retrieving data for the year %s", year))
+
   }
 
   if (year < 2011) {
@@ -156,6 +160,8 @@ alaska_native_regional_corporations <- function(cb = FALSE, year = NULL, ...) {
   if (is.null(year)) {
 
     year <- getOption("tigris_year", 2020)
+
+    message(sprintf("Retrieving data for the year %s", year))
 
   }
 
@@ -232,6 +238,8 @@ tribal_block_groups <- function(cb = TRUE, year = NULL, ...) {
 
     year <- getOption("tigris_year", 2020)
 
+    message(sprintf("Retrieving data for the year %s", year))
+
   }
 
   if (year < 2011) {
@@ -296,6 +304,8 @@ tribal_census_tracts <- function(cb = TRUE, year = NULL, ...) {
   if (is.null(year)) {
 
     year <- getOption("tigris_year", 2020)
+
+    message(sprintf("Retrieving data for the year %s", year))
 
   }
 

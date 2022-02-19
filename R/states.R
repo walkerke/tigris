@@ -41,6 +41,8 @@ states <- function(cb = FALSE, resolution = '500k', year = NULL, ...) {
 
     year = getOption("tigris_year", 2020)
 
+    message(sprintf("Retrieving data for the year %s", year))
+
   }
 
   cyear <- as.character(year)

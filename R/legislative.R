@@ -39,6 +39,8 @@ congressional_districts <- function(state = NULL, cb = FALSE, resolution = '500k
 
     year <- getOption("tigris_year", 2020)
 
+    message(sprintf("Retrieving data for the year %s", year))
+
   }
 
   if (year < 2013 && cb == TRUE) {
@@ -146,6 +148,8 @@ state_legislative_districts <- function(state= NULL, house = "upper",
   if (is.null(year)) {
 
     year <- getOption("tigris_year", 2020)
+
+    message(sprintf("Retrieving data for the year %s", year))
 
   }
 

@@ -26,6 +26,8 @@ regions <- function(resolution = '500k', year = NULL, ...) {
 
     year <- getOption("tigris_year", 2020)
 
+    message(sprintf("Retrieving data for the year %s", year))
+
   }
 
   if (year < 2011) {
@@ -82,6 +84,8 @@ divisions <- function(resolution = '500k', year = NULL, ...) {
 
     year <- getOption("tigris_year", 2020)
 
+    message(sprintf("Retrieving data for the year %s", year))
+
   }
 
   if (year < 2011) {
@@ -137,6 +141,8 @@ nation <- function(resolution = '5m', year = NULL, ...) {
   if (is.null(year)) {
 
     year <- getOption("tigris_year", 2020)
+
+    message(sprintf("Retrieving data for the year %s", year))
 
   }
 

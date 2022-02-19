@@ -27,6 +27,8 @@ core_based_statistical_areas <- function(cb = FALSE, resolution = '500k', year =
 
     year <- getOption("tigris_year", 2020)
 
+    message(sprintf("Retrieving data for the year %s", year))
+
   }
 
   if (year < 2010) {
@@ -98,6 +100,8 @@ urban_areas <- function(cb = FALSE, year = NULL, ...) {
 
     year <- getOption("tigris_year", 2020)
 
+    message(sprintf("Retrieving data for the year %s", year))
+
   }
 
   if (year < 2011) {
@@ -154,6 +158,8 @@ combined_statistical_areas <- function(cb = FALSE, resolution = '500k', year = N
 
     year <- getOption("tigris_year", 2020)
 
+    message(sprintf("Retrieving data for the year %s", year))
+
   }
 
   if (year < 2011) {
@@ -206,6 +212,8 @@ metro_divisions <- function(year = NULL, ...) {
   if (is.null(year)) {
 
     year <- getOption("tigris_year", 2020)
+
+    message(sprintf("Retrieving data for the year %s", year))
 
   }
 
@@ -268,6 +276,8 @@ new_england <- function(type = 'necta', cb = FALSE, year = NULL, ...) {
   if (is.null(year)) {
 
     year <- getOption("tigris_year", 2020)
+
+    message(sprintf("Retrieving data for the year %s", year))
 
   }
 

@@ -63,6 +63,8 @@ counties <- function(state = NULL, cb = FALSE, resolution = '500k', year = NULL,
 
     year <- getOption("tigris_year", 2020)
 
+    message(sprintf("Retrieving data for the year %s", year))
+
   }
 
     cyear <- as.character(year)
@@ -240,6 +242,8 @@ tracts <- function(state = NULL, county = NULL, cb = FALSE, year = NULL, ...) {
   if (is.null(year)) {
 
     year <- getOption("tigris_year", 2020)
+
+    message(sprintf("Retrieving data for the year %s", year))
 
   }
 
@@ -423,6 +427,8 @@ school_districts <- function(state = NULL, type = 'unified',
 
     year = getOption("tigris_year", 2020)
 
+    message(sprintf("Retrieving data for the year %s", year))
+
   }
 
   if (is.null(state)) {
@@ -531,6 +537,8 @@ block_groups <- function(state = NULL, county = NULL, cb = FALSE, year = NULL, .
   if (is.null(year)) {
 
     year = getOption("tigris_year", 2020)
+
+    message(sprintf("Retrieving data for the year %s", year))
 
   }
 
@@ -712,6 +720,8 @@ zctas <- function(cb = FALSE, starts_with = NULL, year = NULL, state = NULL, ...
 
     year = getOption("tigris_year", 2020)
 
+    message(sprintf("Retrieving data for the year %s", year))
+
   }
 
   if (!is.null(state) && year > 2010) {
@@ -740,7 +750,8 @@ zctas <- function(cb = FALSE, starts_with = NULL, year = NULL, state = NULL, ...
   if (cb == TRUE) {
 
     if (year >= 2020) {
-      stop("ZCTA CB files are not yet available for 2020 and later", call. = FALSE)
+      url <- sprintf("https://www2.census.gov/geo/tiger/GENZ%s/shp/cb_%s_us_zcta520_500k.zip",
+                     cyear, cyear)
     }
 
     if (year == 2000) {
@@ -858,6 +869,9 @@ blocks <- function(state, county = NULL, year = NULL, ...) {
   if (is.null(year)) {
 
     year <- getOption("tigris_year", 2020)
+
+    message(sprintf("Retrieving data for the year %s", year))
+
 
   }
 
@@ -985,6 +999,9 @@ county_subdivisions <- function(state, county = NULL, cb = FALSE, year = NULL, .
   if (is.null(year)) {
 
     year <- getOption("tigris_year", 2020)
+
+    message(sprintf("Retrieving data for the year %s", year))
+
 
   }
 

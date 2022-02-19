@@ -47,6 +47,8 @@ pumas <- function(state = NULL, cb = FALSE, year = NULL, ...) {
 
     year <- getOption("tigris_year", 2020)
 
+    message(sprintf("Retrieving data for the year %s", year))
+
   }
 
   if (year < 2011) {
