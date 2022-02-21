@@ -93,7 +93,8 @@ shift_geometry <- function(input_sf,
 
   # Get a set of minimal states which we'll need to use throughout the function
   # Do the CRS transformation here to avoid S2 issues with sf 1.0
-  minimal_states <- tigris::states(cb = TRUE, resolution = "20m", progress_bar = FALSE) %>%
+  minimal_states <- tigris::states(cb = TRUE, resolution = "20m", progress_bar = FALSE,
+                                   year = 2020) %>%
     sf::st_transform('ESRI:102003')
 
   # Make some bboxes to check to see if shifting geometry even makes sense

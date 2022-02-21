@@ -39,7 +39,7 @@ fips_state_table <- structure(list(abb = c("ak", "al", "ar", "as", "az", "ca", "
 }
 
 .onAttach <- function(libname, pkgname) {
-  packageStartupMessage("To enable \ncaching of data, set `options(tigris_use_cache = TRUE)` in your R script or .Rprofile.")
+  packageStartupMessage("To enable caching of data, set `options(tigris_use_cache = TRUE)`\nin your R script or .Rprofile.")
 }
 
 utils::globalVariables(c(".data", "geoid", "GEOID", "state_fips"))
