@@ -9,7 +9,7 @@ erase_water(input_sf, area_threshold = 0.75, year = NULL)
 \arguments{
 \item{input_sf}{An input sf object, ideally obtained with the tigris package or through tidycensus.}
 
-\item{area_threshold}{The proportion of water areas to use in the erase operation, ranked by area. Defaults to 0.75, representing the largest 25 percent of water areas.}
+\item{area_threshold}{The percentile rank cutoff of water areas to use in the erase operation, ranked by size. Defaults to 0.75, representing the water areas in the 75th percentile and up (the largest 25 percent of areas).  This value may need to be modified by the user to achieve optimal results for a given location.}
 
 \item{year}{The year to use for the water layer; defaults to 2020 unless the \code{tigris_year} option is otherwise set.}
 }
@@ -28,8 +28,9 @@ might otherwise incorrectly assume that polygons across bodies of water are neig
 The function works by identifying US counties that intersect the input polygon layer,
 then requesting water polygons (using \code{tigris::area_water()}) to be erased from
 those input polygons. The \code{area_threshold} parameter can be tuned to determine the
-proportion of bodies of water to erase; the default is to erase the largest 25 percent of
-water bodies in the region.
+percentile ranking of bodies of water (by area) to use;
+the default is a percentile ranking of 0.75, erasing the largest 25 percent of water
+bodies in the region.
 
 Analysts will ideally have transformed the input coordinate reference system (CRS) of their data
 to a projected CRS to improve performance; see \url{https://walker-data.com/census-r/census-geographic-data-and-applications-in-r.html#coordinate-reference-systems} for more information on
@@ -43,6 +44,7 @@ may be quite slow for large input areas.
 
 library(tigris)
 library(sf)
+options(tigris_use_cache = TRUE)
 
 king_tracts <- tracts(state = "WA", county = "King", year = 2020)
 
