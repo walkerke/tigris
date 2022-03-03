@@ -136,10 +136,10 @@ call_geolocator <- function(street, city, state, zip = NA) {
 #' @param lon A numeric value between +-180
 #' @param benchmark This is the version of the Census bureaus master address file that you would like to use to search your addresses. This function defaults to the most current version but allows for searching others. The full list of available benchmarks can be found here \href{https://geocoding.geo.census.gov/geocoder/benchmarks}{Census Benchmarks}
 #' @param vintage This is the version of geographies inside the benchmark that you would like to use to search your addresses. This function defaults to the most current version but allows for searching others. The full list of vintages can eb found here \href{https://geocoding.geo.census.gov/geocoder/vintages?form}{Census Vintages}
-#' @param Geographic_unit Indicateds what geogrpahic level you would like the resulting Federal Information Processing Standards (FIPS) code for. 
+#' @param Geographic_unit Indicates what geographic level you would like the resulting Federal Information Processing Standards (FIPS) code for. 
 #' Must be one of the following options State, County, Tract, or Block
 #'
-#' @return A character string representing the Federal Information Processing Standards (FIPS) code that identifes the Census area for the supplied coordiantes and geogrpahic unit.
+#' @return A character string representing the Federal Information Processing Standards (FIPS) code that identifies the Census area for the supplied coordinates and geographic unit.
 #'
 #' @importFrom utils URLencode
 #' @importFrom httr GET stop_for_status
@@ -170,7 +170,7 @@ call_geolocator_latlon <- function(lat,
   
   #Make call to api
   r <- httr::GET(url_full)
-  httr::stop_for_status(r, task = "complete API call: Check that Coordiantes are not out of bounds, and if used that the benchmark and vintage exist.") #converts http errors into warnings to show user
+  httr::stop_for_status(r, task = "complete API call: Check that Coordinates are not out of bounds, and if used that the benchmark and vintage exist.") #converts http errors into warnings to show user
   response <- httr::content(r)
   
   #regex search for Geographic_unit in response
@@ -181,8 +181,9 @@ call_geolocator_latlon <- function(lat,
   #If Geographic_unit response is found check GEOID length and return either NA for missing data or the value
   if(length(response_block) == 0){
     message(paste("The selected geographic unit may not available for this combination of Benchmark, and Vintage. 
-                  To better unserstand how to select a Benchamrk and Vintage see the technical documentation at 
-                  https://www.census.gov/programs-surveys/geography/technical-documentation/complete-technical-documentation/census-geocoder.html"))
+To better understand how to select a Benchmark and Vintage see the technical documentation at
+https://www.census.gov/programs-surveys/geography/technical-documentation/complete-technical-documentation/census-geocoder.html
+"))
     return(NA_character_)
   } else {
     if (length(response[["result"]][["geographies"]][[response_block]][[1]]$GEOID) == 0) {
@@ -214,7 +215,7 @@ call_geolocator_latlon <- function(lat,
 #' @param vintage This is the version of geographies inside the benchmark that you would like to use to search your addresses. This function defaults to the most current version but allows for searching others. The full list of vintages can eb found here \href{https://geocoding.geo.census.gov/geocoder/vintages?form}{Census Vintages}
 #' @param batch_size This determines how many records will be included in each batch. This has implications for memory usage as the splitting of your dataframe is turned into a list that then gets sent one at a time to the API. Another consideration is that setting this value too high may cause timeouts while waiting for the API to process your request. The API limits this to a maximum of 10,000 records in a single batch. The function defaults to 1,000 in a single batch
 #' 
-#' @details This function will take the provided dataframe and format it so that it can be processed by the Census batch Geocoding API. The API requires a very specific format of Unique ID value, Street Address, City, State, Zip with no column headers. To achieve this an index value is attached to each record and a duplicate of the dataframe is made. Any extra data is removed from the duplicate dataframe and it is split into batches that are held in a list. The function then writes a batch to a temprary CSV file that it submits to the API. It then saves the results and moves on to the next batch in the list. When all of the batches have been sent and all results have been recieved the function combines the batch results into one large dataframe that it then joins to the originally provided data by matching the index values. This means that with large datasets this function may become memory intensive. Limiting the amount of additional data or the number of records in a dataframe when sending it to this function may provide a workaround to any memory constraints.
+#' @details This function will take the provided dataframe and format it so that it can be processed by the Census batch Geocoding API. The API requires a very specific format of Unique ID value, Street Address, City, State, Zip with no column headers. To achieve this an index value is attached to each record and a duplicate of the dataframe is made. Any extra data is removed from the duplicate dataframe and it is split into batches that are held in a list. The function then writes a batch to a temporary CSV file that it submits to the API. It then saves the results and moves on to the next batch in the list. When all of the batches have been sent and all results have been recieved the function combines the batch results into one large dataframe that it then joins to the originally provided data by matching the index values. This means that with large datasets this function may become memory intensive. Limiting the amount of additional data or the number of records in a dataframe when sending it to this function may provide a workaround to any memory constraints.
 #' 
 #' @return The returned dataframe will contain five additional columns
 #' \itemize{
