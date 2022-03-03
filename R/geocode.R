@@ -132,13 +132,14 @@ call_geolocator <- function(street, city, state, zip = NA) {
 
 #' Call geolocator for one address with lat/lon, adds option to set benchmark and vintage if not provided it will default to the most recent.
 #'
-#' @param lat A numeric value
-#' @param lon A numeric value
-#' @param benchmark time period when a snapshot of address ranges was taken
-#' @param vintage census or survey that the address range relates to
+#' @param lat A numeric value between +-90
+#' @param lon A numeric value between +-180
+#' @param benchmark This is the version of the Census bureaus master address file that you would like to use to search your addresses. This function defaults to the most current version but allows for searching others. The full list of available benchmarks can be found here \href{https://geocoding.geo.census.gov/geocoder/benchmarks}{Census Benchmarks}
+#' @param vintage This is the version of geographies inside the benchmark that you would like to use to search your addresses. This function defaults to the most current version but allows for searching others. The full list of vintages can eb found here \href{https://geocoding.geo.census.gov/geocoder/vintages?form}{Census Vintages}
+#' @param Geographic_unit Indicateds what geogrpahic level you would like the resulting Federal Information Processing Standards (FIPS) code for. 
+#' Must be one of the following options State, County, Tract, or Block
 #'
-#' @return A character string representing the Census block of the supplied
-#'   lat/lon.
+#' @return A character string representing the Federal Information Processing Standards (FIPS) code that identifes the Census area for the supplied coordiantes and geogrpahic unit.
 #'
 #' @importFrom utils URLencode
 #' @importFrom httr GET stop_for_status
@@ -147,37 +148,41 @@ call_geolocator <- function(street, city, state, zip = NA) {
 #' @author Mark Richards, \email{Mark.Richards.002@@gmail.com}
 #' @export
 #'
-call_geolocator_latlon <- function(lat, lon, benchmark, vintage) {
-  if(missing(benchmark)) {
-    benchmark<-"Public_AR_Current"
+call_geolocator_latlon <- function(lat,
+                                   lon,
+                                   benchmark="Public_AR_Current", 
+                                   vintage="Current_Current", 
+                                   Geographic_unit="Block") {
+  if(Geographic_unit %in% c('State', 'County', 'Tract', 'Block')){
   } else {
-    benchmark<-benchmark
+    message(paste0("Geographic Unit requested is not State, County, Tract, or Block"))
+    return(NA_character_)
   }
-  if(missing(vintage)) {
-    vintage<-"Current_Current"
-  } else {
-    vintage<-vintage
-  }
-  # Build url
-  call_start <- "https://geocoding.geo.census.gov/geocoder/geographies/coordinates?"
   
-  url <- paste0("x=", lat,"&y=", lon)
+  #Combine elements into request URL
+  Base_url <- "https://geocoding.geo.census.gov/geocoder/geographies/coordinates?"
+  
+  coordinates0 <- paste0("x=", lon,"&y=", lat) #API has swapped these assignments more than once (as of 3/2/2022 Longitude=X, Latitude=Y)
   benchmark0 <- paste0("&benchmark=", benchmark)
   vintage0 <- paste0("&vintage=", vintage, "&format=json")
+  url_full <- paste0(Base_url, coordinates0, benchmark0, vintage0)
   
-  url_full <- paste0(call_start, url, benchmark0, vintage0)
-  #print(url_full)
-  # Check response
+  
+  #Make call to api
   r <- httr::GET(url_full)
-  httr::stop_for_status(r)
+  httr::stop_for_status(r, task = "complete API call: Check that Coordiantes are not out of bounds, and if used that the benchmark and vintage exist.") #converts http errors into warnings to show user
   response <- httr::content(r)
   
-  #regex search for block group geography in response
-  response_block<-grep(response[["result"]][["geographies"]], pattern = ".Block.")
+  #regex search for Geographic_unit in response
+  response_block<-grep(response[["result"]][["geographies"]], pattern = paste0('.',Geographic_unit,'.'))
+  #print(names(response[["result"]][["geographies"]]))
   
-  #check If a block group result is found or return NA 
-  #If block group response is found check GEOID length and return either NA for missing data or the value
+  #check If Geographic_unit is found in the results or return NA 
+  #If Geographic_unit response is found check GEOID length and return either NA for missing data or the value
   if(length(response_block) == 0){
+    message(paste("The selected geographic unit may not available for this combination of Benchmark, and Vintage. 
+                  To better unserstand how to select a Benchamrk and Vintage see the technical documentation at 
+                  https://www.census.gov/programs-surveys/geography/technical-documentation/complete-technical-documentation/census-geocoder.html"))
     return(NA_character_)
   } else {
     if (length(response[["result"]][["geographies"]][[response_block]][[1]]$GEOID) == 0) {
