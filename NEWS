@@ -1,3 +1,11 @@
+tigris 1.6
+-------------------------------------------------------
+* All functions in tigris now default to a year of 2020.  Different years can be requested
+with the year argument.
+
+* A new function, erase_water(), automatically erases water area from an input polygon dataset
+to improve cartographic display.
+
 tigris 1.5
 -------------------------------------------------------
 * tigris now correctly supports 2020 US Census shapefiles across its functions.

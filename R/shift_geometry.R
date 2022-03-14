@@ -334,7 +334,11 @@ shift_geometry <- function(input_sf,
 
     # Shift Hawaii but do not rescale
     if(any(hi_check)) {
-      hi_shifted <- sf::st_transform(us_hawaii, hi_crs)
+      hi_shifted <- suppressWarnings(
+        us_hawaii %>%
+          sf::st_intersection(hi_bbox) %>%
+          sf::st_transform(hi_crs)
+      )
 
       if (position == "below") {
         sf::st_geometry(hi_shifted) <- place_geometry_wilke(
