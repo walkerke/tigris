@@ -749,11 +749,6 @@ zctas <- function(cb = FALSE, starts_with = NULL, year = NULL, state = NULL, ...
 
   if (cb == TRUE) {
 
-    if (year >= 2020) {
-      url <- sprintf("https://www2.census.gov/geo/tiger/GENZ%s/shp/cb_%s_us_zcta520_500k.zip",
-                     cyear, cyear)
-    }
-
     if (year == 2000) {
       if (is.null(state)) {
         url <- "https://www2.census.gov/geo/tiger/PREVGENZ/zt/z500shp/zt99_d00_shp.zip"
@@ -764,6 +759,9 @@ zctas <- function(cb = FALSE, starts_with = NULL, year = NULL, state = NULL, ...
     } else if (year == 2010) {
 
       url <- "https://www2.census.gov/geo/tiger/GENZ2010/gz_2010_us_860_00_500k.zip"
+    } else if (year >= 2020) {
+      url <- sprintf("https://www2.census.gov/geo/tiger/GENZ%s/shp/cb_%s_us_zcta520_500k.zip",
+                     cyear, cyear)
     } else {
       url <- sprintf("https://www2.census.gov/geo/tiger/GENZ%s/shp/cb_%s_us_zcta510_500k.zip",
                      cyear, cyear)
