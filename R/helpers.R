@@ -734,6 +734,7 @@ erase_water <- function(input_sf,
   }) %>%
     dplyr::bind_rows() %>%
     sf::st_transform(sf::st_crs(input_sf)) %>%
+    sf::st_filter(input_sf) %>% # New step to only erase intersecting water areas
     dplyr::filter(dplyr::percent_rank(AWATER) >= area_threshold)
 
   message("Erasing water area...\nIf this is slow, try a larger area threshold value.")
