@@ -10,11 +10,8 @@
 #'        (case-insensitive).
 #' @param county The three-digit FIPS code of the county you'd like the roads for.
 #'        Can also be a county name.
-#' @param year the data year (defaults to 2020).
-#' @param ... arguments to be passed to the underlying `load_tiger` function, which is not exported.
-#'        Options include \code{class}, which can be set to \code{"sf"} (the default) or \code{"sp"} to
-#'        request sf or sp class objects, and \code{refresh}, which specifies whether or
-#'        not to re-download shapefiles (defaults to \code{FALSE}).
+#' @inheritParams load_tiger_doc_template
+#' @inheritSection load_tiger_doc_template Additional Arguments
 #' @family transportation functions
 #' @seealso \url{https://www2.census.gov/geo/pdfs/maps-data/data/tiger/tgrshp2020/TGRSHP2020_TechDoc.pdf}
 #' @export
@@ -82,11 +79,8 @@ roads <- function(state, county, year = NULL, ...) {
 #' presence of interchanges
 #' and are accessible by ramps and may include some toll highways."
 #'
-#' @param year the data year (defaults to 2020).
-#' @param ... arguments to be passed to the underlying `load_tiger` function, which is not exported.
-#'        Options include \code{class}, which can be set to \code{"sf"} (the default) or \code{"sp"} to
-#'        request sf or sp class objects, and \code{refresh}, which specifies whether or
-#'        not to re-download shapefiles (defaults to \code{FALSE}).
+#' @inheritParams load_tiger_doc_template
+#' @inheritSection load_tiger_doc_template Additional Arguments
 #' @family transportation functions
 #' @seealso \url{https://www2.census.gov/geo/pdfs/maps-data/data/tiger/tgrshp2020/TGRSHP2020_TechDoc.pdf}
 #' @export
@@ -140,11 +134,8 @@ primary_roads <- function(year = NULL, ...) {
 #' @param state The two-digit FIPS code of the state of the county you'd like
 #'        to download the roads for. Can also be state name or abbreviation
 #'        (case-insensitive).
-#' @param year the data year (defaults to 2020).
-#' @param ... arguments to be passed to the underlying `load_tiger` function, which is not exported.
-#'        Options include \code{class}, which can be set to \code{"sf"} (the default) or \code{"sp"} to
-#'        request sf or sp class objects, and \code{refresh}, which specifies whether or
-#'        not to re-download shapefiles (defaults to \code{FALSE}).
+#' @inheritParams load_tiger_doc_template
+#' @inheritSection load_tiger_doc_template Additional Arguments
 #' @family transportation functions
 #' @seealso \url{https://www2.census.gov/geo/pdfs/maps-data/data/tiger/tgrshp2020/TGRSHP2020_TechDoc.pdf}
 #' @export
@@ -193,11 +184,8 @@ primary_secondary_roads <- function(state, year = NULL, ...) {
 #' National dataset for US railroads, including carlines, streetcars,
 #' monorails, mass transit, cog rail, incline rail, and trams.
 #'
-#' @param year the data year (defaults to 2020).
-#' @param ... arguments to be passed to the underlying `load_tiger` function, which is not exported.
-#'        Options include \code{class}, which can be set to \code{"sf"} (the default) or \code{"sp"} to
-#'        request sf or sp class objects, and \code{refresh}, which specifies whether or
-#'        not to re-download shapefiles (defaults to \code{FALSE}).
+#' @inheritParams load_tiger_doc_template
+#' @inheritSection load_tiger_doc_template Additional Arguments
 #' @family transportation functions
 #' @seealso \url{https://www2.census.gov/geo/pdfs/maps-data/data/tiger/tgrshp2020/TGRSHP2020_TechDoc.pdf}
 #' @export
@@ -245,11 +233,8 @@ rails <- function(year = NULL, ...) {
 #'        (case-insensitive).
 #' @param county The three-digit FIPS code of the county you'd like the roads for.
 #'        Can also be a county name.
-#' @param year the data year (defaults to 2020).
-#' @param ... arguments to be passed to the underlying `load_tiger` function, which is not exported.
-#'        Options include \code{class}, which can be set to \code{"sp"} (the default) or \code{"sf"} to
-#'        request sp or sf class objects, and \code{refresh}, which specifies whether or
-#'        not to re-download shapefiles (defaults to \code{FALSE}).
+#' @inheritParams load_tiger_doc_template
+#' @inheritSection load_tiger_doc_template Additional Arguments
 #' @family transportation functions
 #' @seealso \url{https://www2.census.gov/geo/pdfs/maps-data/data/tiger/tgrshp2020/TGRSHP2020_TechDoc.pdf}
 #' @export

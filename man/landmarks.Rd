@@ -11,12 +11,9 @@ landmarks(state, type = "point", year = NULL, ...)
 
 \item{type}{Whether you would like to download point landmarks (\code{"point"}) or area landmarks (\code{"area"}). #'                Defaults to \code{"point"}.}
 
-\item{year}{the data year (defaults to 2020).}
+\item{year}{the data year; defaults to 2020}
 
-\item{...}{arguments to be passed to the underlying `load_tiger` function, which is not exported.
-Options include \code{class}, which can be set to \code{"sf"} (the default) or \code{"sp"} to
-request sf or sp class objects, and \code{refresh}, which specifies whether or
-not to re-download shapefiles (defaults to \code{FALSE}).}
+\item{...}{arguments to be passed to internal function \code{load_tiger}, which is not exported. See Additional Arguments.}
 }
 \description{
 Description from the US Census Bureau:
@@ -40,6 +37,19 @@ contain point landmarks, but these features are not linked in the TIGER/Line Sha
 Landmarks may be identified by a MAF/TIGER feature class code only and may not have a name. Each
 landmark has a unique area landmark identifier (AREAID) or point landmark identifier (POINTID) value.
 }
+\section{Additional Arguments}{
+
+Additional arguments that can be passed in \code{...} are:
+\itemize{
+\item \code{class} Desired class of return object: \code{"sf"} (the default) or \code{"sp"}.
+\item \code{progress_bar} If set to \code{FALSE}, do not display download progress bar (helpful for R Markdown documents). Defaults to \code{TRUE}.
+\item \code{keep_zipped_shapefile} If set to \code{TRUE}, do not delete zipped shapefile (stored in temporary directory or \code{TIGRIS_CACHE_DIR}
+depending on the configuration of global option \code{"tigris_use_cache"}). Defaults to \code{FALSE}.
+\item \code{refresh} Whether to re-download cached shapefiles (\code{TRUE} or \code{FALSE}) . The default is either \code{FALSE} or the value of global
+option \code{"tigris_refresh"} if it is set. Specifying this argument will override the behavior set in \code{"tigris_refresh"} global option.
+}
+}
+
 \seealso{
 \url{https://www2.census.gov/geo/pdfs/maps-data/data/tiger/tgrshp2020/TGRSHP2020_TechDoc_Ch3.pdf}
 }

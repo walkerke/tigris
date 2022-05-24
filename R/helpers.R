@@ -41,16 +41,23 @@ tigris_cache_dir <- function(path) {
 }
 
 
-
-# Helper function to download Census data
-#
-# uses a global option "tigris_refresh" to control re-download of shapefiles (def: FALSE)
-# also uses global option "tigris_use_cache" to determine whether new data files will
-# be cached or not. (def: TRUE)
-#
-# Year currently defaults to 2019; give option to download other years
-
-
+#' Helper function to download Census data
+#'
+#' @param url URL for zipped shapefile in TIGER database (constructed in calling function).
+#' @param refresh Whether to re-download shapefiles if cached. Defaults to value of the global
+#' option "tigris_refresh" if that option is, and FALSE if not. This will override the behavior
+#' set in "tigris_refresh" option if a value (TRUE or FALSE) is provided.
+#' @param tigris_type Added as an attribute to return object (used internally).
+#' @param class Class of return object. Must be one of "sf" (the default) or "sp".
+#' @param progress_bar If set to FALSE, do not display download progress bar
+#' (helpful for R Markdown documents). Defaults to TRUE.
+#' @param keep_zipped_shapefile If set to TRUE, do not delete zipped shapefile
+#' (stored in temporary directory or TIGRIS_CACHE_DIR depending on the configuration of
+#' global option "tigris_use_cache"). Defaults to FALSE.
+#' @param query # Defunct. Has no effect.
+#'
+#' @return sf or sp data frame
+#'
 load_tiger <- function(url,
                        refresh=getOption("tigris_refresh", FALSE),
                        tigris_type=NULL,
@@ -745,3 +752,24 @@ erase_water <- function(input_sf,
 }
 
 
+#' Documentation Template for Functions that Utilize `load_tiger`
+#'
+#' @md
+#' @details This documentation is inherited by `tigris` functions that wrap `load_tiger`.
+#' Include the following in function documentation:
+#' `@inheritParams load_tiger_doc_template`
+#' `@inheritSection load_tiger_doc_template Additional Arguments`
+#'
+#' @param ... arguments to be passed to internal function `load_tiger`, which is not exported. See Additional Arguments.
+#' @param year the data year; defaults to 2020
+#'
+#' @section Additional Arguments:
+#' Additional arguments that can be passed in `...` are:
+#'  * `class` Desired class of return object: `"sf"` (the default) or `"sp"`.
+#'  * `progress_bar` If set to `FALSE`, do not display download progress bar (helpful for R Markdown documents). Defaults to `TRUE`.
+#'  * `keep_zipped_shapefile` If set to `TRUE`, do not delete zipped shapefile (stored in temporary directory or `TIGRIS_CACHE_DIR`
+#'     depending on the configuration of global option `"tigris_use_cache"`). Defaults to `FALSE`.
+#'  * `refresh` Whether to re-download cached shapefiles (`TRUE` or `FALSE`) . The default is either `FALSE` or the value of global
+#'     option `"tigris_refresh"` if it is set. Specifying this argument will override the behavior set in `"tigris_refresh"` global option.
+#' @name load_tiger_doc_template
+NULL

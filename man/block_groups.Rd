@@ -19,12 +19,9 @@ Can also be a county name or vector of names.}
 \item{cb}{If cb is set to TRUE, download a generalized (1:500k)
 file.  Defaults to FALSE (the most detailed TIGER/Line file)}
 
-\item{year}{the data download year (defaults to 2020)}
+\item{year}{the data year; defaults to 2020}
 
-\item{...}{arguments to be passed to the underlying `load_tiger` function, which is not exported.
-Options include \code{class}, which can be set to \code{"sf"} (the default) or \code{"sp"} to
-request sf or sp class objects, and \code{refresh}, which specifies whether or
-not to re-download shapefiles (defaults to \code{FALSE}).}
+\item{...}{arguments to be passed to internal function \code{load_tiger}, which is not exported. See Additional Arguments.}
 }
 \description{
 Description from the US Census Bureau (see link for source):Standard block groups are clusters of
@@ -49,6 +46,19 @@ hierarchy, block groups never cross county or census tract boundaries, but may c
 county subdivisions, places, urban areas, voting districts, congressional districts, and American Indian,
 Alaska Native, and Native Hawaiian areas.
 }
+\section{Additional Arguments}{
+
+Additional arguments that can be passed in \code{...} are:
+\itemize{
+\item \code{class} Desired class of return object: \code{"sf"} (the default) or \code{"sp"}.
+\item \code{progress_bar} If set to \code{FALSE}, do not display download progress bar (helpful for R Markdown documents). Defaults to \code{TRUE}.
+\item \code{keep_zipped_shapefile} If set to \code{TRUE}, do not delete zipped shapefile (stored in temporary directory or \code{TIGRIS_CACHE_DIR}
+depending on the configuration of global option \code{"tigris_use_cache"}). Defaults to \code{FALSE}.
+\item \code{refresh} Whether to re-download cached shapefiles (\code{TRUE} or \code{FALSE}) . The default is either \code{FALSE} or the value of global
+option \code{"tigris_refresh"} if it is set. Specifying this argument will override the behavior set in \code{"tigris_refresh"} global option.
+}
+}
+
 \examples{
 \dontrun{
 library(tigris)
