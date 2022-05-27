@@ -13,11 +13,8 @@
 #'        TIGER/Line file).
 #' @param resolution The resolution of the cartographic boundary file (if cb == TRUE).
 #'        Defaults to '500k'; options include '5m' (1:5 million) and '20m' (1:20 million).
-#' @param year the data year (defaults to 2020).
-#' @param ... arguments to be passed to the underlying `load_tiger` function, which is not exported.
-#'        Options include \code{class}, which can be set to \code{"sf"} (the default) or \code{"sp"} to
-#'        request sf or sp class objects, and \code{refresh}, which specifies whether or
-#'        not to re-download shapefiles (defaults to \code{FALSE}).
+#' @inheritParams load_tiger_doc_template
+#' @inheritSection load_tiger_doc_template Additional Arguments
 #' @family metro area functions
 #' @seealso \url{https://www.census.gov/programs-surveys/metro-micro.html}
 #' @export
@@ -86,11 +83,8 @@ core_based_statistical_areas <- function(cb = FALSE, resolution = '500k', year =
 #' @param cb If cb is set to TRUE, download a generalized (1:500k)
 #'        cartographic boundary file.  Defaults to FALSE (the most detailed
 #'        TIGER/Line file).
-#' @param year the data year (defaults to 2020).
-#' @param ... arguments to be passed to the underlying `load_tiger` function, which is not exported.
-#'        Options include \code{class}, which can be set to \code{"sf"} (the default) or \code{"sp"} to
-#'        request sf or sp class objects, and \code{refresh}, which specifies whether or
-#'        not to re-download shapefiles (defaults to \code{FALSE}).
+#' @inheritParams load_tiger_doc_template
+#' @inheritSection load_tiger_doc_template Additional Arguments
 #' @family metro area functions
 #' @seealso \url{https://www.census.gov/programs-surveys/geography/guidance/geo-areas/urban-rural.html}
 #' @export
@@ -144,11 +138,8 @@ urban_areas <- function(cb = FALSE, year = NULL, ...) {
 #'        TIGER/Line file).
 #' @param resolution The resolution of the cartographic boundary file (if cb == TRUE).
 #'        Defaults to '500k'; options include '5m' (1:5 million) and '20m' (1:20 million).
-#' @param year the data year (defaults to 2020).
-#' @param ... arguments to be passed to the underlying `load_tiger` function, which is not exported.
-#'        Options include \code{class}, which can be set to \code{"sf"} (the default) or \code{"sp"} to
-#'        request sf or sp class objects, and \code{refresh}, which specifies whether or
-#'        not to re-download shapefiles (defaults to \code{FALSE}).
+#' @inheritParams load_tiger_doc_template
+#' @inheritSection load_tiger_doc_template Additional Arguments
 #' @family metro area functions
 #' @seealso \url{https://www2.census.gov/geo/pdfs/maps-data/data/tiger/tgrshp2020/TGRSHP2020_TechDoc.pdf}
 #' @export
@@ -199,11 +190,8 @@ combined_statistical_areas <- function(cb = FALSE, resolution = '500k', year = N
 #' Metropolitan divisions are subdivisions of metropolitan areas with population of at least 2.5 million.  Please note:
 #' not all metropolitan areas have metropolitan divisions.
 #'
-#' @param year The data year (defaults to 2020).
-#' @param ... arguments to be passed to the underlying `load_tiger` function, which is not exported.
-#'        Options include \code{class}, which can be set to \code{"sf"} (the default) or \code{"sp"} to
-#'        request sf or sp class objects, and \code{refresh}, which specifies whether or
-#'        not to re-download shapefiles (defaults to \code{FALSE}).
+#' @inheritParams load_tiger_doc_template
+#' @inheritSection load_tiger_doc_template Additional Arguments
 #' @family metro area functions
 #' @seealso \url{https://www2.census.gov/geo/pdfs/maps-data/data/tiger/tgrshp2020/TGRSHP2020_TechDoc.pdf}
 #' @export
@@ -255,11 +243,8 @@ metro_divisions <- function(year = NULL, ...) {
 #' @param cb If cb is set to TRUE, download a generalized (1:500k)
 #'        cartographic boundary file.  Defaults to FALSE (the most detailed
 #'        TIGER/Line file).  Only available when \code{type = 'necta'}.
-#' @param year The data year (defaults to 2020).
-#' @param ... arguments to be passed to the underlying `load_tiger` function, which is not exported.
-#'        Options include \code{class}, which can be set to \code{"sf"} (the default) or \code{"sp"} to
-#'        request sf or sp class objects, and \code{refresh}, which specifies whether or
-#'        not to re-download shapefiles (defaults to \code{FALSE}).
+#' @inheritParams load_tiger_doc_template
+#' @inheritSection load_tiger_doc_template Additional Arguments
 #' @family metro area functions
 #' @seealso \url{https://www2.census.gov/geo/pdfs/maps-data/data/tiger/tgrshp2020/TGRSHP2020_TechDoc.pdf}
 #' @export

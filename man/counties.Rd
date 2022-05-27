@@ -19,10 +19,7 @@ Defaults to '500k'; options include '5m' (1:5 million) and '20m' (1:20 million).
 
 \item{year}{the data year; defaults to 2020}
 
-\item{...}{arguments to be passed to the underlying `load_tiger` function, which is not exported.
-Options include \code{class}, which can be set to \code{"sf"} (the default) or \code{"sp"} to
-request sf or sp class objects, and \code{refresh}, which specifies whether or
-not to re-download shapefiles (defaults to \code{FALSE}).}
+\item{...}{arguments to be passed to internal function \code{load_tiger}, which is not exported. See Additional Arguments.}
 }
 \description{
 Description from the US Census Bureau (see link for source):
@@ -52,6 +49,19 @@ a three-character numeric Federal Information Processing Series (FIPS) code
 based on alphabetical sequence that is unique within state and an
 eight-digit National Standard feature identifier.
 }
+\section{Additional Arguments}{
+
+Additional arguments that can be passed in \code{...} are:
+\itemize{
+\item \code{class} Desired class of return object: \code{"sf"} (the default) or \code{"sp"}.
+\item \code{progress_bar} If set to \code{FALSE}, do not display download progress bar (helpful for R Markdown documents). Defaults to \code{TRUE}.
+\item \code{keep_zipped_shapefile} If set to \code{TRUE}, do not delete zipped shapefile (stored in temporary directory or \code{TIGRIS_CACHE_DIR}
+depending on the configuration of global option \code{"tigris_use_cache"}). Defaults to \code{FALSE}.
+\item \code{refresh} Whether to re-download cached shapefiles (\code{TRUE} or \code{FALSE}) . The default is either \code{FALSE} or the value of global
+option \code{"tigris_refresh"} if it is set. Specifying this argument will override the behavior set in \code{"tigris_refresh"} global option.
+}
+}
+
 \examples{
 \dontrun{
 library(tigris)

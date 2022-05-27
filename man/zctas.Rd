@@ -19,15 +19,12 @@ ZCTAs you want to return.  For example, supplying the argument
 \code{starts_with = c("75", "76")} will return only those ZCTAs that begin
 with 75 or 76.  Defaults to NULL, which will return all ZCTAs in the US.}
 
-\item{year}{the data year (defaults to 2020).}
+\item{year}{the data year; defaults to 2020}
 
 \item{state}{the state for which you are requesting data; only available for 2000 (TIGER/Line
 and CB shapefiles) and 2010 (TIGER/Line shapefiles only)}
 
-\item{...}{arguments to be passed to the underlying `load_tiger` function, which is not exported.
-Options include \code{class}, which can be set to \code{"sf"} (the default) or \code{"sp"} to
-request sf or sp class objects, and \code{refresh}, which specifies whether or
-not to re-download shapefiles (defaults to \code{FALSE}).}
+\item{...}{arguments to be passed to internal function \code{load_tiger}, which is not exported. See Additional Arguments.}
 }
 \description{
 ZIP Code Tabulation Areas (ZCTAs) are generalized areal representations of
@@ -35,6 +32,19 @@ United States Postal Service (USPS) ZIP Code service areas.  Please see the link
 information on how the Census Bureau creates ZCTAs, and for important information on the
 differences between ZCTAs and ZIP Codes.
 }
+\section{Additional Arguments}{
+
+Additional arguments that can be passed in \code{...} are:
+\itemize{
+\item \code{class} Desired class of return object: \code{"sf"} (the default) or \code{"sp"}.
+\item \code{progress_bar} If set to \code{FALSE}, do not display download progress bar (helpful for R Markdown documents). Defaults to \code{TRUE}.
+\item \code{keep_zipped_shapefile} If set to \code{TRUE}, do not delete zipped shapefile (stored in temporary directory or \code{TIGRIS_CACHE_DIR}
+depending on the configuration of global option \code{"tigris_use_cache"}). Defaults to \code{FALSE}.
+\item \code{refresh} Whether to re-download cached shapefiles (\code{TRUE} or \code{FALSE}) . The default is either \code{FALSE} or the value of global
+option \code{"tigris_refresh"} if it is set. Specifying this argument will override the behavior set in \code{"tigris_refresh"} global option.
+}
+}
+
 \examples{
 \dontrun{
 # Example: get ZCTAs that intersect the Memphis, TN urbanized area

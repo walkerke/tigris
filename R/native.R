@@ -8,11 +8,8 @@
 #'
 #' @param cb If cb is set to TRUE, download a generalized (1:500k)
 #'        file.  Defaults to FALSE (the most detailed TIGER/Line file)
-#' @param year the data year (defaults to 2020).
-#' @param ... arguments to be passed to the underlying `load_tiger` function, which is not exported.
-#'        Options include \code{class}, which can be set to \code{"sf"} (the default) or \code{"sp"} to
-#'        request sf or sp class objects, and \code{refresh}, which specifies whether or
-#'        not to re-download shapefiles (defaults to \code{FALSE}).
+#' @inheritParams load_tiger_doc_template
+#' @inheritSection load_tiger_doc_template Additional Arguments
 #' @family native/tribal geometries functions
 #' @seealso \url{https://www2.census.gov/geo/pdfs/reference/GARM/Ch5GARM.pdf}
 #' @export
@@ -78,11 +75,8 @@ native_areas <- function(cb = FALSE, year = NULL, ...) {
 #'
 #' @param cb If cb is set to TRUE, download a generalized (1:500k)
 #'        file.  Defaults to FALSE (the most detailed TIGER/Line file)
-#' @param year The year for which you'd like to download data (defaults to 2020).
-#' @param ... arguments to be passed to the underlying `load_tiger` function, which is not exported.
-#'        Options include \code{class}, which can be set to \code{"sf"} (the default) or \code{"sp"} to
-#'        request sf or sp class objects, and \code{refresh}, which specifies whether or
-#'        not to re-download shapefiles (defaults to \code{FALSE}).
+#' @inheritParams load_tiger_doc_template
+#' @inheritSection load_tiger_doc_template Additional Arguments
 #' @family native/tribal geometries functions
 #' @seealso \url{https://www2.census.gov/geo/pdfs/reference/GARM/Ch5GARM.pdf}
 #' @export
@@ -147,11 +141,8 @@ tribal_subdivisions_national <- function(cb = FALSE, year = NULL, ...) {
 #'
 #' @param cb If cb is set to TRUE, download a generalized (1:500k)
 #'        file.  Defaults to FALSE (the most detailed TIGER/Line file)
-#' @param year the data year (defaults to 2020).
-#' @param ... arguments to be passed to the underlying `load_tiger` function, which is not exported.
-#'        Options include \code{class}, which can be set to \code{"sf"} (the default) or \code{"sp"} to
-#'        request sf or sp class objects, and \code{refresh}, which specifies whether or
-#'        not to re-download shapefiles (defaults to \code{FALSE}).
+#' @inheritParams load_tiger_doc_template
+#' @inheritSection load_tiger_doc_template Additional Arguments
 #' @family native/tribal geometries functions
 #' @seealso \url{https://www2.census.gov/geo/pdfs/reference/GARM/Ch5GARM.pdf}
 #' @export
@@ -213,11 +204,8 @@ alaska_native_regional_corporations <- function(cb = FALSE, year = NULL, ...) {
 #'
 #' @param cb If cb is set to TRUE, download a generalized (1:500k)
 #'        file.  Defaults to FALSE (the most detailed TIGER/Line file)
-#' @param year the data year (defaults to 2020).
-#' @param ... arguments to be passed to the underlying `load_tiger` function, which is not exported.
-#'        Options include \code{class}, which can be set to \code{"sf"} (the default) or \code{"sp"} to
-#'        request sf or sp class objects, and \code{refresh}, which specifies whether or
-#'        not to re-download shapefiles (defaults to \code{FALSE}).
+#' @inheritParams load_tiger_doc_template
+#' @inheritSection load_tiger_doc_template Additional Arguments
 #' @family native/tribal geometries functions
 #' @seealso \url{https://www2.census.gov/geo/pdfs/reference/GARM/Ch5GARM.pdf}
 #' @export
@@ -280,11 +268,8 @@ tribal_block_groups <- function(cb = TRUE, year = NULL, ...) {
 #'
 #' @param cb If cb is set to TRUE, download a generalized (1:500k)
 #'        file.  Defaults to FALSE (the most detailed TIGER/Line file)
-#' @param year the data year (defaults to 2020).
-#' @param ... arguments to be passed to the underlying `load_tiger` function, which is not exported.
-#'        Options include \code{class}, which can be set to \code{"sf"} (the default) or \code{"sp"} to
-#'        request sf or sp class objects, and \code{refresh}, which specifies whether or
-#'        not to re-download shapefiles (defaults to \code{FALSE}).
+#' @inheritParams load_tiger_doc_template
+#' @inheritSection load_tiger_doc_template Additional Arguments
 #' @family native/tribal geometries functions
 #' @seealso \url{https://www2.census.gov/geo/pdfs/reference/GARM/Ch5GARM.pdf}
 #' @export

@@ -2,11 +2,8 @@
 #'
 #' @param resolution The resolution of the cartographic boundary file.
 #'        Defaults to '500k'; options include '5m' (1:5 million) and '20m' (1:20 million).
-#' @param year the data year (defaults to 2020).
-#' @param ... arguments to be passed to the underlying `load_tiger` function, which is not exported.
-#'        Options include \code{class}, which can be set to \code{"sf"} (the default) or \code{"sp"} to
-#'        request sf or sp class objects, and \code{refresh}, which specifies whether or
-#'        not to re-download shapefiles (defaults to \code{FALSE}).
+#' @inheritParams load_tiger_doc_template
+#' @inheritSection load_tiger_doc_template Additional Arguments
 #'
 #' @family national cartographic boundary functions
 #' @examples \dontrun{
@@ -60,11 +57,8 @@ regions <- function(resolution = '500k', year = NULL, ...) {
 #'
 #' @param resolution The resolution of the cartographic boundary file.
 #'        Defaults to '500k'; options include '5m' (1:5 million) and '20m' (1:20 million).
-#' @param year the data year (defaults to 2020).
-#' @param ... arguments to be passed to the underlying `load_tiger` function, which is not exported.
-#'        Options include \code{class}, which can be set to \code{"sf"} (the default) or \code{"sp"} to
-#'        request sf or sp class objects, and \code{refresh}, which specifies whether or
-#'        not to re-download shapefiles (defaults to \code{FALSE}).
+#' @inheritParams load_tiger_doc_template
+#' @inheritSection load_tiger_doc_template Additional Arguments
 #'
 #' @family national cartographic boundary functions
 #' @export
@@ -118,12 +112,8 @@ divisions <- function(resolution = '500k', year = NULL, ...) {
 #'
 #' @param resolution The resolution of the cartographic boundary file.
 #'        Defaults to '5m'; options include '5m' (1:5 million) and '20m' (1:20 million).
-#' @param year the data year (defaults to 2020).
-#' @param ... arguments to be passed to the underlying `load_tiger` function, which is not exported.
-#'        Options include \code{class}, which can be set to \code{"sf"} (the default) or \code{"sp"} to
-#'        request sf or sp class objects, and \code{refresh}, which specifies whether or
-#'        not to re-download shapefiles (defaults to \code{FALSE}).
-#'
+#' @inheritParams load_tiger_doc_template
+#' @inheritSection load_tiger_doc_template Additional Arguments
 #' @family national cartographic boundary functions
 #' @export
 #' @examples \dontrun{

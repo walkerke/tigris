@@ -15,11 +15,8 @@
 #'        TIGER/Line file).
 #' @param resolution The resolution of the cartographic boundary file (if cb == TRUE).
 #'        Defaults to '500k'; options include '5m' (1:5 million) and '20m' (1:20 million).
-#' @param year the data year (defaults to 2020).
-#' @param ... arguments to be passed to the underlying `load_tiger` function, which is not exported.
-#'        Options include \code{class}, which can be set to \code{"sf"} (the default) or \code{"sp"} to
-#'        request sf or sp class objects, and \code{refresh}, which specifies whether or
-#'        not to re-download shapefiles (defaults to \code{FALSE}).
+#' @inheritParams load_tiger_doc_template
+#' @inheritSection load_tiger_doc_template Additional Arguments
 #' @family legislative district functions
 #' @seealso \url{https://www.census.gov/programs-surveys/geography/guidance/geo-areas/congressional-dist.html}
 #' @export
@@ -122,11 +119,8 @@ congressional_districts <- function(state = NULL, cb = FALSE, resolution = '500k
 #' @param cb If cb is set to TRUE, download a generalized (1:500k)
 #'        cartographic boundary file.  Defaults to FALSE (the most detailed
 #'        TIGER/Line file).
-#' @param year the data year (defaults to 2020).
-#' @param ... arguments to be passed to the underlying `load_tiger` function, which is not exported.
-#'        Options include \code{class}, which can be set to \code{"sf"} (the default) or \code{"sp"} to
-#'        request sf or sp class objects, and \code{refresh}, which specifies whether or
-#'        not to re-download shapefiles (defaults to \code{FALSE}).
+#' @inheritParams load_tiger_doc_template
+#' @inheritSection load_tiger_doc_template Additional Arguments
 #' @family legislative district functions
 #' @seealso \url{https://www.census.gov/programs-surveys/geography/guidance/geo-areas/state-legis-dist.html}
 #' @export
@@ -260,13 +254,8 @@ state_legislative_districts <- function(state= NULL, house = "upper",
 #' @param cb If cb is set to TRUE, download a generalized (1:500k)
 #'        cartographic boundary file.  Defaults to FALSE (the most detailed
 #'        TIGER/Line file).
-#' @param year The data year; defaults to 2020.  An older voting districts dataset from the
-#'             2012 TIGER/Line shapefiles is available with \code{year = 2012}.
-#' @param ... arguments to be passed to the underlying `load_tiger` function, which is not exported.
-#'        Options include \code{class}, which can be set to \code{"sf"} (the default) or \code{"sp"} to
-#'        request sf or sp class objects, and \code{refresh}, which specifies whether or
-#'        not to re-download shapefiles (defaults to \code{FALSE}).
-#'
+#' @inheritParams load_tiger_doc_template
+#' @inheritSection load_tiger_doc_template Additional Arguments
 #' @family legislative district functions
 #' @seealso \url{https://www2.census.gov/geo/pdfs/reference/GARM/Ch14GARM.pdf}
 #' @export
