@@ -90,7 +90,7 @@ call_geolocator <- function(street, city, state, zip = NA) {
 
   if(!is.na(zip)){
     # Build url when zip is not default/NA
-    if(class(zip) == "character" & nchar(zip) == 5 & !grepl("\\D", zip)){
+    if(inherits(zip, "character") & nchar(zip) == 5 & !grepl("\\D", zip)){
       url <- paste0(
         "street=", utils::URLencode(street),
         "&city=", utils::URLencode(city),
