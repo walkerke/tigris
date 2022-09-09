@@ -168,27 +168,12 @@ load_tiger <- function(url,
 
       }
 
-      if (class == "sp") {
+      obj <- st_read(dsn = cache_dir, layer = shape,
+                     quiet = TRUE, stringsAsFactors = FALSE)
 
-        obj <- readOGR(dsn = cache_dir, layer = shape, encoding = "UTF-8",
-                       verbose = FALSE, stringsAsFactors = FALSE)
+      if (is.na(st_crs(obj)$proj4string)) {
 
-        if (is.na(proj4string(obj))) {
-
-          proj4string(obj) <- CRS("+proj=longlat +datum=NAD83 +no_defs")
-
-        }
-
-      } else if (class == "sf") {
-
-        obj <- st_read(dsn = cache_dir, layer = shape,
-                       quiet = TRUE, stringsAsFactors = FALSE)
-
-        if (is.na(st_crs(obj)$proj4string)) {
-
-          st_crs(obj) <- "+proj=longlat +datum=NAD83 +no_defs"
-
-        }
+        st_crs(obj) <- "+proj=longlat +datum=NAD83 +no_defs"
 
       }
 
@@ -211,28 +196,12 @@ load_tiger <- function(url,
     shape <- gsub(".zip", "", tiger_file)
     shape <- gsub("_shp", "", shape) # for historic tracts
 
+    obj <- st_read(dsn = tmp, layer = shape,
+                   quiet = TRUE, stringsAsFactors = FALSE)
 
-    if (class == "sp") {
+    if (is.na(st_crs(obj)$proj4string)) {
 
-      obj <- readOGR(dsn = tmp, layer = shape, encoding = "UTF-8",
-                     verbose = FALSE, stringsAsFactors = FALSE)
-
-      if (is.na(proj4string(obj))) {
-
-        proj4string(obj) <- CRS("+proj=longlat +datum=NAD83 +no_defs")
-
-      }
-
-    } else if (class == "sf") {
-
-      obj <- st_read(dsn = tmp, layer = shape,
-                     quiet = TRUE, stringsAsFactors = FALSE)
-
-      if (is.na(st_crs(obj)$proj4string)) {
-
-        st_crs(obj) <- "+proj=longlat +datum=NAD83 +no_defs"
-
-      }
+      st_crs(obj) <- "+proj=longlat +datum=NAD83 +no_defs"
 
     }
 
@@ -261,16 +230,17 @@ load_tiger <- function(url,
     obj$STATEFP <- obj$ST
   }
 
-  return(obj)
-
+  if (class == "sp") {
+    warning(stringr::str_wrap("Spatial* (sp) classes are no longer formally supported in tigris as of version 2.0. We strongly recommend updating your workflow to use sf objects (the default in tigris) instead.", 50), call. = FALSE)
+    return(sf::as_Spatial(obj))
+  } else {
+    return(obj)
+  }
 }
 
 #' Easily merge a data frame to a spatial data frame
 #'
-#' The pages of StackOverflow are littered with questions about how to merge a regular data frame to a
-#' spatial data frame in R.  The \code{merge} function from the sp package operates under a strict set of
-#' assumptions, which if violated will break your data.  This function wraps a couple StackOverflow answers
-#' I've seen that work in a friendlier syntax.
+#' This function should be considered deprecated.  Please update your workflow to use sf objects and dplyr's \code{*_join()} family of functions instead.
 #'
 #' @param spatial_data A spatial data frame to which you want to merge data.
 #' @param data_frame A regular data frame that you want to merge to your spatial data.
@@ -278,7 +248,7 @@ load_tiger <- function(url,
 #' @param by_df The column name you'll use for the merge from your regular data frame.
 #' @param by (optional) If a named argument is supplied to the by parameter, geo_join will assume that the join columns in the spatial data and data frame share the same name.
 #' @param how The type of join you'd like to perform.  The default, 'left', keeps all rows in the spatial data frame, and returns NA for unmatched rows.  The alternative, 'inner', retains only those rows in the spatial data frame that match rows from the target data frame.
-#' @return a \code{SpatialXxxDataFrame} object
+#' @return a joined spatial/data frame object
 #' @export
 #' @examples \dontrun{
 #'
@@ -567,34 +537,7 @@ rbind_tigris <- function(...) {
                          "SpatialPixelsDataFrame", "SpatialPointsDataFrame",
                          "SpatialPolygonsDataFrame")) {
 
-    if (length(obj_classes) == 1 &
-        !any(sapply(obj_attrs, is.null)) &
-        length(obj_attrs_u)==1) {
-
-      el_nams <- names(elements)
-
-      if (is.null(el_nams)) {
-        el_nams <- rep(NA, length(elements))
-      }
-
-      el_nams <- ifelse(el_nams == "", NA, el_nams)
-
-      el_nams <- sapply(el_nams, function(x) {
-        ifelse(is.na(x), gsub("-", "", UUIDgenerate(), fixed=TRUE), x)
-      })
-
-      tmp <- lapply(1:(length(elements)), function(i) {
-        elem <- elements[[i]]
-        spChFIDs(elem, sprintf("%s%s", el_nams[i], rownames(elem@data)))
-      })
-
-      tmp <- Reduce(spRbind, tmp)
-      attr(tmp, "tigris") <- obj_attrs_u
-      return(tmp)
-
-    } else {
-      stop("Objects must all be Spatial*DataFrame objects and all the same type of tigris object.", call.=FALSE)
-    }
+    stop("Spatial* classes are no longer supported in tigris as of version 2.0. You will need to install an earlier version of tigris with `remotes::install_version()`.")
 
   } else if ("sf" %in% obj_classes) {
 

@@ -19,12 +19,12 @@ Use option \code{tigris_refresh} to force a refresh of cached \code{tigris}
 Shapefiles. e.g. \code{options(tigris_refresh=TRUE)}
 
 Use option \code{tigris_year} to change the year for which you'd like to download data.
-e.g. \code{options(tigris_year = 2017)}.  The default year for the package is 2019, the most
-recent year for which data are available.
+e.g. \code{options(tigris_year = 2017)}.  The default year for the package is 2020.
 
 Use option \code{tigris_class} to specify the class of spatial object you'd like returned.
 The default is \code{"sf"} for simple features objects.  If you'd like a legacy object
-of class \code{Spatial*DataFrame}, use \code{options(tigris_class = "sp")}.
+of class \code{Spatial*DataFrame}, use \code{options(tigris_class = "sp")}. Please note
+that legacy sp objects are no longer formally supported in tigris.
 }
 \note{
 Four \code{options} control behavior of various \code{tigris} functions.

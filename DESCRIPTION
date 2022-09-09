@@ -1,8 +1,8 @@
 Package: tigris
 Type: Package
 Title: Load Census TIGER/Line Shapefiles
-Version: 1.6.1
-Date: 2022-06-03
+Version: 2.0
+Date: 2022-09-09
 Authors@R: c(
       person(given="Kyle", family="Walker", email="kyle@walker-data.com", role=c("aut", "cre")),
       person(given="Bob", family="Rudis", email="bob@rudis.net", role="ctb")
@@ -23,16 +23,12 @@ Suggests:
     ggthemes,
     leaflet,
     knitr, 
-    rgeos,
     tidycensus
 Imports:
     stringr,
     magrittr,
-    rgdal,
-    sp,
     utils,
     rappdirs,
-    maptools,
     httr,
     uuid, 
     sf, 
