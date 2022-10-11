@@ -697,11 +697,11 @@ erase_water <- function(input_sf,
 #' `@inheritSection load_tiger_doc_template Additional Arguments`
 #'
 #' @param ... arguments to be passed to internal function `load_tiger`, which is not exported. See Additional Arguments.
-#' @param year the data year; defaults to 2020
+#' @param year the data year; defaults to 2021
 #'
 #' @section Additional Arguments:
 #' Additional arguments that can be passed in `...` are:
-#'  * `class` Desired class of return object: `"sf"` (the default) or `"sp"`.
+#'  * `class` Desired class of return object: `"sf"` (the default) or `"sp"`.  sp classes should be considered deprecated as of tigris version 2.0, but legacy support is still available.
 #'  * `progress_bar` If set to `FALSE`, do not display download progress bar (helpful for R Markdown documents). Defaults to `TRUE`.
 #'  * `keep_zipped_shapefile` If set to `TRUE`, do not delete zipped shapefile (stored in temporary directory or `TIGRIS_CACHE_DIR`
 #'     depending on the configuration of global option `"tigris_use_cache"`). Defaults to `FALSE`.
