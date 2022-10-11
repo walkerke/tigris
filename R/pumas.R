@@ -75,6 +75,12 @@ pumas <- function(state = NULL, cb = FALSE, year = NULL, ...) {
 
   cyear <- as.character(year)
 
+  if (year > 2021) {
+    suf <- "20"
+  } else {
+    suf <- "10"
+  }
+
   if (cb == TRUE) {
 
     if (year > 2019) {
@@ -88,8 +94,9 @@ pumas <- function(state = NULL, cb = FALSE, year = NULL, ...) {
 
 
   } else {
-    url <- sprintf("https://www2.census.gov/geo/tiger/TIGER%s/PUMA/tl_%s_%s_puma10.zip",
-                  cyear, cyear, state)
+
+    url <- sprintf("https://www2.census.gov/geo/tiger/TIGER%s/PUMA/tl_%s_%s_puma%s.zip",
+                  cyear, cyear, state, suf)
   }
 
   pm <- load_tiger(url, tigris_type = "puma", ...)
