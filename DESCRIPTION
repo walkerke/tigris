@@ -23,7 +23,8 @@ Suggests:
     ggthemes,
     leaflet,
     knitr, 
-    tidycensus
+    tidycensus,
+    sp
 Imports:
     stringr,
     magrittr,
