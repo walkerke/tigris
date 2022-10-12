@@ -21,7 +21,7 @@ military <- function(year = NULL, ...) {
 
   if (is.null(year)) {
 
-    year <- getOption("tigris_year", 2020)
+    year <- getOption("tigris_year", 2021)
 
     message(sprintf("Retrieving data for the year %s", year))
 
@@ -79,7 +79,7 @@ landmarks <- function(state, type = "point", year = NULL, ...) {
 
   if (is.null(year)) {
 
-    year <- getOption("tigris_year", 2020)
+    year <- getOption("tigris_year", 2021)
 
     message(sprintf("Retrieving data for the year %s", year))
 

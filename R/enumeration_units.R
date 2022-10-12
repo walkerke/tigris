@@ -59,7 +59,7 @@ counties <- function(state = NULL, cb = FALSE, resolution = '500k', year = NULL,
 
   if (is.null(year)) {
 
-    year <- getOption("tigris_year", 2020)
+    year <- getOption("tigris_year", 2021)
 
     message(sprintf("Retrieving data for the year %s", year))
 
@@ -236,7 +236,7 @@ tracts <- function(state = NULL, county = NULL, cb = FALSE, year = NULL, ...) {
 
   if (is.null(year)) {
 
-    year <- getOption("tigris_year", 2020)
+    year <- getOption("tigris_year", 2021)
 
     message(sprintf("Retrieving data for the year %s", year))
 
@@ -417,7 +417,7 @@ school_districts <- function(state = NULL, type = 'unified',
 
   if (is.null(year)) {
 
-    year = getOption("tigris_year", 2020)
+    year = getOption("tigris_year", 2021)
 
     message(sprintf("Retrieving data for the year %s", year))
 
@@ -525,7 +525,7 @@ block_groups <- function(state = NULL, county = NULL, cb = FALSE, year = NULL, .
 
   if (is.null(year)) {
 
-    year = getOption("tigris_year", 2020)
+    year = getOption("tigris_year", 2021)
 
     message(sprintf("Retrieving data for the year %s", year))
 
@@ -704,7 +704,7 @@ zctas <- function(cb = FALSE, starts_with = NULL, year = NULL, state = NULL, ...
 
   if (is.null(year)) {
 
-    year = getOption("tigris_year", 2020)
+    year = getOption("tigris_year", 2021)
 
     message(sprintf("Retrieving data for the year %s", year))
 
@@ -849,7 +849,7 @@ blocks <- function(state, county = NULL, year = NULL, ...) {
 
   if (is.null(year)) {
 
-    year <- getOption("tigris_year", 2020)
+    year <- getOption("tigris_year", 2021)
 
     message(sprintf("Retrieving data for the year %s", year))
 
@@ -976,7 +976,7 @@ county_subdivisions <- function(state, county = NULL, cb = FALSE, year = NULL, .
 
   if (is.null(year)) {
 
-    year <- getOption("tigris_year", 2020)
+    year <- getOption("tigris_year", 2021)
 
     message(sprintf("Retrieving data for the year %s", year))
 

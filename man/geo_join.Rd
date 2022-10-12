@@ -20,13 +20,10 @@ geo_join(spatial_data, data_frame, by_sp, by_df, by = NULL, how = "left")
 \item{how}{The type of join you'd like to perform.  The default, 'left', keeps all rows in the spatial data frame, and returns NA for unmatched rows.  The alternative, 'inner', retains only those rows in the spatial data frame that match rows from the target data frame.}
 }
 \value{
-a \code{SpatialXxxDataFrame} object
+a joined spatial/data frame object
 }
 \description{
-The pages of StackOverflow are littered with questions about how to merge a regular data frame to a
-spatial data frame in R.  The \code{merge} function from the sp package operates under a strict set of
-assumptions, which if violated will break your data.  This function wraps a couple StackOverflow answers
-I've seen that work in a friendlier syntax.
+This function should be considered deprecated.  Please update your workflow to use sf objects and dplyr's \code{*_join()} family of functions instead.
 }
 \examples{
 \dontrun{
