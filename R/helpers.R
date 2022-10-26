@@ -54,7 +54,7 @@ tigris_cache_dir <- function(path) {
 #' @param keep_zipped_shapefile If set to TRUE, do not delete zipped shapefile
 #' (stored in temporary directory or TIGRIS_CACHE_DIR depending on the configuration of
 #' global option "tigris_use_cache"). Defaults to FALSE.
-#' @param subset_by Geometry used to subset the output returned by the function.  Can be an sf object, an object of class `bbox`, or a length-4 vector of format `c(xmin, ymin, xmax, ymax)` that can be converted to a bbox. Geometries that intersect the input to `subset_by` will be returned.
+#' @param filter_by Geometry used to filter the output returned by the function.  Can be an sf object, an object of class `bbox`, or a length-4 vector of format `c(xmin, ymin, xmax, ymax)` that can be converted to a bbox. Geometries that intersect the input to `filter_by` will be returned.
 #'
 #' @return sf or sp data frame
 #'
@@ -64,12 +64,12 @@ load_tiger <- function(url,
                        class = getOption("tigris_class", "sf"),
                        progress_bar = TRUE,
                        keep_zipped_shapefile = FALSE,
-                       subset_by = NULL) {
+                       filter_by = NULL) {
 
   use_cache <- getOption("tigris_use_cache", FALSE)
 
-  # Process subset_by
-  wkt_filter <- input_to_wkt(subset_by)
+  # Process filter_by
+  wkt_filter <- input_to_wkt(filter_by)
 
   tiger_file <- basename(url)
 
@@ -713,6 +713,6 @@ erase_water <- function(input_sf,
 #'     depending on the configuration of global option `"tigris_use_cache"`). Defaults to `FALSE`.
 #'  * `refresh` Whether to re-download cached shapefiles (`TRUE` or `FALSE`) . The default is either `FALSE` or the value of global
 #'     option `"tigris_refresh"` if it is set. Specifying this argument will override the behavior set in `"tigris_refresh"` global option.
-#'  * `subset_by` Geometry used to subset the output returned by the function.  Can be an sf object, an object of class `bbox`, or a length-4 vector of format `c(xmin, ymin, xmax, ymax)` that can be converted to a bbox. Geometries that intersect the input to `subset_by` will be returned.
+#'  * `filter_by` Geometry used to filter the output returned by the function.  Can be an sf object, an object of class `bbox`, or a length-4 vector of format `c(xmin, ymin, xmax, ymax)` that can be converted to a bbox. Geometries that intersect the input to `filter_by` will be returned.
 #' @name load_tiger_doc_template
 NULL
