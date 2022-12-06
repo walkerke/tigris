@@ -1,3 +1,8 @@
+tigris 2.0
+-------------------------------------------------------
+* Deprecation of support for sp classes and removal of associated dependencies (rgdal, rgeos, maptools)
+* Functions in tigris now default to a year of 2021.
+
 tigris 1.6
 -------------------------------------------------------
 * All functions in tigris now default to a year of 2020.  Different years can be requested

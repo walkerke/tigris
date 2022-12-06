@@ -678,7 +678,8 @@ erase_water <- function(input_sf,
     suppressMessages(tigris::area_water(
       state = stringr::str_sub(cty, 1, 2),
       county = stringr::str_sub(cty, 3, 5),
-      progress_bar = FALSE
+      progress_bar = FALSE,
+      year = year
     ))
   }) %>%
     dplyr::bind_rows() %>%
