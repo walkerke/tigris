@@ -146,3 +146,34 @@ simpleCapSO <- function(x) {
   paste(toupper(substring(s, 1,1)), substring(s, 2),
         sep="", collapse=" ")
 }
+
+
+# Function to convert input shape to WKT for subset_by param
+input_to_wkt <- function(input) {
+  if (is.null(input)) {
+    wkt_input <- character(0)
+  } else if (inherits(input, "sf")) {
+    # Make NAD83 for coordinate alignment
+    input <- sf::st_transform(input, 4269)
+    # Convert to WKT
+    wkt_input <- sf::st_as_text(sf::st_geometry(input))
+
+  } else if (inherits(input, "bbox")) {
+    bbox_sfc <- sf::st_as_sfc(input)
+    bbox_sfc <- sf::st_transform(bbox_sfc, 4269)
+
+    wkt_input <- sf::st_as_text(bbox_sfc)
+
+  } else if (length(input) == 4) {
+    names(input) <- c("xmin", "ymin", "xmax", "ymax")
+    bbox <- sf::st_bbox(input, crs = 4269)
+    bbox_sfc <- sf::st_as_sfc(bbox)
+
+    wkt_input <- sf::st_as_text(bbox_sfc)
+
+  } else {
+    stop("Invalid input. Supply an sf object, a bbox object, or a length-4 vector that can be converted to a bbox.", call. = FALSE)
+  }
+
+  return(wkt_input)
+}
