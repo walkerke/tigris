@@ -733,7 +733,7 @@ zctas <- function(cb = FALSE, starts_with = NULL, year = NULL, state = NULL, ...
 
   cyear <- as.character(year)
 
-  if (cb == TRUE) {
+  if (cb) {
 
     if (year == 2000) {
       if (is.null(state)) {
@@ -748,11 +748,14 @@ zctas <- function(cb = FALSE, starts_with = NULL, year = NULL, state = NULL, ...
     } else if (year >= 2020) {
       url <- sprintf("https://www2.census.gov/geo/tiger/GENZ%s/shp/cb_%s_us_zcta520_500k.zip",
                      cyear, cyear)
-    } else {
+    } else if (year < 2020) {
       url <- sprintf("https://www2.census.gov/geo/tiger/GENZ%s/shp/cb_%s_us_zcta510_500k.zip",
                      cyear, cyear)
 
       if (year == 2013) url <- gsub("shp/", "", url)
+    } else {
+      url <- sprintf("https://www2.census.gov/geo/tiger/GENZ%s/shp/cb_%s_us_zcta520_500k.zip",
+                     cyear, cyear)
     }
 
   } else {
