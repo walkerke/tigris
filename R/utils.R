@@ -148,7 +148,7 @@ simpleCapSO <- function(x) {
 }
 
 
-# Function to convert input shape to WKT for subset_by param
+# Function to convert input shape to WKT for filter_by param
 input_to_wkt <- function(input) {
   if (is.null(input)) {
     wkt_input <- character(0)
