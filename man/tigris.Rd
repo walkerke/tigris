@@ -6,9 +6,7 @@
 \title{Download and use U.S. Census TIGER shapefiles in R}
 \description{
 tigris is an R package that allows users to directly download and use TIGER/Line and
-cartographic boundary shapefiles from the US Census Bureau in R.  As of version 1.0
-(released in July 2020) tigris functions return simple features (sf) objects with a default
-year of 2019.  For an overview of the package, visit its repository at \url{https://github.com/walkerke/tigris}.
+cartographic boundary shapefiles from the US Census Bureau in R. For an overview of the package, visit its repository at \url{https://github.com/walkerke/tigris} or read Chapter 5 of the book \emph{Analyzing US Census Data: Methods, Maps, and Models in R} at \url{https://walker-data.com/census-r/census-geographic-data-and-applications-in-r.html}.
 }
 \details{
 Use option \code{tigris_use_cache} to tell \code{tigris} to cache
