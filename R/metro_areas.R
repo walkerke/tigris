@@ -83,12 +83,13 @@ core_based_statistical_areas <- function(cb = FALSE, resolution = '500k', year =
 #' @param cb If cb is set to TRUE, download a generalized (1:500k)
 #'        cartographic boundary file.  Defaults to FALSE (the most detailed
 #'        TIGER/Line file).
+#' @param criteria If set to "2020" and the year is 2020, will download the new 2020 urban areas criteria. Not available for cartographic boundary shapefiles / other years at the moment.
 #' @inheritParams load_tiger_doc_template
 #' @inheritSection load_tiger_doc_template Additional Arguments
 #' @family metro area functions
 #' @seealso \url{https://www.census.gov/programs-surveys/geography/guidance/geo-areas/urban-rural.html}
 #' @export
-urban_areas <- function(cb = FALSE, year = NULL, ...) {
+urban_areas <- function(cb = FALSE, year = NULL, criteria = NULL, ...) {
 
   if (is.null(year)) {
 
@@ -112,15 +113,32 @@ urban_areas <- function(cb = FALSE, year = NULL, ...) {
   cyear <- as.character(year)
 
 
-  if (cb == TRUE) {
+  if (cb) {
+    if (!is.null(criteria)) {
+      stop("The `criteria` argument is not supported for cartographic boundary files", call. = FALSE)
+    }
+
     url <- sprintf("https://www2.census.gov/geo/tiger/GENZ%s/shp/cb_%s_us_ua10_500k.zip",
                    cyear, cyear)
 
     if (year == 2013) url <- gsub("shp/", "", url)
 
   } else {
-    url <- sprintf("https://www2.census.gov/geo/tiger/TIGER%s/UAC/tl_%s_us_uac10.zip",
-                   cyear, cyear)
+
+    if (!is.null(criteria) && criteria == "2020") {
+      if (year != 2020) {
+        stop("2020 criteria is only supported when `year` is set to 2020 at the moment.", call. = FALSE)
+      }
+
+      url <- sprintf("https://www2.census.gov/geo/tiger/TIGER%s/UAC/tl_%s_us_uac20.zip",
+                     cyear, cyear)
+
+    } else {
+      url <- sprintf("https://www2.census.gov/geo/tiger/TIGER%s/UAC/tl_%s_us_uac10.zip",
+                     cyear, cyear)
+    }
+
+
   }
 
   return(load_tiger(url, tigris_type="urban", ...))
