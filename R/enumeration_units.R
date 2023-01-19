@@ -886,7 +886,7 @@ blocks <- function(state, county = NULL, year = NULL, ...) {
 
   if (year >= 2014) {
 
-    if (year %in% 2020:2021) {
+    if (year >= 2020) {
 
       # New block logic for 2020
       url <- sprintf("https://www2.census.gov/geo/tiger/TIGER%s/TABBLOCK20/tl_%s_%s_tabblock20.zip",
