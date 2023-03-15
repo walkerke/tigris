@@ -15,15 +15,32 @@ to download the roads for. Can also be state name or abbreviation
 
 \item{...}{arguments to be passed to internal function \code{load_tiger}, which is not exported. See Additional Arguments.}
 }
+\value{
+an sf object with columns
+\itemize{
+\item \code{LINEARID}: a unique line feature identifier \href{https://www2.census.gov/geo/pdfs/maps-data/data/tiger/tgrshp2019/TGRSHP2019_TechDoc.pdf}{(source)}
+\item \code{FULLNAME}: display name \href{https://www2.census.gov/geo/pdfs/maps-data/data/tiger/tgrshp2019/TGRSHP2019_TechDoc.pdf}{(source)}
+\item \code{RTTYP}: describes the types of roads used \href{https://www.census.gov/library/reference/code-lists/route-type-codes.html}{(source)}. Possible values are:
+\itemize{
+\item "C": county
+\item "I": interstate
+\item "M": common name
+\item "O": other
+\item "S": state regonized
+\item "U": U.S.
+}
+\item \code{MTFCC}: 5-digit geographic code assignment \href{https://www.census.gov/library/reference/code-lists/mt-feature-class-codes.html}{(see annual assignments)}
+}
+}
 \description{
 From the Census Bureau: "Primary roads are generally divided,
 limited-access highways within the Federal interstate highway
 system or under state management. These highways are distinguished by the presence of interchanges
 and are accessible by ramps and may include some toll highways. Secondary roads are main arteries,
- usually in the U.S. highway, state
- highway, or county highway system. These roads have one or more lanes of
- traffic in each direction, may
- or may not be divided, and usually have at-grade intersections with many other roads and driveways.
+usually in the U.S. highway, state
+highway, or county highway system. These roads have one or more lanes of
+traffic in each direction, may
+or may not be divided, and usually have at-grade intersections with many other roads and driveways.
 }
 \section{Additional Arguments}{
 

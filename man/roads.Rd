@@ -7,16 +7,33 @@
 roads(state, county, year = NULL, ...)
 }
 \arguments{
-\item{state}{The two-digit FIPS code of the state of the county you'd like
-to download the roads for. Can also be state name or abbreviation
+\item{state}{A character vector of the two-digit FIPS code of the state of the county
+you'd like to download the roads for. Can also be state name or abbreviation
 (case-insensitive).}
 
-\item{county}{The three-digit FIPS code of the county you'd like the roads for.
-Can also be a county name.}
+\item{county}{A character vector of the three-digit FIPS code of the county you'd like
+the roads for. Can also be a county name.}
 
 \item{year}{the data year; defaults to 2021}
 
 \item{...}{arguments to be passed to internal function \code{load_tiger}, which is not exported. See Additional Arguments.}
+}
+\value{
+an sf object with columns
+\itemize{
+\item \code{LINEARID}: a unique line feature identifier \href{https://www2.census.gov/geo/pdfs/maps-data/data/tiger/tgrshp2019/TGRSHP2019_TechDoc.pdf}{(source)}
+\item \code{FULLNAME}: display name \href{https://www2.census.gov/geo/pdfs/maps-data/data/tiger/tgrshp2019/TGRSHP2019_TechDoc.pdf}{(source)}
+\item \code{RTTYP}: describes the types of roads used \href{https://www.census.gov/library/reference/code-lists/route-type-codes.html}{(source)}. Possible values are:
+\itemize{
+\item "C": county
+\item "I": interstate
+\item "M": common name
+\item "O": other
+\item "S": state regonized
+\item "U": U.S.
+}
+\item \code{MTFCC}: 5-digit geographic code assignment \href{https://www.census.gov/library/reference/code-lists/mt-feature-class-codes.html}{(see annual assignments)}
+}
 }
 \description{
 From the Census Bureau: "The content of the all roads shapefile includes
