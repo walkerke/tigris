@@ -4,7 +4,14 @@
 \alias{tracts}
 \title{Download a Census tracts shapefile into R, and optionally subset by county}
 \usage{
-tracts(state = NULL, county = NULL, cb = FALSE, year = NULL, ...)
+tracts(
+  state = NULL,
+  county = NULL,
+  cb = FALSE,
+  resolution = "500k",
+  year = NULL,
+  ...
+)
 }
 \arguments{
 \item{state}{The two-digit FIPS code (string) of the state you want. Can also
@@ -18,6 +25,9 @@ Can also be a county name or vector of names.}
 
 \item{cb}{If cb is set to TRUE, download a generalized (1:500k)
 tracts file.  Defaults to FALSE (the most detailed TIGER/Line file)}
+
+\item{resolution}{The resolution of the cartographic boundary file (if using cb = TRUE).
+Defaults to '500k'; the other option is '5m' (1:5 million).  Resolution of '5m' is #'        only available for the national Census tract file for years 2022 and later.}
 
 \item{year}{the data year; defaults to 2021}
 

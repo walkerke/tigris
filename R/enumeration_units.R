@@ -217,6 +217,8 @@ counties <- function(state = NULL, cb = FALSE, resolution = '500k', year = NULL,
 #'        Can also be a county name or vector of names.
 #' @param cb If cb is set to TRUE, download a generalized (1:500k)
 #'        tracts file.  Defaults to FALSE (the most detailed TIGER/Line file)
+#' @param resolution The resolution of the cartographic boundary file (if using cb = TRUE).
+#'        Defaults to '500k'; the other option is '5m' (1:5 million).  Resolution of '5m' is #'        only available for the national Census tract file for years 2022 and later.
 #' @inheritParams load_tiger_doc_template
 #' @inheritSection load_tiger_doc_template Additional Arguments
 #' @family general area functions
@@ -232,7 +234,8 @@ counties <- function(state = NULL, cb = FALSE, resolution = '500k', year = NULL,
 #'   addTiles() %>%
 #'   addPolygons(popup = ~NAME)
 #' }
-tracts <- function(state = NULL, county = NULL, cb = FALSE, year = NULL, ...) {
+tracts <- function(state = NULL, county = NULL, cb = FALSE, resolution = "500k",
+                   year = NULL, ...) {
 
   if (is.null(year)) {
 
@@ -240,6 +243,10 @@ tracts <- function(state = NULL, county = NULL, cb = FALSE, year = NULL, ...) {
 
     message(sprintf("Retrieving data for the year %s", year))
 
+  }
+
+  if ((resolution == "5m" && year < 2022) | (resolution == "5m" && !is.null(state))) {
+    stop("`resolution = '5m'` for Census tracts is only available for the national Census tract CB file in years 2022 and later.", call. = FALSE)
   }
 
   if (is.null(state)) {
@@ -274,8 +281,8 @@ tracts <- function(state = NULL, county = NULL, cb = FALSE, year = NULL, ...) {
 
       if (year > 2013) {
 
-        url <- sprintf("https://www2.census.gov/geo/tiger/GENZ%s/shp/cb_%s_%s_tract_500k.zip",
-                       as.character(year), as.character(year), state)
+        url <- sprintf("https://www2.census.gov/geo/tiger/GENZ%s/shp/cb_%s_%s_tract_%s.zip",
+                       as.character(year), as.character(year), state, resolution)
 
       } else {
 
