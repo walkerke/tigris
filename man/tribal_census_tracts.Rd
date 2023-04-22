@@ -4,7 +4,7 @@
 \alias{tribal_census_tracts}
 \title{Download a Tribal Census tract shapefile into R.}
 \usage{
-tribal_census_tracts(cb = TRUE, year = NULL, ...)
+tribal_census_tracts(cb = FALSE, year = NULL, ...)
 }
 \arguments{
 \item{cb}{If cb is set to TRUE, download a generalized (1:500k)

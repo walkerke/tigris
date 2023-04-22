@@ -220,7 +220,7 @@ alaska_native_regional_corporations <- function(cb = FALSE, year = NULL, ...) {
 #'               color = "black",
 #'               weight = 0.5)
 #' }
-tribal_block_groups <- function(cb = TRUE, year = NULL, ...) {
+tribal_block_groups <- function(cb = FALSE, year = NULL, ...) {
 
   if (is.null(year)) {
 
@@ -284,7 +284,7 @@ tribal_block_groups <- function(cb = TRUE, year = NULL, ...) {
 #'               color = "black",
 #'               weight = 0.5)
 #' }
-tribal_census_tracts <- function(cb = TRUE, year = NULL, ...) {
+tribal_census_tracts <- function(cb = FALSE, year = NULL, ...) {
 
   if (is.null(year)) {
 

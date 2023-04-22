@@ -4,7 +4,7 @@
 \alias{tribal_block_groups}
 \title{Download a Tribal block groups shapefile into R.}
 \usage{
-tribal_block_groups(cb = TRUE, year = NULL, ...)
+tribal_block_groups(cb = FALSE, year = NULL, ...)
 }
 \arguments{
 \item{cb}{If cb is set to TRUE, download a generalized (1:500k)
