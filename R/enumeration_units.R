@@ -710,6 +710,10 @@ zctas <- function(cb = FALSE, starts_with = NULL, year = NULL, state = NULL, ...
 
   }
 
+  if (year > 2020 && cb) {
+    stop(sprintf("The Census Bureau has not yet released the CB ZCTA file for %s. Please use the argument `year = 2020` or `cb = FALSE` instead.", year), call. = FALSE)
+  }
+
   if (!is.null(state) && year > 2010) {
     stop("ZCTAs are only available by state for 2000 and 2010.")
   }
