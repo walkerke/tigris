@@ -17,7 +17,7 @@ call_geolocator_latlon(lat, lon, benchmark, vintage)
 }
 \value{
 A character string representing the Census block of the supplied
-  lat/lon.
+lat/lon.
 }
 \description{
 Call geolocator for one address with lat/lon, adds option to set benchmark and vintage if not provided it will default to the most recent.

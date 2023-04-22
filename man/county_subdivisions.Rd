@@ -25,9 +25,9 @@ file.  Defaults to FALSE (the most detailed TIGER/Line file)}
 From the US Census Bureau (see link for source, and more information): "All counties and
 statistically equivalent entities consist of one or more geographic units that the Bureau
 of the Census recognizes as county subdivisions. The two major types of county subdivisions
- are minor civil divisions(MCDs) and census county divisions (CCDs).
- A State has either MCDs or their statistical equivalents, or CCDs; it cannot
- contain both."
+are minor civil divisions(MCDs) and census county divisions (CCDs).
+A State has either MCDs or their statistical equivalents, or CCDs; it cannot
+contain both."
 }
 \section{Additional Arguments}{
 

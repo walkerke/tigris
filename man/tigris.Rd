@@ -26,7 +26,7 @@ that legacy sp objects are no longer formally supported in tigris.
 }
 \note{
 Four \code{options} control behavior of various \code{tigris} functions.
-      See \code{Details} for more information.
+See \code{Details} for more information.
 }
 \author{
 Kyle Walker (@kyle_e_walker)

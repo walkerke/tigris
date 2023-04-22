@@ -32,7 +32,7 @@ set in "tigris_refresh" option if a value (TRUE or FALSE) is provided.}
 (stored in temporary directory or TIGRIS_CACHE_DIR depending on the configuration of
 global option "tigris_use_cache"). Defaults to FALSE.}
 
-\item{filter_by}{Geometry used to filter the output returned by the function.  Can be an sf object, an object of class `bbox`, or a length-4 vector of format `c(xmin, ymin, xmax, ymax)` that can be converted to a bbox. Geometries that intersect the input to `filter_by` will be returned.}
+\item{filter_by}{Geometry used to filter the output returned by the function.  Can be an sf object, an object of class \code{bbox}, or a length-4 vector of format \code{c(xmin, ymin, xmax, ymax)} that can be converted to a bbox. Geometries that intersect the input to \code{filter_by} will be returned.}
 }
 \value{
 sf or sp data frame

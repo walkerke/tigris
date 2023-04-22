@@ -16,7 +16,7 @@ Defaults to block.}
 }
 \value{
 the original tibble with GEOIDs appended as a new column called
-  \code{geoid}.
+\code{geoid}.
 }
 \description{
 Returns GEOID for 2020 geographies.

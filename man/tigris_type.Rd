@@ -11,7 +11,7 @@ tigris_type(obj)
 }
 \value{
 character vector containing the \code{tigris} type of \code{obj}
-        or \code{NA} if \code{obj} is not a code \code{tigris} object
+or \code{NA} if \code{obj} is not a code \code{tigris} object
 }
 \description{
 Get the type of \code{tigris} object \code{obj} is

@@ -19,7 +19,7 @@ TIGER/Line file).}
 }
 \description{
 Urban areas include both "urbanized areas," which are densely developed areas with a population of at least 50,000,
- and "urban clusters," which have a population of greater than 2,500 but less than 50,000.  For more information,
+and "urban clusters," which have a population of greater than 2,500 but less than 50,000.  For more information,
 please see the link provided.
 }
 \section{Additional Arguments}{
