@@ -35,4 +35,5 @@ Imports:
     sf, 
     dplyr, 
     methods
-RoxygenNote: 7.2.2
+RoxygenNote: 7.2.3
+Roxygen: list(markdown = TRUE)
