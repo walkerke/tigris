@@ -2,7 +2,7 @@
 % Please edit documentation in R/places.R
 \name{places}
 \alias{places}
-\title{Download a Census-designated places shapefile into R}
+\title{Download Shapefiles which include both incorporated places (legal entities) and census designated places (statistical entities) into R}
 \usage{
 places(state = NULL, cb = FALSE, year = NULL, ...)
 }
@@ -21,29 +21,7 @@ TIGER/Line file).}
 \item{...}{arguments to be passed to internal function \code{load_tiger}, which is not exported. See Additional Arguments.}
 }
 \description{
-Census Designated Places (CDPs) are the statistical counterparts of
-incorporated places, and are delineated to provide data for settled
-concentrations of population that are identifiable by name but are
-not legally incorporated under the laws of the state in which they
-are located.
-}
-\details{
-The boundaries usually are defined in cooperation with local or tribal
-officials and generally updated prior to each decennial census.
-
-These boundaries, which usually coincide with visible features or the
-boundary of an adjacent incorporated place or another legal entity boundary,
-have no legal status, nor do these places have officials elected to serve
-traditional municipal functions.
-
-CDP boundaries may change from one decennial census to the next with changes
-in the settlement pattern; a CDP with the same name as in an earlier census
-does not necessarily have the same boundary.
-
-CDPs must be contained within a single state and may not extend into an
-incorporated place.
-
-There are no population size requirements for CDPs.
+An incorporated place provides governmental functions for a concentration of people. Incorporated places may extend across county and county subdivision boundaries, but never across state boundaries. An incorporated place usually is a city, town, village, or borough, but can have other legal descriptions. CDPs are the statistical counterparts of incorporated places. CDPs are settled concentrations of population that are identifiable by name but not legally incorporated under the laws of the state in which the CDPs are located. For more information, read appropriate section on "Places" for the correct vintage (year) of your data in the TIGER/Line Shapefiles and TIGER/Line Files Technical Documentation available as of this writing here: \url{https://www.census.gov/programs-surveys/geography/technical-documentation/complete-technical-documentation/tiger-geo-line.html}.
 }
 \section{Additional Arguments}{
 
