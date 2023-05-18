@@ -5,7 +5,7 @@
 \alias{fips_codes}
 \title{Dataset with FIPS codes for US states and counties}
 \format{
-A data frame with 3,245 rows and 5 variables
+A data frame with 3,256 rows and 5 variables
 }
 \usage{
 data(fips_codes)
@@ -29,6 +29,6 @@ Built-in dataset for use with the \code{lookup_code} function.
 To access the data directly, issue the command \code{data(fips_codes)}.
 }
 \note{
-Last updated 2022-02-04
+Last updated 2023-05-18
 }
 \keyword{datasets}

@@ -31,7 +31,17 @@ defunct_counties <- data.frame(state = c("AK", "AK", "AK", "VA", "AK", "FL", "MT
                                           "Skagway-Yakutat-Angoon Census Area", "Dade County",
                                           "Yellowstone National Park", "South Boston city"))
 
-fips_codes <- rbind(fips_codes, new_counties, defunct_counties) %>%
+new_ct_counties <- tigris::counties(state = "CT", year = 2022, refresh = TRUE) |>
+  sf::st_drop_geometry() |>
+  transmute(
+    state = "CT",
+    state_code = STATEFP,
+    state_name = "Connecticut",
+    county_code = COUNTYFP,
+    county = NAME
+  )
+
+fips_codes <- rbind(fips_codes, new_counties, defunct_counties, new_ct_counties) %>%
   arrange(state_code, county_code) %>%
   unique()
 

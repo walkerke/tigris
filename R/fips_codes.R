@@ -20,6 +20,6 @@
 #' @name fips_codes
 #'
 #' @usage data(fips_codes)
-#' @note Last updated 2022-02-04
-#' @format A data frame with 3,245 rows and 5 variables
+#' @note Last updated 2023-05-18
+#' @format A data frame with 3,256 rows and 5 variables
 "fips_codes"
