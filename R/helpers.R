@@ -647,7 +647,7 @@ erase_water <- function(input_sf,
   }
 
   if (is.null(year)) {
-    year <- getOption("tigris_year", 2020)
+    year <- getOption("tigris_year", 2021)
   }
 
   # Define st_erase function internally
