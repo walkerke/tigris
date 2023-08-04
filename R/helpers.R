@@ -638,11 +638,7 @@ erase_water <- function(input_sf,
                         area_threshold = 0.75,
                         year = NULL) {
 
-  # if (is.null(attr(input_sf, "tigris"))) {
-  #   warning("Your input object does not appear to have been obtained with the tigris package.\nThis is likely to introduce sliver polygons or irregular geometries.\nPlease proceed with caution.")
-  # }
-
-  if (!"sf" %in% class(input_sf)) {
+  if (!is_sf(input_sf)) {
     stop("The input dataset is not an sf object.", call. = FALSE)
   }
 
@@ -655,14 +651,10 @@ erase_water <- function(input_sf,
     suppressWarnings(sf::st_difference(x, sf::st_union(y)))
   }
 
-  # Grab a dataset of counties quietly
-  us_counties <- tigris::counties(cb = TRUE, resolution = "500k", progress_bar = FALSE,
-                                  year = year)
-
-  # Identify the counties that overlap the input sf object
-  county_overlay <- us_counties %>%
-    sf::st_transform(sf::st_crs(input_sf)) %>%
-    sf::st_filter(input_sf)
+  # Grab a dataset of counties that overlap the input sf object quietly
+  county_overlay <- tigris::counties(cb = TRUE, resolution = "500k", progress_bar = FALSE,
+                                     year = year, filter_by = input_sf) %>%
+    sf::st_transform(sf::st_crs(input_sf))
 
   # If nothing returned, exit
   if (nrow(county_overlay) == 0) {
@@ -679,13 +671,18 @@ erase_water <- function(input_sf,
       state = stringr::str_sub(cty, 1, 2),
       county = stringr::str_sub(cty, 3, 5),
       progress_bar = FALSE,
-      year = year
+      year = year,
+      filter_by = input_sf
     ))
   }) %>%
     dplyr::bind_rows() %>%
     sf::st_transform(sf::st_crs(input_sf)) %>%
-    sf::st_filter(input_sf) %>% # New step to only erase intersecting water areas
     dplyr::filter(dplyr::percent_rank(AWATER) >= area_threshold)
+
+  if (nrow(my_water) == 0) {
+    message("No overlapping water area found.\nReturning unmodified `input_sf`.")
+    return(input_sf)
+  }
 
   message("Erasing water area...\nIf this is slow, try a larger area threshold value.")
   erased_sf <- suppressMessages(st_erase(input_sf, my_water))
@@ -694,6 +691,13 @@ erase_water <- function(input_sf,
 
 }
 
+#' Is object a `sf` object?
+#'
+#' @param x Object to check.
+#' @noRd
+is_sf <- function(x) {
+  inherits(x, "sf")
+}
 
 #' Documentation Template for Functions that Utilize `load_tiger`
 #'
