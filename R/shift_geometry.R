@@ -85,7 +85,7 @@ shift_geometry <- function(input_sf,
   # sf::sf_use_s2(FALSE)
 
   # Check to see if the input is an sf object, otherwise exit
-  if (!any(grepl("sf", class(input_sf)))) {
+  if (!is_sf(input_sf)) {
     stop("The input dataset must be an sf object.", call = FALSE)
   }
 
