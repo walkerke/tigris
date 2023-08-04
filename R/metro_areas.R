@@ -16,7 +16,7 @@
 #' @inheritParams load_tiger_doc_template
 #' @inheritSection load_tiger_doc_template Additional Arguments
 #' @family metro area functions
-#' @seealso \url{https://www.census.gov/programs-surveys/metro-micro.html}
+#' @seealso <https://www.census.gov/programs-surveys/metro-micro.html>
 #' @export
 core_based_statistical_areas <- function(cb = FALSE, resolution = '500k', year = NULL, ...) {
 
@@ -87,7 +87,7 @@ core_based_statistical_areas <- function(cb = FALSE, resolution = '500k', year =
 #' @inheritParams load_tiger_doc_template
 #' @inheritSection load_tiger_doc_template Additional Arguments
 #' @family metro area functions
-#' @seealso \url{https://www.census.gov/programs-surveys/geography/guidance/geo-areas/urban-rural.html}
+#' @seealso <https://www.census.gov/programs-surveys/geography/guidance/geo-areas/urban-rural.html>
 #' @export
 urban_areas <- function(cb = FALSE, year = NULL, criteria = NULL, ...) {
 
@@ -159,7 +159,7 @@ urban_areas <- function(cb = FALSE, year = NULL, criteria = NULL, ...) {
 #' @inheritParams load_tiger_doc_template
 #' @inheritSection load_tiger_doc_template Additional Arguments
 #' @family metro area functions
-#' @seealso \url{https://www2.census.gov/geo/pdfs/maps-data/data/tiger/tgrshp2020/TGRSHP2020_TechDoc.pdf}
+#' @seealso <https://www2.census.gov/geo/pdfs/maps-data/data/tiger/tgrshp2020/TGRSHP2020_TechDoc.pdf>
 #' @export
 combined_statistical_areas <- function(cb = FALSE, resolution = '500k', year = NULL, ...) {
 
@@ -211,7 +211,7 @@ combined_statistical_areas <- function(cb = FALSE, resolution = '500k', year = N
 #' @inheritParams load_tiger_doc_template
 #' @inheritSection load_tiger_doc_template Additional Arguments
 #' @family metro area functions
-#' @seealso \url{https://www2.census.gov/geo/pdfs/maps-data/data/tiger/tgrshp2020/TGRSHP2020_TechDoc.pdf}
+#' @seealso <https://www2.census.gov/geo/pdfs/maps-data/data/tiger/tgrshp2020/TGRSHP2020_TechDoc.pdf>
 #' @export
 metro_divisions <- function(year = NULL, ...) {
 
@@ -256,15 +256,15 @@ metro_divisions <- function(year = NULL, ...) {
 #' NECTAs that have significant employment interchange, like Combined Statistical Areas;
 #' NECTA divisions are subdivisions of NECTAs.
 #'
-#' @param type Specify whether to download the New England City and Town Areas file (\code{'necta'}, the default),
-#'        the combined NECTA file (\code{'combined'}), or the NECTA divisions file (\code{'divisions'}).
+#' @param type Specify whether to download the New England City and Town Areas file (`'necta'`, the default),
+#'        the combined NECTA file (`'combined'`), or the NECTA divisions file (`'divisions'`).
 #' @param cb If cb is set to TRUE, download a generalized (1:500k)
 #'        cartographic boundary file.  Defaults to FALSE (the most detailed
-#'        TIGER/Line file).  Only available when \code{type = 'necta'}.
+#'        TIGER/Line file).  Only available when `type = 'necta'`.
 #' @inheritParams load_tiger_doc_template
 #' @inheritSection load_tiger_doc_template Additional Arguments
 #' @family metro area functions
-#' @seealso \url{https://www2.census.gov/geo/pdfs/maps-data/data/tiger/tgrshp2020/TGRSHP2020_TechDoc.pdf}
+#' @seealso <https://www2.census.gov/geo/pdfs/maps-data/data/tiger/tgrshp2020/TGRSHP2020_TechDoc.pdf>
 #' @export
 #' @examples \dontrun{
 #' library(tigris)

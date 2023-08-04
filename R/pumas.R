@@ -14,16 +14,16 @@
 #' and American Samoa do not contain any 2010 PUMAs.
 #'
 #' @param state The two-digit FIPS code (string) of the state you want. Can also
-#'        be state name or state abbreviation. When \code{NULL} and combined with
-#'        \code{cb = TRUE}, a national dataset of PUMAs will be returned when
-#'        \code{year = 2019} only.
+#'        be state name or state abbreviation. When `NULL` and combined with
+#'        `cb = TRUE`, a national dataset of PUMAs will be returned when
+#'        `year = 2019` only.
 #' @param cb If cb is set to TRUE, download a generalized (1:500k)
 #'        states file.  Defaults to FALSE (the most detailed TIGER/Line file)
 #' @inheritParams load_tiger_doc_template
 #' @inheritSection load_tiger_doc_template Additional Arguments
 #' @export
 #' @family general area functions
-#' @seealso \url{https://www.census.gov/programs-surveys/geography/guidance/geo-areas/pumas.html}
+#' @seealso <https://www.census.gov/programs-surveys/geography/guidance/geo-areas/pumas.html>
 #' @examples \dontrun{
 #' library(tigris)
 #'

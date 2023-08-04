@@ -246,7 +246,7 @@ load_tiger <- function(url,
 
 #' Easily merge a data frame to a spatial data frame
 #'
-#' This function should be considered deprecated.  Please update your workflow to use sf objects and dplyr's \code{*_join()} family of functions instead.
+#' This function should be considered deprecated.  Please update your workflow to use sf objects and dplyr's `*_join()` family of functions instead.
 #'
 #' @param spatial_data A spatial data frame to which you want to merge data.
 #' @param data_frame A regular data frame that you want to merge to your spatial data.
@@ -431,20 +431,20 @@ lookup_code <- function(state, county = NULL) {
 
 }
 
-#' Returns \code{TRUE} if \code{obj} has a \code{tigris} attribute
+#' Returns `TRUE` if `obj` has a `tigris` attribute
 #'
 #' It's unlikely that said object was not created by this package
 #'
 #' @param obj R object to test
-#' @return \code{TRUE} if \code{obj} was made by this package
+#' @return `TRUE` if `obj` was made by this package
 #' @export
 is_tigris <- function(obj) { !is.null(attr(obj, "tigris")) }
 
-#' Get the type of \code{tigris} object \code{obj} is
+#' Get the type of `tigris` object `obj` is
 #'
 #' @param obj R object to test
-#' @return character vector containing the \code{tigris} type of \code{obj}
-#'         or \code{NA} if \code{obj} is not a code \code{tigris} object
+#' @return character vector containing the `tigris` type of `obj`
+#'         or `NA` if `obj` is not a code `tigris` object
 #' @export
 tigris_type <- function(obj) {
   if (is_tigris(obj)) return(attr(obj, "tigris"))
@@ -471,11 +471,11 @@ list_counties <- function(state) {
 
 }
 
-#' Row-bind \code{tigris} Spatial objects
+#' Row-bind `tigris` Spatial objects
 #'
 #' If multiple school district types are rbound, coerces to "sdall" and does it
 #'
-#' @param ... individual (optionally names) \code{tigris} Spatial objects or a list of them
+#' @param ... individual (optionally names) `tigris` Spatial objects or a list of them
 #' @return one combined Spatial object
 #' @export
 #' @examples \dontrun{
@@ -598,14 +598,14 @@ rbind_tigris <- function(...) {
 #' might otherwise incorrectly assume that polygons across bodies of water are neighbors.
 #'
 #' The function works by identifying US counties that intersect the input polygon layer,
-#' then requesting water polygons (using \code{tigris::area_water()}) to be erased from
-#' those input polygons. The \code{area_threshold} parameter can be tuned to determine the
+#' then requesting water polygons (using `tigris::area_water()`) to be erased from
+#' those input polygons. The `area_threshold` parameter can be tuned to determine the
 #' percentile ranking of bodies of water (by area) to use;
 #' the default is a percentile ranking of 0.75, erasing the largest 25 percent of water
 #' bodies in the region.
 #'
 #' Analysts will ideally have transformed the input coordinate reference system (CRS) of their data
-#' to a projected CRS to improve performance; see \url{https://walker-data.com/census-r/census-geographic-data-and-applications-in-r.html#coordinate-reference-systems} for more information on
+#' to a projected CRS to improve performance; see <https://walker-data.com/census-r/census-geographic-data-and-applications-in-r.html#coordinate-reference-systems> for more information on
 #' how to perform CRS transformations.  Analysts should also use this function with caution;
 #' the function may generate sliver polygons or irregular geometries in the output layer,
 #' especially if the input sf object was not obtained with the tigris package.  Also, the operation
@@ -613,9 +613,9 @@ rbind_tigris <- function(...) {
 #'
 #' @param input_sf An input sf object, ideally obtained with the tigris package or through tidycensus.
 #' @param area_threshold The percentile rank cutoff of water areas to use in the erase operation, ranked by size. Defaults to 0.75, representing the water areas in the 75th percentile and up (the largest 25 percent of areas).  This value may need to be modified by the user to achieve optimal results for a given location.
-#' @param year The year to use for the water layer; defaults to 2020 unless the \code{tigris_year} option is otherwise set.
+#' @param year The year to use for the water layer; defaults to 2020 unless the `tigris_year` option is otherwise set.
 #'
-#' @return An output sf object representing the polygons in \code{input_sf} with water areas erased.
+#' @return An output sf object representing the polygons in `input_sf` with water areas erased.
 #' @export
 #'
 #' @examples \dontrun{

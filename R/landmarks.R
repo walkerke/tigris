@@ -14,7 +14,7 @@
 #' shapefiles contain few values in the ANSICODE field.
 #' @inheritParams load_tiger_doc_template
 #' @inheritSection load_tiger_doc_template Additional Arguments
-#' @seealso \url{https://www2.census.gov/geo/pdfs/maps-data/data/tiger/tgrshp2020/TGRSHP2020_TechDoc_Ch3.pdf}
+#' @seealso <https://www2.census.gov/geo/pdfs/maps-data/data/tiger/tgrshp2020/TGRSHP2020_TechDoc_Ch3.pdf>
 #' @export
 
 military <- function(year = NULL, ...) {
@@ -68,10 +68,10 @@ military <- function(year = NULL, ...) {
 #' Landmarks may be identified by a MAF/TIGER feature class code only and may not have a name. Each
 #' landmark has a unique area landmark identifier (AREAID) or point landmark identifier (POINTID) value.
 #'
-#' @seealso \url{https://www2.census.gov/geo/pdfs/maps-data/data/tiger/tgrshp2020/TGRSHP2020_TechDoc_Ch3.pdf}
+#' @seealso <https://www2.census.gov/geo/pdfs/maps-data/data/tiger/tgrshp2020/TGRSHP2020_TechDoc_Ch3.pdf>
 #'
 #' @param state The state for which you'd like to download the landmarks
-#' @param type Whether you would like to download point landmarks (\code{"point"}) or area landmarks (\code{"area"}). #'                Defaults to \code{"point"}.
+#' @param type Whether you would like to download point landmarks (`"point"`) or area landmarks (`"area"`). #'                Defaults to `"point"`.
 #' @inheritParams load_tiger_doc_template
 #' @inheritSection load_tiger_doc_template Additional Arguments
 #' @export

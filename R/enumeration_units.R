@@ -39,7 +39,7 @@
 #'
 #' @export
 #' @family general area functions
-#' @seealso \url{https://www2.census.gov/geo/pdfs/reference/GARM/Ch4GARM.pdf}
+#' @seealso <https://www2.census.gov/geo/pdfs/reference/GARM/Ch4GARM.pdf>
 #' @examples \dontrun{
 #' library(tigris)
 #' library(ggplot2)
@@ -209,8 +209,8 @@ counties <- function(state = NULL, cb = FALSE, resolution = '500k', year = NULL,
 #' geographic hierarchy.
 #'
 #' @param state The two-digit FIPS code (string) of the state you want. Can also
-#'        be state name or state abbreviation. When \code{NULL} and combined with
-#'        \code{cb = TRUE}, a national dataset of Census tracts will be returned for
+#'        be state name or state abbreviation. When `NULL` and combined with
+#'        `cb = TRUE`, a national dataset of Census tracts will be returned for
 #'        years 2019 and later.
 #' @param county The three-digit FIPS code (string) of the county you'd like to
 #'        subset for, or a vector of FIPS codes if you desire multiple counties.
@@ -222,7 +222,7 @@ counties <- function(state = NULL, cb = FALSE, resolution = '500k', year = NULL,
 #' @inheritParams load_tiger_doc_template
 #' @inheritSection load_tiger_doc_template Additional Arguments
 #' @family general area functions
-#' @seealso \url{https://www2.census.gov/geo/pdfs/reference/GARM/Ch10GARM.pdf}
+#' @seealso <https://www2.census.gov/geo/pdfs/reference/GARM/Ch10GARM.pdf>
 #' @export
 #' @examples \dontrun{
 #' library(tigris)
@@ -394,18 +394,18 @@ tracts <- function(state = NULL, county = NULL, cb = FALSE, resolution = "500k",
 #' Please see the link for more information on how the Census Bureau creates the school district shapefiles.
 #'
 #' @param state The two-digit FIPS code (string) of the state you want. Can also
-#'        be state name or state abbreviation. When \code{NULL} and combined with
-#'        \code{cb = TRUE}, a national dataset of school districts will be returned for
+#'        be state name or state abbreviation. When `NULL` and combined with
+#'        `cb = TRUE`, a national dataset of school districts will be returned for
 #'        years 2019 and later.
-#' @param type Specify whether you want to return a unified school district (the default, \code{'unified'}),
-#'        an elementary school district (\code{'elementary'}), or a secondary school district (\code{'secondary'}).
+#' @param type Specify whether you want to return a unified school district (the default, `'unified'`),
+#'        an elementary school district (`'elementary'`), or a secondary school district (`'secondary'`).
 #'        Please note: elementary and secondary school districts do not exist in all states
 #' @param cb if TRUE, download a generalized (1:500k)
 #'        school districts file.  Defaults to FALSE (the most detailed TIGER/Line file)
 #' @inheritParams load_tiger_doc_template
 #' @inheritSection load_tiger_doc_template Additional Arguments
 #' @family general area functions
-#' @seealso \url{https://www2.census.gov/geo/pdfs/maps-data/data/tiger/tgrshp2020/TGRSHP2020_TechDoc.pdf}
+#' @seealso <https://www2.census.gov/geo/pdfs/maps-data/data/tiger/tgrshp2020/TGRSHP2020_TechDoc.pdf>
 #' @export
 #' @examples \dontrun{
 #' library(tigris)
@@ -508,8 +508,8 @@ school_districts <- function(state = NULL, type = 'unified',
 #'
 #'
 #' @param state The two-digit FIPS code (string) of the state you want. Can also
-#'        be state name or state abbreviation.  When \code{NULL} and combined with
-#'        \code{cb = TRUE}, a national dataset of block groups will be returned for
+#'        be state name or state abbreviation.  When `NULL` and combined with
+#'        `cb = TRUE`, a national dataset of block groups will be returned for
 #'        years 2019 and later.
 #' @param county The three-digit FIPS code (string) of the county you'd like to
 #'        subset for, or a vector of FIPS codes if you desire multiple counties.
@@ -519,7 +519,7 @@ school_districts <- function(state = NULL, type = 'unified',
 #' @inheritParams load_tiger_doc_template
 #' @inheritSection load_tiger_doc_template Additional Arguments
 #' @family general area functions
-#' @seealso \url{https://www2.census.gov/geo/pdfs/maps-data/data/tiger/tgrshp2020/TGRSHP2020_TechDoc.pdf}
+#' @seealso <https://www2.census.gov/geo/pdfs/maps-data/data/tiger/tgrshp2020/TGRSHP2020_TechDoc.pdf>
 #' @export
 #' @examples \dontrun{
 #' library(tigris)
@@ -677,20 +677,20 @@ block_groups <- function(state = NULL, county = NULL, cb = FALSE, year = NULL, .
 #'
 #' @param cb If cb is set to TRUE, download a generalized (1:500k)
 #'        ZCTA file.  Defaults to FALSE (the most detailed TIGER/Line file).
-#'        \strong{A warning:} the detailed TIGER/Line ZCTA file is massive
+#'        **A warning:** the detailed TIGER/Line ZCTA file is massive
 #'        (around 502MB unzipped), and the generalized version is also large
 #'        (64MB zipped).  Be prepared for this especially if you have a slower
 #'        internet connection.
 #' @param starts_with Character vector specifying the beginning digits of the
 #'        ZCTAs you want to return.  For example, supplying the argument
-#'        \code{starts_with = c("75", "76")} will return only those ZCTAs that begin
+#'        `starts_with = c("75", "76")` will return only those ZCTAs that begin
 #'        with 75 or 76.  Defaults to NULL, which will return all ZCTAs in the US.
 #' @param state the state for which you are requesting data; only available for 2000 (TIGER/Line
 #'              and CB shapefiles) and 2010 (TIGER/Line shapefiles only)
 #' @inheritParams load_tiger_doc_template
 #' @inheritSection load_tiger_doc_template Additional Arguments
 #' @family general area functions
-#' @seealso \url{https://www.census.gov/programs-surveys/geography/guidance/geo-areas/zctas.html}
+#' @seealso <https://www.census.gov/programs-surveys/geography/guidance/geo-areas/zctas.html>
 #' @export
 #' @examples \dontrun{
 #' # Example: get ZCTAs that intersect the Memphis, TN urbanized area
@@ -829,7 +829,7 @@ zctas <- function(cb = FALSE, starts_with = NULL, year = NULL, state = NULL, ...
 #' for which the Census Bureau tabulates data.
 #'
 #' This function will download an entire block shapefile for a selected state
-#' into R, and optionally subset by county. \strong{A warning:} Census block
+#' into R, and optionally subset by county. **A warning:** Census block
 #' shapefiles are often very large, especially for large states - for example, the
 #' block file for Texas is 462MB zipped!  If you have a slow or unreliable internet
 #' connection, or insufficient memory, this may prove burdensome given that you
@@ -843,7 +843,7 @@ zctas <- function(cb = FALSE, starts_with = NULL, year = NULL, state = NULL, ...
 #' @inheritParams load_tiger_doc_template
 #' @inheritSection load_tiger_doc_template Additional Arguments
 #' @family general area functions
-#' @seealso \url{https://www2.census.gov/geo/pdfs/maps-data/data/tiger/tgrshp2020/TGRSHP2020_TechDoc.pdf}
+#' @seealso <https://www2.census.gov/geo/pdfs/maps-data/data/tiger/tgrshp2020/TGRSHP2020_TechDoc.pdf>
 #' @export
 #' @examples \dontrun{
 #' # Simple example using Rose Island, American Samoa
@@ -975,7 +975,7 @@ blocks <- function(state, county = NULL, year = NULL, ...) {
 #' @inheritParams load_tiger_doc_template
 #' @inheritSection load_tiger_doc_template Additional Arguments
 #' @family general area functions
-#' @seealso \url{https://www2.census.gov/geo/pdfs/reference/GARM/Ch8GARM.pdf}
+#' @seealso <https://www2.census.gov/geo/pdfs/reference/GARM/Ch8GARM.pdf>
 #' @export
 #'
 #' @examples \dontrun{

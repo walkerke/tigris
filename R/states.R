@@ -14,7 +14,7 @@
 #' @inheritSection load_tiger_doc_template Additional Arguments
 #' @export
 #' @family general area functions
-#' @seealso \url{https://www2.census.gov/geo/pdfs/reference/GARM/Ch4GARM.pdf}
+#' @seealso <https://www2.census.gov/geo/pdfs/reference/GARM/Ch4GARM.pdf>
 #' @examples \dontrun{
 #' library(tigris)
 #' library(leaflet)
@@ -133,10 +133,10 @@ states <- function(cb = FALSE, resolution = '500k', year = NULL, ...) {
   return(st)
 
 }
-#' Filter a \code{states} Spatial object for only those states matching the
-#' contents of the \code{state} vector.
+#' Filter a `states` Spatial object for only those states matching the
+#' contents of the `state` vector.
 #'
-#' @param states object returned from a call to \code{states}
+#' @param states object returned from a call to `states`
 #' @param state a vector of full state names. The function performs the
 #'        comparison in a case-insensitive manner.
 #' @export
@@ -151,13 +151,13 @@ filter_state <- function(states, state) {
   }
 }
 
-#' Find states matching a term in a \code{state} object
+#' Find states matching a term in a `state` object
 #'
 #' This is just shorthand for
-#' \code{grep(term, list_states(states), value=TRUE, ignore.case=TRUE)}
+#' `grep(term, list_states(states), value=TRUE, ignore.case=TRUE)`
 #'
-#' @param states object returned from a call to \code{state}
-#' @param term equivalent to the \code{pattern} argument of \code{grep}
+#' @param states object returned from a call to `state`
+#' @param term equivalent to the `pattern` argument of `grep`
 #' @export
 #' @examples \dontrun{
 #' states() %>% grep_state("north")
@@ -168,9 +168,9 @@ grep_state <- function(states, term) {
   }
 }
 
-#' Return a list of all the states in a \code{state} object
+#' Return a list of all the states in a `state` object
 #'
-#' @param states object returned from a call to \code{state}
+#' @param states object returned from a call to `state`
 #' @param sorted return the list sorted or in the order found in the shapefile?
 #' @export
 #' @examples \dontrun{

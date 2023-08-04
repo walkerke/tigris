@@ -5,33 +5,33 @@
 #' United States will have their CRS transformed to USA Contiguous Albers Equal Area Conic ('ESRI:102003').
 #' Alaska, Hawaii, and Puerto Rico features are transformed to appropriate coordinate systems for those areas,
 #' then shifted and optionally re-scaled before being assigned the 'ESRI:102003' CRS.  Options for users
-#' include \code{preserve_area} which allows for preservation of the area of AK/HI/PR relative to the
-#' continental US if desired, and two possible arrangements which are specified with \code{position = "below"}
-#' or \code{position = "outside"}
+#' include `preserve_area` which allows for preservation of the area of AK/HI/PR relative to the
+#' continental US if desired, and two possible arrangements which are specified with `position = "below"`
+#' or `position = "outside"`
 #'
-#' \code{shift_geometry()}, while designed for use with objects from the tigris package, will work with any US
+#' `shift_geometry()`, while designed for use with objects from the tigris package, will work with any US
 #' dataset. If aligning datasets from multiple sources, you must take care to ensure that your options
-#' specified in \code{preserve_area} and \code{position} are identical across layers.  Otherwise your layers
+#' specified in `preserve_area` and `position` are identical across layers.  Otherwise your layers
 #' will not align correctly.
 #'
 #' The function is also designed to work exclusively with features in the continental United States,
 #' Alaska, Hawaii, and Puerto Rico.  If your dataset includes features outside these areas (e.g. other
 #' US territories or other countries), you may get unworkable results.  It is advisable to filter out
-#' those features before using \code{shift_geometry()}.
+#' those features before using `shift_geometry()`.
 #'
-#' Work on this function is inspired by and adapts some code from Claus Wilke's book \emph{Fundamentals of
-#' Data Visualization} (\url{https://clauswilke.com/dataviz/geospatial-data.html}); Bob Rudis's
-#' albersusa R package (\url{https://github.com/hrbrmstr/albersusa}); and the ggcart R package
-#' (\url{https://uncoast-unconf.github.io/ggcart/}).
+#' Work on this function is inspired by and adapts some code from Claus Wilke's book *Fundamentals of
+#' Data Visualization* (<https://clauswilke.com/dataviz/geospatial-data.html>); Bob Rudis's
+#' albersusa R package (<https://github.com/hrbrmstr/albersusa>); and the ggcart R package
+#' (<https://uncoast-unconf.github.io/ggcart/>).
 #'
 #' @param input_sf The input sf dataset
 #' @param geoid_column The GEOID column of the dataset that contains a state ID.  If used, will speed up
-#'                     processing and avoid spatial overlay to infer locations.  Defaults to \code{NULL}.
+#'                     processing and avoid spatial overlay to infer locations.  Defaults to `NULL`.
 #' @param preserve_area If TRUE, the areas of Alaska/Hawaii/Puerto Rico relative to the continental US
 #'                      will be preserved.  Defaults to FALSE where Alaska is proportionally smaller
 #'                      and Hawaii/Puerto Rico are proportionally larger.
-#' @param position One of \code{"below"} (the default) or \code{"outside"}.  If \code{"below"}, Alaska, Hawaii,
-#'                 and Puerto Rico will be placed below the continental United States.  If \code{"outside"},
+#' @param position One of `"below"` (the default) or `"outside"`.  If `"below"`, Alaska, Hawaii,
+#'                 and Puerto Rico will be placed below the continental United States.  If `"outside"`,
 #'                 features will be moved outside the continental US; Alaska will be northwest of Washington,
 #'                 Hawaii southwest of California, and Puerto Rico southeast of Florida.
 #'

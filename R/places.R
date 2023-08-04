@@ -1,10 +1,10 @@
 #' Download Shapefiles which include both incorporated places (legal entities) and census designated places (statistical entities) into R
 #'
-#' An incorporated place provides governmental functions for a concentration of people. Incorporated places may extend across county and county subdivision boundaries, but never across state boundaries. An incorporated place usually is a city, town, village, or borough, but can have other legal descriptions. CDPs are the statistical counterparts of incorporated places. CDPs are settled concentrations of population that are identifiable by name but not legally incorporated under the laws of the state in which the CDPs are located. For more information, read appropriate section on "Places" for the correct vintage (year) of your data in the TIGER/Line Shapefiles and TIGER/Line Files Technical Documentation available as of this writing here: \url{https://www.census.gov/programs-surveys/geography/technical-documentation/complete-technical-documentation/tiger-geo-line.html}.
+#' An incorporated place provides governmental functions for a concentration of people. Incorporated places may extend across county and county subdivision boundaries, but never across state boundaries. An incorporated place usually is a city, town, village, or borough, but can have other legal descriptions. CDPs are the statistical counterparts of incorporated places. CDPs are settled concentrations of population that are identifiable by name but not legally incorporated under the laws of the state in which the CDPs are located. For more information, read appropriate section on "Places" for the correct vintage (year) of your data in the TIGER/Line Shapefiles and TIGER/Line Files Technical Documentation available as of this writing here: <https://www.census.gov/programs-surveys/geography/technical-documentation/complete-technical-documentation/tiger-geo-line.html>.
 #'
 #' @param state The two-digit FIPS code (string) of the state you want. Can also
-#'        be state name or state abbreviation. When \code{NULL} and combined with
-#'        \code{cb = TRUE}, a national dataset of places will be returned for years
+#'        be state name or state abbreviation. When `NULL` and combined with
+#'        `cb = TRUE`, a national dataset of places will be returned for years
 #'        2019 and later.
 #' @param cb If cb is set to TRUE, download a generalized (1:500k)
 #'        cartographic boundary file.  Defaults to FALSE (the most detailed
@@ -12,7 +12,7 @@
 #' @inheritParams load_tiger_doc_template
 #' @inheritSection load_tiger_doc_template Additional Arguments
 #' @family general area functions
-#' @seealso \url{https://www2.census.gov/geo/pdfs/reference/GARM/Ch9GARM.pdf}
+#' @seealso <https://www2.census.gov/geo/pdfs/reference/GARM/Ch9GARM.pdf>
 #' @export
 places <- function(state = NULL, cb = FALSE, year = NULL, ...) {
 
@@ -72,10 +72,10 @@ places <- function(state = NULL, cb = FALSE, year = NULL, ...) {
 
 }
 
-#' Filter a \code{places} Spatial object for only those places matching the
-#' contents of the \code{place} vector.
+#' Filter a `places` Spatial object for only those places matching the
+#' contents of the `place` vector.
 #'
-#' @param places object returned from a call to \code{places}
+#' @param places object returned from a call to `places`
 #' @param place a vector of full place names. The function performs the
 #'        comparison in a case-insensitive manner.
 #' @export
@@ -90,13 +90,13 @@ filter_place <- function(places, place) {
   }
 }
 
-#' Find places matching a term in a \code{places} object
+#' Find places matching a term in a `places` object
 #'
 #' This is just shorthand for
-#' \code{grep(term, list_places(places), value=TRUE, ignore.case=TRUE)}
+#' `grep(term, list_places(places), value=TRUE, ignore.case=TRUE)`
 #'
-#' @param places object returned from a call to \code{places}
-#' @param term equivalent to the \code{pattern} argument of \code{grep}
+#' @param places object returned from a call to `places`
+#' @param term equivalent to the `pattern` argument of `grep`
 #' @export
 #' @examples \dontrun{
 #' places("Maine") %>% grep_place("south")
@@ -107,9 +107,9 @@ grep_place <- function(places, term) {
   }
 }
 
-#' Return a list of all the places in a \code{places} object
+#' Return a list of all the places in a `places` object
 #'
-#' @param places object returned from a call to \code{places}
+#' @param places object returned from a call to `places`
 #' @param sorted return the list sorted or in the order found in the shapefile?
 #' @export
 #' @examples \dontrun{

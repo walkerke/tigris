@@ -13,7 +13,7 @@
 #' @inheritParams load_tiger_doc_template
 #' @inheritSection load_tiger_doc_template Additional Arguments
 #' @family transportation functions
-#' @seealso \url{https://www2.census.gov/geo/pdfs/maps-data/data/tiger/tgrshp2020/TGRSHP2020_TechDoc.pdf}
+#' @seealso <https://www2.census.gov/geo/pdfs/maps-data/data/tiger/tgrshp2020/TGRSHP2020_TechDoc.pdf>
 #' @export
 #' @returns
 #' an sf object with columns
@@ -95,7 +95,7 @@ roads <- function(state, county, year = NULL, ...) {
 #' @inheritSection load_tiger_doc_template Additional Arguments
 #' @inherit roads return
 #' @family transportation functions
-#' @seealso \url{https://www2.census.gov/geo/pdfs/maps-data/data/tiger/tgrshp2020/TGRSHP2020_TechDoc.pdf}
+#' @seealso <https://www2.census.gov/geo/pdfs/maps-data/data/tiger/tgrshp2020/TGRSHP2020_TechDoc.pdf>
 #' @export
 #' @examples \dontrun{
 #' library(tigris)
@@ -151,7 +151,7 @@ primary_roads <- function(year = NULL, ...) {
 #' @inheritSection load_tiger_doc_template Additional Arguments
 #' @inherit roads return
 #' @family transportation functions
-#' @seealso \url{https://www2.census.gov/geo/pdfs/maps-data/data/tiger/tgrshp2020/TGRSHP2020_TechDoc.pdf}
+#' @seealso <https://www2.census.gov/geo/pdfs/maps-data/data/tiger/tgrshp2020/TGRSHP2020_TechDoc.pdf>
 #' @export
 #' @examples \dontrun{
 #' library(tigris)
@@ -201,7 +201,7 @@ primary_secondary_roads <- function(state, year = NULL, ...) {
 #' @inheritParams load_tiger_doc_template
 #' @inheritSection load_tiger_doc_template Additional Arguments
 #' @family transportation functions
-#' @seealso \url{https://www2.census.gov/geo/pdfs/maps-data/data/tiger/tgrshp2020/TGRSHP2020_TechDoc.pdf}
+#' @seealso <https://www2.census.gov/geo/pdfs/maps-data/data/tiger/tgrshp2020/TGRSHP2020_TechDoc.pdf>
 #' @export
 #' @examples \dontrun{
 #' library(tigris)
@@ -250,7 +250,7 @@ rails <- function(year = NULL, ...) {
 #' @inheritParams load_tiger_doc_template
 #' @inheritSection load_tiger_doc_template Additional Arguments
 #' @family transportation functions
-#' @seealso \url{https://www2.census.gov/geo/pdfs/maps-data/data/tiger/tgrshp2020/TGRSHP2020_TechDoc.pdf}
+#' @seealso <https://www2.census.gov/geo/pdfs/maps-data/data/tiger/tgrshp2020/TGRSHP2020_TechDoc.pdf>
 #' @export
 address_ranges <- function(state, county, year = NULL, ...) {
 

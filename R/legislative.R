@@ -9,7 +9,7 @@
 #'
 #' @param state The two-digit FIPS code (string) of the state you want, or a
 #'        vector of codes if you want multiple states. Can also be state name
-#'        or state abbreviation.  If \code{NULL} (the default), returns the entire United States.
+#'        or state abbreviation.  If `NULL` (the default), returns the entire United States.
 #' @param cb If cb is set to TRUE, download a generalized (1:500k)
 #'        cartographic boundary file.  Defaults to FALSE (the most detailed
 #'        TIGER/Line file).
@@ -18,7 +18,7 @@
 #' @inheritParams load_tiger_doc_template
 #' @inheritSection load_tiger_doc_template Additional Arguments
 #' @family legislative district functions
-#' @seealso \url{https://www.census.gov/programs-surveys/geography/guidance/geo-areas/congressional-dist.html}
+#' @seealso <https://www.census.gov/programs-surveys/geography/guidance/geo-areas/congressional-dist.html>
 #' @export
 #' @examples \dontrun{
 #' library(tigris)
@@ -112,17 +112,17 @@ congressional_districts <- function(state = NULL, cb = FALSE, resolution = '500k
 #' has a unicameral state legislature.
 #'
 #' @param state The two-digit FIPS code (string) of the state. Can also be state
-#'        name or abbreviation (case-insensitive). When \code{NULL} and combined with
-#'        \code{cb = TRUE}, a national dataset of state legislative districts will be returned.
-#' @param house Specify here whether you want boundaries for the \code{upper} or
-#'        \code{lower} house.  Defaults to \code{upper}.
+#'        name or abbreviation (case-insensitive). When `NULL` and combined with
+#'        `cb = TRUE`, a national dataset of state legislative districts will be returned.
+#' @param house Specify here whether you want boundaries for the `upper` or
+#'        `lower` house.  Defaults to `upper`.
 #' @param cb If cb is set to TRUE, download a generalized (1:500k)
 #'        cartographic boundary file.  Defaults to FALSE (the most detailed
 #'        TIGER/Line file).
 #' @inheritParams load_tiger_doc_template
 #' @inheritSection load_tiger_doc_template Additional Arguments
 #' @family legislative district functions
-#' @seealso \url{https://www.census.gov/programs-surveys/geography/guidance/geo-areas/state-legis-dist.html}
+#' @seealso <https://www.census.gov/programs-surveys/geography/guidance/geo-areas/state-legis-dist.html>
 #' @export
 #' @examples \dontrun{
 #' library(tigris)
@@ -230,7 +230,7 @@ state_legislative_districts <- function(state= NULL, house = "upper",
 #' Obtain feature geometry for 2020 voting districts, which align with voting districts for the
 #' 2020 PL-94171 redistricting data from the US Census Bureau.
 #'
-#' The US Census Bureau describes \emph{voting districts} as follows:
+#' The US Census Bureau describes *voting districts* as follows:
 #' Voting district (VTD) is a generic term adopted by the Bureau of the Census
 #' to include the wide variety of small polling areas, such as election districts,
 #' precincts, or wards, that State and local governments create for the purpose
@@ -241,15 +241,15 @@ state_legislative_districts <- function(state= NULL, house = "upper",
 #' gave States the opportunity to request use of these election precinct boundaries as the boundaries of #' census enumeration districts (EDs) or, in some areas, census blocks.
 #'
 #' Support for voting districts in tigris 1.5 and higher is aligned with the 2020 PL redistricting
-#' data.  The argument \code{cb = FALSE} retrieves voting districts from the TIGER/Line PL
+#' data.  The argument `cb = FALSE` retrieves voting districts from the TIGER/Line PL
 #' shapefiles.  A generalized version from the cartographic boundary dataset is available with the
-#' argument \code{cb = TRUE}.
+#' argument `cb = TRUE`.
 #'
 #' @param state The state for which you'd like to retrieve data.  Can be a state name,
-#'        state abbreviation, or FIPS code. When \code{NULL} and combined with
-#'        \code{cb = TRUE}, a national dataset of voting districts will be returned.
+#'        state abbreviation, or FIPS code. When `NULL` and combined with
+#'        `cb = TRUE`, a national dataset of voting districts will be returned.
 #' @param county The county for which you are requesting data.  Can be a county name or
-#'               FIPS code.  If \code{NULL} (the default), data for the entire state will
+#'               FIPS code.  If `NULL` (the default), data for the entire state will
 #'               be returned.
 #' @param cb If cb is set to TRUE, download a generalized (1:500k)
 #'        cartographic boundary file.  Defaults to FALSE (the most detailed
@@ -257,7 +257,7 @@ state_legislative_districts <- function(state= NULL, house = "upper",
 #' @inheritParams load_tiger_doc_template
 #' @inheritSection load_tiger_doc_template Additional Arguments
 #' @family legislative district functions
-#' @seealso \url{https://www2.census.gov/geo/pdfs/reference/GARM/Ch14GARM.pdf}
+#' @seealso <https://www2.census.gov/geo/pdfs/reference/GARM/Ch14GARM.pdf>
 #' @export
 #' @examples \dontrun{#'
 #' library(tigris)

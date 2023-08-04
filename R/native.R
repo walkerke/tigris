@@ -11,7 +11,7 @@
 #' @inheritParams load_tiger_doc_template
 #' @inheritSection load_tiger_doc_template Additional Arguments
 #' @family native/tribal geometries functions
-#' @seealso \url{https://www2.census.gov/geo/pdfs/reference/GARM/Ch5GARM.pdf}
+#' @seealso <https://www2.census.gov/geo/pdfs/reference/GARM/Ch5GARM.pdf>
 #' @export
 #' @examples \dontrun{
 #' library(tigris)
@@ -78,7 +78,7 @@ native_areas <- function(cb = FALSE, year = NULL, ...) {
 #' @inheritParams load_tiger_doc_template
 #' @inheritSection load_tiger_doc_template Additional Arguments
 #' @family native/tribal geometries functions
-#' @seealso \url{https://www2.census.gov/geo/pdfs/reference/GARM/Ch5GARM.pdf}
+#' @seealso <https://www2.census.gov/geo/pdfs/reference/GARM/Ch5GARM.pdf>
 #' @export
 #' @examples \dontrun{
 #' library(tigris)
@@ -144,7 +144,7 @@ tribal_subdivisions_national <- function(cb = FALSE, year = NULL, ...) {
 #' @inheritParams load_tiger_doc_template
 #' @inheritSection load_tiger_doc_template Additional Arguments
 #' @family native/tribal geometries functions
-#' @seealso \url{https://www2.census.gov/geo/pdfs/reference/GARM/Ch5GARM.pdf}
+#' @seealso <https://www2.census.gov/geo/pdfs/reference/GARM/Ch5GARM.pdf>
 #' @export
 alaska_native_regional_corporations <- function(cb = FALSE, year = NULL, ...) {
 
@@ -207,7 +207,7 @@ alaska_native_regional_corporations <- function(cb = FALSE, year = NULL, ...) {
 #' @inheritParams load_tiger_doc_template
 #' @inheritSection load_tiger_doc_template Additional Arguments
 #' @family native/tribal geometries functions
-#' @seealso \url{https://www2.census.gov/geo/pdfs/reference/GARM/Ch5GARM.pdf}
+#' @seealso <https://www2.census.gov/geo/pdfs/reference/GARM/Ch5GARM.pdf>
 #' @export
 #' @examples \dontrun{
 #' library(tigris)
@@ -271,7 +271,7 @@ tribal_block_groups <- function(cb = FALSE, year = NULL, ...) {
 #' @inheritParams load_tiger_doc_template
 #' @inheritSection load_tiger_doc_template Additional Arguments
 #' @family native/tribal geometries functions
-#' @seealso \url{https://www2.census.gov/geo/pdfs/reference/GARM/Ch5GARM.pdf}
+#' @seealso <https://www2.census.gov/geo/pdfs/reference/GARM/Ch5GARM.pdf>
 #' @export
 #' @examples \dontrun{
 #' library(tigris)

@@ -5,10 +5,10 @@
 #' @param address A tibble/data frame with (at a minimum, others can be present)
 #'   either character columns street, city, and state OR numeric columns lat and
 #'   lon. Lat/lon columns take priority.
-#' @param geoid_type GEOID level to return, \code{c('county', 'tract', 'block group', 'block')}.
+#' @param geoid_type GEOID level to return, `c('county', 'tract', 'block group', 'block')`.
 #'   Defaults to block.
 #' @return the original tibble with GEOIDs appended as a new column called
-#'   \code{geoid}.
+#'   `geoid`.
 #'
 #' @author Josie Kressner, \email{josie@@transportfoundry.com}
 #'
