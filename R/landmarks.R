@@ -19,27 +19,10 @@
 
 military <- function(year = NULL, ...) {
 
-  if (is.null(year)) {
-
-    year <- getOption("tigris_year", 2021)
-
-    message(sprintf("Retrieving data for the year %s", year))
-
-  }
-
-  if (year < 2011) {
-
-    fname <- as.character(match.call())[[1]]
-
-    msg <- sprintf("%s is not currently available for years prior to 2011.  To request this feature,
-                   file an issue at https://github.com/walkerke/tigris.", fname)
-
-    stop(msg, call. = FALSE)
-
-  }
+  year <- set_tigris_year(year)
 
   url <- sprintf("https://www2.census.gov/geo/tiger/TIGER%s/MIL/tl_%s_us_mil.zip",
-                 as.character(year), as.character(year))
+                 year, year)
 
   return(load_tiger(url, tigris_type = "military", ...))
 
@@ -77,37 +60,18 @@ military <- function(year = NULL, ...) {
 #' @export
 landmarks <- function(state, type = "point", year = NULL, ...) {
 
-  if (is.null(year)) {
-
-    year <- getOption("tigris_year", 2021)
-
-    message(sprintf("Retrieving data for the year %s", year))
-
-  }
-
-  if (year < 2011) {
-
-    fname <- as.character(match.call())[[1]]
-
-    msg <- sprintf("%s is not currently available for years prior to 2011.  To request this feature,
-                   file an issue at https://github.com/walkerke/tigris.", fname)
-
-    stop(msg, call. = FALSE)
-
-  }
+  year <- set_tigris_year(year)
 
   state <- validate_state(state)
 
-  cyear <- as.character(year)
-
   if (type == "area") {
     url <- sprintf("https://www2.census.gov/geo/tiger/TIGER%s/AREALM/tl_%s_%s_arealm.zip",
-                   cyear, cyear, state)
+                   year, year, state)
     return(load_tiger(url, tigris_type = "area_landmark", ...))
 
   } else if (type == "point") {
     url <- sprintf("https://www2.census.gov/geo/tiger/TIGER%s/POINTLM/tl_%s_%s_pointlm.zip",
-                  cyear, cyear, state)
+                   year, year, state)
     return(load_tiger(url, tigris_type = "point_landmark", ...))
 
   } else {

@@ -3,9 +3,12 @@
 # returns NULL if input is NULL
 # returns valid state FIPS code if input is even pseud-valid (i.e. single digit but w/in range)
 # returns NULL if input is not a valid FIPS code
-validate_state <- function(state, .msg=interactive()) {
+validate_state <- function(state, allow_null = TRUE, .msg = interactive()) {
 
-  if (is.null(state)) return(NULL)
+  if (is.null(state)) {
+    if (allow_null) return(NULL)
+    stop("Invalid state", call. = FALSE)
+  }
 
   state <- tolower(str_trim(state)) # forgive white space
 
@@ -64,13 +67,19 @@ validate_state <- function(state, .msg=interactive()) {
 # Some work on a validate_county function
 #
 #
-validate_county <- function(state, county, .msg = interactive()) {
+validate_county <- function(state, county, allow_null = TRUE, .msg = interactive()) {
 
-  if (is.null(state)) return(NULL)
+  if (is.null(state)) {
+    if (allow_null) return(NULL)
+    stop("Invalid state", call. = FALSE)
+  }
 
-  if (is.null(county)) return(NULL)
+  if (is.null(county)) {
+    if (allow_null) return(NULL)
+    stop("Invalid county", call. = FALSE)
+  }
 
-  state <- validate_state(state) # Get the state of the county
+  state <- validate_state(state, allow_null = allow_null) # Get the state of the county
 
   county_table <- fips_codes[fips_codes$state_code == state, ] # Get a df for the requested state to work with
 
@@ -176,4 +185,89 @@ input_to_wkt <- function(input) {
   }
 
   return(wkt_input)
+}
+
+#' Set default year and validate year for tigris function
+#'
+#' [set_tigris_year()] returns year as a character string.
+#'
+#' @param year Year to use for download.
+#' @param default Default year to use if "tigris_year" option is not set.
+#' @param min_year Minimum year. Varies by geography and data source.
+#' @param quiet If `TRUE`, do not display message about the year when
+#'   downloading data.
+#' @inheritParams source
+#' @noRd
+set_tigris_year <- function(year = NULL,
+                            default = 2021,
+                            min_year = 2011,
+                            max_year = 2022,
+                            quiet = FALSE) {
+  if (is.null(year)) {
+    year <- getOption("tigris_year", default)
+
+    if (!quiet) {
+      message(sprintf("Retrieving data for the year %s", year))
+    }
+  }
+
+  year <- as.integer(year)
+
+  check_tigris_year(year, min_year = min_year, max_year = max_year)
+
+  year
+}
+
+#' Check if year is valid
+#'
+#' @inheritParams base::match.call
+#' @noRd
+check_tigris_year <- function(year,
+                              min_year = 2011,
+                              max_year = 2021,
+                              call = sys.call(sys.parent(2L))) {
+  if (length(year) > 1 || length(year) == 0 || nchar(year) != 4) {
+    stop(
+      "`year` must be a an integer or string with a single year.",
+      call. = FALSE
+    )
+  }
+
+  if ((year >= min_year) && year <= max_year) {
+    return(invisible(NULL))
+  }
+
+  msg <- "`%s` is not currently available for years prior to %s."
+  limit_year <- min_year
+
+  if (year > max_year) {
+    msg <- "`%s` is not currently available for years after %s."
+    limit_year <- max_year
+  }
+
+  fname <- as.character(match.call(call = call))[[1]]
+
+  msg <- sprintf(
+    paste0(
+      msg, "\n",
+      "To request this feature, file an issue at https://github.com/walkerke/tigris/issues"
+    ), fname, limit_year
+  )
+
+  stop(msg, call. = FALSE)
+}
+
+
+#' Check if resolution is valid
+#'
+#' @noRd
+check_tigris_resolution <- function(resolution,
+                                    values = c("500k", "5m", "20m")) {
+  if ((length(resolution) == 1) && (resolution %in% values)) {
+    return(invisible(NULL))
+  }
+
+  msg <- paste0("Invalid value for resolution. Valid values are ", format_vec(values))
+
+  stop(msg, call. = FALSE)
 }

@@ -40,24 +40,7 @@
 #' }
 pumas <- function(state = NULL, cb = FALSE, year = NULL, ...) {
 
-  if (is.null(year)) {
-
-    year <- getOption("tigris_year", 2021)
-
-    message(sprintf("Retrieving data for the year %s", year))
-
-  }
-
-  if (year < 2011) {
-
-    fname <- as.character(match.call())[[1]]
-
-    msg <- sprintf("%s is not currently available for years prior to 2011.  To request this feature,
-                   file an issue at https://github.com/walkerke/tigris.", fname)
-
-    stop(msg, call. = FALSE)
-
-  }
+  year <- set_tigris_year(year)
 
   if (is.null(state)) {
     if (year == 2019 && cb == TRUE) {
@@ -68,12 +51,8 @@ pumas <- function(state = NULL, cb = FALSE, year = NULL, ...) {
            call. = FALSE)
     }
   } else {
-    state <- validate_state(state)
-
-    if (is.null(state)) stop("Invalid state", call.=FALSE)
+    state <- validate_state(state, allow_null = FALSE)
   }
-
-  cyear <- as.character(year)
 
   if (year > 2021) {
     suf <- "20"
@@ -88,7 +67,7 @@ pumas <- function(state = NULL, cb = FALSE, year = NULL, ...) {
     }
 
     url <- sprintf("https://www2.census.gov/geo/tiger/GENZ%s/shp/cb_%s_%s_puma10_500k.zip",
-                   cyear, cyear, state)
+                   year, year, state)
 
     if (year == 2013) url <- gsub("shp/", "", url)
 
@@ -96,7 +75,7 @@ pumas <- function(state = NULL, cb = FALSE, year = NULL, ...) {
   } else {
 
     url <- sprintf("https://www2.census.gov/geo/tiger/TIGER%s/PUMA/tl_%s_%s_puma%s.zip",
-                  cyear, cyear, state, suf)
+                   year, year, state, suf)
   }
 
   pm <- load_tiger(url, tigris_type = "puma", ...)

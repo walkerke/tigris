@@ -408,9 +408,7 @@ geo_join <- function(spatial_data, data_frame, by_sp, by_df, by = NULL, how = 'l
 #' }
 lookup_code <- function(state, county = NULL) {
 
-  state <- validate_state(state, .msg=FALSE)
-
-  if (is.null(state)) stop("Invalid state", call.=FALSE)
+  state <- validate_state(state, allow_null = FALSE, .msg = FALSE)
 
   if (!is.null(county)) {
 
@@ -460,9 +458,7 @@ tigris_type <- function(obj) {
 #' @export
 list_counties <- function(state) {
 
-  state <- validate_state(state, .msg=FALSE)
-
-  if (is.null(state)) stop("Invalid state", call.=FALSE)
+  state <- validate_state(state, allow_null = FALSE, .msg = FALSE)
 
   vals <- fips_codes[fips_codes$state_code == state, c("county", "county_code")]
   vals$county <- gsub("\ County$", "", vals$county)
@@ -624,7 +620,6 @@ rbind_tigris <- function(...) {
 #'   for a given location.
 #' @param year The year to use for the water layer; defaults to 2021 unless the
 #'   `tigris_year` option is otherwise set.
-#' @inheritParams counties
 #' @return An output sf object representing the polygons in `input_sf` with
 #'   water areas erased.
 #' @export
@@ -647,16 +642,13 @@ rbind_tigris <- function(...) {
 #' }
 erase_water <- function(input_sf,
                         area_threshold = 0.75,
-                        year = NULL,
-                        cb = TRUE) {
+                        year = NULL) {
 
   if (!is_sf(input_sf)) {
     stop("The input dataset is not an sf object.", call. = FALSE)
   }
 
-  if (is.null(year)) {
-    year <- getOption("tigris_year", 2021)
-  }
+  year <- set_tigris_year(year, quiet = TRUE)
 
   # Define st_erase function internally
   st_erase <- function(x, y) {
@@ -664,7 +656,7 @@ erase_water <- function(input_sf,
   }
 
   # Grab a dataset of counties that overlap the input sf object quietly
-  county_overlay <- tigris::counties(cb = cb, resolution = "500k", progress_bar = FALSE,
+  county_overlay <- tigris::counties(cb = TRUE, resolution = "500k", progress_bar = FALSE,
                                      year = year, filter_by = input_sf) %>%
     sf::st_transform(sf::st_crs(input_sf))
 

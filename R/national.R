@@ -19,33 +19,12 @@
 #' @export
 regions <- function(resolution = '500k', year = NULL, ...) {
 
-  if (is.null(year)) {
+  year <- set_tigris_year(year)
 
-    year <- getOption("tigris_year", 2021)
-
-    message(sprintf("Retrieving data for the year %s", year))
-
-  }
-
-  if (year < 2011) {
-
-    fname <- as.character(match.call())[[1]]
-
-    msg <- sprintf("%s is not currently available for years prior to 2011.  To request this feature,
-                   file an issue at https://github.com/walkerke/tigris.", fname)
-
-    stop(msg, call. = FALSE)
-
-  }
-
-  if (!(resolution %in% c('500k', '5m', '20m'))) {
-    stop("Invalid value for resolution. Valid values are '500k', '5m', and '20m'.", call. = FALSE)
-  }
-
-  cyear <- as.character(year)
+  check_tigris_resolution(resolution)
 
   url <- sprintf("https://www2.census.gov/geo/tiger/GENZ%s/shp/cb_%s_us_region_%s.zip",
-                 cyear, cyear, resolution)
+                 year, year, resolution)
 
   rgns <- load_tiger(url, tigris_type = "region", ...)
 
@@ -74,33 +53,12 @@ regions <- function(resolution = '500k', year = NULL, ...) {
 #' }
 divisions <- function(resolution = '500k', year = NULL, ...) {
 
-  if (is.null(year)) {
+  year <- set_tigris_year(year)
 
-    year <- getOption("tigris_year", 2021)
-
-    message(sprintf("Retrieving data for the year %s", year))
-
-  }
-
-  if (year < 2011) {
-
-    fname <- as.character(match.call())[[1]]
-
-    msg <- sprintf("%s is not currently available for years prior to 2011.  To request this feature,
-                   file an issue at https://github.com/walkerke/tigris.", fname)
-
-    stop(msg, call. = FALSE)
-
-  }
-
-  if (!(resolution %in% c('500k', '5m', '20m'))) {
-    stop("Invalid value for resolution. Valid values are '500k', '5m', and '20m'.", call. = FALSE)
-  }
-
-  cyear <- as.character(year)
+  check_tigris_resolution(resolution)
 
   url <- sprintf("https://www2.census.gov/geo/tiger/GENZ%s/shp/cb_%s_us_division_%s.zip",
-                 cyear, cyear, resolution)
+                 year, year, resolution)
 
   div <- load_tiger(url, tigris_type = "division", ...)
 
@@ -128,33 +86,12 @@ divisions <- function(resolution = '500k', year = NULL, ...) {
 #' }
 nation <- function(resolution = '5m', year = NULL, ...) {
 
-  if (is.null(year)) {
+  year <- set_tigris_year(year)
 
-    year <- getOption("tigris_year", 2021)
-
-    message(sprintf("Retrieving data for the year %s", year))
-
-  }
-
-  if (year < 2011) {
-
-    fname <- as.character(match.call())[[1]]
-
-    msg <- sprintf("%s is not currently available for years prior to 2011.  To request this feature,
-                   file an issue at https://github.com/walkerke/tigris.", fname)
-
-    stop(msg, call. = FALSE)
-
-  }
-
-  if (!(resolution %in% c('5m', '20m'))) {
-    stop("Invalid value for resolution. Valid values are '5m', and '20m'.", call. = FALSE)
-  }
-
-  cyear <- as.character(year)
+  check_tigris_resolution(resolution, values = c('5m', '20m'))
 
   url <- sprintf("https://www2.census.gov/geo/tiger/GENZ%s/shp/cb_%s_us_nation_%s.zip",
-                 cyear, cyear, resolution)
+                 year, year, resolution)
 
   nat <- load_tiger(url, tigris_type = "nation", ...)
 

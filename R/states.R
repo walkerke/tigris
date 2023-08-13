@@ -30,26 +30,15 @@
 #' }
 states <- function(cb = FALSE, resolution = '500k', year = NULL, ...) {
 
-  if (!(resolution %in% c('500k', '5m', '20m'))) {
-    stop("Invalid value for resolution. Valid values are '500k', '5m', and '20m'.", call. = FALSE)
-  }
+  check_tigris_resolution(resolution)
 
-  if (is.null(year)) {
-
-    year = getOption("tigris_year", 2021)
-
-    message(sprintf("Retrieving data for the year %s", year))
-
-  }
-
-  cyear <- as.character(year)
-
+  year <- set_tigris_year(year)
 
   if (cb == TRUE) {
 
     if (year %in% c(1990, 2000)) {
 
-      suf <- substr(as.character(year), 3, 4)
+      suf <- substr(year, 3, 4)
 
       url <- sprintf("https://www2.census.gov/geo/tiger/PREVGENZ/st/st%sshp/st99_d%s_shp.zip",
                      suf, suf)
@@ -64,12 +53,12 @@ states <- function(cb = FALSE, resolution = '500k', year = NULL, ...) {
       if (year > 2013) {
 
         url <- sprintf("https://www2.census.gov/geo/tiger/GENZ%s/shp/cb_%s_us_state_%s.zip",
-                       cyear, cyear, resolution)
+                       year, year, resolution)
 
       } else {
 
         url <- sprintf("https://www2.census.gov/geo/tiger/GENZ%s/shp/cb_%s_us_state_%s.zip",
-                       cyear, cyear, resolution)
+                       year, year, resolution)
       }
 
     }
@@ -80,15 +69,15 @@ states <- function(cb = FALSE, resolution = '500k', year = NULL, ...) {
 
     if (year %in% c(2000, 2010)) {
 
-      suf <- substr(cyear, 3, 4)
+      suf <- substr(year, 3, 4)
 
       url <- sprintf("https://www2.census.gov/geo/tiger/TIGER2010/STATE/%s/tl_2010_us_state%s.zip",
-                     cyear, suf)
+                     year, suf)
 
     } else {
 
       url <- sprintf("https://www2.census.gov/geo/tiger/TIGER%s/STATE/tl_%s_us_state.zip",
-                     cyear, cyear)
+                     year, year)
 
     }
 

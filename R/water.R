@@ -25,24 +25,7 @@
 #' }
 area_water <- function(state, county, year = NULL, ...) {
 
-  if (is.null(year)) {
-
-    year <- getOption("tigris_year", 2021)
-
-    message(sprintf("Retrieving data for the year %s", year))
-
-  }
-
-  if (year < 2011) {
-
-    fname <- as.character(match.call())[[1]]
-
-    msg <- sprintf("%s is not currently available for years prior to 2011.  To request this feature,
-                   file an issue at https://github.com/walkerke/tigris.", fname)
-
-    stop(msg, call. = FALSE)
-
-  }
+  year <- set_tigris_year(year)
 
   if (length(county) > 1) {
     w <- lapply(county, function(x) {
@@ -55,16 +38,10 @@ area_water <- function(state, county, year = NULL, ...) {
 
   state <- validate_state(state)
 
-  county <- validate_county(state, county)
-
-  if (is.null(state)) stop("Invalid state", call.=FALSE)
-
-  if (is.null(county) | length(county) > 1) stop("Invalid county", call. = FALSE)
-
-  cyear <- as.character(year)
+  county <- validate_county(state, county, allow_null = FALSE)
 
   url <- sprintf("https://www2.census.gov/geo/tiger/TIGER%s/AREAWATER/tl_%s_%s%s_areawater.zip",
-                 cyear, cyear, state, county)
+                 year, year, state, county)
 
   return(load_tiger(url, tigris_type="area_water", ...))
 
@@ -99,24 +76,7 @@ area_water <- function(state, county, year = NULL, ...) {
 #' }
 linear_water <- function(state, county, year = NULL, ...) {
 
-  if (is.null(year)) {
-
-    year <- getOption("tigris_year", 2021)
-
-    message(sprintf("Retrieving data for the year %s", year))
-
-  }
-
-  if (year < 2011) {
-
-    fname <- as.character(match.call())[[1]]
-
-    msg <- sprintf("%s is not currently available for years prior to 2011.  To request this feature,
-                   file an issue at https://github.com/walkerke/tigris.", fname)
-
-    stop(msg, call. = FALSE)
-
-  }
+  year <- set_tigris_year(year)
 
   if (length(county) > 1) {
     w <- lapply(county, function(x) {
@@ -129,16 +89,10 @@ linear_water <- function(state, county, year = NULL, ...) {
 
   state <- validate_state(state)
 
-  county <- validate_county(state, county)
-
-  if (is.null(state)) stop("Invalid state", call.=FALSE)
-
-  if (is.null(county)) stop("Invalid county", call. = FALSE)
-
-  cyear <- as.character(year)
+  county <- validate_county(state, county, allow_null = FALSE)
 
   url <- sprintf("https://www2.census.gov/geo/tiger/TIGER%s/LINEARWATER/tl_%s_%s%s_linearwater.zip",
-                 cyear, cyear, state, county)
+                 year, year, state, county)
 
   return(load_tiger(url, tigris_type="linear_water", ...))
 
@@ -152,25 +106,15 @@ linear_water <- function(state, county, year = NULL, ...) {
 #' @family water functions
 coastline <- function(year = NULL, ...) {
 
-  if (is.null(year)) {
-
-    year <- getOption("tigris_year", 2021)
-
-    message(sprintf("Retrieving data for the year %s", year))
-
-  }
-
-  cyear <- as.character(year)
+  year <- set_tigris_year(year)
 
   if (year > 2016) {
     url <- sprintf("https://www2.census.gov/geo/tiger/TIGER%s/COASTLINE/tl_%s_us_coastline.zip",
-                   cyear, cyear)
+                   year, year)
   } else {
     url <- sprintf("https://www2.census.gov/geo/tiger/TIGER%s/COAST/tl_%s_us_coastline.zip",
-                   cyear, cyear)
+                   year, year)
   }
-
-
 
   return(load_tiger(url, tigris_type="coastline", ...))
 

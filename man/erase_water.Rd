@@ -4,7 +4,7 @@
 \alias{erase_water}
 \title{Erase water area from an input polygon dataset}
 \usage{
-erase_water(input_sf, area_threshold = 0.75, year = NULL, cb = TRUE)
+erase_water(input_sf, area_threshold = 0.75, year = NULL)
 }
 \arguments{
 \item{input_sf}{An input sf object, ideally obtained with the tigris package
@@ -18,9 +18,6 @@ for a given location.}
 
 \item{year}{The year to use for the water layer; defaults to 2021 unless the
 \code{tigris_year} option is otherwise set.}
-
-\item{cb}{If cb is set to TRUE, download a generalized (1:500k)
-counties file.  Defaults to FALSE (the most detailed TIGER file).}
 }
 \value{
 An output sf object representing the polygons in \code{input_sf} with
