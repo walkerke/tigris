@@ -14,9 +14,9 @@
 #' and American Samoa do not contain any 2010 PUMAs.
 #'
 #' @param state The two-digit FIPS code (string) of the state you want. Can also
-#'        be state name or state abbreviation. When `NULL` and combined with
-#'        `cb = TRUE`, a national dataset of PUMAs will be returned when
-#'        `year = 2019` only.
+#'        be state name or state abbreviation. When \code{NULL} and combined with
+#'        \code{cb = TRUE}, a national dataset of PUMAs will be returned when
+#'        \code{year} is either 2019 or 2020.
 #' @param cb If cb is set to TRUE, download a generalized (1:500k)
 #'        states file.  Defaults to FALSE (the most detailed TIGER/Line file)
 #' @inheritParams load_tiger_doc_template
@@ -43,7 +43,7 @@ pumas <- function(state = NULL, cb = FALSE, year = NULL, ...) {
   year <- set_tigris_year(year)
 
   if (is.null(state)) {
-    if (year == 2019 && cb == TRUE) {
+    if (year %in% 2019:2020 && cb) {
       state <- "us"
       message("Retrieving PUMAs for the entire United States")
     } else {
@@ -60,16 +60,24 @@ pumas <- function(state = NULL, cb = FALSE, year = NULL, ...) {
     suf <- "10"
   }
 
-  if (cb == TRUE) {
+  if (cb) {
 
-    if (year > 2019) {
-      stop("Cartographic boundary PUMAs are not yet available for years after 2019. Use the argument `year = 2019` instead to request your data.", call. = FALSE)
+    if (year > 2020) {
+      stop("Cartographic boundary PUMAs are not yet available for years after 2020. Use the argument `year = 2019` for 2010 PUMA boundaries or `year = 2020` for 2020 PUMA boundaries instead to request your data.", call. = FALSE)
     }
 
-    url <- sprintf("https://www2.census.gov/geo/tiger/GENZ%s/shp/cb_%s_%s_puma10_500k.zip",
-                   year, year, state)
+    if (year == 2020) {
+      message("The 2020 CB PUMAs use the new 2020 PUMA boundary definitions.")
+      url <- sprintf("https://www2.census.gov/geo/tiger/GENZ%s/shp/cb_%s_%s_puma20_500k.zip",
+                     cyear, cyear, state)
+    } else {
+      url <- sprintf("https://www2.census.gov/geo/tiger/GENZ%s/shp/cb_%s_%s_puma10_500k.zip",
+                     cyear, cyear, state)
 
-    if (year == 2013) url <- gsub("shp/", "", url)
+      if (year == 2013) url <- gsub("shp/", "", url)
+    }
+
+
 
 
   } else {

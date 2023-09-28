@@ -693,6 +693,7 @@ zctas <- function(cb = FALSE, starts_with = NULL, year = NULL, state = NULL, ...
         url <- sprintf("https://www2.census.gov/geo/tiger/PREVGENZ/zt/z500shp/zt%s_d00_shp.zip",
                        state)
       }
+
     } else if (year == 2010) {
 
       url <- "https://www2.census.gov/geo/tiger/GENZ2010/gz_2010_us_860_00_500k.zip"
@@ -737,6 +738,11 @@ zctas <- function(cb = FALSE, starts_with = NULL, year = NULL, state = NULL, ...
   }
 
   zcta <- load_tiger(url, tigris_type="zcta", ...)
+
+  # Handle split ZCTAs in 2000 CB file
+  if (year == 2000 && cb) {
+    warning("CB ZCTAs for 2000 include separate polygons for discontiguous parts.\nCombine by summarizing over the ZCTA column; this can be a time-consuming operation.")
+  }
 
   if (!is.null(starts_with)) {
     nms <- names(zcta)
