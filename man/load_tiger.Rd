@@ -15,24 +15,30 @@ load_tiger(
 )
 }
 \arguments{
-\item{url}{URL for zipped shapefile in TIGER database (constructed in calling function).}
+\item{url}{URL for zipped shapefile in TIGER database (constructed in calling
+function).}
 
-\item{refresh}{Whether to re-download shapefiles if cached. Defaults to value of the global
-option "tigris_refresh" if that option is, and FALSE if not. This will override the behavior
-set in "tigris_refresh" option if a value (TRUE or FALSE) is provided.}
+\item{refresh}{Whether to re-download shapefiles if cached. Defaults to value
+of the global option "tigris_refresh" if that option is, and FALSE if not.
+This will override the behavior set in "tigris_refresh" option if a value
+(TRUE or FALSE) is provided.}
 
 \item{tigris_type}{Added as an attribute to return object (used internally).}
 
-\item{class}{Class of return object. Must be one of "sf" (the default) or "sp".}
+\item{class}{Class of return object. Must be one of "sf" (the default) or
+"sp".}
 
 \item{progress_bar}{If set to FALSE, do not display download progress bar
 (helpful for R Markdown documents). Defaults to TRUE.}
 
 \item{keep_zipped_shapefile}{If set to TRUE, do not delete zipped shapefile
-(stored in temporary directory or TIGRIS_CACHE_DIR depending on the configuration of
-global option "tigris_use_cache"). Defaults to FALSE.}
+(stored in temporary directory or TIGRIS_CACHE_DIR depending on the
+configuration of global option "tigris_use_cache"). Defaults to FALSE.}
 
-\item{filter_by}{Geometry used to filter the output returned by the function.  Can be an sf object, an object of class \code{bbox}, or a length-4 vector of format \code{c(xmin, ymin, xmax, ymax)} that can be converted to a bbox. Geometries that intersect the input to \code{filter_by} will be returned.}
+\item{filter_by}{Geometry used to filter the output returned by the function.
+Can be an sf object, sfc object, an object of class \code{bbox}, or a length-4
+vector of format \code{c(xmin, ymin, xmax, ymax)} that can be converted to a
+bbox. Geometries that intersect the input to \code{filter_by} will be returned.}
 }
 \value{
 sf or sp data frame
