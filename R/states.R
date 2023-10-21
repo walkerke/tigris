@@ -40,25 +40,21 @@ states <- function(cb = FALSE, resolution = '500k', year = NULL, ...) {
 
       suf <- substr(year, 3, 4)
 
-      url <- sprintf("https://www2.census.gov/geo/tiger/PREVGENZ/st/st%sshp/st99_d%s_shp.zip",
-                     suf, suf)
+      url <- url_tiger("PREVGENZ/st/st%sshp/st99_d%s_shp", suf, suf)
 
     } else if (year == 2010) {
 
-      url <- sprintf("https://www2.census.gov/geo/tiger/GENZ2010/gz_2010_us_040_00_%s.zip",
-                     resolution)
+      url <- url_tiger("GENZ2010/gz_2010_us_040_00_%s", resolution)
 
     } else {
 
       if (year > 2013) {
 
-        url <- sprintf("https://www2.census.gov/geo/tiger/GENZ%s/shp/cb_%s_us_state_%s.zip",
-                       year, year, resolution)
+        url <- url_tiger("GENZ%s/shp/cb_%s_us_state_%s", year, year, resolution)
 
       } else {
 
-        url <- sprintf("https://www2.census.gov/geo/tiger/GENZ%s/shp/cb_%s_us_state_%s.zip",
-                       year, year, resolution)
+        url <- url_tiger("GENZ%s/shp/cb_%s_us_state_%s", year, year, resolution)
       }
 
     }
@@ -71,19 +67,17 @@ states <- function(cb = FALSE, resolution = '500k', year = NULL, ...) {
 
       suf <- substr(year, 3, 4)
 
-      url <- sprintf("https://www2.census.gov/geo/tiger/TIGER2010/STATE/%s/tl_2010_us_state%s.zip",
-                     year, suf)
+      url <- url_tiger("TIGER2010/STATE/%s/tl_2010_us_state%s", year, suf)
 
     } else {
 
-      url <- sprintf("https://www2.census.gov/geo/tiger/TIGER%s/STATE/tl_%s_us_state.zip",
-                     year, year)
+      url <- url_tiger("TIGER%s/STATE/tl_%s_us_state", year, year)
 
     }
 
   }
 
-  st <- load_tiger(url, tigris_type="state", ...)
+  st <- load_tiger(url, tigris_type = "state", ...)
 
   # Dissolve polygons for 1990 and 2000 CB
   if (cb && year %in% c(1990, 2000)) {

@@ -57,10 +57,9 @@ roads <- function(state, county, year = NULL, ...) {
 
   county <- validate_county(state, county, allow_null = FALSE)
 
-  url <- sprintf("https://www2.census.gov/geo/tiger/TIGER%s/ROADS/tl_%s_%s%s_roads.zip",
-                 year, year, state, county)
+  url <- url_tiger("TIGER%s/ROADS/tl_%s_%s%s_roads", year, year, state, county)
 
-  return(load_tiger(url, tigris_type="road", ...))
+  return(load_tiger(url, tigris_type = "road", ...))
 
 }
 
@@ -90,10 +89,10 @@ primary_roads <- function(year = NULL, ...) {
 
   year <- set_tigris_year(year)
 
-  url <- sprintf("https://www2.census.gov/geo/tiger/TIGER%s/PRIMARYROADS/tl_%s_us_primaryroads.zip",
-                 year, year)
+  url <- url_tiger("TIGER%s/PRIMARYROADS/tl_%s_us_primaryroads",
+                   year, year)
 
-  return(load_tiger(url, tigris_type="primary_roads", ...))
+  return(load_tiger(url, tigris_type = "primary_roads", ...))
 
 }
 
@@ -131,10 +130,10 @@ primary_secondary_roads <- function(state, year = NULL, ...) {
 
   state <- validate_state(state, allow_null = FALSE)
 
-  url <- sprintf("https://www2.census.gov/geo/tiger/TIGER%s/PRISECROADS/tl_%s_%s_prisecroads.zip",
-                 year, year, state)
+  url <- url_tiger("TIGER%s/PRISECROADS/tl_%s_%s_prisecroads",
+                   year, year, state)
 
-  return(load_tiger(url, tigris_type="prim_sec_roads", ...))
+  return(load_tiger(url, tigris_type = "prim_sec_roads", ...))
 
 }
 
@@ -160,10 +159,9 @@ rails <- function(year = NULL, ...) {
 
   year <- set_tigris_year(year)
 
-  url <- sprintf("https://www2.census.gov/geo/tiger/TIGER%s/RAILS/tl_%s_us_rails.zip",
-                 year, year)
+  url <- url_tiger("TIGER%s/RAILS/tl_%s_us_rails", year, year)
 
-  return(load_tiger(url, tigris_type="rails", ...))
+  return(load_tiger(url, tigris_type = "rails", ...))
 
 }
 
@@ -188,9 +186,9 @@ address_ranges <- function(state, county, year = NULL, ...) {
 
   county <- validate_county(state, county, allow_null = FALSE)
 
-  url <- sprintf("https://www2.census.gov/geo/tiger/TIGER%s/ADDRFEAT/tl_%s_%s%s_addrfeat.zip",
-                 year, year, state, county)
+  url <- url_tiger("TIGER%s/ADDRFEAT/tl_%s_%s%s_addrfeat",
+                   year, year, state, county)
 
-  return(load_tiger(url, tigris_type="address_range", ...))
+  return(load_tiger(url, tigris_type = "address_range", ...))
 
 }

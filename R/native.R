@@ -32,10 +32,10 @@ native_areas <- function(cb = FALSE, year = NULL, ...) {
   year <- set_tigris_year(year)
 
   if (cb == TRUE) {
-    url <- sprintf("https://www2.census.gov/geo/tiger/GENZ%s/shp/cb_%s_us_aiannh_500k.zip",
+    url <- url_tiger("GENZ%s/shp/cb_%s_us_aiannh_500k",
                    year, year)
   } else {
-    url <- sprintf("https://www2.census.gov/geo/tiger/TIGER%s/AIANNH/tl_%s_us_aiannh.zip",
+    url <- url_tiger("TIGER%s/AIANNH/tl_%s_us_aiannh",
                    year, year)
   }
 
@@ -73,14 +73,14 @@ tribal_subdivisions_national <- function(cb = FALSE, year = NULL, ...) {
   year <- set_tigris_year(year)
 
   if (cb == TRUE) {
-    url <- sprintf("https://www2.census.gov/geo/tiger/GENZ%s/shp/cb_%s_us_aitsn_500k.zip",
+    url <- url_tiger("GENZ%s/shp/cb_%s_us_aitsn_500k",
                    year, year)
   } else {
     if (year < 2015) {
-      url <- sprintf("https://www2.census.gov/geo/tiger/TIGER%s/AITS/tl_%s_us_aitsn.zip",
+      url <- url_tiger("TIGER%s/AITS/tl_%s_us_aitsn",
                      year, year)
     } else {
-      url <- sprintf("https://www2.census.gov/geo/tiger/TIGER%s/AITSN/tl_%s_us_aitsn.zip",
+      url <- url_tiger("TIGER%s/AITSN/tl_%s_us_aitsn",
                      year, year)
     }
   }
@@ -109,10 +109,10 @@ alaska_native_regional_corporations <- function(cb = FALSE, year = NULL, ...) {
   year <- set_tigris_year(year)
 
   if (cb == TRUE) {
-    url <- sprintf("https://www2.census.gov/geo/tiger/GENZ%s/shp/cb_%s_02_anrc_500k.zip",
+    url <- url_tiger("GENZ%s/shp/cb_%s_02_anrc_500k",
                    year, year)
   } else {
-    url <- sprintf("https://www2.census.gov/geo/tiger/TIGER%s/ANRC/tl_%s_02_anrc.zip",
+    url <- url_tiger("TIGER%s/ANRC/tl_%s_02_anrc",
                    year, year)
   }
 
@@ -160,10 +160,10 @@ tribal_block_groups <- function(cb = FALSE, year = NULL, ...) {
   year <- set_tigris_year(year)
 
   if (cb == TRUE) {
-    url <- sprintf("https://www2.census.gov/geo/tiger/GENZ%s/shp/cb_%s_us_tbg_500k.zip",
+    url <- url_tiger("GENZ%s/shp/cb_%s_us_tbg_500k",
                    year, year)
   } else {
-    url <- sprintf("https://www2.census.gov/geo/tiger/TIGER%s/TBG/tl_%s_us_tbg.zip",
+    url <- url_tiger("TIGER%s/TBG/tl_%s_us_tbg",
                    year, year)
   }
 
@@ -206,10 +206,10 @@ tribal_census_tracts <- function(cb = FALSE, year = NULL, ...) {
   year <- set_tigris_year(year)
 
   if (cb == TRUE) {
-    url <- sprintf("https://www2.census.gov/geo/tiger/GENZ%s/shp/cb_%s_us_ttract_500k.zip",
+    url <- url_tiger("GENZ%s/shp/cb_%s_us_ttract_500k",
                    year, year)
   } else {
-    url <- sprintf("https://www2.census.gov/geo/tiger/TIGER%s/TTRACT/tl_%s_us_ttract.zip",
+    url <- url_tiger("TIGER%s/TTRACT/tl_%s_us_ttract",
                    year, year)
   }
 

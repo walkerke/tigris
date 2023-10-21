@@ -57,15 +57,13 @@ congressional_districts <- function(state = NULL, cb = FALSE, resolution = '500k
 
   if (cb == TRUE) {
 
-    url <- sprintf("https://www2.census.gov/geo/tiger/GENZ%s/shp/cb_%s_us_cd%s_%s.zip",
-                   year, year, congress, resolution)
+    url <- url_tiger("GENZ%s/shp/cb_%s_us_cd%s_%s", year, year, congress, resolution)
 
-    if (year == 2013) url <- gsub("shp/", "", url)
+    if (year == 2013) url <- remove_shp(url)
 
   } else {
 
-    url <- sprintf("https://www2.census.gov/geo/tiger/TIGER%s/CD/tl_%s_us_cd%s.zip",
-                   year, year, congress)
+    url <- url_tiger("TIGER%s/CD/tl_%s_us_cd%s", year, year, congress)
 
   }
 
@@ -153,27 +151,24 @@ state_legislative_districts <- function(state= NULL, house = "upper",
 
     if (year == 2010) {
       if (type == "sldu") {
-        url <- sprintf("https://www2.census.gov/geo/tiger/GENZ2010/gz_2010_%s_610_u2_500k.zip",
-                       state)
+        url <- url_tiger("GENZ2010/gz_2010_%s_610_u2_500k", state)
       } else if (type == "sldl") {
-        url <- sprintf("https://www2.census.gov/geo/tiger/GENZ2010/gz_2010_%s_620_l2_500k.zip",
-                       state)
+        url <- url_tiger("GENZ2010/gz_2010_%s_620_l2_500k", state)
       }
     }
 
-    url <- sprintf("https://www2.census.gov/geo/tiger/GENZ%s/shp/cb_%s_%s_%s_500k.zip",
-                   year, year, state, type)
+    url <- url_tiger("GENZ%s/shp/cb_%s_%s_%s_500k", year, year, state, type)
 
-    if (year == 2013) url <- gsub("shp/", "", url)
+    if (year == 2013) url <- remove_shp(url)
 
   } else {
 
     if (year %in% c(2000, 2010)) {
-      url <- sprintf("https://www2.census.gov/geo/tiger/TIGER2010/%s/%s/tl_2010_%s_%s%s.zip",
-                     toupper(type), year, state, type, substr(year, 3, 4))
+      url <- url_tiger("TIGER2010/%s/%s/tl_2010_%s_%s%s",
+                       toupper(type), year, state, type, substr(year, 3, 4))
     } else {
-      url <- sprintf("https://www2.census.gov/geo/tiger/TIGER%s/%s/tl_%s_%s_%s.zip",
-                     year, toupper(type), year, state, type)
+      url <- url_tiger("TIGER%s/%s/tl_%s_%s_%s",
+                       year, toupper(type), year, state, type)
     }
 
   }
@@ -245,7 +240,7 @@ voting_districts <- function(state = NULL, county = NULL, cb = FALSE, year = 202
 
   if (cb == TRUE) {
 
-    url <- sprintf("https://www2.census.gov/geo/tiger/GENZ2020/shp/cb_2020_%s_vtd_500k.zip", state)
+    url <- url_tiger("GENZ2020/shp/cb_2020_%s_vtd_500k", state)
 
     vtds <- load_tiger(url, tigris_type = "voting_districts", ...)
 
@@ -261,19 +256,15 @@ voting_districts <- function(state = NULL, county = NULL, cb = FALSE, year = 202
 
     if (year == 2012) {
 
-      url <- paste0("https://www2.census.gov/geo/tiger/TIGER2012/VTD/tl_2012_",
-                    state,
-                    "_vtd10.zip")
+      url <- url_tiger("TIGER2012/VTD/tl_2012_%s_vtd10", state)
     } else {
       if (!is.null(county)) {
 
         county <- validate_county(state, county)
 
-        url <- sprintf("https://www2.census.gov/geo/tiger/TIGER2020PL/LAYER/VTD/2020/tl_2020_%s%s_vtd20.zip",
-                       state, county)
+        url <- url_tiger("TIGER2020PL/LAYER/VTD/2020/tl_2020_%s%s_vtd20", state, county)
       } else {
-        url <- sprintf("https://www2.census.gov/geo/tiger/TIGER2020PL/LAYER/VTD/2020/tl_2020_%s_vtd20.zip",
-                       state)
+        url <- url_tiger("TIGER2020PL/LAYER/VTD/2020/tl_2020_%s_vtd20", state)
       }
     }
 

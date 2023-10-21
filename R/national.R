@@ -23,7 +23,7 @@ regions <- function(resolution = '500k', year = NULL, ...) {
 
   check_tigris_resolution(resolution)
 
-  url <- sprintf("https://www2.census.gov/geo/tiger/GENZ%s/shp/cb_%s_us_region_%s.zip",
+  url <- url_tiger("GENZ%s/shp/cb_%s_us_region_%s",
                  year, year, resolution)
 
   rgns <- load_tiger(url, tigris_type = "region", ...)
@@ -57,7 +57,7 @@ divisions <- function(resolution = '500k', year = NULL, ...) {
 
   check_tigris_resolution(resolution)
 
-  url <- sprintf("https://www2.census.gov/geo/tiger/GENZ%s/shp/cb_%s_us_division_%s.zip",
+  url <- url_tiger("GENZ%s/shp/cb_%s_us_division_%s",
                  year, year, resolution)
 
   div <- load_tiger(url, tigris_type = "division", ...)
@@ -90,7 +90,7 @@ nation <- function(resolution = '5m', year = NULL, ...) {
 
   check_tigris_resolution(resolution, values = c('5m', '20m'))
 
-  url <- sprintf("https://www2.census.gov/geo/tiger/GENZ%s/shp/cb_%s_us_nation_%s.zip",
+  url <- url_tiger("GENZ%s/shp/cb_%s_us_nation_%s",
                  year, year, resolution)
 
   nat <- load_tiger(url, tigris_type = "nation", ...)

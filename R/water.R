@@ -40,10 +40,10 @@ area_water <- function(state, county, year = NULL, ...) {
 
   county <- validate_county(state, county, allow_null = FALSE)
 
-  url <- sprintf("https://www2.census.gov/geo/tiger/TIGER%s/AREAWATER/tl_%s_%s%s_areawater.zip",
-                 year, year, state, county)
+  url <- url_tiger("TIGER%s/AREAWATER/tl_%s_%s%s_areawater",
+                   year, year, state, county)
 
-  return(load_tiger(url, tigris_type="area_water", ...))
+  return(load_tiger(url, tigris_type = "area_water", ...))
 
 }
 
@@ -91,10 +91,10 @@ linear_water <- function(state, county, year = NULL, ...) {
 
   county <- validate_county(state, county, allow_null = FALSE)
 
-  url <- sprintf("https://www2.census.gov/geo/tiger/TIGER%s/LINEARWATER/tl_%s_%s%s_linearwater.zip",
-                 year, year, state, county)
+  url <- url_tiger("TIGER%s/LINEARWATER/tl_%s_%s%s_linearwater",
+                   year, year, state, county)
 
-  return(load_tiger(url, tigris_type="linear_water", ...))
+  return(load_tiger(url, tigris_type = "linear_water", ...))
 
 }
 
@@ -109,13 +109,11 @@ coastline <- function(year = NULL, ...) {
   year <- set_tigris_year(year)
 
   if (year > 2016) {
-    url <- sprintf("https://www2.census.gov/geo/tiger/TIGER%s/COASTLINE/tl_%s_us_coastline.zip",
-                   year, year)
+    url <- url_tiger("TIGER%s/COASTLINE/tl_%s_us_coastline", year, year)
   } else {
-    url <- sprintf("https://www2.census.gov/geo/tiger/TIGER%s/COAST/tl_%s_us_coastline.zip",
-                   year, year)
+    url <- url_tiger("TIGER%s/COAST/tl_%s_us_coastline", year, year)
   }
 
-  return(load_tiger(url, tigris_type="coastline", ...))
+  return(load_tiger(url, tigris_type = "coastline", ...))
 
 }

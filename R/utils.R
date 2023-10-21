@@ -271,3 +271,25 @@ check_tigris_resolution <- function(resolution,
 
   stop(msg, call. = FALSE)
 }
+
+
+#' Set tigris URL
+#'
+#' [url_tiger()] returns a download URL for a tigris shapefile.
+#'
+#' @inheritParams sprintf
+#' @noRd
+url_tiger <- function(fmt,
+                      ...,
+                      base_url = "https://www2.census.gov/geo/tiger/",
+                      ext = ".zip") {
+
+  paste0(base_url, sprintf(fmt = fmt, ...), ext)
+
+}
+
+#' @noRd
+remove_shp <- function(x) {
+  gsub("shp/", "", x)
+}
+

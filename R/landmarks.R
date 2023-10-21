@@ -21,8 +21,7 @@ military <- function(year = NULL, ...) {
 
   year <- set_tigris_year(year)
 
-  url <- sprintf("https://www2.census.gov/geo/tiger/TIGER%s/MIL/tl_%s_us_mil.zip",
-                 year, year)
+  url <- url_tiger("TIGER%s/MIL/tl_%s_us_mil", year, year)
 
   return(load_tiger(url, tigris_type = "military", ...))
 
@@ -65,13 +64,11 @@ landmarks <- function(state, type = "point", year = NULL, ...) {
   state <- validate_state(state)
 
   if (type == "area") {
-    url <- sprintf("https://www2.census.gov/geo/tiger/TIGER%s/AREALM/tl_%s_%s_arealm.zip",
-                   year, year, state)
+    url <- url_tiger("TIGER%s/AREALM/tl_%s_%s_arealm", year, year, state)
     return(load_tiger(url, tigris_type = "area_landmark", ...))
 
   } else if (type == "point") {
-    url <- sprintf("https://www2.census.gov/geo/tiger/TIGER%s/POINTLM/tl_%s_%s_pointlm.zip",
-                   year, year, state)
+    url <- url_tiger("TIGER%s/POINTLM/tl_%s_%s_pointlm", year, year, state)
     return(load_tiger(url, tigris_type = "point_landmark", ...))
 
   } else {

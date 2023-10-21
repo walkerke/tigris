@@ -40,14 +40,14 @@ places <- function(state = NULL, cb = FALSE, year = NULL, ...) {
   }
 
   if (cb == TRUE) {
-    url <- sprintf("https://www2.census.gov/geo/tiger/GENZ%s/shp/cb_%s_%s_place_500k.zip",
-                   year, year, state)
+    url_fmt <- "GENZ%s/shp/cb_%s_%s_place_500k"
   } else {
-    url <- sprintf("https://www2.census.gov/geo/tiger/TIGER%s/PLACE/tl_%s_%s_place.zip",
-                   year, year, state)
+    url_fmt <- "TIGER%s/PLACE/tl_%s_%s_place"
   }
 
-  return(load_tiger(url, tigris_type="place", ...))
+  url <- url_tiger(url_fmt, year, year, state)
+
+  return(load_tiger(url, tigris_type = "place", ...))
 
 }
 

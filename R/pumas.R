@@ -68,22 +68,17 @@ pumas <- function(state = NULL, cb = FALSE, year = NULL, ...) {
 
     if (year == 2020) {
       message("The 2020 CB PUMAs use the new 2020 PUMA boundary definitions.")
-      url <- sprintf("https://www2.census.gov/geo/tiger/GENZ%s/shp/cb_%s_%s_puma20_500k.zip",
-                     cyear, cyear, state)
+      url <- url_tiger("GENZ%s/shp/cb_%s_%s_puma20_500k", year, year, state)
+
     } else {
-      url <- sprintf("https://www2.census.gov/geo/tiger/GENZ%s/shp/cb_%s_%s_puma10_500k.zip",
-                     cyear, cyear, state)
+      url <- url_tiger("GENZ%s/shp/cb_%s_%s_puma10_500k", year, year, state)
 
-      if (year == 2013) url <- gsub("shp/", "", url)
+      if (year == 2013) url <- remove_shp(url)
     }
-
-
-
 
   } else {
 
-    url <- sprintf("https://www2.census.gov/geo/tiger/TIGER%s/PUMA/tl_%s_%s_puma%s.zip",
-                   year, year, state, suf)
+    url <- url_tiger("TIGER%s/PUMA/tl_%s_%s_puma%s", year, year, state, suf)
   }
 
   pm <- load_tiger(url, tigris_type = "puma", ...)

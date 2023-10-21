@@ -109,7 +109,7 @@ load_tiger <- function(url,
 
       }
 
-      if (refresh | !file.exists(shp_loc)) {
+      if (refresh || !file.exists(shp_loc)) {
 
         unzip_tiger <- function() {
           unzip(file_loc, exdir = cache_dir, overwrite=TRUE)
