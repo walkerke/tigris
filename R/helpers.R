@@ -647,7 +647,7 @@ erase_water <- function(input_sf,
   }
 
   if (is.null(year)) {
-    year <- getOption("tigris_year", 2020)
+    year <- getOption("tigris_year", 2022)
   }
 
   # Define st_erase function internally
@@ -704,7 +704,7 @@ erase_water <- function(input_sf,
 #' `@inheritSection load_tiger_doc_template Additional Arguments`
 #'
 #' @param ... arguments to be passed to internal function `load_tiger`, which is not exported. See Additional Arguments.
-#' @param year the data year; defaults to 2021
+#' @param year the data year; defaults to 2022
 #'
 #' @section Additional Arguments:
 #' Additional arguments that can be passed in `...` are:

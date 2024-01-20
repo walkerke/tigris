@@ -11,7 +11,7 @@ urban_areas(cb = FALSE, year = NULL, criteria = NULL, ...)
 cartographic boundary file.  Defaults to FALSE (the most detailed
 TIGER/Line file).}
 
-\item{year}{the data year; defaults to 2021}
+\item{year}{the data year; defaults to 2022}
 
 \item{criteria}{If set to "2020" and the year is 2020, will download the new 2020 urban areas criteria. Not available for cartographic boundary shapefiles / other years at the moment.}
 

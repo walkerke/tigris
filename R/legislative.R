@@ -5,7 +5,7 @@
 #'
 #' Congressional districts for the 108th through 112th sessions were established by the states based on the result of the 2000 Census. Congressional districts for the 113th through 116th sessions were established by the states based on the result of the 2010 Census. Boundaries are effective until January of odd number years (for example, January 2015, January 2017, etc.), unless a state initiative or court ordered redistricting requires a change. All states established new congressional districts in 2011-2012, with the exception of the seven single member states (Alaska, Delaware, Montana, North Dakota, South Dakota, Vermont, and Wyoming).
 #'
-#' The current default in tigris reflects boundaries for the 116th Congress, which is available as of February 2021 for years 2018 through 2021.  Older congressional district boundaries back to 2011 can be obtained by supplying the appropriate year.
+#' The current default in tigris reflects boundaries for the 118th Congress, which is available for years 2022 and 2023.  Older congressional district boundaries back to 2011 can be obtained by supplying the appropriate year.
 #'
 #' @param state The two-digit FIPS code (string) of the state you want, or a
 #'        vector of codes if you want multiple states. Can also be state name
@@ -24,9 +24,9 @@
 #' library(tigris)
 #' library(leaflet)
 #'
-#' cd116 <- congressional_districts(cb = TRUE, resolution = '20m')
+#' cd118 <- congressional_districts(cb = TRUE, resolution = '20m', year = 2022)
 #'
-#' leaflet(cd116) %>%
+#' leaflet(cd118) %>%
 #'    addTiles() %>%
 #'    addPolygons()
 #' }
@@ -34,18 +34,18 @@ congressional_districts <- function(state = NULL, cb = FALSE, resolution = '500k
 
   if (is.null(year)) {
 
-    year <- getOption("tigris_year", 2021)
+    year <- getOption("tigris_year", 2022)
 
     message(sprintf("Retrieving data for the year %s", year))
 
   }
 
-  if (year < 2013 && cb == TRUE) {
+  if (year < 2013 && cb) {
     stop("`cb = TRUE` for congressional districts is unavailable prior to 2013. Regular TIGER/Line files are available for 2010 through 2010 with `cb = FALSE`",
          call. = FALSE)
   }
 
-  if (year %in% 2018:2022) {
+  if (year %in% 2018:2021) {
     congress <- "116"
   } else if (year %in% 2016:2017) {
     congress <- "115"
@@ -57,6 +57,8 @@ congressional_districts <- function(state = NULL, cb = FALSE, resolution = '500k
     congress <- "112"
   } else if (year == 2010) {
     congress <- "111"
+  } else if (year %in% 2022:2023) {
+    congress <- "118"
   }
 
   if (year < 2010) {
@@ -75,7 +77,7 @@ congressional_districts <- function(state = NULL, cb = FALSE, resolution = '500k
 
   cyear <- as.character(year)
 
-  if (cb == TRUE) {
+  if (cb) {
 
     url <- sprintf("https://www2.census.gov/geo/tiger/GENZ%s/shp/cb_%s_us_cd%s_%s.zip",
                    cyear, cyear, congress, resolution)
@@ -84,9 +86,20 @@ congressional_districts <- function(state = NULL, cb = FALSE, resolution = '500k
 
   } else {
 
-    url <- sprintf("https://www2.census.gov/geo/tiger/TIGER%s/CD/tl_%s_us_cd%s.zip",
-                   cyear, cyear, congress)
-
+    if (year == 2023) {
+      if (is.null(state)) {
+        state_codes <- c(state.abb, "DC", "PR")
+        cds <- lapply(state_codes, function(x) {
+          tigris::congressional_districts(state = x)
+        }) %>%
+          rbind_tigris()
+      } else {
+        url <- sprintf("https://www2.census.gov/geo/tiger/TIGER%s/CD/tl_%s_%s_cd%s.zip", cyear, cyear, validate_state(state), congress)
+      }
+    } else {
+      url <- sprintf("https://www2.census.gov/geo/tiger/TIGER%s/CD/tl_%s_us_cd%s.zip",
+                     cyear, cyear, congress)
+    }
   }
 
   cds <- load_tiger(url, tigris_type="congressional_districts", ...)
@@ -141,7 +154,7 @@ state_legislative_districts <- function(state= NULL, house = "upper",
 
   if (is.null(year)) {
 
-    year <- getOption("tigris_year", 2021)
+    year <- getOption("tigris_year", 2022)
 
     message(sprintf("Retrieving data for the year %s", year))
 

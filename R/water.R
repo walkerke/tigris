@@ -27,7 +27,7 @@ area_water <- function(state, county, year = NULL, ...) {
 
   if (is.null(year)) {
 
-    year <- getOption("tigris_year", 2021)
+    year <- getOption("tigris_year", 2022)
 
     message(sprintf("Retrieving data for the year %s", year))
 
@@ -101,7 +101,7 @@ linear_water <- function(state, county, year = NULL, ...) {
 
   if (is.null(year)) {
 
-    year <- getOption("tigris_year", 2021)
+    year <- getOption("tigris_year", 2022)
 
     message(sprintf("Retrieving data for the year %s", year))
 

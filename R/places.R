@@ -27,7 +27,7 @@ places <- function(state = NULL, cb = FALSE, year = NULL, ...) {
 
   if (is.null(year)) {
 
-    year <- getOption("tigris_year", 2021)
+    year <- getOption("tigris_year", 2022)
 
     message(sprintf("Retrieving data for the year %s", year))
 
