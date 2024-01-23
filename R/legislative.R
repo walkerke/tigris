@@ -85,14 +85,17 @@ congressional_districts <- function(state = NULL, cb = FALSE, resolution = '500k
     if (year == 2013) url <- gsub("shp/", "", url)
 
   } else {
-
-    if (year == 2023) {
+    # Have to handle 2022 and 2023 differently as national CD file is not available
+    if (year %in% 2022:2023) {
       if (is.null(state)) {
-        state_codes <- c(state.abb, "DC", "PR")
+        state_codes <- unique(tigris::fips_codes$state_code)
+        state_codes <- state_codes[state_codes != "74"]
         cds <- lapply(state_codes, function(x) {
-          tigris::congressional_districts(state = x)
+          suppressMessages(tigris::congressional_districts(state = x, year = year))
         }) %>%
           rbind_tigris()
+
+        return(cds)
       } else {
         url <- sprintf("https://www2.census.gov/geo/tiger/TIGER%s/CD/tl_%s_%s_cd%s.zip", cyear, cyear, validate_state(state), congress)
       }
