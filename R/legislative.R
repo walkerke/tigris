@@ -5,7 +5,7 @@
 #'
 #' Congressional districts for the 108th through 112th sessions were established by the states based on the result of the 2000 Census. Congressional districts for the 113th through 116th sessions were established by the states based on the result of the 2010 Census. Boundaries are effective until January of odd number years (for example, January 2015, January 2017, etc.), unless a state initiative or court ordered redistricting requires a change. All states established new congressional districts in 2011-2012, with the exception of the seven single member states (Alaska, Delaware, Montana, North Dakota, South Dakota, Vermont, and Wyoming).
 #'
-#' The current default in tigris reflects boundaries for the 116th Congress, which is available as of February 2021 for years 2018 through 2021.  Older congressional district boundaries back to 2011 can be obtained by supplying the appropriate year.
+#' The current default in tigris reflects boundaries for the The current default in tigris reflects boundaries for the 118th Congress, which is available for years 2022 and 2023.  Older congressional district boundaries back to 2011 can be obtained by supplying the appropriate year.
 #'
 #' @param state The two-digit FIPS code (string) of the state you want, or a
 #'        vector of codes if you want multiple states. Can also be state name
@@ -13,7 +13,7 @@
 #' @param cb If cb is set to TRUE, download a generalized (1:500k)
 #'        cartographic boundary file.  Defaults to FALSE (the most detailed
 #'        TIGER/Line file).
-#' @param resolution The resolution of the cartographic boundary file (if cb == TRUE).
+#' @param resolution The resolution of the cartographic boundary file (if `cb = TRUE`).
 #'        Defaults to '500k'; options include '5m' (1:5 million) and '20m' (1:20 million).
 #' @inheritParams load_tiger_doc_template
 #' @inheritSection load_tiger_doc_template Additional Arguments
@@ -24,9 +24,9 @@
 #' library(tigris)
 #' library(leaflet)
 #'
-#' cd116 <- congressional_districts(cb = TRUE, resolution = '20m')
+#' cd118 <- congressional_districts(cb = TRUE, resolution = '20m', year = 2022)
 #'
-#' leaflet(cd116) %>%
+#' leaflet(cd118) %>%
 #'    addTiles() %>%
 #'    addPolygons()
 #' }
@@ -34,12 +34,14 @@ congressional_districts <- function(state = NULL, cb = FALSE, resolution = '500k
 
   year <- set_tigris_year(year, min_year = 2010)
 
-  if (year < 2013 && cb == TRUE) {
+  if (year < 2013 && cb) {
     stop("`cb = TRUE` for congressional districts is unavailable prior to 2013. Regular TIGER/Line files are available for 2010 through 2010 with `cb = FALSE`",
          call. = FALSE)
   }
 
-  if (year %in% 2018:2022) {
+  if (year %in% 2022:2023) {
+    congress <- "118"
+  } else if (year %in% 2018:2021) {
     congress <- "116"
   } else if (year %in% 2016:2017) {
     congress <- "115"
@@ -55,16 +57,30 @@ congressional_districts <- function(state = NULL, cb = FALSE, resolution = '500k
 
   check_tigris_resolution(resolution)
 
-  if (cb == TRUE) {
+  if (cb) {
 
     url <- url_tiger("GENZ%s/shp/cb_%s_us_cd%s_%s", year, year, congress, resolution)
 
     if (year == 2013) url <- remove_shp(url)
 
   } else {
+    # Have to handle 2022 and 2023 differently as national CD file is not available
+    if (year %in% 2022:2023) {
+      if (is.null(state)) {
+        state_codes <- unique(tigris::fips_codes$state_code)
+        state_codes <- state_codes[state_codes != "74"]
+        cds <- lapply(state_codes, function(x) {
+          suppressMessages(tigris::congressional_districts(state = x, year = year))
+        }) %>%
+          rbind_tigris()
 
-    url <- url_tiger("TIGER%s/CD/tl_%s_us_cd%s", year, year, congress)
+        return(cds)
+      }
 
+      url <- url_tiger("TIGER%s/CD/tl_%s_%s_cd%s", year, year, validate_state(state), congress)
+    } else {
+      url <- url_tiger("TIGER%s/CD/tl_%s_us_cd%s", year, year, congress)
+    }
   }
 
   cds <- load_tiger(url, tigris_type="congressional_districts", ...)
@@ -119,7 +135,7 @@ state_legislative_districts <- function(state= NULL, house = "upper",
   year <- set_tigris_year(year)
 
   if (is.null(state)) {
-    if (year > 2018 && cb == TRUE) {
+    if (year > 2018 && cb) {
       state <- "us"
       message("Retrieving state legislative districts for the entire United States")
     } else {
@@ -147,7 +163,7 @@ state_legislative_districts <- function(state= NULL, house = "upper",
 
   }
 
-  if (cb == TRUE) {
+  if (cb) {
 
     if (year == 2010) {
       if (type == "sldu") {
@@ -221,13 +237,13 @@ state_legislative_districts <- function(state= NULL, house = "upper",
 #' }
 voting_districts <- function(state = NULL, county = NULL, cb = FALSE, year = 2020, ...) {
 
-  if (year != 2020 && cb == TRUE) {
+  if (year != 2020 && cb) {
     stop("Cartographic boundary voting districts files are only available for 2020.",
          call. = FALSE)
   }
 
   if (is.null(state)) {
-    if (year > 2018 && cb == TRUE) {
+    if (year > 2018 && cb) {
       state <- "us"
       message("Retrieving voting districts for the entire United States")
     } else {
@@ -238,7 +254,7 @@ voting_districts <- function(state = NULL, county = NULL, cb = FALSE, year = 202
     state <- validate_state(state, allow_null = FALSE)
   }
 
-  if (cb == TRUE) {
+  if (cb) {
 
     url <- url_tiger("GENZ2020/shp/cb_2020_%s_vtd_500k", state)
 
