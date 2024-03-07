@@ -28,7 +28,7 @@ places <- function(state = NULL, cb = FALSE, year = NULL, ...) {
   year <- set_tigris_year(year)
 
   if (is.null(state)) {
-    if (year > 2018 && cb == TRUE) {
+    if (year > 2018 && cb) {
       state <- "us"
       message("Retrieving Census-designated places for the entire United States")
     } else {
@@ -39,7 +39,7 @@ places <- function(state = NULL, cb = FALSE, year = NULL, ...) {
     state <- validate_state(state, allow_null = FALSE)
   }
 
-  if (cb == TRUE) {
+  if (cb) {
     url_fmt <- "GENZ%s/shp/cb_%s_%s_place_500k"
   } else {
     url_fmt <- "TIGER%s/PLACE/tl_%s_%s_place"

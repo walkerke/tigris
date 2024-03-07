@@ -158,7 +158,7 @@ simpleCapSO <- function(x) {
 
 
 # Function to convert input shape to WKT for filter_by param
-input_to_wkt <- function(input) {
+input_to_wkt <- function(input, arg = caller_arg(input), call = caller_env()) {
   if (is.null(input)) {
     return(character(0))
   }
@@ -168,7 +168,12 @@ input_to_wkt <- function(input) {
       names(input) <- c("xmin", "ymin", "xmax", "ymax")
       input <- sf::st_bbox(input, crs = 4269)
     } else {
-      stop("Invalid input. Supply an sf, sfc, bbox, or a length-4 vector that can be converted to a bbox.", call. = FALSE)
+      abort(
+        c(paste0("Invalid input `", arg, "`"),
+          "i" = "Supply an sf, sfc, bbox, or a length-4 vector that can be converted to a bbox."
+        ),
+        call = call
+      )
     }
   }
 
@@ -195,21 +200,22 @@ input_to_wkt <- function(input) {
 #' @inheritParams source
 #' @noRd
 set_tigris_year <- function(year = NULL,
-                            default = 2021,
+                            default = 2022,
                             min_year = 2011,
-                            max_year = 2022,
-                            quiet = FALSE) {
+                            max_year = 2023,
+                            quiet = FALSE,
+                            call = caller_env()) {
   if (is.null(year)) {
     year <- getOption("tigris_year", default)
 
     if (!quiet) {
-      message(sprintf("Retrieving data for the year %s", year))
+      inform(sprintf("Retrieving data for the year %s", year))
     }
   }
 
   year <- as.integer(year)
 
-  check_tigris_year(year, min_year = min_year, max_year = max_year)
+  check_tigris_year(year, min_year = min_year, max_year = max_year, call = call)
 
   year
 }
@@ -220,12 +226,12 @@ set_tigris_year <- function(year = NULL,
 #' @noRd
 check_tigris_year <- function(year,
                               min_year = 2011,
-                              max_year = 2021,
-                              call = sys.call(sys.parent(2L))) {
+                              max_year = 2023,
+                              call = caller_env()) {
   if (length(year) > 1 || length(year) == 0 || nchar(year) != 4) {
-    stop(
+    abort(
       "`year` must be a an integer or string with a single year.",
-      call. = FALSE
+      call = call
     )
   }
 
@@ -250,7 +256,7 @@ check_tigris_year <- function(year,
     ), fname, limit_year
   )
 
-  stop(msg, call. = FALSE)
+  abort(msg, call = call)
 }
 
 

@@ -8,7 +8,7 @@
 #'
 #' @param cb If cb is set to TRUE, download a generalized (1:500k)
 #'        states file.  Defaults to FALSE (the most detailed TIGER/Line file)
-#' @param resolution The resolution of the cartographic boundary file (if cb == TRUE).
+#' @param resolution The resolution of the cartographic boundary file (if `cb = TRUE`).
 #'        Defaults to '500k'; options include '5m' (1:5 million) and '20m' (1:20 million).
 #' @inheritParams load_tiger_doc_template
 #' @inheritSection load_tiger_doc_template Additional Arguments
@@ -34,7 +34,7 @@ states <- function(cb = FALSE, resolution = '500k', year = NULL, ...) {
 
   year <- set_tigris_year(year)
 
-  if (cb == TRUE) {
+  if (cb) {
 
     if (year %in% c(1990, 2000)) {
 

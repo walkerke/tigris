@@ -32,7 +32,7 @@
 #'        or state abbreviation.
 #' @param cb If cb is set to TRUE, download a generalized (1:500k)
 #'        counties file.  Defaults to FALSE (the most detailed TIGER file).
-#' @param resolution The resolution of the cartographic boundary file (if cb == TRUE).
+#' @param resolution The resolution of the cartographic boundary file (if `cb = TRUE`).
 #'        Defaults to '500k'; options include '5m' (1:5 million) and '20m' (1:20 million).
 #' @inheritParams load_tiger_doc_template
 #' @inheritSection load_tiger_doc_template Additional Arguments
@@ -57,7 +57,7 @@ counties <- function(state = NULL, cb = FALSE, resolution = '500k', year = NULL,
 
   year <- set_tigris_year(year)
 
-  if (cb == TRUE) {
+  if (cb) {
 
     if (year %in% c(1990, 2000)) {
 
@@ -228,7 +228,7 @@ tracts <- function(state = NULL, county = NULL, cb = FALSE, resolution = "500k",
   }
 
   if (is.null(state)) {
-    if (year > 2018 && cb == TRUE) {
+    if (year > 2018 && cb) {
       state <- "us"
       message("Retrieving Census tracts for the entire United States")
     } else {
@@ -239,7 +239,7 @@ tracts <- function(state = NULL, county = NULL, cb = FALSE, resolution = "500k",
     state <- validate_state(state, allow_null = FALSE)
   }
 
-  if (cb == TRUE) {
+  if (cb) {
 
     if (year %in% c(1990, 2000)) {
 
@@ -393,7 +393,7 @@ school_districts <- function(state = NULL, type = 'unified',
   year <- set_tigris_year(year)
 
   if (is.null(state)) {
-    if (year > 2018 && cb == TRUE) {
+    if (year > 2018 && cb) {
       state <- "us"
       message("Retrieving school districts for the entire United States")
     } else {
@@ -414,7 +414,7 @@ school_districts <- function(state = NULL, type = 'unified',
     stop("Invalid school district type.  Valid types are 'unified', 'elementary', and 'secondary'.", call. = FALSE)
   }
 
-  if (cb == TRUE) {
+  if (cb) {
 
     url <- url_tiger("GENZ%s/shp/cb_%s_%s_%s_500k", year, year, state, type)
 
@@ -479,7 +479,7 @@ block_groups <- function(state = NULL, county = NULL, cb = FALSE, year = NULL, .
   year <- set_tigris_year(year, min_year = 1990)
 
   if (is.null(state)) {
-    if (year > 2018 && cb == TRUE) {
+    if (year > 2018 && cb) {
       state <- "us"
       message("Retrieving Census block groups for the entire United States")
     } else {
@@ -490,7 +490,7 @@ block_groups <- function(state = NULL, county = NULL, cb = FALSE, year = NULL, .
     state <- validate_state(state, allow_null = FALSE)
   }
 
-  if (cb == TRUE) {
+  if (cb) {
 
     if (year %in% c(1990, 2000)) {
 
@@ -648,7 +648,7 @@ zctas <- function(cb = FALSE, starts_with = NULL, year = NULL, state = NULL, ...
     stop("ZCTAs are only available by state for 2000 and 2010.")
   }
 
-  if (!is.null(state) && year == 2010 && cb == TRUE) {
+  if (!is.null(state) && year == 2010 && cb) {
     stop("ZCTAs are only available by state for 2010 when cb = FALSE.", call. = FALSE)
   }
 
@@ -665,7 +665,7 @@ zctas <- function(cb = FALSE, starts_with = NULL, year = NULL, state = NULL, ...
     message("ZCTAs can take several minutes to download.  To cache the data and avoid re-downloading in future R sessions, set `options(tigris_use_cache = TRUE)`")
   }
 
-  if (cb == TRUE) {
+  if (cb) {
 
     if (year == 2000) {
       if (is.null(state)) {
@@ -889,7 +889,7 @@ county_subdivisions <- function(state, county = NULL, cb = FALSE, year = NULL, .
 
   state <- validate_state(state, allow_null = FALSE)
 
-  if (cb == TRUE) {
+  if (cb) {
 
     if (year == 2010) {
       url <- url_tiger("GENZ2010/gz_2010_%s_060_00_500k", state)

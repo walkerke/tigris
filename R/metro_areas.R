@@ -11,7 +11,7 @@
 #' @param cb If cb is set to TRUE, download a generalized (1:500k)
 #'        cartographic boundary file.  Defaults to FALSE (the most detailed
 #'        TIGER/Line file).
-#' @param resolution The resolution of the cartographic boundary file (if cb == TRUE).
+#' @param resolution The resolution of the cartographic boundary file (if `cb = TRUE`).
 #'        Defaults to '500k'; options include '5m' (1:5 million) and '20m' (1:20 million).
 #' @inheritParams load_tiger_doc_template
 #' @inheritSection load_tiger_doc_template Additional Arguments
@@ -22,7 +22,7 @@ core_based_statistical_areas <- function(cb = FALSE, resolution = '500k', year =
 
   year <- set_tigris_year(year, min_year = 2010)
 
-  if (cb == TRUE) {
+  if (cb) {
     if (year == 2010) {
       check_tigris_resolution(resolution, values = c("500k", "20m"))
 
@@ -71,7 +71,7 @@ urban_areas <- function(cb = FALSE, year = NULL, criteria = NULL, ...) {
 
   year <- set_tigris_year(year)
 
-  if (cb == TRUE) {
+  if (cb) {
     if (!is.null(criteria)) {
       stop("The `criteria` argument is not supported for cartographic boundary files", call. = FALSE)
     }
@@ -109,7 +109,7 @@ urban_areas <- function(cb = FALSE, year = NULL, criteria = NULL, ...) {
 #' @param cb If cb is set to TRUE, download a generalized (1:500k)
 #'        cartographic boundary file.  Defaults to FALSE (the most detailed
 #'        TIGER/Line file).
-#' @param resolution The resolution of the cartographic boundary file (if cb == TRUE).
+#' @param resolution The resolution of the cartographic boundary file (if `cb = TRUE`).
 #'        Defaults to '500k'; options include '5m' (1:5 million) and '20m' (1:20 million).
 #' @inheritParams load_tiger_doc_template
 #' @inheritSection load_tiger_doc_template Additional Arguments
@@ -122,7 +122,7 @@ combined_statistical_areas <- function(cb = FALSE, resolution = '500k', year = N
 
   check_tigris_resolution(resolution)
 
-  if (cb == TRUE) {
+  if (cb) {
     url <- url_tiger("GENZ%s/shp/cb_%s_us_csa_%s", year, year, resolution)
 
     if (year == 2013) url <- remove_shp(url)
@@ -192,7 +192,7 @@ new_england <- function(type = 'necta', cb = FALSE, year = NULL, ...) {
 
   if (type == 'necta') {
 
-    if (cb == TRUE) {
+    if (cb) {
 
       url <- url_tiger("GENZ%s/shp/cb_%s_us_necta_500k", year, year)
 

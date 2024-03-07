@@ -31,7 +31,7 @@ native_areas <- function(cb = FALSE, year = NULL, ...) {
 
   year <- set_tigris_year(year)
 
-  if (cb == TRUE) {
+  if (cb) {
     url <- url_tiger("GENZ%s/shp/cb_%s_us_aiannh_500k",
                    year, year)
   } else {
@@ -72,7 +72,7 @@ tribal_subdivisions_national <- function(cb = FALSE, year = NULL, ...) {
 
   year <- set_tigris_year(year)
 
-  if (cb == TRUE) {
+  if (cb) {
     url <- url_tiger("GENZ%s/shp/cb_%s_us_aitsn_500k",
                    year, year)
   } else {
@@ -108,7 +108,7 @@ alaska_native_regional_corporations <- function(cb = FALSE, year = NULL, ...) {
 
   year <- set_tigris_year(year)
 
-  if (cb == TRUE) {
+  if (cb) {
     url <- url_tiger("GENZ%s/shp/cb_%s_02_anrc_500k",
                    year, year)
   } else {
@@ -159,7 +159,7 @@ tribal_block_groups <- function(cb = FALSE, year = NULL, ...) {
 
   year <- set_tigris_year(year)
 
-  if (cb == TRUE) {
+  if (cb) {
     url <- url_tiger("GENZ%s/shp/cb_%s_us_tbg_500k",
                    year, year)
   } else {
@@ -205,7 +205,7 @@ tribal_census_tracts <- function(cb = FALSE, year = NULL, ...) {
 
   year <- set_tigris_year(year)
 
-  if (cb == TRUE) {
+  if (cb) {
     url <- url_tiger("GENZ%s/shp/cb_%s_us_ttract_500k",
                    year, year)
   } else {

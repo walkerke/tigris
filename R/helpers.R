@@ -243,7 +243,12 @@ load_tiger <- function(url,
   }
 
   if (class == "sp") {
-    warning(stringr::str_wrap("Spatial* (sp) classes are no longer formally supported in tigris as of version 2.0. We strongly recommend updating your workflow to use sf objects (the default in tigris) instead.", 50), call. = FALSE)
+    rlang::warn(
+      c(
+        "!" = "Spatial* (sp) classes are no longer formally supported in tigris as of version 2.0.",
+        "i" = "We strongly recommend updating your workflow to use sf objects (the default in tigris) instead."
+        )
+     )
     return(sf::as_Spatial(obj))
   } else {
     return(obj)
@@ -624,7 +629,7 @@ rbind_tigris <- function(...) {
 #'   areas in the 75th percentile and up (the largest 25 percent of areas).
 #'   This value may need to be modified by the user to achieve optimal results
 #'   for a given location.
-#' @param year The year to use for the water layer; defaults to 2021 unless the
+#' @param year The year to use for the water layer; defaults to 2022 unless the
 #'   `tigris_year` option is otherwise set.
 #' @return An output sf object representing the polygons in `input_sf` with
 #'   water areas erased.
