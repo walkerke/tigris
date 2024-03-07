@@ -17,20 +17,23 @@
 #' The default is `"sf"` for simple features objects.  If you'd like a legacy object
 #' of class `Spatial*DataFrame`, use `options(tigris_class = "sp")`. Please note
 #' that legacy sp objects are no longer formally supported in tigris.
-#'
 #' @note Four `options` control behavior of various `tigris` functions.
 #'       See `Details` for more information.
-#' @name tigris
-#' @docType package
 #' @author Kyle Walker (@@kyle_e_walker)
+#' @aliases tigris
+#' @keywords internal
+"_PACKAGE"
+
+## usethis namespace: start
 #' @importFrom stringr str_trim str_pad
 #' @import utils
 #' @import rappdirs
 #' @import httr
-#' @import uuid
 #' @import sf
 #' @import dplyr
+#' @import rlang
 #' @importFrom methods as
+## usethis namespace: end
 NULL
 
 #' tigris exported operators
