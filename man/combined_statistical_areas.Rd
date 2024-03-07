@@ -11,7 +11,7 @@ combined_statistical_areas(cb = FALSE, resolution = "500k", year = NULL, ...)
 cartographic boundary file.  Defaults to FALSE (the most detailed
 TIGER/Line file).}
 
-\item{resolution}{The resolution of the cartographic boundary file (if cb == TRUE).
+\item{resolution}{The resolution of the cartographic boundary file (if \code{cb = TRUE}).
 Defaults to '500k'; options include '5m' (1:5 million) and '20m' (1:20 million).}
 
 \item{year}{the data year; defaults to 2021}

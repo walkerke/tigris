@@ -16,7 +16,7 @@ areas in the 75th percentile and up (the largest 25 percent of areas).
 This value may need to be modified by the user to achieve optimal results
 for a given location.}
 
-\item{year}{The year to use for the water layer; defaults to 2021 unless the
+\item{year}{The year to use for the water layer; defaults to 2022 unless the
 \code{tigris_year} option is otherwise set.}
 }
 \value{
