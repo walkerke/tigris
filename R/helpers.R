@@ -678,7 +678,7 @@ erase_water <- function(input_sf,
   }
 
   # Grab a dataset of counties that overlap the input sf object quietly
-  county_overlay <- tigris::counties(cb = TRUE, resolution = "500k", progress_bar = FALSE,
+  county_overlay <- counties(cb = TRUE, resolution = "500k", progress_bar = FALSE,
                                      year = year, filter_by = input_sf) %>%
     sf::st_transform(sf::st_crs(input_sf))
 
@@ -693,7 +693,7 @@ erase_water <- function(input_sf,
   # Fetch water for those GEOIDs
   inform("Fetching area water data for your dataset's location...")
   my_water <- lapply(county_GEOIDs, function(cty) {
-    suppressMessages(tigris::area_water(
+    suppressMessages(area_water(
       state = substr(cty, 1, 2),
       county = substr(cty, 3, 5),
       progress_bar = FALSE,
