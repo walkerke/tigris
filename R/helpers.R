@@ -744,7 +744,7 @@ is_sf <- function(x) {
 #' `@inheritSection load_tiger_doc_template Additional Arguments`
 #'
 #' @param ... arguments to be passed to internal function `load_tiger`, which is not exported. See Additional Arguments.
-#' @param year the data year; defaults to 2021
+#' @param year the data year; defaults to 2022
 #'
 #' @section Additional Arguments:
 #' Additional arguments that can be passed in `...` are:

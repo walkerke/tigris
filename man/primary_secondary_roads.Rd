@@ -11,7 +11,7 @@ primary_secondary_roads(state, year = NULL, ...)
 to download the roads for. Can also be state name or abbreviation
 (case-insensitive).}
 
-\item{year}{the data year; defaults to 2021}
+\item{year}{the data year; defaults to 2022}
 
 \item{...}{arguments to be passed to internal function \code{load_tiger}, which is not exported. See Additional Arguments.}
 }
