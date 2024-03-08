@@ -81,7 +81,8 @@ congressional_districts <- function(state = NULL, cb = FALSE, resolution = '500k
         return(cds)
       }
 
-      url <- url_tiger("TIGER%s/CD/tl_%s_%s_cd%s", year, year, validate_state(state), congress)
+      state <- validate_state(state, require_state = TRUE)
+      url <- url_tiger("TIGER%s/CD/tl_%s_%s_cd%s", year, year, state, congress)
     } else {
       url <- url_tiger("TIGER%s/CD/tl_%s_us_cd%s", year, year, congress)
     }
@@ -89,10 +90,9 @@ congressional_districts <- function(state = NULL, cb = FALSE, resolution = '500k
 
   cds <- load_tiger(url, tigris_type="congressional_districts", ...)
 
-  state <- unlist(sapply(state, validate_state, USE.NAMES=FALSE))
-
   if (!is.null(state)) {
 
+    state <- unlist(sapply(state, validate_state, USE.NAMES=FALSE))
     cds <- cds[cds$STATEFP %in% state,]
 
   }
@@ -146,7 +146,7 @@ state_legislative_districts <- function(state = NULL, house = "upper",
       abort("A state must be specified for this year/dataset combination.")
     }
   } else {
-    state <- validate_state(state, allow_null = FALSE)
+    state <- validate_state(state, allow_null = FALSE, require_state = TRUE)
   }
 
   house <- arg_match0(house, c("upper", "lower"))
@@ -243,7 +243,7 @@ voting_districts <- function(state = NULL, county = NULL, cb = FALSE, year = 202
       abort("A state must be specified for this year/dataset combination.")
     }
   } else {
-    state <- validate_state(state, allow_null = FALSE)
+    state <- validate_state(state, require_state = TRUE)
   }
 
   if (cb) {
@@ -252,21 +252,20 @@ voting_districts <- function(state = NULL, county = NULL, cb = FALSE, year = 202
 
     vtds <- load_tiger(url, tigris_type = "voting_districts", ...)
 
-    if (is.null(county)) {
-      return(vtds)
-    } else {
-      county <- validate_county(state, county)
-      vtds_sub <- vtds[vtds$COUNTYFP20 == county,]
-      return(vtds_sub)
+    county <- validate_county(state, county, allow_null = TRUE)
+
+    if (!is.null(county)) {
+      return(vtds[vtds$COUNTYFP20 == county,])
     }
 
+    return(vtds)
   }
 
   if (year == 2012) {
     url <- url_tiger("TIGER2012/VTD/tl_2012_%s_vtd10", state)
   } else {
     if (!is.null(county)) {
-      county <- validate_county(state, county)
+      county <- validate_county(state, county, require_county = TRUE)
 
       url <- url_tiger("TIGER2020PL/LAYER/VTD/2020/tl_2020_%s%s_vtd20", state, county)
     } else {

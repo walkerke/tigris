@@ -2,14 +2,16 @@
 #
 # returns NULL if input is NULL
 # returns valid state FIPS code if input is even pseud-valid (i.e. single digit but w/in range)
-# returns NULL if input is not a valid FIPS code
+# returns NULL if input is not a valid FIPS code and require_state = FALSE
+# errors if input is not a valid FIPS code and require_state = TRUE
 validate_state <- function(state,
                            allow_null = TRUE,
+                           require_state = FALSE,
                            .msg = interactive(),
                            error_call = caller_env()) {
 
   if (is.null(state)) {
-    if (allow_null) return(NULL)
+    if (allow_null && !require_state) return(NULL)
     abort("Invalid state", call = error_call)
   }
 
@@ -33,9 +35,6 @@ validate_state <- function(state,
             fips_state_table[fips_state_table$fips == state_sub, "name"])
           )
         return(state_sub)
-      } else {
-        warn(sprintf("'%s' is not a valid FIPS code or state name/abbreviation", state))
-        return(NULL)
       }
     }
 
@@ -53,24 +52,30 @@ validate_state <- function(state,
 
     } else if (nchar(state) > 2 & state %in% fips_state_table$name) { # yay, a name!
 
-      if (.msg)
+      if (.msg) {
         inform(
           sprintf("Using FIPS code '%s' for state '%s'",
                   fips_state_table[fips_state_table$name == state, "fips"],
                   simpleCapSO(state))
-          )
-      return(fips_state_table[fips_state_table$name == state, "fips"])
+        )
+      }
 
-    } else {
-      warn(sprintf("'%s' is not a valid FIPS code or state name/abbreviation", state))
-      return(NULL)
+      return(fips_state_table[fips_state_table$name == state, "fips"])
     }
 
-  } else {
-    warn(sprintf("'%s' is not a valid FIPS code or state name/abbreviation", state))
-    return(NULL)
   }
 
+  msg <- sprintf(
+    "'%s' is not a valid FIPS code or state name/abbreviation", state
+  )
+
+  if (require_state) {
+    abort(msg, call = error_call)
+  }
+
+  warn(msg)
+
+  return(invisible(NULL))
 }
 
 # Some work on a validate_county function
@@ -79,20 +84,21 @@ validate_state <- function(state,
 validate_county <- function(state,
                             county,
                             allow_null = TRUE,
+                            require_county = FALSE,
                             .msg = interactive(),
                             error_call = caller_env()) {
-
-  if (is.null(state)) {
-    if (allow_null) return(NULL)
-    abort("Invalid state", call = error_call)
-  }
+  # Get the state of the county
+  state <- validate_state(
+    state,
+    allow_null = allow_null,
+    require_state = require_county,
+    error_call = error_call
+  )
 
   if (is.null(county)) {
-    if (allow_null) return(NULL)
+    if (allow_null && !require_county) return(NULL)
     abort("Invalid county", call = error_call)
   }
-
-  state <- validate_state(state, allow_null = allow_null, error_call = error_call) # Get the state of the county
 
   county_table <- fips_codes[fips_codes$state_code == state, ] # Get a df for the requested state to work with
 
@@ -104,13 +110,17 @@ validate_county <- function(state,
       return(county)
 
     } else {
-      warn(
-        sprintf("'%s' is not a valid FIPS code for counties in %s",
-                county, county_table$state_name[1])
-        )
 
-      return(NULL)
+      msg <- sprintf("'%s' is not a valid FIPS code for counties in %s",
+                     county, county_table$state_name[1])
 
+      if (require_county) {
+        abort(msg, call = error_call)
+      }
+
+      warn(msg)
+
+      return(invisible(NULL))
     }
 
   } else if ((grepl("^[[:alpha:]]+", county))) { # should be a county name
@@ -121,14 +131,18 @@ validate_county <- function(state,
 
       if (length(matching_counties) == 0) {
 
-        warn(
-         sprintf(
-           "'%s' is not a valid name for counties in %s",
-           county, county_table$state_name[1]
-         )
+        msg <- sprintf(
+          "'%s' is not a valid name for counties in %s",
+          county, county_table$state_name[1]
         )
-        return(NULL)
 
+        if (require_county) {
+          abort(msg, call = error_call)
+        }
+
+        warn(msg)
+
+        return(invisible(NULL))
       } else if (length(matching_counties) == 1) {
 
         if (.msg)
@@ -144,15 +158,20 @@ validate_county <- function(state,
 
         ctys <- format_vec(matching_counties)
 
-        warn(
+        msg <- warn(
           paste0(
             "Your county string matches ", ctys,
             " Please refine your selection."
           )
         )
 
-        return(NULL)
+        if (require_county) {
+          abort(msg, call = error_call)
+        }
 
+        warn(msg)
+
+        return(invisible(NULL))
       }
 
   }
