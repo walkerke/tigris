@@ -14,7 +14,9 @@ TIGER/Line file).}
 \item{resolution}{The resolution of the cartographic boundary file (if \code{cb = TRUE}).
 Defaults to '500k'; options include '5m' (1:5 million) and '20m' (1:20 million).}
 
-\item{year}{the data year; defaults to 2021}
+\item{year}{year of data to return. As of Jan. 2024,
+\code{core_based_statistical_areas} has a maximum year of 2021, a minimum of
+2010, and defaults to 2021 if no option is set.}
 
 \item{...}{arguments to be passed to internal function \code{load_tiger}, which is not exported. See Additional Arguments.}
 }

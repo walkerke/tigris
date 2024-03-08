@@ -13,6 +13,9 @@
 #'        TIGER/Line file).
 #' @param resolution The resolution of the cartographic boundary file (if `cb = TRUE`).
 #'        Defaults to '500k'; options include '5m' (1:5 million) and '20m' (1:20 million).
+#' @param year year of data to return. As of Jan. 2024,
+#'   `core_based_statistical_areas` has a maximum year of 2021, a minimum of
+#'   2010, and defaults to 2021 if no option is set.
 #' @inheritParams load_tiger_doc_template
 #' @inheritSection load_tiger_doc_template Additional Arguments
 #' @family metro area functions
@@ -20,7 +23,8 @@
 #' @export
 core_based_statistical_areas <- function(cb = FALSE, resolution = '500k', year = NULL, ...) {
 
-  year <- set_tigris_year(year, min_year = 2010)
+  # Override standard default year per: https://github.com/walkerke/tigris/issues/184
+  year <- set_tigris_year(year, default = 2021, min_year = 2010, max_year = 2021)
 
   if (cb) {
     if (year == 2010) {
