@@ -321,10 +321,14 @@ check_tigris_year <- function(year,
 #' @noRd
 check_tigris_resolution <- function(resolution,
                                     values = c("500k", "5m", "20m"),
+                                    ignore.case = TRUE,
                                     error_call = caller_env()) {
+  if (ignore.case) {
+    resolution <- tolower(resolution)
+  }
+
   arg_match(resolution, values = values, error_call = error_call)
 }
-
 
 #' Set tigris URL
 #'
