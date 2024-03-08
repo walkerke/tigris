@@ -25,7 +25,6 @@ Imports:
     rappdirs,
     rlang,
     sf,
-    stringr,
     utils
 Suggests:
     ggplot2,

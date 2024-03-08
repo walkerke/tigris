@@ -25,7 +25,6 @@
 "_PACKAGE"
 
 ## usethis namespace: start
-#' @importFrom stringr str_trim str_pad
 #' @import utils
 #' @import rappdirs
 #' @import httr
