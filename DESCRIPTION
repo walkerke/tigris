@@ -32,9 +32,11 @@ Suggests:
     knitr,
     leaflet,
     sp,
-    testthat,
-    tidycensus
+    testthat (>= 3.0.0),
+    tidycensus,
+    withr
 Encoding: UTF-8
 LazyData: TRUE
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.3.1
+Config/testthat/edition: 3
