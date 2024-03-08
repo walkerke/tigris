@@ -59,9 +59,9 @@ congressional_districts <- function(state = NULL, cb = FALSE, resolution = '500k
     congress <- "111"
   }
 
-  check_tigris_resolution(resolution)
-
   if (cb) {
+
+    check_tigris_resolution(resolution)
 
     url <- url_tiger("GENZ%s/shp/cb_%s_us_cd%s_%s", year, year, congress, resolution)
 
@@ -134,7 +134,7 @@ congressional_districts <- function(state = NULL, cb = FALSE, resolution = '500k
 #'               color = "black",
 #'               weight = 0.5)
 #' }
-state_legislative_districts <- function(state= NULL, house = "upper",
+state_legislative_districts <- function(state = NULL, house = "upper",
                                         cb = FALSE, year = NULL, ...) {
   year <- set_tigris_year(year)
 
@@ -151,18 +151,10 @@ state_legislative_districts <- function(state= NULL, house = "upper",
 
   house <- arg_match0(house, c("upper", "lower"))
 
-  if (house == "lower" & state == "31") { # Nebraska
+  type <- "sldu"
 
-    type <- "sldu"
-
-  } else if (house == "lower") {
-
+  if (house == "lower" && state != "31") {  # Nebraska
     type <- "sldl"
-
-  } else {
-
-    type <- "sldu"
-
   }
 
   if (cb) {
@@ -173,11 +165,10 @@ state_legislative_districts <- function(state= NULL, house = "upper",
       } else if (type == "sldl") {
         url <- url_tiger("GENZ2010/gz_2010_%s_620_l2_500k", state)
       }
+    } else {
+      url <- url_tiger("GENZ%s/shp/cb_%s_%s_%s_500k", year, year, state, type)
+      if (year == 2013) url <- remove_shp(url)
     }
-
-    url <- url_tiger("GENZ%s/shp/cb_%s_%s_%s_500k", year, year, state, type)
-
-    if (year == 2013) url <- remove_shp(url)
 
   } else {
 
@@ -238,6 +229,7 @@ state_legislative_districts <- function(state= NULL, house = "upper",
 #'
 #' }
 voting_districts <- function(state = NULL, county = NULL, cb = FALSE, year = 2020, ...) {
+  year <- set_tigris_year(year, min_year = 2012, max_year = 2020,  default = 2020)
 
   if (year != 2020 && cb) {
     abort("Cartographic boundary voting districts files are only available for 2020.")
@@ -268,25 +260,22 @@ voting_districts <- function(state = NULL, county = NULL, cb = FALSE, year = 202
       return(vtds_sub)
     }
 
-  } else {
-
-    if (year == 2012) {
-
-      url <- url_tiger("TIGER2012/VTD/tl_2012_%s_vtd10", state)
-    } else {
-      if (!is.null(county)) {
-
-        county <- validate_county(state, county)
-
-        url <- url_tiger("TIGER2020PL/LAYER/VTD/2020/tl_2020_%s%s_vtd20", state, county)
-      } else {
-        url <- url_tiger("TIGER2020PL/LAYER/VTD/2020/tl_2020_%s_vtd20", state)
-      }
-    }
-
-    return(load_tiger(url, tigris_type = 'voting_districts', ...))
-
   }
+
+  if (year == 2012) {
+    url <- url_tiger("TIGER2012/VTD/tl_2012_%s_vtd10", state)
+  } else {
+    if (!is.null(county)) {
+      county <- validate_county(state, county)
+
+      url <- url_tiger("TIGER2020PL/LAYER/VTD/2020/tl_2020_%s%s_vtd20", state, county)
+    } else {
+      url <- url_tiger("TIGER2020PL/LAYER/VTD/2020/tl_2020_%s_vtd20", state)
+    }
+  }
+
+  return(load_tiger(url, tigris_type = 'voting_districts', ...))
+
 }
 
 
