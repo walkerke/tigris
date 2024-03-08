@@ -136,7 +136,7 @@ congressional_districts <- function(state = NULL, cb = FALSE, resolution = '500k
 #' }
 state_legislative_districts <- function(state = NULL, house = "upper",
                                         cb = FALSE, year = NULL, ...) {
-  year <- set_tigris_year(year)
+  year <- set_tigris_year(year, min_year = 2000)
 
   if (is.null(state)) {
     if (year > 2018 && cb) {
