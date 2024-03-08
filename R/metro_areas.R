@@ -73,7 +73,7 @@ urban_areas <- function(cb = FALSE, year = NULL, criteria = NULL, ...) {
 
   if (cb) {
     if (!is.null(criteria)) {
-      stop("The `criteria` argument is not supported for cartographic boundary files", call. = FALSE)
+      abort("The `criteria` argument is not supported for cartographic boundary files")
     }
 
     url <- url_tiger("GENZ%s/shp/cb_%s_us_ua10_500k", year, year)
@@ -84,7 +84,7 @@ urban_areas <- function(cb = FALSE, year = NULL, criteria = NULL, ...) {
 
     if (!is.null(criteria) && criteria == 2020) {
       if (year != 2020) {
-        stop("2020 criteria is only supported when `year` is set to 2020 at the moment.", call. = FALSE)
+        abort("2020 criteria is only supported when `year` is set to 2020 at the moment.")
       }
 
       url <- url_tiger("TIGER%s/UAC/tl_%s_us_uac20", year, year)
@@ -190,6 +190,8 @@ new_england <- function(type = 'necta', cb = FALSE, year = NULL, ...) {
 
   year <- set_tigris_year(year)
 
+  type <- arg_match0(type, c("necta", "combined", "divisions"))
+
   if (type == 'necta') {
 
     if (cb) {
@@ -215,10 +217,6 @@ new_england <- function(type = 'necta', cb = FALSE, year = NULL, ...) {
     url <- url_tiger("TIGER%s/NECTADIV/tl_%s_us_nectadiv", year, year)
 
     return(load_tiger(url, tigris_type = "nectadiv", ...))
-
-  } else {
-
-    stop("Invalid NECTA type; valid values include 'necta' (the default), 'combined', and 'divisions'.", call. = FALSE)
 
   }
 

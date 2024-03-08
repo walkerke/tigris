@@ -86,10 +86,10 @@ shift_geometry <- function(input_sf,
 
   # Check to see if the input is an sf object, otherwise exit
   if (!is_sf(input_sf)) {
-    stop("The input dataset must be an sf object.", call = FALSE)
+    abort("The input dataset must be an sf object.")
   }
 
-  position <- match.arg(position)
+  position <- arg_match(position)
 
   # Get a set of minimal states which we'll need to use throughout the function
   # Do the CRS transformation here to avoid S2 issues with sf 1.0
@@ -120,8 +120,10 @@ shift_geometry <- function(input_sf,
   pr_check <- suppressMessages(sf::st_intersects(input_sf, pr_bbox, sparse = FALSE)[,1])
 
   if (!any(ak_check) && !any(hi_check) && !any(pr_check)) {
-    warning("None of your features are in Alaska, Hawaii, or Puerto Rico, so no geometries will be shifted.\nTransforming your object's CRS to 'ESRI:102003'",
-         call. = FALSE)
+    warn(
+      c("i" = "None of your features are in Alaska, Hawaii, or Puerto Rico, so no geometries will be shifted.",
+        "v" = "Transforming your object's CRS to 'ESRI:102003'")
+    )
 
     transformed_output <- sf::st_transform(input_sf, 'ESRI:102003')
 
@@ -131,7 +133,7 @@ shift_geometry <- function(input_sf,
   # Check to see if there is a GEOID column to identify state information
   # If it is a GEOID that works (e.g. counties, tracts), then use it and avoid spatial inferences
   if (!is.null(geoid_column)) {
-    input_sf$state_fips <- stringr::str_sub(input_sf[[geoid_column]], 1, 2)
+    input_sf$state_fips <- substr(input_sf[[geoid_column]], 1, 2)
   } else {
       # This is where we need to infer the location of the features
       # We can do this by checking to see where the input features intersect

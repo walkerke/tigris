@@ -36,8 +36,12 @@ tigris_cache_dir <- function(path) {
   var <- paste0("TIGRIS_CACHE_DIR=", "'", path, "'")
 
   write(var, renv, sep = "\n", append = TRUE)
-  message(sprintf("Your new tigris cache directory is %s. \nTo use now, restart R or run `readRenviron('~/.Renviron')`", path))
-
+  inform(
+    c(
+      "i" = sprintf("Your new tigris cache directory is %s.", path),
+      "*" = "To use now, restart R or run `readRenviron('~/.Renviron')`"
+    )
+  )
 }
 
 
@@ -61,6 +65,7 @@ tigris_cache_dir <- function(path) {
 #'   Can be an sf object, sfc object, an object of class `bbox`, or a length-4
 #'   vector of format `c(xmin, ymin, xmax, ymax)` that can be converted to a
 #'   bbox. Geometries that intersect the input to `filter_by` will be returned.
+#' @inheritParams rlang::args_error_context
 #'
 #' @return sf or sp data frame
 #'
@@ -70,12 +75,13 @@ load_tiger <- function(url,
                        class = getOption("tigris_class", "sf"),
                        progress_bar = TRUE,
                        keep_zipped_shapefile = FALSE,
-                       filter_by = NULL) {
+                       filter_by = NULL,
+                       call = caller_env()) {
 
   use_cache <- getOption("tigris_use_cache", FALSE)
 
   # Process filter_by
-  wkt_filter <- input_to_wkt(filter_by)
+  wkt_filter <- input_to_wkt(filter_by, call = call)
 
   tiger_file <- basename(url)
 
@@ -135,7 +141,7 @@ load_tiger <- function(url,
 
           while (i < 4) {
 
-            message(sprintf("Previous download failed.  Re-download attempt %s of 3...",
+            inform(sprintf("Previous download failed.  Re-download attempt %s of 3...",
                             as.character(i)))
 
             if (progress_bar) {
@@ -159,9 +165,10 @@ load_tiger <- function(url,
           }
 
           if (i == 4) {
-
-            stop("Download failed; check your internet connection or the status of the Census Bureau website
-                 at http://www2.census.gov/geo/tiger/.", call. = FALSE)
+            abort(
+              "Download failed; check your internet connection or the status of the Census Bureau website at http://www2.census.gov/geo/tiger/.",
+              call = call
+            )
           }
 
         } else {
@@ -243,7 +250,7 @@ load_tiger <- function(url,
   }
 
   if (class == "sp") {
-    rlang::warn(
+    warn(
       c(
         "!" = "Spatial* (sp) classes are no longer formally supported in tigris as of version 2.0.",
         "i" = "We strongly recommend updating your workflow to use sf objects (the default in tigris) instead."
@@ -303,6 +310,8 @@ geo_join <- function(spatial_data, data_frame, by_sp, by_df, by = NULL, how = 'l
     by_df <- by
   }
 
+  how <- arg_match(how, c("inner", "left"))
+
   # For sp objects
   if (class(spatial_data)[1] %in% c("SpatialGridDataFrame", "SpatialLinesDataFrame",
                                 "SpatialPixelsDataFrame", "SpatialPointsDataFrame",
@@ -323,10 +332,6 @@ geo_join <- function(spatial_data, data_frame, by_sp, by_df, by = NULL, how = 'l
     } else if (how == 'left') {
 
       return(spatial_data)
-
-    } else {
-
-      stop("The available options for `how` are 'left' and 'inner'.", call. = FALSE)
 
     }
 
@@ -371,10 +376,6 @@ geo_join <- function(spatial_data, data_frame, by_sp, by_df, by = NULL, how = 'l
       attr(joined, "tigris") <- tigris_type(spatial_data)
 
       return(joined)
-
-    } else {
-
-      stop("The available options for `how` are 'left' and 'inner'.", call. = FALSE)
 
     }
 
@@ -483,6 +484,7 @@ list_counties <- function(state) {
 #' If multiple school district types are rbound, coerces to "sdall" and does it
 #'
 #' @param ... individual (optionally names) `tigris` Spatial objects or a list of them
+#' @inheritParams rlang::args_error_context
 #' @return one combined Spatial object
 #' @export
 #' @examples \dontrun{
@@ -495,7 +497,7 @@ list_counties <- function(state) {
 #'   rbind_tigris()
 #' }
 
-rbind_tigris <- function(...) {
+rbind_tigris <- function(..., call = caller_env()) {
 
   elements <- list(...)
 
@@ -513,7 +515,7 @@ rbind_tigris <- function(...) {
         "SpatialPolygonsDataFrame") %in% obj_classes) &
       "sf" %in% obj_classes) {
 
-    stop("Cannot combine sp and sf objects", call. = FALSE)
+    abort("Cannot combine sp and sf objects", call = call)
 
   }
 
@@ -521,7 +523,7 @@ rbind_tigris <- function(...) {
 
   if(all(obj_attrs %in% c("unsd", "elsd", "scsd"))){ # 3 school district types
 
-    warning("Multiple school district tigris types. Coercing to \'sdall\'.", call. = FALSE)
+    warn("Multiple school district tigris types. Coercing to \'sdall\'.")
 
     elements <- lapply(seq_along(elements), function(x){
                   names(elements[[x]])[2] <- "SDLEA" # Used in some spots elsewhere in TIGER
@@ -543,7 +545,13 @@ rbind_tigris <- function(...) {
                          "SpatialPixelsDataFrame", "SpatialPointsDataFrame",
                          "SpatialPolygonsDataFrame")) {
 
-    stop("Spatial* classes are no longer supported in tigris as of version 2.0. You will need to install an earlier version of tigris with `remotes::install_version()`.")
+    abort(
+      c(
+        "Spatial* classes are no longer supported in tigris as of version 2.0.",
+        "i" = "You will need to install an earlier version of tigris with `remotes::install_version()`."
+      ),
+      call = call
+    )
 
   } else if ("sf" %in% obj_classes) {
 
@@ -552,7 +560,10 @@ rbind_tigris <- function(...) {
     }))
 
     if (length(crs) > 1) {
-      stop("All objects must share a single coordinate reference system.")
+      abort(
+        "All objects must share a single coordinate reference system.",
+        call = call
+      )
     }
 
     if (!any(sapply(obj_attrs, is.null)) &
@@ -588,7 +599,7 @@ rbind_tigris <- function(...) {
       return(tmp)
 
     } else {
-      stop("Objects must all be the same type of tigris object.", call.=FALSE)
+      abort("Objects must all be the same type of tigris object.", call = call)
     }
 
   }
@@ -656,7 +667,7 @@ erase_water <- function(input_sf,
                         year = NULL) {
 
   if (!is_sf(input_sf)) {
-    stop("The input dataset is not an sf object.", call. = FALSE)
+    abort("The input dataset is not an sf object.")
   }
 
   year <- set_tigris_year(year, quiet = TRUE)
@@ -673,18 +684,18 @@ erase_water <- function(input_sf,
 
   # If nothing returned, exit
   if (nrow(county_overlay) == 0) {
-    stop("Your dataset does not appear to be in the United States; this function is not appropriate for your data.", call. = FALSE)
+    abort("Your dataset does not appear to be in the United States; this function is not appropriate for your data.")
   }
 
   # Get a list of GEOIDs
   county_GEOIDs <- county_overlay$GEOID
 
   # Fetch water for those GEOIDs
-  message("Fetching area water data for your dataset's location...")
+  inform("Fetching area water data for your dataset's location...")
   my_water <- lapply(county_GEOIDs, function(cty) {
     suppressMessages(tigris::area_water(
-      state = stringr::str_sub(cty, 1, 2),
-      county = stringr::str_sub(cty, 3, 5),
+      state = substr(cty, 1, 2),
+      county = substr(cty, 3, 5),
       progress_bar = FALSE,
       year = year,
       filter_by = input_sf
@@ -695,11 +706,21 @@ erase_water <- function(input_sf,
     dplyr::filter(dplyr::percent_rank(AWATER) >= area_threshold)
 
   if (nrow(my_water) == 0) {
-    message("No overlapping water area found.\nReturning unmodified `input_sf`.")
+    inform(
+      c(
+        "No overlapping water area found.",
+        "Returning unmodified `input_sf`."
+      )
+    )
     return(input_sf)
   }
 
-  message("Erasing water area...\nIf this is slow, try a larger area threshold value.")
+  inform(
+    c(
+      "Erasing water area..",
+      "If this is slow, try a larger area threshold value."
+    )
+  )
   erased_sf <- suppressMessages(st_erase(input_sf, my_water))
 
   return(erased_sf)

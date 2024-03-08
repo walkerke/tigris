@@ -35,8 +35,12 @@ congressional_districts <- function(state = NULL, cb = FALSE, resolution = '500k
   year <- set_tigris_year(year, min_year = 2010)
 
   if (year < 2013 && cb) {
-    stop("`cb = TRUE` for congressional districts is unavailable prior to 2013. Regular TIGER/Line files are available for 2010 through 2010 with `cb = FALSE`",
-         call. = FALSE)
+    abort(
+      c(
+        "`cb = TRUE` for congressional districts is unavailable prior to 2013.",
+        "i" = "Regular TIGER/Line files are available for 2010 through 2012 with `cb = FALSE`"
+      )
+    )
   }
 
   if (year %in% 2022:2023) {
@@ -137,17 +141,15 @@ state_legislative_districts <- function(state= NULL, house = "upper",
   if (is.null(state)) {
     if (year > 2018 && cb) {
       state <- "us"
-      message("Retrieving state legislative districts for the entire United States")
+      inform("Retrieving state legislative districts for the entire United States")
     } else {
-      stop("A state must be specified for this year/dataset combination.",
-           call. = FALSE)
+      abort("A state must be specified for this year/dataset combination.")
     }
   } else {
     state <- validate_state(state, allow_null = FALSE)
   }
 
-  if (!house %in% c("upper", "lower"))
-    stop("Must specify 'upper' or 'lower' for 'house' parameter", call.=FALSE)
+  house <- arg_match0(house, c("upper", "lower"))
 
   if (house == "lower" & state == "31") { # Nebraska
 
@@ -238,17 +240,15 @@ state_legislative_districts <- function(state= NULL, house = "upper",
 voting_districts <- function(state = NULL, county = NULL, cb = FALSE, year = 2020, ...) {
 
   if (year != 2020 && cb) {
-    stop("Cartographic boundary voting districts files are only available for 2020.",
-         call. = FALSE)
+    abort("Cartographic boundary voting districts files are only available for 2020.")
   }
 
   if (is.null(state)) {
     if (year > 2018 && cb) {
       state <- "us"
-      message("Retrieving voting districts for the entire United States")
+      inform("Retrieving voting districts for the entire United States")
     } else {
-      stop("A state must be specified for this year/dataset combination.",
-           call. = FALSE)
+      abort("A state must be specified for this year/dataset combination.")
     }
   } else {
     state <- validate_state(state, allow_null = FALSE)

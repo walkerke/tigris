@@ -61,7 +61,7 @@ states <- function(cb = FALSE, resolution = '500k', year = NULL, ...) {
 
   } else {
 
-    if (year == 1990) stop("Please specify `cb = TRUE` to get 1990 data.", call. = FALSE)
+    check_cb_year(year = year, error_year = 1990)
 
     if (year %in% c(2000, 2010)) {
 

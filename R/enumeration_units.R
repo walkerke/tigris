@@ -86,7 +86,7 @@ counties <- function(state = NULL, cb = FALSE, resolution = '500k', year = NULL,
 
   } else {
 
-    if (year == 1990) stop("Please specify `cb = TRUE` to get 1990 data.", call. = FALSE)
+    check_cb_year(year = year, error_year = 1990)
 
     if (year %in% c(2000, 2010)) {
 
@@ -223,17 +223,16 @@ tracts <- function(state = NULL, county = NULL, cb = FALSE, resolution = "500k",
 
   year <- set_tigris_year(year, min_year = 1990)
 
-  if ((resolution == "5m" && year < 2022) | (resolution == "5m" && !is.null(state))) {
-    stop("`resolution = '5m'` for Census tracts is only available for the national Census tract CB file in years 2022 and later.", call. = FALSE)
+  if ((resolution == "5m" && year < 2022) || (resolution == "5m" && !is.null(state))) {
+    abort("`resolution = '5m'` for Census tracts is only available for the national Census tract CB file in years 2022 and later.")
   }
 
   if (is.null(state)) {
     if (year > 2018 && cb) {
       state <- "us"
-      message("Retrieving Census tracts for the entire United States")
+      inform("Retrieving Census tracts for the entire United States")
     } else {
-      stop("A state must be specified for this year/dataset combination.",
-           call. = FALSE)
+      abort("A state must be specified for this year/dataset combination.")
     }
   } else {
     state <- validate_state(state, allow_null = FALSE)
@@ -268,7 +267,7 @@ tracts <- function(state = NULL, county = NULL, cb = FALSE, resolution = "500k",
 
   } else {
 
-    if (year == 1990) stop("Please specify `cb = TRUE` to get 1990 data.", call. = FALSE)
+    check_cb_year(year = year, error_year = 1990)
 
     if (year %in% c(2000, 2010)) {
 
@@ -320,7 +319,7 @@ tracts <- function(state = NULL, county = NULL, cb = FALSE, resolution = "500k",
 
     } else if (year == 2000) {
       trcts <- trcts %>%
-        mutate(TRACT = str_pad(.data$TRACT, 6, "right", "0")) %>%
+        mutate(TRACT = pad_str(.data$TRACT, 6, "right", "0")) %>%
         mutate(id = paste0(.data$STATE, .data$COUNTY, .data$TRACT)) %>%
         group_by(.data$id) %>%
         summarize(AREA = sum(.data$AREA),
@@ -389,30 +388,29 @@ tracts <- function(state = NULL, county = NULL, cb = FALSE, resolution = "500k",
 #' }
 school_districts <- function(state = NULL, type = 'unified',
                              cb = FALSE, year = NULL, ...) {
-
   year <- set_tigris_year(year)
+
+  type <- arg_match0(
+    type,
+    values = c('unified', 'elementary', 'secondary')
+  )
 
   if (is.null(state)) {
     if (year > 2018 && cb) {
       state <- "us"
-      message("Retrieving school districts for the entire United States")
+      inform("Retrieving school districts for the entire United States")
     } else {
-      stop("A state must be specified for this year/dataset combination.",
-           call. = FALSE)
+      abort("A state must be specified for this year/dataset combination.")
     }
   } else {
     state <- validate_state(state, allow_null = FALSE)
   }
 
-  if (type == 'unified') {
-    type <- 'unsd'
-  } else if (type == 'elementary') {
-    type <- 'elsd'
-  } else if (type == 'secondary') {
-    type <- 'scsd'
-  } else {
-    stop("Invalid school district type.  Valid types are 'unified', 'elementary', and 'secondary'.", call. = FALSE)
-  }
+  type <- switch (type,
+    unified = "unsd",
+    elementary = "elsd",
+    secondary = "scsd"
+  )
 
   if (cb) {
 
@@ -481,10 +479,9 @@ block_groups <- function(state = NULL, county = NULL, cb = FALSE, year = NULL, .
   if (is.null(state)) {
     if (year > 2018 && cb) {
       state <- "us"
-      message("Retrieving Census block groups for the entire United States")
+      inform("Retrieving Census block groups for the entire United States")
     } else {
-      stop("A state must be specified for this year/dataset combination.",
-           call. = FALSE)
+      abort("A state must be specified for this year/dataset combination.")
     }
   } else {
     state <- validate_state(state, allow_null = FALSE)
@@ -519,7 +516,7 @@ block_groups <- function(state = NULL, county = NULL, cb = FALSE, year = NULL, .
 
   } else {
 
-    if (year == 1990) stop("Please specify `cb = TRUE` to get 1990 data.", call. = FALSE)
+    check_cb_year(year = year, error_year = 1990)
 
     if (year %in% c(2000, 2010)) {
 
@@ -570,7 +567,7 @@ block_groups <- function(state = NULL, county = NULL, cb = FALSE, year = NULL, .
         st_cast("MULTIPOLYGON")
     } else if (year == 2000) {
       bgs <- bgs %>%
-        mutate(TRACT = str_pad(.data$TRACT, 6, "right", "0")) %>%
+        mutate(TRACT = pad_str(.data$TRACT, 6, "right", "0")) %>%
         mutate(id = paste0(.data$STATE, .data$COUNTY, .data$TRACT, .data$BLKGROUP)) %>%
         group_by(.data$id) %>%
         summarize(AREA = sum(.data$AREA),
@@ -638,23 +635,40 @@ block_groups <- function(state = NULL, county = NULL, cb = FALSE, year = NULL, .
 #'
 #' }
 zctas <- function(cb = FALSE, starts_with = NULL, year = NULL, state = NULL, ...) {
-  year <- set_tigris_year(year, min_year = 1990)
+  year <- set_tigris_year(
+    year,
+    min_year = 1990,
+    message =  "Zip Code Tabulation Areas are only available beginning with the 2000 Census."
+  )
 
   if (year > 2020 && cb) {
-    stop(sprintf("The Census Bureau has not yet released the CB ZCTA file for %s. Please use the argument `year = 2020` or `cb = FALSE` instead.", year), call. = FALSE)
+    abort(
+      c(sprintf("The Census Bureau has not yet released the CB ZCTA file for %s.", year),
+        "i" = "Please use the argument `year = 2020` or `cb = FALSE` instead.")
+    )
   }
 
-  if (!is.null(state) && year > 2010) {
-    stop("ZCTAs are only available by state for 2000 and 2010.")
-  }
+  check_tigris_year(
+    year,
+    min_year = 2000,
+    message =  "Zip Code Tabulation Areas are only available beginning with the 2000 Census."
+  )
 
-  if (!is.null(state) && year == 2010 && cb) {
-    stop("ZCTAs are only available by state for 2010 when cb = FALSE.", call. = FALSE)
-  }
+  if (!is.null(state)) {
+    check_tigris_year(
+      year,
+      min_year = 2000,
+      max_year = 2010,
+      message = "ZCTAs are only available by state for 2000 and 2010."
+    )
 
-  if (year == 1990) {
-    stop("Zip Code Tabulation Areas are only available beginning with the 2000 Census.",
-         call. = FALSE)
+    if (cb) {
+      check_tigris_year(
+        year,
+        error_year = 2010,
+        message = "ZCTAs are only available by state for 2010 when cb = FALSE."
+      )
+    }
   }
 
   state <- validate_state(state)
@@ -662,7 +676,10 @@ zctas <- function(cb = FALSE, starts_with = NULL, year = NULL, state = NULL, ...
   cache <- getOption("tigris_use_cache")
 
   if (is.null(cache)) {
-    message("ZCTAs can take several minutes to download.  To cache the data and avoid re-downloading in future R sessions, set `options(tigris_use_cache = TRUE)`")
+    inform(
+      c("ZCTAs can take several minutes to download.",
+      "i" = "To cache the data and avoid re-downloading in future R sessions, set `options(tigris_use_cache = TRUE)`")
+    )
   }
 
   if (cb) {
@@ -715,7 +732,10 @@ zctas <- function(cb = FALSE, starts_with = NULL, year = NULL, state = NULL, ...
 
   # Handle split ZCTAs in 2000 CB file
   if (year == 2000 && cb) {
-    warning("CB ZCTAs for 2000 include separate polygons for discontiguous parts.\nCombine by summarizing over the ZCTA column; this can be a time-consuming operation.")
+    warn(
+      c("CB ZCTAs for 2000 include separate polygons for discontiguous parts.",
+      "i" = "Combine by summarizing over the ZCTA column; this can be a time-consuming operation.")
+    )
   }
 
   if (!is.null(starts_with)) {
@@ -826,7 +846,7 @@ blocks <- function(state, county = NULL, year = NULL, ...) {
     }
 
   } else {
-    stop()
+    abort()
   }
 
   blks <- load_tiger(url, tigris_type = "block", ...)

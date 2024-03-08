@@ -63,6 +63,8 @@ landmarks <- function(state, type = "point", year = NULL, ...) {
 
   state <- validate_state(state)
 
+  type <- arg_match0(type, c("area", "point"))
+
   if (type == "area") {
     url <- url_tiger("TIGER%s/AREALM/tl_%s_%s_arealm", year, year, state)
     return(load_tiger(url, tigris_type = "area_landmark", ...))
@@ -71,8 +73,6 @@ landmarks <- function(state, type = "point", year = NULL, ...) {
     url <- url_tiger("TIGER%s/POINTLM/tl_%s_%s_pointlm", year, year, state)
     return(load_tiger(url, tigris_type = "point_landmark", ...))
 
-  } else {
-    stop('The argument supplied to type must be either "point" or "area"', call. = FALSE)
   }
 
 }

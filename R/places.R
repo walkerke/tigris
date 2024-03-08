@@ -30,10 +30,9 @@ places <- function(state = NULL, cb = FALSE, year = NULL, ...) {
   if (is.null(state)) {
     if (year > 2018 && cb) {
       state <- "us"
-      message("Retrieving Census-designated places for the entire United States")
+      inform("Retrieving Census-designated places for the entire United States")
     } else {
-      stop("A state must be specified for this year/dataset combination.",
-           call. = FALSE)
+      abort("A state must be specified for this year/dataset combination.")
     }
   } else {
     state <- validate_state(state, allow_null = FALSE)

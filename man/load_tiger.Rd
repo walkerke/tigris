@@ -11,7 +11,8 @@ load_tiger(
   class = getOption("tigris_class", "sf"),
   progress_bar = TRUE,
   keep_zipped_shapefile = FALSE,
-  filter_by = NULL
+  filter_by = NULL,
+  call = caller_env()
 )
 }
 \arguments{
@@ -39,6 +40,11 @@ configuration of global option "tigris_use_cache"). Defaults to FALSE.}
 Can be an sf object, sfc object, an object of class \code{bbox}, or a length-4
 vector of format \code{c(xmin, ymin, xmax, ymax)} that can be converted to a
 bbox. Geometries that intersect the input to \code{filter_by} will be returned.}
+
+\item{call}{The execution environment of a currently
+running function, e.g. \code{caller_env()}. The function will be
+mentioned in error messages as the source of the error. See the
+\code{call} argument of \code{\link[rlang:abort]{abort()}} for more information.}
 }
 \value{
 sf or sp data frame

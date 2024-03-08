@@ -97,7 +97,7 @@ call_geolocator <- function(street, city, state, zip = NA) {
         "&state=", state,
         "&zip=", zip
       )} else {
-        message("'zip' (", paste0(zip), ") was not a 5-character-long string composed of :digits:. Using only street, city, state.")
+        inform("'zip' (", paste0(zip), ") was not a 5-character-long string composed of :digits:. Using only street, city, state.")
         url <- paste0(
           "street=", utils::URLencode(street),
           "&city=", utils::URLencode(city),
@@ -115,13 +115,13 @@ call_geolocator <- function(street, city, state, zip = NA) {
   httr::stop_for_status(r)
   response <- httr::content(r)
   if (length(response$result$addressMatches) == 0) {
-    message(paste0("Address (",
+    inform(paste0("Address (",
                    street, " ", city, " ", state,
                    ") returned no address matches. An NA was returned."))
     return(NA_character_)
   } else {
     if (length(response$result$addressMatches) > 1) {
-      message(paste0("Address (",
+      inform(paste0("Address (",
                      street, " ", city, " ", state,
                      ") returned more than one address match. The first match was returned."))
     }
@@ -173,7 +173,7 @@ call_geolocator_latlon <- function(lat, lon, benchmark, vintage) {
   httr::stop_for_status(r)
   response <- httr::content(r)
   if (length(response$result$geographies$`2020 Census Blocks`[[1]]$GEOID) == 0) {
-    message(paste0("Lat/lon (", lat, ", ", lon,
+    inform(paste0("Lat/lon (", lat, ", ", lon,
                    ") returned no geocodes. An NA was returned."))
     return(NA_character_)
   } else {
@@ -187,12 +187,12 @@ call_geolocator_latlon <- function(lat, lon, benchmark, vintage) {
     return(NA_character_)
   } else {
     if (length(response[["result"]][["geographies"]][[response_block]][[1]]$GEOID) == 0) {
-      message(paste0("Lat/lon (", lat, ", ", lon,
+      inform(paste0("Lat/lon (", lat, ", ", lon,
                      ") returned no geocodes. An NA was returned."))
       return(NA_character_)
     } else {
       if (length(response[["result"]][["geographies"]][[response_block]][[1]]$GEOID) > 1) {
-        message(paste0("Lat/lon (", lat, ", ", lon,
+        inform(paste0("Lat/lon (", lat, ", ", lon,
                        ") returned more than geocode. The first match was returned."))
       }
       return(response[["result"]][["geographies"]][[response_block]][[1]]$GEOID)
