@@ -14,7 +14,7 @@ be state name or state abbreviation.}
 subset for, or a vector of FIPS codes if you desire multiple counties.
 Can also be a county name or vector of names.}
 
-\item{year}{the data year; defaults to 2021}
+\item{year}{the data year; defaults to 2022}
 
 \item{...}{arguments to be passed to internal function \code{load_tiger}, which is not exported. See Additional Arguments.}
 }
