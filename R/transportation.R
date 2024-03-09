@@ -53,9 +53,9 @@ roads <- function(state, county, year = NULL, ...) {
     return(r)
   }
 
-  state <- validate_state(state)
+  state <- validate_state(state, require_state = TRUE)
 
-  county <- validate_county(state, county, allow_null = FALSE)
+  county <- validate_county(state, county, require_county = TRUE)
 
   url <- url_tiger("TIGER%s/ROADS/tl_%s_%s%s_roads", year, year, state, county)
 
@@ -128,7 +128,7 @@ primary_secondary_roads <- function(state, year = NULL, ...) {
 
   year <- set_tigris_year(year)
 
-  state <- validate_state(state, allow_null = FALSE)
+  state <- validate_state(state, require_state = TRUE)
 
   url <- url_tiger("TIGER%s/PRISECROADS/tl_%s_%s_prisecroads",
                    year, year, state)
@@ -182,9 +182,9 @@ address_ranges <- function(state, county, year = NULL, ...) {
 
   year <- set_tigris_year(year)
 
-  state <- validate_state(state)
+  state <- validate_state(state, require_state = TRUE)
 
-  county <- validate_county(state, county, allow_null = FALSE)
+  county <- validate_county(state, county, require_county = TRUE)
 
   url <- url_tiger("TIGER%s/ADDRFEAT/tl_%s_%s%s_addrfeat",
                    year, year, state, county)

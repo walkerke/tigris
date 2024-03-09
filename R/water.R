@@ -36,9 +36,9 @@ area_water <- function(state, county, year = NULL, ...) {
     return(w)
   }
 
-  state <- validate_state(state)
+  state <- validate_state(state, require_state = TRUE)
 
-  county <- validate_county(state, county, allow_null = FALSE)
+  county <- validate_county(state, county, require_county = TRUE)
 
   url <- url_tiger("TIGER%s/AREAWATER/tl_%s_%s%s_areawater",
                    year, year, state, county)
@@ -87,9 +87,9 @@ linear_water <- function(state, county, year = NULL, ...) {
     return(w)
   }
 
-  state <- validate_state(state)
+  state <- validate_state(state, require_state = TRUE)
 
-  county <- validate_county(state, county, allow_null = FALSE)
+  county <- validate_county(state, county, require_county = TRUE)
 
   url <- url_tiger("TIGER%s/LINEARWATER/tl_%s_%s%s_linearwater",
                    year, year, state, county)
