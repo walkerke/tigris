@@ -2,7 +2,6 @@ test_that("nation errors", {
   expect_error(nation(resolution = "500K"))
 })
 
-
 test_that("national functions work", {
   withr::local_options(list(tigris_use_cache = TRUE))
   res <- "20m"
