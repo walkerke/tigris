@@ -61,7 +61,7 @@ counties <- function(state = NULL, cb = FALSE, resolution = '500k', year = NULL,
 
     if (year %in% c(1990, 2000)) {
 
-      suf <- substr(as.character(year), 3, 4)
+      suf <- substr(year, 3, 4)
 
       url <- url_tiger("PREVGENZ/co/co%sshp/co99_d%s_shp", suf, suf)
 
