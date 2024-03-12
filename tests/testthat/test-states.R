@@ -7,5 +7,6 @@ test_that("states works", {
   # expect_s3_class(states(year = 2013, cb = TRUE), "sf")
 
   # expect_s3_class(states(year = 2010), "sf")
+  expect_s3_class(states(year = 2012), "sf")
   expect_s3_class(states(), "sf")
 })
