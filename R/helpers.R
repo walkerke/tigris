@@ -94,6 +94,7 @@ load_tiger <- function(url,
     } else {
       cache_dir <- user_cache_dir("tigris")
     }
+
     if (!file.exists(cache_dir)) {
       dir.create(cache_dir, recursive=TRUE)
     }
@@ -185,16 +186,7 @@ load_tiger <- function(url,
 
       }
 
-      obj <- st_read(dsn = cache_dir, layer = shape,
-                     quiet = TRUE, stringsAsFactors = FALSE,
-                     wkt_filter = wkt_filter)
-
-      if (is.na(st_crs(obj)$proj4string)) {
-
-        st_crs(obj) <- "+proj=longlat +datum=NAD83 +no_defs"
-
-      }
-
+      dsn <- cache_dir
     }
 
   } else {
@@ -213,17 +205,16 @@ load_tiger <- function(url,
     unzip(file_loc, exdir = tmp)
     shape <- gsub(".zip", "", tiger_file)
     shape <- gsub("_shp", "", shape) # for historic tracts
+    dsn <- tmp
 
-    obj <- st_read(dsn = tmp, layer = shape,
-                   quiet = TRUE, stringsAsFactors = FALSE,
-                   wkt_filter = wkt_filter)
+  }
 
-    if (is.na(st_crs(obj)$proj4string)) {
+  obj <- st_read(dsn = dsn, layer = shape,
+                 quiet = TRUE, stringsAsFactors = FALSE,
+                 wkt_filter = wkt_filter)
 
-      st_crs(obj) <- "+proj=longlat +datum=NAD83 +no_defs"
-
-    }
-
+  if (is.na(st_crs(obj)$proj4string)) {
+    st_crs(obj) <- "+proj=longlat +datum=NAD83 +no_defs"
   }
 
   attr(obj, "tigris") <- "tigris"
@@ -231,6 +222,25 @@ load_tiger <- function(url,
   # this will help identify the object "sub type"
   if (!is.null(tigris_type)) attr(obj, "tigris") <- tigris_type
 
+  obj <- rename_fips_cols(obj)
+
+  if (class == "sp") {
+    warn(
+      c(
+        "!" = "Spatial* (sp) classes are no longer formally supported in tigris as of version 2.0.",
+        "i" = "We strongly recommend updating your workflow to use sf objects (the default in tigris) instead."
+        )
+     )
+    return(sf::as_Spatial(obj))
+  } else {
+    return(obj)
+  }
+}
+
+#' Rename FIPS columns for historic data
+#'
+#' @noRd
+rename_fips_cols <- function(obj) {
   # Take care of COUNTYFP, STATEFP issues for historic data
   if ("COUNTYFP00" %in% names(obj)) {
     obj$COUNTYFP <- obj$COUNTYFP00
@@ -249,17 +259,7 @@ load_tiger <- function(url,
     obj$STATEFP <- obj$ST
   }
 
-  if (class == "sp") {
-    warn(
-      c(
-        "!" = "Spatial* (sp) classes are no longer formally supported in tigris as of version 2.0.",
-        "i" = "We strongly recommend updating your workflow to use sf objects (the default in tigris) instead."
-        )
-     )
-    return(sf::as_Spatial(obj))
-  } else {
-    return(obj)
-  }
+  obj
 }
 
 #' Easily merge a data frame to a spatial data frame
