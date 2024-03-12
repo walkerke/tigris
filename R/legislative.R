@@ -264,9 +264,9 @@ voting_districts <- function(state = NULL, county = NULL, cb = FALSE, year = 202
   if (year == 2012) {
     url <- url_tiger("TIGER2012/VTD/tl_2012_%s_vtd10", state)
   } else {
-    if (!is.null(county)) {
-      county <- validate_county(state, county, require_county = TRUE)
+    county <- validate_county(state, county, allow_null = TRUE)
 
+    if (!is.null(county)) {
       url <- url_tiger("TIGER2020PL/LAYER/VTD/2020/tl_2020_%s%s_vtd20", state, county)
     } else {
       url <- url_tiger("TIGER2020PL/LAYER/VTD/2020/tl_2020_%s_vtd20", state)
