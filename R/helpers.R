@@ -77,9 +77,6 @@ load_tiger <- function(url,
                        keep_zipped_shapefile = FALSE,
                        filter_by = NULL,
                        call = caller_env()) {
-
-  use_cache <- getOption("tigris_use_cache", FALSE)
-
   # Process filter_by
   wkt_filter <- input_to_wkt(filter_by, call = call)
 
@@ -87,19 +84,13 @@ load_tiger <- function(url,
 
   obj <- NULL
 
+  use_cache <- getOption("tigris_use_cache", FALSE)
+
   if (use_cache) {
-    if (Sys.getenv("TIGRIS_CACHE_DIR") != "") {
-      cache_dir <- Sys.getenv("TIGRIS_CACHE_DIR")
-      cache_dir <- path.expand(cache_dir)
-    } else {
-      cache_dir <- user_cache_dir("tigris")
-    }
 
-    if (!file.exists(cache_dir)) {
-      dir.create(cache_dir, recursive=TRUE)
-    }
+    cache_dir <- get_tigris_cache_dir()
 
-    if (file.exists(cache_dir)) {
+    if (dir.exists(cache_dir)) {
 
       shape <- gsub(".zip", "", tiger_file)
       shape <- gsub("_shp", "", shape) # for historic tracts
@@ -107,7 +98,9 @@ load_tiger <- function(url,
       file_loc <- file.path(cache_dir, tiger_file)
       shp_loc  <- file.path(cache_dir, sprintf("%s.shp", shape))
 
-      if (refresh | !file.exists(shp_loc)) {
+      if (refresh || !file.exists(shp_loc)) {
+
+        check_tigris_url(url, call = call)
 
         if (progress_bar) {
           try(GET(url,
@@ -118,11 +111,6 @@ load_tiger <- function(url,
                   write_disk(file_loc, overwrite=refresh)),
                   silent=TRUE)
         }
-
-
-      }
-
-      if (refresh || !file.exists(shp_loc)) {
 
         unzip_tiger <- function() {
           unzip(file_loc, exdir = cache_dir, overwrite=TRUE)
@@ -191,6 +179,8 @@ load_tiger <- function(url,
 
   } else {
 
+    check_tigris_url(url, call = call)
+
     tmp <- tempdir()
     file_loc <- file.path(tmp, tiger_file)
 
@@ -234,6 +224,41 @@ load_tiger <- function(url,
     return(sf::as_Spatial(obj))
   } else {
     return(obj)
+  }
+}
+
+#' @noRd
+#' @importFrom rappdirs user_cache_dir
+get_tigris_cache_dir <- function() {
+  if (Sys.getenv("TIGRIS_CACHE_DIR") != "") {
+    cache_dir <- Sys.getenv("TIGRIS_CACHE_DIR")
+    cache_dir <- path.expand(cache_dir)
+  } else {
+    cache_dir <- rappdirs::user_cache_dir("tigris")
+  }
+
+  if (!dir.exists(cache_dir)) {
+    dir.create(cache_dir, recursive = TRUE)
+  }
+
+  cache_dir
+}
+
+#' Check URL
+#'
+#' @noRd
+check_tigris_url <- function(url, call = caller_env()) {
+  if (!is_string(url)) {
+    abort("`url` must be a string", call = call)
+  }
+
+  resp <- HEAD(url)
+
+  if (http_error(resp)) {
+    abort(
+      paste0("`url` can't be found: ", url),
+      call = call
+    )
   }
 }
 

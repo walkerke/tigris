@@ -26,7 +26,6 @@
 
 ## usethis namespace: start
 #' @import utils
-#' @import rappdirs
 #' @import httr
 #' @import sf
 #' @import dplyr
