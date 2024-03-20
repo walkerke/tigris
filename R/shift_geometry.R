@@ -5,33 +5,33 @@
 #' United States will have their CRS transformed to USA Contiguous Albers Equal Area Conic ('ESRI:102003').
 #' Alaska, Hawaii, and Puerto Rico features are transformed to appropriate coordinate systems for those areas,
 #' then shifted and optionally re-scaled before being assigned the 'ESRI:102003' CRS.  Options for users
-#' include \code{preserve_area} which allows for preservation of the area of AK/HI/PR relative to the
-#' continental US if desired, and two possible arrangements which are specified with \code{position = "below"}
-#' or \code{position = "outside"}
+#' include `preserve_area` which allows for preservation of the area of AK/HI/PR relative to the
+#' continental US if desired, and two possible arrangements which are specified with `position = "below"`
+#' or `position = "outside"`
 #'
-#' \code{shift_geometry()}, while designed for use with objects from the tigris package, will work with any US
+#' `shift_geometry()`, while designed for use with objects from the tigris package, will work with any US
 #' dataset. If aligning datasets from multiple sources, you must take care to ensure that your options
-#' specified in \code{preserve_area} and \code{position} are identical across layers.  Otherwise your layers
+#' specified in `preserve_area` and `position` are identical across layers.  Otherwise your layers
 #' will not align correctly.
 #'
 #' The function is also designed to work exclusively with features in the continental United States,
 #' Alaska, Hawaii, and Puerto Rico.  If your dataset includes features outside these areas (e.g. other
 #' US territories or other countries), you may get unworkable results.  It is advisable to filter out
-#' those features before using \code{shift_geometry()}.
+#' those features before using `shift_geometry()`.
 #'
-#' Work on this function is inspired by and adapts some code from Claus Wilke's book \emph{Fundamentals of
-#' Data Visualization} (\url{https://clauswilke.com/dataviz/geospatial-data.html}); Bob Rudis's
-#' albersusa R package (\url{https://github.com/hrbrmstr/albersusa}); and the ggcart R package
-#' (\url{https://uncoast-unconf.github.io/ggcart/}).
+#' Work on this function is inspired by and adapts some code from Claus Wilke's book *Fundamentals of
+#' Data Visualization* (<https://clauswilke.com/dataviz/geospatial-data.html>); Bob Rudis's
+#' albersusa R package (<https://github.com/hrbrmstr/albersusa>); and the ggcart R package
+#' (<https://uncoast-unconf.github.io/ggcart/>).
 #'
 #' @param input_sf The input sf dataset
 #' @param geoid_column The GEOID column of the dataset that contains a state ID.  If used, will speed up
-#'                     processing and avoid spatial overlay to infer locations.  Defaults to \code{NULL}.
+#'                     processing and avoid spatial overlay to infer locations.  Defaults to `NULL`.
 #' @param preserve_area If TRUE, the areas of Alaska/Hawaii/Puerto Rico relative to the continental US
 #'                      will be preserved.  Defaults to FALSE where Alaska is proportionally smaller
 #'                      and Hawaii/Puerto Rico are proportionally larger.
-#' @param position One of \code{"below"} (the default) or \code{"outside"}.  If \code{"below"}, Alaska, Hawaii,
-#'                 and Puerto Rico will be placed below the continental United States.  If \code{"outside"},
+#' @param position One of `"below"` (the default) or `"outside"`.  If `"below"`, Alaska, Hawaii,
+#'                 and Puerto Rico will be placed below the continental United States.  If `"outside"`,
 #'                 features will be moved outside the continental US; Alaska will be northwest of Washington,
 #'                 Hawaii southwest of California, and Puerto Rico southeast of Florida.
 #'
@@ -85,15 +85,15 @@ shift_geometry <- function(input_sf,
   # sf::sf_use_s2(FALSE)
 
   # Check to see if the input is an sf object, otherwise exit
-  if (!any(grepl("sf", class(input_sf)))) {
-    stop("The input dataset must be an sf object.", call = FALSE)
+  if (!is_sf(input_sf)) {
+    abort("The input dataset must be an sf object.")
   }
 
-  position <- match.arg(position)
+  position <- arg_match(position)
 
   # Get a set of minimal states which we'll need to use throughout the function
   # Do the CRS transformation here to avoid S2 issues with sf 1.0
-  minimal_states <- tigris::states(cb = TRUE, resolution = "20m", progress_bar = FALSE,
+  minimal_states <- states(cb = TRUE, resolution = "20m", progress_bar = FALSE,
                                    year = 2020) %>%
     sf::st_transform('ESRI:102003')
 
@@ -120,8 +120,10 @@ shift_geometry <- function(input_sf,
   pr_check <- suppressMessages(sf::st_intersects(input_sf, pr_bbox, sparse = FALSE)[,1])
 
   if (!any(ak_check) && !any(hi_check) && !any(pr_check)) {
-    warning("None of your features are in Alaska, Hawaii, or Puerto Rico, so no geometries will be shifted.\nTransforming your object's CRS to 'ESRI:102003'",
-         call. = FALSE)
+    warn(
+      c("i" = "None of your features are in Alaska, Hawaii, or Puerto Rico, so no geometries will be shifted.",
+        "v" = "Transforming your object's CRS to 'ESRI:102003'")
+    )
 
     transformed_output <- sf::st_transform(input_sf, 'ESRI:102003')
 
@@ -131,7 +133,7 @@ shift_geometry <- function(input_sf,
   # Check to see if there is a GEOID column to identify state information
   # If it is a GEOID that works (e.g. counties, tracts), then use it and avoid spatial inferences
   if (!is.null(geoid_column)) {
-    input_sf$state_fips <- stringr::str_sub(input_sf[[geoid_column]], 1, 2)
+    input_sf$state_fips <- substr(input_sf[[geoid_column]], 1, 2)
   } else {
       # This is where we need to infer the location of the features
       # We can do this by checking to see where the input features intersect

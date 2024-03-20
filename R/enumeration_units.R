@@ -32,14 +32,14 @@
 #'        or state abbreviation.
 #' @param cb If cb is set to TRUE, download a generalized (1:500k)
 #'        counties file.  Defaults to FALSE (the most detailed TIGER file).
-#' @param resolution The resolution of the cartographic boundary file (if cb == TRUE).
+#' @param resolution The resolution of the cartographic boundary file (if `cb = TRUE`).
 #'        Defaults to '500k'; options include '5m' (1:5 million) and '20m' (1:20 million).
 #' @inheritParams load_tiger_doc_template
 #' @inheritSection load_tiger_doc_template Additional Arguments
 #'
 #' @export
 #' @family general area functions
-#' @seealso \url{https://www2.census.gov/geo/pdfs/reference/GARM/Ch4GARM.pdf}
+#' @seealso <https://www2.census.gov/geo/pdfs/reference/GARM/Ch4GARM.pdf>
 #' @examples \dontrun{
 #' library(tigris)
 #' library(ggplot2)
@@ -53,45 +53,31 @@
 #' }
 counties <- function(state = NULL, cb = FALSE, resolution = '500k', year = NULL, ...) {
 
-  if (!(resolution %in% c('500k', '5m', '20m'))) {
-    stop("Invalid value for resolution. Valid values are '500k', '5m', and '20m'.", call. = FALSE)
-  }
+  check_tigris_resolution(resolution)
 
-  if (is.null(year)) {
+  year <- set_tigris_year(year)
 
-    year <- getOption("tigris_year", 2022)
-
-    message(sprintf("Retrieving data for the year %s", year))
-
-  }
-
-    cyear <- as.character(year)
-
-  if (cb == TRUE) {
+  if (cb) {
 
     if (year %in% c(1990, 2000)) {
 
-      suf <- substr(as.character(year), 3, 4)
+      suf <- substr(year, 3, 4)
 
-      url <- sprintf("https://www2.census.gov/geo/tiger/PREVGENZ/co/co%sshp/co99_d%s_shp.zip",
-                     suf, suf)
+      url <- url_tiger("PREVGENZ/co/co%sshp/co99_d%s_shp", suf, suf)
 
     } else if (year == 2010) {
 
-      url <- sprintf("https://www2.census.gov/geo/tiger/GENZ2010/gz_2010_us_050_00_%s.zip",
-                     resolution)
+      url <- url_tiger("GENZ2010/gz_2010_us_050_00_%s", resolution)
 
     } else {
 
       if (year > 2013) {
 
-        url <- sprintf("https://www2.census.gov/geo/tiger/GENZ%s/shp/cb_%s_us_county_%s.zip",
-                       cyear, cyear, resolution)
+        url <- url_tiger("GENZ%s/shp/cb_%s_us_county_%s", year, year, resolution)
 
       } else {
 
-        url <- sprintf("https://www2.census.gov/geo/tiger/GENZ%s/cb_%s_us_county_%s.zip",
-                       cyear, cyear, resolution)
+        url <- url_tiger("GENZ%s/cb_%s_us_county_%s", year, year, resolution)
 
       }
 
@@ -100,25 +86,23 @@ counties <- function(state = NULL, cb = FALSE, resolution = '500k', year = NULL,
 
   } else {
 
-    if (year == 1990) stop("Please specify `cb = TRUE` to get 1990 data.", call. = FALSE)
+    check_cb_year(year = year, error_year = 1990)
 
     if (year %in% c(2000, 2010)) {
 
-      suf <- substr(cyear, 3, 4)
+      suf <- substr(year, 3, 4)
 
-      url <- sprintf("https://www2.census.gov/geo/tiger/TIGER2010/COUNTY/%s/tl_2010_us_county%s.zip",
-                     cyear, suf)
+      url <- url_tiger("TIGER2010/COUNTY/%s/tl_2010_us_county%s", year, suf)
 
     } else {
 
-      url <- sprintf("https://www2.census.gov/geo/tiger/TIGER%s/COUNTY/tl_%s_us_county.zip",
-                     cyear, cyear)
+      url <- url_tiger("TIGER%s/COUNTY/tl_%s_us_county", year, year)
 
     }
 
   }
 
-  ctys <- load_tiger(url, tigris_type="county", ...)
+  ctys <- load_tiger(url, tigris_type = "county", ...)
 
   state <- unlist(sapply(state, validate_state, USE.NAMES=FALSE))
 
@@ -209,8 +193,8 @@ counties <- function(state = NULL, cb = FALSE, resolution = '500k', year = NULL,
 #' geographic hierarchy.
 #'
 #' @param state The two-digit FIPS code (string) of the state you want. Can also
-#'        be state name or state abbreviation. When \code{NULL} and combined with
-#'        \code{cb = TRUE}, a national dataset of Census tracts will be returned for
+#'        be state name or state abbreviation. When `NULL` and combined with
+#'        `cb = TRUE`, a national dataset of Census tracts will be returned for
 #'        years 2019 and later.
 #' @param county The three-digit FIPS code (string) of the county you'd like to
 #'        subset for, or a vector of FIPS codes if you desire multiple counties.
@@ -222,7 +206,7 @@ counties <- function(state = NULL, cb = FALSE, resolution = '500k', year = NULL,
 #' @inheritParams load_tiger_doc_template
 #' @inheritSection load_tiger_doc_template Additional Arguments
 #' @family general area functions
-#' @seealso \url{https://www2.census.gov/geo/pdfs/reference/GARM/Ch10GARM.pdf}
+#' @seealso <https://www2.census.gov/geo/pdfs/reference/GARM/Ch10GARM.pdf>
 #' @export
 #' @examples \dontrun{
 #' library(tigris)
@@ -237,57 +221,44 @@ counties <- function(state = NULL, cb = FALSE, resolution = '500k', year = NULL,
 tracts <- function(state = NULL, county = NULL, cb = FALSE, resolution = "500k",
                    year = NULL, ...) {
 
-  if (is.null(year)) {
+  year <- set_tigris_year(year, min_year = 1990)
 
-    year <- getOption("tigris_year", 2022)
-
-    message(sprintf("Retrieving data for the year %s", year))
-
-  }
-
-  if ((resolution == "5m" && year < 2022) | (resolution == "5m" && !is.null(state))) {
-    stop("`resolution = '5m'` for Census tracts is only available for the national Census tract CB file in years 2022 and later.", call. = FALSE)
+  if ((resolution == "5m" && year < 2022) || (resolution == "5m" && !is.null(state))) {
+    abort("`resolution = '5m'` for Census tracts is only available for the national Census tract CB file in years 2022 and later.")
   }
 
   if (is.null(state)) {
-    if (year > 2018 && cb == TRUE) {
+    if (year > 2018 && cb) {
       state <- "us"
-      message("Retrieving Census tracts for the entire United States")
+      inform("Retrieving Census tracts for the entire United States")
     } else {
-      stop("A state must be specified for this year/dataset combination.",
-           call. = FALSE)
+      abort("A state must be specified for this year/dataset combination.")
     }
   } else {
-    state <- validate_state(state)
-
-    if (is.null(state)) stop("Invalid state", call.=FALSE)
+    state <- validate_state(state, allow_null = FALSE)
   }
 
-  if (cb == TRUE) {
+  if (cb) {
 
     if (year %in% c(1990, 2000)) {
 
-      suf <- substr(as.character(year), 3, 4)
+      suf <- substr(year, 3, 4)
 
-      url <- sprintf("https://www2.census.gov/geo/tiger/PREVGENZ/tr/tr%sshp/tr%s_d%s_shp.zip",
-                     suf, state, suf)
+      url <- url_tiger("PREVGENZ/tr/tr%sshp/tr%s_d%s_shp", suf, state, suf)
 
     } else if (year == 2010) {
 
-      url <- sprintf("https://www2.census.gov/geo/tiger/GENZ2010/gz_2010_%s_140_00_500k.zip",
-                     state)
+      url <- url_tiger("GENZ2010/gz_2010_%s_140_00_500k", state)
 
     } else {
 
       if (year > 2013) {
 
-        url <- sprintf("https://www2.census.gov/geo/tiger/GENZ%s/shp/cb_%s_%s_tract_%s.zip",
-                       as.character(year), as.character(year), state, resolution)
+        url <- url_tiger("GENZ%s/shp/cb_%s_%s_tract_%s", year, year, state, resolution)
 
       } else {
 
-        url <- sprintf("https://www2.census.gov/geo/tiger/GENZ%s/cb_%s_%s_tract_500k.zip",
-                       as.character(year), as.character(year), state)
+        url <- url_tiger("GENZ%s/cb_%s_%s_tract_500k", year, year, state)
 
       }
 
@@ -296,27 +267,23 @@ tracts <- function(state = NULL, county = NULL, cb = FALSE, resolution = "500k",
 
   } else {
 
-    if (year == 1990) stop("Please specify `cb = TRUE` to get 1990 data.", call. = FALSE)
+    check_cb_year(year = year, error_year = 1990)
 
     if (year %in% c(2000, 2010)) {
 
-      cyear <- as.character(year)
+      suf <- substr(year, 3, 4)
 
-      suf <- substr(cyear, 3, 4)
-
-      url <- sprintf("https://www2.census.gov/geo/tiger/TIGER2010/TRACT/%s/tl_2010_%s_tract%s.zip",
-                     cyear, state, suf)
+      url <- url_tiger("TIGER2010/TRACT/%s/tl_2010_%s_tract%s", year, state, suf)
 
     } else {
 
-      url <- sprintf("https://www2.census.gov/geo/tiger/TIGER%s/TRACT/tl_%s_%s_tract.zip",
-                     as.character(year), as.character(year), state)
+      url <- url_tiger("TIGER%s/TRACT/tl_%s_%s_tract",  year, year, state)
 
     }
 
   }
 
-  trcts <- load_tiger(url, tigris_type="tract", ...)
+  trcts <- load_tiger(url, tigris_type = "tract", ...)
 
   if (!is.null(county)) {
 
@@ -352,7 +319,7 @@ tracts <- function(state = NULL, county = NULL, cb = FALSE, resolution = "500k",
 
     } else if (year == 2000) {
       trcts <- trcts %>%
-        mutate(TRACT = str_pad(.data$TRACT, 6, "right", "0")) %>%
+        mutate(TRACT = pad_str(.data$TRACT, 6, "right", "0")) %>%
         mutate(id = paste0(.data$STATE, .data$COUNTY, .data$TRACT)) %>%
         group_by(.data$id) %>%
         summarize(AREA = sum(.data$AREA),
@@ -394,18 +361,18 @@ tracts <- function(state = NULL, county = NULL, cb = FALSE, resolution = "500k",
 #' Please see the link for more information on how the Census Bureau creates the school district shapefiles.
 #'
 #' @param state The two-digit FIPS code (string) of the state you want. Can also
-#'        be state name or state abbreviation. When \code{NULL} and combined with
-#'        \code{cb = TRUE}, a national dataset of school districts will be returned for
+#'        be state name or state abbreviation. When `NULL` and combined with
+#'        `cb = TRUE`, a national dataset of school districts will be returned for
 #'        years 2019 and later.
-#' @param type Specify whether you want to return a unified school district (the default, \code{'unified'}),
-#'        an elementary school district (\code{'elementary'}), or a secondary school district (\code{'secondary'}).
+#' @param type Specify whether you want to return a unified school district (the default, `'unified'`),
+#'        an elementary school district (`'elementary'`), or a secondary school district (`'secondary'`).
 #'        Please note: elementary and secondary school districts do not exist in all states
 #' @param cb if TRUE, download a generalized (1:500k)
 #'        school districts file.  Defaults to FALSE (the most detailed TIGER/Line file)
 #' @inheritParams load_tiger_doc_template
 #' @inheritSection load_tiger_doc_template Additional Arguments
 #' @family general area functions
-#' @seealso \url{https://www2.census.gov/geo/pdfs/maps-data/data/tiger/tgrshp2020/TGRSHP2020_TechDoc.pdf}
+#' @seealso <https://www2.census.gov/geo/pdfs/maps-data/data/tiger/tgrshp2020/TGRSHP2020_TechDoc.pdf>
 #' @export
 #' @examples \dontrun{
 #' library(tigris)
@@ -421,61 +388,38 @@ tracts <- function(state = NULL, county = NULL, cb = FALSE, resolution = "500k",
 #' }
 school_districts <- function(state = NULL, type = 'unified',
                              cb = FALSE, year = NULL, ...) {
+  year <- set_tigris_year(year)
 
-  if (is.null(year)) {
-
-    year = getOption("tigris_year", 2022)
-
-    message(sprintf("Retrieving data for the year %s", year))
-
-  }
+  type <- arg_match0(
+    type,
+    values = c('unified', 'elementary', 'secondary')
+  )
 
   if (is.null(state)) {
-    if (year > 2018 && cb == TRUE) {
+    if (year > 2018 && cb) {
       state <- "us"
-      message("Retrieving school districts for the entire United States")
+      inform("Retrieving school districts for the entire United States")
     } else {
-      stop("A state must be specified for this year/dataset combination.",
-           call. = FALSE)
+      abort("A state must be specified for this year/dataset combination.")
     }
   } else {
-    state <- validate_state(state)
-
-    if (is.null(state)) stop("Invalid state", call.=FALSE)
+    state <- validate_state(state, allow_null = FALSE)
   }
 
-  if (year < 2011) {
-
-    fname <- as.character(match.call())[[1]]
-
-    msg <- sprintf("%s is not currently available for years prior to 2011.  To request this feature,
-                   file an issue at https://github.com/walkerke/tigris.", fname)
-
-    stop(msg, call. = FALSE)
-
-  }
-
-  if (type == 'unified') {
-    type <- 'unsd'
-  } else if (type == 'elementary') {
-    type <- 'elsd'
-  } else if (type == 'secondary') {
-    type <- 'scsd'
-  } else {
-    stop("Invalid school district type.  Valid types are 'unified', 'elementary', and 'secondary'.", call. = FALSE)
-  }
-
-  cyear <- as.character(year)
+  type <- switch (type,
+    unified = "unsd",
+    elementary = "elsd",
+    secondary = "scsd"
+  )
 
   if (cb) {
 
-    url <- sprintf("https://www2.census.gov/geo/tiger/GENZ%s/shp/cb_%s_%s_%s_500k.zip",
-                   cyear, cyear, state, type)
+    url <- url_tiger("GENZ%s/shp/cb_%s_%s_%s_500k", year, year, state, type)
 
   } else {
 
-    url <- sprintf("https://www2.census.gov/geo/tiger/TIGER%s/%s/tl_%s_%s_%s.zip",
-                   cyear, toupper(type), cyear, state, type)
+    url <- url_tiger("TIGER%s/%s/tl_%s_%s_%s",
+                     year, toupper(type), year, state, type)
 
   }
 
@@ -508,8 +452,8 @@ school_districts <- function(state = NULL, type = 'unified',
 #'
 #'
 #' @param state The two-digit FIPS code (string) of the state you want. Can also
-#'        be state name or state abbreviation.  When \code{NULL} and combined with
-#'        \code{cb = TRUE}, a national dataset of block groups will be returned for
+#'        be state name or state abbreviation.  When `NULL` and combined with
+#'        `cb = TRUE`, a national dataset of block groups will be returned for
 #'        years 2019 and later.
 #' @param county The three-digit FIPS code (string) of the county you'd like to
 #'        subset for, or a vector of FIPS codes if you desire multiple counties.
@@ -519,7 +463,7 @@ school_districts <- function(state = NULL, type = 'unified',
 #' @inheritParams load_tiger_doc_template
 #' @inheritSection load_tiger_doc_template Additional Arguments
 #' @family general area functions
-#' @seealso \url{https://www2.census.gov/geo/pdfs/maps-data/data/tiger/tgrshp2020/TGRSHP2020_TechDoc.pdf}
+#' @seealso <https://www2.census.gov/geo/pdfs/maps-data/data/tiger/tgrshp2020/TGRSHP2020_TechDoc.pdf>
 #' @export
 #' @examples \dontrun{
 #' library(tigris)
@@ -530,55 +474,40 @@ school_districts <- function(state = NULL, type = 'unified',
 #' }
 block_groups <- function(state = NULL, county = NULL, cb = FALSE, year = NULL, ...) {
 
-  if (is.null(year)) {
-
-    year = getOption("tigris_year", 2022)
-
-    message(sprintf("Retrieving data for the year %s", year))
-
-  }
-
-    cyear <- as.character(year)
+  year <- set_tigris_year(year, min_year = 1990)
 
   if (is.null(state)) {
-    if (year > 2018 && cb == TRUE) {
+    if (year > 2018 && cb) {
       state <- "us"
-      message("Retrieving Census block groups for the entire United States")
+      inform("Retrieving Census block groups for the entire United States")
     } else {
-      stop("A state must be specified for this year/dataset combination.",
-           call. = FALSE)
+      abort("A state must be specified for this year/dataset combination.")
     }
   } else {
-    state <- validate_state(state)
-
-    if (is.null(state)) stop("Invalid state", call.=FALSE)
+    state <- validate_state(state, allow_null = FALSE)
   }
 
-  if (cb == TRUE) {
+  if (cb) {
 
     if (year %in% c(1990, 2000)) {
 
-      suf <- substr(as.character(year), 3, 4)
+      suf <- substr(year, 3, 4)
 
-      url <- sprintf("https://www2.census.gov/geo/tiger/PREVGENZ/bg/bg%sshp/bg%s_d%s_shp.zip",
-                     suf, state, suf)
+      url <- url_tiger("PREVGENZ/bg/bg%sshp/bg%s_d%s_shp", suf, state, suf)
 
     } else if (year == 2010) {
 
-      url <- sprintf("https://www2.census.gov/geo/tiger/GENZ2010/gz_2010_%s_150_00_500k.zip",
-                     state)
+      url <- url_tiger("GENZ2010/gz_2010_%s_150_00_500k", state)
 
     } else {
 
       if (year > 2013) {
 
-        url <- sprintf("https://www2.census.gov/geo/tiger/GENZ%s/shp/cb_%s_%s_bg_500k.zip",
-                       cyear, cyear, state)
+        url <- url_tiger("GENZ%s/shp/cb_%s_%s_bg_500k", year, year, state)
 
       } else {
 
-        url <- sprintf("https://www2.census.gov/geo/tiger/GENZ%s/cb_%s_%s_bg_500k.zip",
-                       cyear, cyear, state)
+        url <- url_tiger("GENZ%s/cb_%s_%s_bg_500k", year, year, state)
 
       }
 
@@ -587,26 +516,24 @@ block_groups <- function(state = NULL, county = NULL, cb = FALSE, year = NULL, .
 
   } else {
 
-    if (year == 1990) stop("Please specify `cb = TRUE` to get 1990 data.", call. = FALSE)
+    check_cb_year(year = year, error_year = 1990)
 
     if (year %in% c(2000, 2010)) {
 
-      suf <- substr(cyear, 3, 4)
+      suf <- substr(year, 3, 4)
 
-      url <- sprintf("https://www2.census.gov/geo/tiger/TIGER2010/BG/%s/tl_2010_%s_bg%s.zip",
-                     cyear, state, suf)
+      url <- url_tiger("TIGER2010/BG/%s/tl_2010_%s_bg%s", year, state, suf)
 
     } else {
 
-      url <- sprintf("https://www2.census.gov/geo/tiger/TIGER%s/BG/tl_%s_%s_bg.zip",
-                     cyear, cyear, state)
+      url <- url_tiger("TIGER%s/BG/tl_%s_%s_bg", year, year, state)
 
     }
 
   }
 
 
-  bgs <- load_tiger(url, tigris_type="block_group", ...)
+  bgs <- load_tiger(url, tigris_type = "block_group", ...)
 
   if (!is.null(county)) {
 
@@ -640,7 +567,7 @@ block_groups <- function(state = NULL, county = NULL, cb = FALSE, year = NULL, .
         st_cast("MULTIPOLYGON")
     } else if (year == 2000) {
       bgs <- bgs %>%
-        mutate(TRACT = str_pad(.data$TRACT, 6, "right", "0")) %>%
+        mutate(TRACT = pad_str(.data$TRACT, 6, "right", "0")) %>%
         mutate(id = paste0(.data$STATE, .data$COUNTY, .data$TRACT, .data$BLKGROUP)) %>%
         group_by(.data$id) %>%
         summarize(AREA = sum(.data$AREA),
@@ -677,20 +604,20 @@ block_groups <- function(state = NULL, county = NULL, cb = FALSE, year = NULL, .
 #'
 #' @param cb If cb is set to TRUE, download a generalized (1:500k)
 #'        ZCTA file.  Defaults to FALSE (the most detailed TIGER/Line file).
-#'        \strong{A warning:} the detailed TIGER/Line ZCTA file is massive
+#'        **A warning:** the detailed TIGER/Line ZCTA file is massive
 #'        (around 502MB unzipped), and the generalized version is also large
 #'        (64MB zipped).  Be prepared for this especially if you have a slower
 #'        internet connection.
 #' @param starts_with Character vector specifying the beginning digits of the
 #'        ZCTAs you want to return.  For example, supplying the argument
-#'        \code{starts_with = c("75", "76")} will return only those ZCTAs that begin
+#'        `starts_with = c("75", "76")` will return only those ZCTAs that begin
 #'        with 75 or 76.  Defaults to NULL, which will return all ZCTAs in the US.
 #' @param state the state for which you are requesting data; only available for 2000 (TIGER/Line
 #'              and CB shapefiles) and 2010 (TIGER/Line shapefiles only)
 #' @inheritParams load_tiger_doc_template
 #' @inheritSection load_tiger_doc_template Additional Arguments
 #' @family general area functions
-#' @seealso \url{https://www.census.gov/programs-surveys/geography/guidance/geo-areas/zctas.html}
+#' @seealso <https://www.census.gov/programs-surveys/geography/guidance/geo-areas/zctas.html>
 #' @export
 #' @examples \dontrun{
 #' # Example: get ZCTAs that intersect the Memphis, TN urbanized area
@@ -708,100 +635,107 @@ block_groups <- function(state = NULL, county = NULL, cb = FALSE, year = NULL, .
 #'
 #' }
 zctas <- function(cb = FALSE, starts_with = NULL, year = NULL, state = NULL, ...) {
-
-  if (is.null(year)) {
-
-    year = getOption("tigris_year", 2022)
-
-    message(sprintf("Retrieving data for the year %s", year))
-
-  }
+  year <- set_tigris_year(
+    year,
+    min_year = 1990,
+    message =  "Zip Code Tabulation Areas are only available beginning with the 2000 Census."
+  )
 
   if (year > 2020 && cb) {
-    stop(sprintf("The Census Bureau has not yet released the CB ZCTA file for %s. Please use the argument `year = 2020` or `cb = FALSE` instead.", year), call. = FALSE)
+    abort(
+      c(sprintf("The Census Bureau has not yet released the CB ZCTA file for %s.", year),
+        "i" = "Please use the argument `year = 2020` or `cb = FALSE` instead.")
+    )
   }
 
-  if (!is.null(state) && year > 2010) {
-    stop("ZCTAs are only available by state for 2000 and 2010.")
+  check_tigris_year(
+    year,
+    min_year = 2000,
+    message =  "Zip Code Tabulation Areas are only available beginning with the 2000 Census."
+  )
+
+  if (!is.null(state)) {
+    check_tigris_year(
+      year,
+      min_year = 2000,
+      max_year = 2010,
+      message = "ZCTAs are only available by state for 2000 and 2010."
+    )
+
+    if (cb) {
+      check_tigris_year(
+        year,
+        error_year = 2010,
+        message = "ZCTAs are only available by state for 2010 when cb = FALSE."
+      )
+    }
   }
 
-  if (!is.null(state) && year == 2010 && cb == TRUE) {
-    stop("ZCTAs are only available by state for 2010 when cb = FALSE.", call. = FALSE)
-  }
-
-  if (year == 1990) {
-    stop("Zip Code Tabulation Areas are only available beginning with the 2000 Census.",
-         call. = FALSE)
-  }
-
-  if (!is.null(state)) state <- validate_state(state)
+  state <- validate_state(state)
 
   cache <- getOption("tigris_use_cache")
 
   if (is.null(cache)) {
-    message("ZCTAs can take several minutes to download.  To cache the data and avoid re-downloading in future R sessions, set `options(tigris_use_cache = TRUE)`")
+    inform(
+      c("ZCTAs can take several minutes to download.",
+      "i" = "To cache the data and avoid re-downloading in future R sessions, set `options(tigris_use_cache = TRUE)`")
+    )
   }
-
-  cyear <- as.character(year)
 
   if (cb) {
 
     if (year == 2000) {
       if (is.null(state)) {
-        url <- "https://www2.census.gov/geo/tiger/PREVGENZ/zt/z500shp/zt99_d00_shp.zip"
+        url <- url_tiger("PREVGENZ/zt/z500shp/zt99_d00_shp")
       } else {
-        url <- sprintf("https://www2.census.gov/geo/tiger/PREVGENZ/zt/z500shp/zt%s_d00_shp.zip",
-                       state)
+        url <- url_tiger("PREVGENZ/zt/z500shp/zt%s_d00_shp", state)
       }
 
     } else if (year == 2010) {
 
-      url <- "https://www2.census.gov/geo/tiger/GENZ2010/gz_2010_us_860_00_500k.zip"
-    } else if (year >= 2020) {
-      url <- sprintf("https://www2.census.gov/geo/tiger/GENZ%s/shp/cb_%s_us_zcta520_500k.zip",
-                     cyear, cyear)
-    } else if (year < 2020) {
-      url <- sprintf("https://www2.census.gov/geo/tiger/GENZ%s/shp/cb_%s_us_zcta510_500k.zip",
-                     cyear, cyear)
+      url <- url_tiger("GENZ2010/gz_2010_us_860_00_500k")
 
-      if (year == 2013) url <- gsub("shp/", "", url)
+    } else if (year >= 2020) {
+      url <- url_tiger("GENZ%s/shp/cb_%s_us_zcta520_500k", year, year)
+    } else if (year < 2020) {
+      url <- url_tiger("GENZ%s/shp/cb_%s_us_zcta510_500k", year, year)
+
+      if (year == 2013) url <- remove_shp(url)
     } else {
-      url <- sprintf("https://www2.census.gov/geo/tiger/GENZ%s/shp/cb_%s_us_zcta520_500k.zip",
-                     cyear, cyear)
+      url <- url_tiger("GENZ%s/shp/cb_%s_us_zcta520_500k", year, year)
     }
 
   } else {
 
     if (year >= 2020) {
-      url <- sprintf("https://www2.census.gov/geo/tiger/TIGER%s/ZCTA520/tl_%s_us_zcta520.zip",
-                     cyear, cyear)
+      url <- url_tiger("TIGER%s/ZCTA520/tl_%s_us_zcta520", year, year)
     } else {
 
       if (year %in% c(2000, 2010)) {
 
-        suf <- substr(cyear, 3, 4)
+        suf <- substr(year, 3, 4)
 
         if (is.null(state)) {
-          url <- sprintf("https://www2.census.gov/geo/tiger/TIGER2010/ZCTA5/%s/tl_2010_us_zcta5%s.zip",
-                         cyear, suf)
+          url <- url_tiger("TIGER2010/ZCTA5/%s/tl_2010_us_zcta5%s", year, suf)
         } else {
-          url <- sprintf("https://www2.census.gov/geo/tiger/TIGER2010/ZCTA5/%s/tl_2010_%s_zcta5%s.zip",
-                         cyear, state, suf)
+          url <- url_tiger("TIGER2010/ZCTA5/%s/tl_2010_%s_zcta5%s", year, state, suf)
         }
       } else {
-        url <- sprintf("https://www2.census.gov/geo/tiger/TIGER%s/ZCTA5/tl_%s_us_zcta510.zip",
-                       cyear, cyear)
+        url <- url_tiger("TIGER%s/ZCTA5/tl_%s_us_zcta510", year, year)
       }
 
     }
 
   }
 
-  zcta <- load_tiger(url, tigris_type="zcta", ...)
+  zcta <- load_tiger(url, tigris_type = "zcta", ...)
 
   # Handle split ZCTAs in 2000 CB file
   if (year == 2000 && cb) {
-    warning("CB ZCTAs for 2000 include separate polygons for discontiguous parts.\nCombine by summarizing over the ZCTA column; this can be a time-consuming operation.")
+    warn(
+      c("CB ZCTAs for 2000 include separate polygons for discontiguous parts.",
+      "i" = "Combine by summarizing over the ZCTA column; this can be a time-consuming operation.")
+    )
   }
 
   if (!is.null(starts_with)) {
@@ -835,7 +769,7 @@ zctas <- function(cb = FALSE, starts_with = NULL, year = NULL, state = NULL, ...
 #' for which the Census Bureau tabulates data.
 #'
 #' This function will download an entire block shapefile for a selected state
-#' into R, and optionally subset by county. \strong{A warning:} Census block
+#' into R, and optionally subset by county. **A warning:** Census block
 #' shapefiles are often very large, especially for large states - for example, the
 #' block file for Texas is 462MB zipped!  If you have a slow or unreliable internet
 #' connection, or insufficient memory, this may prove burdensome given that you
@@ -849,7 +783,7 @@ zctas <- function(cb = FALSE, starts_with = NULL, year = NULL, state = NULL, ...
 #' @inheritParams load_tiger_doc_template
 #' @inheritSection load_tiger_doc_template Additional Arguments
 #' @family general area functions
-#' @seealso \url{https://www2.census.gov/geo/pdfs/maps-data/data/tiger/tgrshp2020/TGRSHP2020_TechDoc.pdf}
+#' @seealso <https://www2.census.gov/geo/pdfs/maps-data/data/tiger/tgrshp2020/TGRSHP2020_TechDoc.pdf>
 #' @export
 #' @examples \dontrun{
 #' # Simple example using Rose Island, American Samoa
@@ -867,14 +801,7 @@ zctas <- function(cb = FALSE, starts_with = NULL, year = NULL, state = NULL, ...
 #' }
 blocks <- function(state, county = NULL, year = NULL, ...) {
 
-  if (is.null(year)) {
-
-    year <- getOption("tigris_year", 2022)
-
-    message(sprintf("Retrieving data for the year %s", year))
-
-
-  }
+  year <- set_tigris_year(year, min_year = 2000)
 
   if (length(county) > 1 && year < 2011) {
     p <- lapply(county, function(x) {
@@ -885,60 +812,44 @@ blocks <- function(state, county = NULL, year = NULL, ...) {
     return(p)
   }
 
-  if (year < 2000) {
+  state <- validate_state(state, allow_null = FALSE)
 
-    fname <- as.character(match.call())[[1]]
-
-    msg <- "Block data are not available for 1990."
-
-    stop(msg, call. = FALSE)
-
-  }
-
-  state <- validate_state(state)
-
-  if (is.null(state)) stop("Invalid state", call.=FALSE)
-
-  cyear <- as.character(year)
 
   if (year >= 2014) {
 
     if (year >= 2020) {
 
       # New block logic for 2020
-      url <- sprintf("https://www2.census.gov/geo/tiger/TIGER%s/TABBLOCK20/tl_%s_%s_tabblock20.zip",
-                     cyear, cyear, state)
+      url <- url_tiger("TIGER%s/TABBLOCK20/tl_%s_%s_tabblock20", year, year, state)
 
     } else {
 
-      url <- sprintf("https://www2.census.gov/geo/tiger/TIGER%s/TABBLOCK/tl_%s_%s_tabblock10.zip",
-                     cyear, cyear, state)
+      url <- url_tiger("TIGER%s/TABBLOCK/tl_%s_%s_tabblock10", year, year, state)
 
     }
 
   } else if (year %in% 2011:2013) {
-    url <- sprintf("https://www2.census.gov/geo/tiger/TIGER%s/TABBLOCK/tl_%s_%s_tabblock.zip",
-                   cyear, cyear, state)
+    url <- url_tiger("TIGER%s/TABBLOCK/tl_%s_%s_tabblock", year, year, state)
   } else if (year %in% c(2000, 2010)) {
-    suf <- substr(cyear, 3, 4)
+    suf <- substr(year, 3, 4)
 
     if (!is.null(county)) {
 
       county <- validate_county(state, county)
 
-      url <- sprintf("https://www2.census.gov/geo/tiger/TIGER2010/TABBLOCK/%s/tl_2010_%s%s_tabblock%s.zip",
-                     cyear, state, county, suf)
+      url <- url_tiger("TIGER2010/TABBLOCK/%s/tl_2010_%s%s_tabblock%s",
+                       year, state, county, suf)
     } else {
 
-      url <- sprintf("https://www2.census.gov/geo/tiger/TIGER2010/TABBLOCK/%s/tl_2010_%s_tabblock%s.zip",
-                     cyear, state, suf)
+      url <- url_tiger("TIGER2010/TABBLOCK/%s/tl_2010_%s_tabblock%s",
+                       year, state, suf)
     }
 
   } else {
-    stop()
+    abort()
   }
 
-  blks <- load_tiger(url, tigris_type="block", ...)
+  blks <- load_tiger(url, tigris_type = "block", ...)
 
   if (!is.null(county) && year > 2010) {
 
@@ -981,7 +892,7 @@ blocks <- function(state, county = NULL, year = NULL, ...) {
 #' @inheritParams load_tiger_doc_template
 #' @inheritSection load_tiger_doc_template Additional Arguments
 #' @family general area functions
-#' @seealso \url{https://www2.census.gov/geo/pdfs/reference/GARM/Ch8GARM.pdf}
+#' @seealso <https://www2.census.gov/geo/pdfs/reference/GARM/Ch8GARM.pdf>
 #' @export
 #'
 #' @examples \dontrun{
@@ -994,58 +905,33 @@ blocks <- function(state, county = NULL, year = NULL, ...) {
 #' }
 county_subdivisions <- function(state, county = NULL, cb = FALSE, year = NULL, ...) {
 
-  if (is.null(year)) {
+  year <- set_tigris_year(year, min_year = 2010)
 
-    year <- getOption("tigris_year", 2022)
+  state <- validate_state(state, allow_null = FALSE)
 
-    message(sprintf("Retrieving data for the year %s", year))
-
-
-  }
-
-  if (year < 2010) {
-
-    fname <- as.character(match.call())[[1]]
-
-    msg <- sprintf("%s is not currently available for years prior to 2010.", fname)
-
-    stop(msg, call. = FALSE)
-
-  }
-
-  state <- validate_state(state)
-
-  if (is.null(state)) stop("Invalid state", call.=FALSE)
-
-  cyear <- as.character(year)
-
-  if (cb == TRUE) {
+  if (cb) {
 
     if (year == 2010) {
-      url <- sprintf("https://www2.census.gov/geo/tiger/GENZ2010/gz_2010_%s_060_00_500k.zip",
-                     state)
+      url <- url_tiger("GENZ2010/gz_2010_%s_060_00_500k", state)
     } else {
 
-      url <- sprintf("https://www2.census.gov/geo/tiger/GENZ%s/shp/cb_%s_%s_cousub_500k.zip",
-                     cyear, cyear, state)
+      url <- url_tiger("GENZ%s/shp/cb_%s_%s_cousub_500k", year, year, state)
 
-      if (year == 2013) url <- gsub("shp/", "", url)
-
+      if (year == 2013) url <- remove_shp(url)
     }
 
   } else {
 
     if (year == 2010) {
-      url <- sprintf("https://www2.census.gov/geo/tiger/TIGER2010/COUSUB/2010/tl_2010_%s_cousub10.zip", state)
+      url <- url_tiger("TIGER2010/COUSUB/2010/tl_2010_%s_cousub10", state)
     } else {
-      url <- sprintf("https://www2.census.gov/geo/tiger/TIGER%s/COUSUB/tl_%s_%s_cousub.zip",
-                     cyear, cyear, state)
+      url <- url_tiger("TIGER%s/COUSUB/tl_%s_%s_cousub", year, year, state)
     }
 
 
   }
 
-  cs <- load_tiger(url, tigris_type="county_subdivision", ...)
+  cs <- load_tiger(url, tigris_type = "county_subdivision", ...)
 
   if (!is.null(county)) {
 

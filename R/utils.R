@@ -2,12 +2,20 @@
 #
 # returns NULL if input is NULL
 # returns valid state FIPS code if input is even pseud-valid (i.e. single digit but w/in range)
-# returns NULL if input is not a valid FIPS code
-validate_state <- function(state, .msg=interactive()) {
+# returns NULL if input is not a valid FIPS code and require_state = FALSE
+# errors if input is not a valid FIPS code and require_state = TRUE
+validate_state <- function(state,
+                           allow_null = TRUE,
+                           require_state = FALSE,
+                           .msg = interactive(),
+                           error_call = caller_env()) {
 
-  if (is.null(state)) return(NULL)
+  if (is.null(state)) {
+    if (allow_null && !require_state) return(NULL)
+    abort("Invalid state", call = error_call)
+  }
 
-  state <- tolower(str_trim(state)) # forgive white space
+  state <- tolower(trimws(state)) # forgive white space
 
   if (grepl("^[[:digit:]]+$", state)) { # we prbly have FIPS
 
@@ -20,14 +28,13 @@ validate_state <- function(state, .msg=interactive()) {
       # but warn the caller
       state_sub <- substr(state, 1, 2)
       if (state_sub %in% fips_state_table$fips) {
-        message(sprintf("Using first two digits of %s - '%s' (%s) - for FIPS code.",
-                        state, state_sub,
-                        fips_state_table[fips_state_table$fips == state_sub, "name"]),
-                call.=FALSE)
+        inform(
+          sprintf(
+            "Using first two digits of %s - '%s' (%s) - for FIPS code.",
+            state, state_sub,
+            fips_state_table[fips_state_table$fips == state_sub, "name"])
+          )
         return(state_sub)
-      } else {
-        warning(sprintf("'%s' is not a valid FIPS code or state name/abbreviation", state), call.=FALSE)
-        return(NULL)
       }
     }
 
@@ -36,41 +43,62 @@ validate_state <- function(state, .msg=interactive()) {
     if (nchar(state) == 2 & state %in% fips_state_table$abb) { # yay, an abbrev!
 
       if (.msg)
-        message(sprintf("Using FIPS code '%s' for state '%s'",
-                        fips_state_table[fips_state_table$abb == state, "fips"],
-                        toupper(state)))
+        inform(
+          sprintf("Using FIPS code '%s' for state '%s'",
+                  fips_state_table[fips_state_table$abb == state, "fips"],
+                  toupper(state))
+          )
       return(fips_state_table[fips_state_table$abb == state, "fips"])
 
     } else if (nchar(state) > 2 & state %in% fips_state_table$name) { # yay, a name!
 
-      if (.msg)
-        message(sprintf("Using FIPS code '%s' for state '%s'",
-                        fips_state_table[fips_state_table$name == state, "fips"],
-                        simpleCapSO(state)))
-      return(fips_state_table[fips_state_table$name == state, "fips"])
+      if (.msg) {
+        inform(
+          sprintf("Using FIPS code '%s' for state '%s'",
+                  fips_state_table[fips_state_table$name == state, "fips"],
+                  simpleCapSO(state))
+        )
+      }
 
-    } else {
-      warning(sprintf("'%s' is not a valid FIPS code or state name/abbreviation", state), call.=FALSE)
-      return(NULL)
+      return(fips_state_table[fips_state_table$name == state, "fips"])
     }
 
-  } else {
-    warning(sprintf("'%s' is not a valid FIPS code or state name/abbreviation", state), call.=FALSE)
-    return(NULL)
   }
 
+  msg <- sprintf(
+    "'%s' is not a valid FIPS code or state name/abbreviation", state
+  )
+
+  if (require_state) {
+    abort(msg, call = error_call)
+  }
+
+  warn(msg)
+
+  return(invisible(NULL))
 }
 
 # Some work on a validate_county function
 #
 #
-validate_county <- function(state, county, .msg = interactive()) {
+validate_county <- function(state,
+                            county,
+                            allow_null = TRUE,
+                            require_county = FALSE,
+                            .msg = interactive(),
+                            error_call = caller_env()) {
+  # Get the state of the county
+  state <- validate_state(
+    state,
+    allow_null = allow_null,
+    require_state = require_county,
+    error_call = error_call
+  )
 
-  if (is.null(state)) return(NULL)
-
-  if (is.null(county)) return(NULL)
-
-  state <- validate_state(state) # Get the state of the county
+  if (is.null(county)) {
+    if (allow_null && !require_county) return(NULL)
+    abort("Invalid county", call = error_call)
+  }
 
   county_table <- fips_codes[fips_codes$state_code == state, ] # Get a df for the requested state to work with
 
@@ -82,10 +110,17 @@ validate_county <- function(state, county, .msg = interactive()) {
       return(county)
 
     } else {
-      warning(sprintf("'%s' is not a valid FIPS code for counties in %s", county, county_table$state_name[1]),
-              call. = FALSE)
-      return(NULL)
 
+      msg <- sprintf("'%s' is not a valid FIPS code for counties in %s",
+                     county, county_table$state_name[1])
+
+      if (require_county) {
+        abort(msg, call = error_call)
+      }
+
+      warn(msg)
+
+      return(invisible(NULL))
     }
 
   } else if ((grepl("^[[:alpha:]]+", county))) { # should be a county name
@@ -96,16 +131,26 @@ validate_county <- function(state, county, .msg = interactive()) {
 
       if (length(matching_counties) == 0) {
 
-        warning(sprintf("'%s' is not a valid name for counties in %s", county, county_table$state_name[1]),
-                call. = FALSE)
-        return(NULL)
+        msg <- sprintf(
+          "'%s' is not a valid name for counties in %s",
+          county, county_table$state_name[1]
+        )
 
+        if (require_county) {
+          abort(msg, call = error_call)
+        }
+
+        warn(msg)
+
+        return(invisible(NULL))
       } else if (length(matching_counties) == 1) {
 
         if (.msg)
-          message(sprintf("Using FIPS code '%s' for '%s'",
-                          county_table[county_table$county == matching_counties, "county_code"],
-                          matching_counties))
+          inform(sprintf(
+            "Using FIPS code '%s' for '%s'",
+            county_table[county_table$county == matching_counties, "county_code"],
+            matching_counties
+          ))
 
         return(county_table[county_table$county == matching_counties, "county_code"])
 
@@ -113,9 +158,20 @@ validate_county <- function(state, county, .msg = interactive()) {
 
         ctys <- format_vec(matching_counties)
 
-        warning(paste0("Your county string matches ", ctys, " Please refine your selection."), call. = FALSE)
-        return(NULL)
+        msg <- warn(
+          paste0(
+            "Your county string matches ", ctys,
+            " Please refine your selection."
+          )
+        )
 
+        if (require_county) {
+          abort(msg, call = error_call)
+        }
+
+        warn(msg)
+
+        return(invisible(NULL))
       }
 
   }
@@ -149,31 +205,215 @@ simpleCapSO <- function(x) {
 
 
 # Function to convert input shape to WKT for filter_by param
-input_to_wkt <- function(input) {
+input_to_wkt <- function(input, arg = caller_arg(input), call = caller_env()) {
   if (is.null(input)) {
-    wkt_input <- character(0)
-  } else if (inherits(input, "sf")) {
-    # Make NAD83 for coordinate alignment
-    input <- sf::st_transform(input, 4269)
-    # Convert to WKT
-    wkt_input <- sf::st_as_text(sf::st_geometry(input))
-
-  } else if (inherits(input, "bbox")) {
-    bbox_sfc <- sf::st_as_sfc(input)
-    bbox_sfc <- sf::st_transform(bbox_sfc, 4269)
-
-    wkt_input <- sf::st_as_text(bbox_sfc)
-
-  } else if (length(input) == 4) {
-    names(input) <- c("xmin", "ymin", "xmax", "ymax")
-    bbox <- sf::st_bbox(input, crs = 4269)
-    bbox_sfc <- sf::st_as_sfc(bbox)
-
-    wkt_input <- sf::st_as_text(bbox_sfc)
-
-  } else {
-    stop("Invalid input. Supply an sf object, a bbox object, or a length-4 vector that can be converted to a bbox.", call. = FALSE)
+    return(character(0))
   }
 
-  return(wkt_input)
+  if (!inherits(input, c("sf", "sfc", "bbox"))) {
+    if (is.numeric(input) && (length(input) == 4)) {
+      names(input) <- c("xmin", "ymin", "xmax", "ymax")
+      input <- sf::st_bbox(input, crs = 4269)
+    } else {
+      abort(
+        c(
+          paste0("Invalid input `", arg, "`"),
+          "i" = "Supply an sf, sfc, bbox, or a length-4 vector that can be converted to a bbox."
+        ),
+        call = call
+      )
+    }
+  }
+
+  if (!inherits(input, "sfc")) {
+    input <- sf::st_as_sfc(input)
+  }
+
+  if (length(input) > 1) {
+    warn(
+      c(
+        "!" = paste0("`", arg, "` contains multiple geometries and may not work as expected."),
+        "i" = paste0("Unioning `", arg, "` geometries with `sf::st_union`.")
+      )
+    )
+
+    input <- sf::st_union(input, is_coverage = TRUE)
+    input <- sf::st_make_valid(input)
+  }
+
+  # Make NAD83 for coordinate alignment
+  input <- sf::st_transform(input, 4269)
+
+  # Convert to WKT
+  sf::st_as_text(input)
+}
+
+#' Set default year and validate year for tigris function
+#'
+#' [set_tigris_year()] returns year as a character string.
+#'
+#' @param year Year to use for download.
+#' @param default Default year to use if "tigris_year" option is not set.
+#' @param min_year Minimum year. Varies by geography and data source.
+#' @param quiet If `TRUE`, do not display message about the year when
+#'   downloading data.
+#' @inheritParams source
+#' @noRd
+set_tigris_year <- function(year = NULL,
+                            default = 2022,
+                            min_year = 2011,
+                            max_year = 2023,
+                            quiet = FALSE,
+                            message = NULL,
+                            call = caller_env()) {
+  if (is.null(year)) {
+    year <- getOption("tigris_year", default)
+
+    if (!quiet) {
+      inform(sprintf("Retrieving data for the year %s", year))
+    }
+  }
+
+  check_tigris_year(
+    year,
+    min_year = min_year,
+    max_year = max_year,
+    message = message,
+    call = call
+  )
+
+  as.integer(year)
+}
+
+#' Check if year is valid
+#'
+#' @noRd
+check_tigris_year <- function(year,
+                              min_year = 2011,
+                              max_year = 2023,
+                              error_year = NULL,
+                              message = NULL,
+                              call = caller_env()) {
+  year <- as.integer(year)
+
+  if (length(year) != 1 || nchar(year) != 4) {
+    abort(
+      "`year` must be a an integer or string with a single year.",
+      call = call
+    )
+  }
+
+  if (!is.null(error_year)) {
+    if (year == error_year) {
+      msg <- message %||% sprintf("`year` can't be %s", error_year)
+      abort(msg, call = call)
+    }
+
+    return(invisible(NULL))
+  }
+
+  if ((year >= min_year) && year <= max_year) {
+    return(invisible(NULL))
+  }
+
+  if (!is.null(message)) {
+    abort(message, call = call)
+  }
+
+  msg <- "%s is not currently available for years prior to %s."
+  limit_year <- min_year
+
+  if (year > max_year) {
+    msg <- "%s is not currently available for years after %s."
+    limit_year <- max_year
+  }
+
+  trace <- trace_back()
+  fname <- call_name(quote(trace[["call"]][[1]]))
+  fname <- paste0("`", fname, "`")
+
+  if (fname == "`[[`") {
+    fname <- "Requested data"
+  }
+
+  msg <- sprintf(msg, fname, limit_year)
+
+  abort(
+    c(
+      msg,
+      "*" = "To request this feature, file an issue at https://github.com/walkerke/tigris/issues"
+    ),
+    call = call
+  )
+}
+
+
+#' Check if resolution is valid
+#'
+#' @noRd
+check_tigris_resolution <- function(resolution,
+                                    values = c("500k", "5m", "20m"),
+                                    ignore.case = TRUE,
+                                    error_call = caller_env()) {
+  if (ignore.case) {
+    resolution <- tolower(resolution)
+  }
+
+  arg_match(resolution, values = values, error_call = error_call)
+}
+
+#' Set tigris URL
+#'
+#' [url_tiger()] returns a download URL for a tigris shapefile.
+#'
+#' @inheritParams sprintf
+#' @noRd
+url_tiger <- function(fmt,
+                      ...,
+                      base_url = "https://www2.census.gov/geo/tiger/",
+                      ext = ".zip") {
+
+  paste0(base_url, sprintf(fmt = fmt, ...), ext)
+
+}
+
+#' Remove "shp/" from a character vector
+#'
+#' @noRd
+remove_shp <- function(x) {
+  gsub("shp/", "", x)
+}
+
+
+#' Error if year matches error year
+#'
+#' @noRd
+check_cb_year <- function(year = 1990, error_year = 1990, call = caller_env()) {
+ check_tigris_year(
+   year,
+   error_year = error_year,
+   message = sprintf("Please specify `cb = TRUE` to get %s data.", error_year),
+   call = call)
+}
+
+#' Static version of `stringr::str_pad` based on `stringstatic::str_pad()`
+#'
+#' @noRd
+pad_str <- function(
+    string, width, side = c("left", "right", "both"), pad = " "
+) {
+
+  pad_width <- width - nchar(string, type = "width")
+  pad_width[pad_width < 0] <- 0
+
+  switch(
+    side,
+    "left" = paste0(strrep(pad, pad_width), string),
+    "right" = paste0(string, strrep(pad, pad_width)),
+    "both" = paste0(
+      strrep(pad, floor(pad_width / 2)),
+      string,
+      strrep(pad, ceiling(pad_width / 2))
+    )
+  )
 }

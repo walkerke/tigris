@@ -36,25 +36,36 @@ tigris_cache_dir <- function(path) {
   var <- paste0("TIGRIS_CACHE_DIR=", "'", path, "'")
 
   write(var, renv, sep = "\n", append = TRUE)
-  message(sprintf("Your new tigris cache directory is %s. \nTo use now, restart R or run `readRenviron('~/.Renviron')`", path))
-
+  inform(
+    c(
+      "i" = sprintf("Your new tigris cache directory is %s.", path),
+      "*" = "To use now, restart R or run `readRenviron('~/.Renviron')`"
+    )
+  )
 }
 
 
 #' Helper function to download Census data
 #'
-#' @param url URL for zipped shapefile in TIGER database (constructed in calling function).
-#' @param refresh Whether to re-download shapefiles if cached. Defaults to value of the global
-#' option "tigris_refresh" if that option is, and FALSE if not. This will override the behavior
-#' set in "tigris_refresh" option if a value (TRUE or FALSE) is provided.
+#' @param url URL for zipped shapefile in TIGER database (constructed in calling
+#'   function).
+#' @param refresh Whether to re-download shapefiles if cached. Defaults to value
+#'   of the global option "tigris_refresh" if that option is, and FALSE if not.
+#'   This will override the behavior set in "tigris_refresh" option if a value
+#'   (TRUE or FALSE) is provided.
 #' @param tigris_type Added as an attribute to return object (used internally).
-#' @param class Class of return object. Must be one of "sf" (the default) or "sp".
+#' @param class Class of return object. Must be one of "sf" (the default) or
+#'   "sp".
 #' @param progress_bar If set to FALSE, do not display download progress bar
 #' (helpful for R Markdown documents). Defaults to TRUE.
 #' @param keep_zipped_shapefile If set to TRUE, do not delete zipped shapefile
-#' (stored in temporary directory or TIGRIS_CACHE_DIR depending on the configuration of
-#' global option "tigris_use_cache"). Defaults to FALSE.
-#' @param filter_by Geometry used to filter the output returned by the function.  Can be an sf object, an object of class `bbox`, or a length-4 vector of format `c(xmin, ymin, xmax, ymax)` that can be converted to a bbox. Geometries that intersect the input to `filter_by` will be returned.
+#' (stored in temporary directory or TIGRIS_CACHE_DIR depending on the
+#' configuration of global option "tigris_use_cache"). Defaults to FALSE.
+#' @param filter_by Geometry used to filter the output returned by the function.
+#'   Can be an sf object, sfc object, an object of class `bbox`, or a length-4
+#'   vector of format `c(xmin, ymin, xmax, ymax)` that can be converted to a
+#'   bbox. Geometries that intersect the input to `filter_by` will be returned.
+#' @inheritParams rlang::args_error_context
 #'
 #' @return sf or sp data frame
 #'
@@ -64,29 +75,22 @@ load_tiger <- function(url,
                        class = getOption("tigris_class", "sf"),
                        progress_bar = TRUE,
                        keep_zipped_shapefile = FALSE,
-                       filter_by = NULL) {
-
-  use_cache <- getOption("tigris_use_cache", FALSE)
-
+                       filter_by = NULL,
+                       call = caller_env()) {
   # Process filter_by
-  wkt_filter <- input_to_wkt(filter_by)
+  wkt_filter <- input_to_wkt(filter_by, call = call)
 
   tiger_file <- basename(url)
 
   obj <- NULL
 
-  if (use_cache) {
-    if (Sys.getenv("TIGRIS_CACHE_DIR") != "") {
-      cache_dir <- Sys.getenv("TIGRIS_CACHE_DIR")
-      cache_dir <- path.expand(cache_dir)
-    } else {
-      cache_dir <- user_cache_dir("tigris")
-    }
-    if (!file.exists(cache_dir)) {
-      dir.create(cache_dir, recursive=TRUE)
-    }
+  use_cache <- getOption("tigris_use_cache", FALSE)
 
-    if (file.exists(cache_dir)) {
+  if (use_cache) {
+
+    cache_dir <- get_tigris_cache_dir()
+
+    if (dir.exists(cache_dir)) {
 
       shape <- gsub(".zip", "", tiger_file)
       shape <- gsub("_shp", "", shape) # for historic tracts
@@ -94,7 +98,9 @@ load_tiger <- function(url,
       file_loc <- file.path(cache_dir, tiger_file)
       shp_loc  <- file.path(cache_dir, sprintf("%s.shp", shape))
 
-      if (refresh | !file.exists(shp_loc)) {
+      if (refresh || !file.exists(shp_loc)) {
+
+        check_tigris_url(url, call = call)
 
         if (progress_bar) {
           try(GET(url,
@@ -105,11 +111,6 @@ load_tiger <- function(url,
                   write_disk(file_loc, overwrite=refresh)),
                   silent=TRUE)
         }
-
-
-      }
-
-      if (refresh | !file.exists(shp_loc)) {
 
         unzip_tiger <- function() {
           unzip(file_loc, exdir = cache_dir, overwrite=TRUE)
@@ -129,7 +130,7 @@ load_tiger <- function(url,
 
           while (i < 4) {
 
-            message(sprintf("Previous download failed.  Re-download attempt %s of 3...",
+            inform(sprintf("Previous download failed.  Re-download attempt %s of 3...",
                             as.character(i)))
 
             if (progress_bar) {
@@ -153,9 +154,10 @@ load_tiger <- function(url,
           }
 
           if (i == 4) {
-
-            stop("Download failed; check your internet connection or the status of the Census Bureau website
-                 at http://www2.census.gov/geo/tiger/.", call. = FALSE)
+            abort(
+              "Download failed; check your internet connection or the status of the Census Bureau website at http://www2.census.gov/geo/tiger/.",
+              call = call
+            )
           }
 
         } else {
@@ -172,19 +174,12 @@ load_tiger <- function(url,
 
       }
 
-      obj <- st_read(dsn = cache_dir, layer = shape,
-                     quiet = TRUE, stringsAsFactors = FALSE,
-                     wkt_filter = wkt_filter)
-
-      if (is.na(st_crs(obj)$proj4string)) {
-
-        st_crs(obj) <- "+proj=longlat +datum=NAD83 +no_defs"
-
-      }
-
+      dsn <- cache_dir
     }
 
   } else {
+
+    check_tigris_url(url, call = call)
 
     tmp <- tempdir()
     file_loc <- file.path(tmp, tiger_file)
@@ -200,17 +195,16 @@ load_tiger <- function(url,
     unzip(file_loc, exdir = tmp)
     shape <- gsub(".zip", "", tiger_file)
     shape <- gsub("_shp", "", shape) # for historic tracts
+    dsn <- tmp
 
-    obj <- st_read(dsn = tmp, layer = shape,
-                   quiet = TRUE, stringsAsFactors = FALSE,
-                   wkt_filter = wkt_filter)
+  }
 
-    if (is.na(st_crs(obj)$proj4string)) {
+  obj <- st_read(dsn = dsn, layer = shape,
+                 quiet = TRUE, stringsAsFactors = FALSE,
+                 wkt_filter = wkt_filter)
 
-      st_crs(obj) <- "+proj=longlat +datum=NAD83 +no_defs"
-
-    }
-
+  if (is.na(st_crs(obj)$proj4string)) {
+    st_crs(obj) <- "+proj=longlat +datum=NAD83 +no_defs"
   }
 
   attr(obj, "tigris") <- "tigris"
@@ -218,6 +212,60 @@ load_tiger <- function(url,
   # this will help identify the object "sub type"
   if (!is.null(tigris_type)) attr(obj, "tigris") <- tigris_type
 
+  obj <- rename_fips_cols(obj)
+
+  if (class == "sp") {
+    warn(
+      c(
+        "!" = "Spatial* (sp) classes are no longer formally supported in tigris as of version 2.0.",
+        "i" = "We strongly recommend updating your workflow to use sf objects (the default in tigris) instead."
+        )
+     )
+    return(sf::as_Spatial(obj))
+  } else {
+    return(obj)
+  }
+}
+
+#' @noRd
+#' @importFrom rappdirs user_cache_dir
+get_tigris_cache_dir <- function() {
+  if (Sys.getenv("TIGRIS_CACHE_DIR") != "") {
+    cache_dir <- Sys.getenv("TIGRIS_CACHE_DIR")
+    cache_dir <- path.expand(cache_dir)
+  } else {
+    cache_dir <- rappdirs::user_cache_dir("tigris")
+  }
+
+  if (!dir.exists(cache_dir)) {
+    dir.create(cache_dir, recursive = TRUE)
+  }
+
+  cache_dir
+}
+
+#' Check URL
+#'
+#' @noRd
+check_tigris_url <- function(url, call = caller_env()) {
+  if (!is_string(url)) {
+    abort("`url` must be a string", call = call)
+  }
+
+  resp <- HEAD(url)
+
+  if (http_error(resp)) {
+    abort(
+      paste0("`url` can't be found: ", url),
+      call = call
+    )
+  }
+}
+
+#' Rename FIPS columns for historic data
+#'
+#' @noRd
+rename_fips_cols <- function(obj) {
   # Take care of COUNTYFP, STATEFP issues for historic data
   if ("COUNTYFP00" %in% names(obj)) {
     obj$COUNTYFP <- obj$COUNTYFP00
@@ -236,17 +284,12 @@ load_tiger <- function(url,
     obj$STATEFP <- obj$ST
   }
 
-  if (class == "sp") {
-    warning(stringr::str_wrap("Spatial* (sp) classes are no longer formally supported in tigris as of version 2.0. We strongly recommend updating your workflow to use sf objects (the default in tigris) instead.", 50), call. = FALSE)
-    return(sf::as_Spatial(obj))
-  } else {
-    return(obj)
-  }
+  obj
 }
 
 #' Easily merge a data frame to a spatial data frame
 #'
-#' This function should be considered deprecated.  Please update your workflow to use sf objects and dplyr's \code{*_join()} family of functions instead.
+#' This function should be considered deprecated.  Please update your workflow to use sf objects and dplyr's `*_join()` family of functions instead.
 #'
 #' @param spatial_data A spatial data frame to which you want to merge data.
 #' @param data_frame A regular data frame that you want to merge to your spatial data.
@@ -292,6 +335,8 @@ geo_join <- function(spatial_data, data_frame, by_sp, by_df, by = NULL, how = 'l
     by_df <- by
   }
 
+  how <- arg_match(how, c("inner", "left"))
+
   # For sp objects
   if (class(spatial_data)[1] %in% c("SpatialGridDataFrame", "SpatialLinesDataFrame",
                                 "SpatialPixelsDataFrame", "SpatialPointsDataFrame",
@@ -312,10 +357,6 @@ geo_join <- function(spatial_data, data_frame, by_sp, by_df, by = NULL, how = 'l
     } else if (how == 'left') {
 
       return(spatial_data)
-
-    } else {
-
-      stop("The available options for `how` are 'left' and 'inner'.", call. = FALSE)
 
     }
 
@@ -361,10 +402,6 @@ geo_join <- function(spatial_data, data_frame, by_sp, by_df, by = NULL, how = 'l
 
       return(joined)
 
-    } else {
-
-      stop("The available options for `how` are 'left' and 'inner'.", call. = FALSE)
-
     }
 
   }
@@ -408,9 +445,7 @@ geo_join <- function(spatial_data, data_frame, by_sp, by_df, by = NULL, how = 'l
 #' }
 lookup_code <- function(state, county = NULL) {
 
-  state <- validate_state(state, .msg=FALSE)
-
-  if (is.null(state)) stop("Invalid state", call.=FALSE)
+  state <- validate_state(state, allow_null = FALSE, .msg = FALSE)
 
   if (!is.null(county)) {
 
@@ -431,20 +466,20 @@ lookup_code <- function(state, county = NULL) {
 
 }
 
-#' Returns \code{TRUE} if \code{obj} has a \code{tigris} attribute
+#' Returns `TRUE` if `obj` has a `tigris` attribute
 #'
 #' It's unlikely that said object was not created by this package
 #'
 #' @param obj R object to test
-#' @return \code{TRUE} if \code{obj} was made by this package
+#' @return `TRUE` if `obj` was made by this package
 #' @export
 is_tigris <- function(obj) { !is.null(attr(obj, "tigris")) }
 
-#' Get the type of \code{tigris} object \code{obj} is
+#' Get the type of `tigris` object `obj` is
 #'
 #' @param obj R object to test
-#' @return character vector containing the \code{tigris} type of \code{obj}
-#'         or \code{NA} if \code{obj} is not a code \code{tigris} object
+#' @return character vector containing the `tigris` type of `obj`
+#'         or `NA` if `obj` is not a code `tigris` object
 #' @export
 tigris_type <- function(obj) {
   if (is_tigris(obj)) return(attr(obj, "tigris"))
@@ -460,9 +495,7 @@ tigris_type <- function(obj) {
 #' @export
 list_counties <- function(state) {
 
-  state <- validate_state(state, .msg=FALSE)
-
-  if (is.null(state)) stop("Invalid state", call.=FALSE)
+  state <- validate_state(state, allow_null = FALSE, .msg = FALSE)
 
   vals <- fips_codes[fips_codes$state_code == state, c("county", "county_code")]
   vals$county <- gsub("\ County$", "", vals$county)
@@ -471,11 +504,12 @@ list_counties <- function(state) {
 
 }
 
-#' Row-bind \code{tigris} Spatial objects
+#' Row-bind `tigris` Spatial objects
 #'
 #' If multiple school district types are rbound, coerces to "sdall" and does it
 #'
-#' @param ... individual (optionally names) \code{tigris} Spatial objects or a list of them
+#' @param ... individual (optionally names) `tigris` Spatial objects or a list of them
+#' @inheritParams rlang::args_error_context
 #' @return one combined Spatial object
 #' @export
 #' @examples \dontrun{
@@ -488,7 +522,7 @@ list_counties <- function(state) {
 #'   rbind_tigris()
 #' }
 
-rbind_tigris <- function(...) {
+rbind_tigris <- function(..., call = caller_env()) {
 
   elements <- list(...)
 
@@ -506,7 +540,7 @@ rbind_tigris <- function(...) {
         "SpatialPolygonsDataFrame") %in% obj_classes) &
       "sf" %in% obj_classes) {
 
-    stop("Cannot combine sp and sf objects", call. = FALSE)
+    abort("Cannot combine sp and sf objects", call = call)
 
   }
 
@@ -514,7 +548,7 @@ rbind_tigris <- function(...) {
 
   if(all(obj_attrs %in% c("unsd", "elsd", "scsd"))){ # 3 school district types
 
-    warning("Multiple school district tigris types. Coercing to \'sdall\'.", call. = FALSE)
+    warn("Multiple school district tigris types. Coercing to \'sdall\'.")
 
     elements <- lapply(seq_along(elements), function(x){
                   names(elements[[x]])[2] <- "SDLEA" # Used in some spots elsewhere in TIGER
@@ -536,7 +570,13 @@ rbind_tigris <- function(...) {
                          "SpatialPixelsDataFrame", "SpatialPointsDataFrame",
                          "SpatialPolygonsDataFrame")) {
 
-    stop("Spatial* classes are no longer supported in tigris as of version 2.0. You will need to install an earlier version of tigris with `remotes::install_version()`.")
+    abort(
+      c(
+        "Spatial* classes are no longer supported in tigris as of version 2.0.",
+        "i" = "You will need to install an earlier version of tigris with `remotes::install_version()`."
+      ),
+      call = call
+    )
 
   } else if ("sf" %in% obj_classes) {
 
@@ -545,7 +585,10 @@ rbind_tigris <- function(...) {
     }))
 
     if (length(crs) > 1) {
-      stop("All objects must share a single coordinate reference system.")
+      abort(
+        "All objects must share a single coordinate reference system.",
+        call = call
+      )
     }
 
     if (!any(sapply(obj_attrs, is.null)) &
@@ -581,7 +624,7 @@ rbind_tigris <- function(...) {
       return(tmp)
 
     } else {
-      stop("Objects must all be the same type of tigris object.", call.=FALSE)
+      abort("Objects must all be the same type of tigris object.", call = call)
     }
 
   }
@@ -590,32 +633,42 @@ rbind_tigris <- function(...) {
 
 #' Erase water area from an input polygon dataset
 #'
-#' This function 'erases' water area from an input polygon dataset (typically a Census dataset).
-#' 'Erase' is defined in the traditional GIS sense as the removal of areas in an input layer
-#' from an erase layer, returning the modified input layer. A common use-case is to improve
-#' cartographic representation of locations where US Census polygons include more water area
-#' than desired (e.g. New York City, Seattle) or to support contiguity-based spatial analyses that
-#' might otherwise incorrectly assume that polygons across bodies of water are neighbors.
+#' This function 'erases' water area from an input polygon dataset (typically a
+#' Census dataset). 'Erase' is defined in the traditional GIS sense as the
+#' removal of areas in an input layer from an erase layer, returning the
+#' modified input layer. A common use-case is to improve cartographic
+#' representation of locations where US Census polygons include more water area
+#' than desired (e.g. New York City, Seattle) or to support contiguity-based
+#' spatial analyses that might otherwise incorrectly assume that polygons across
+#' bodies of water are neighbors.
 #'
-#' The function works by identifying US counties that intersect the input polygon layer,
-#' then requesting water polygons (using \code{tigris::area_water()}) to be erased from
-#' those input polygons. The \code{area_threshold} parameter can be tuned to determine the
-#' percentile ranking of bodies of water (by area) to use;
-#' the default is a percentile ranking of 0.75, erasing the largest 25 percent of water
-#' bodies in the region.
+#' The function works by identifying US counties that intersect the input
+#' polygon layer, then requesting water polygons (using `tigris::area_water()`)
+#' to be erased from those input polygons. The `area_threshold` parameter can be
+#' tuned to determine the percentile ranking of bodies of water (by area) to
+#' use; the default is a percentile ranking of 0.75, erasing the largest 25
+#' percent of water bodies in the region.
 #'
-#' Analysts will ideally have transformed the input coordinate reference system (CRS) of their data
-#' to a projected CRS to improve performance; see \url{https://walker-data.com/census-r/census-geographic-data-and-applications-in-r.html#coordinate-reference-systems} for more information on
-#' how to perform CRS transformations.  Analysts should also use this function with caution;
-#' the function may generate sliver polygons or irregular geometries in the output layer,
-#' especially if the input sf object was not obtained with the tigris package.  Also, the operation
-#' may be quite slow for large input areas.
+#' Analysts will ideally have transformed the input coordinate reference system
+#' (CRS) of their data to a projected CRS to improve performance; see
+#' <https://walker-data.com/census-r/census-geographic-data-and-applications-in-r.html#coordinate-reference-systems>
+#' for more information on how to perform CRS transformations.  Analysts should
+#' also use this function with caution; the function may generate sliver
+#' polygons or irregular geometries in the output layer, especially if the input
+#' sf object was not obtained with the tigris package.  Also, the operation may
+#' be quite slow for large input areas.
 #'
-#' @param input_sf An input sf object, ideally obtained with the tigris package or through tidycensus.
-#' @param area_threshold The percentile rank cutoff of water areas to use in the erase operation, ranked by size. Defaults to 0.75, representing the water areas in the 75th percentile and up (the largest 25 percent of areas).  This value may need to be modified by the user to achieve optimal results for a given location.
-#' @param year The year to use for the water layer; defaults to 2020 unless the \code{tigris_year} option is otherwise set.
-#'
-#' @return An output sf object representing the polygons in \code{input_sf} with water areas erased.
+#' @param input_sf An input sf object, ideally obtained with the tigris package
+#'   or through tidycensus.
+#' @param area_threshold The percentile rank cutoff of water areas to use in the
+#'   erase operation, ranked by size. Defaults to 0.75, representing the water
+#'   areas in the 75th percentile and up (the largest 25 percent of areas).
+#'   This value may need to be modified by the user to achieve optimal results
+#'   for a given location.
+#' @param year The year to use for the water layer; defaults to 2022 unless the
+#'   `tigris_year` option is otherwise set.
+#' @return An output sf object representing the polygons in `input_sf` with
+#'   water areas erased.
 #' @export
 #'
 #' @examples \dontrun{
@@ -638,62 +691,74 @@ erase_water <- function(input_sf,
                         area_threshold = 0.75,
                         year = NULL) {
 
-  # if (is.null(attr(input_sf, "tigris"))) {
-  #   warning("Your input object does not appear to have been obtained with the tigris package.\nThis is likely to introduce sliver polygons or irregular geometries.\nPlease proceed with caution.")
-  # }
-
-  if (!"sf" %in% class(input_sf)) {
-    stop("The input dataset is not an sf object.", call. = FALSE)
+  if (!is_sf(input_sf)) {
+    abort("The input dataset is not an sf object.")
   }
 
-  if (is.null(year)) {
-    year <- getOption("tigris_year", 2022)
-  }
+  year <- set_tigris_year(year, quiet = TRUE)
 
   # Define st_erase function internally
   st_erase <- function(x, y) {
     suppressWarnings(sf::st_difference(x, sf::st_union(y)))
   }
 
-  # Grab a dataset of counties quietly
-  us_counties <- tigris::counties(cb = TRUE, resolution = "500k", progress_bar = FALSE,
-                                  year = year)
-
-  # Identify the counties that overlap the input sf object
-  county_overlay <- us_counties %>%
-    sf::st_transform(sf::st_crs(input_sf)) %>%
-    sf::st_filter(input_sf)
+  # Grab a dataset of counties that overlap the input sf object quietly
+  county_overlay <- counties(cb = TRUE, resolution = "500k", progress_bar = FALSE,
+                                     year = year, filter_by = input_sf) %>%
+    sf::st_transform(sf::st_crs(input_sf))
 
   # If nothing returned, exit
   if (nrow(county_overlay) == 0) {
-    stop("Your dataset does not appear to be in the United States; this function is not appropriate for your data.", call. = FALSE)
+    abort("Your dataset does not appear to be in the United States; this function is not appropriate for your data.")
   }
 
   # Get a list of GEOIDs
   county_GEOIDs <- county_overlay$GEOID
 
   # Fetch water for those GEOIDs
-  message("Fetching area water data for your dataset's location...")
+  inform("Fetching area water data for your dataset's location...")
   my_water <- lapply(county_GEOIDs, function(cty) {
-    suppressMessages(tigris::area_water(
-      state = stringr::str_sub(cty, 1, 2),
-      county = stringr::str_sub(cty, 3, 5),
+    suppressMessages(area_water(
+      state = substr(cty, 1, 2),
+      county = substr(cty, 3, 5),
       progress_bar = FALSE,
-      year = year
+      year = year,
+      filter_by = input_sf
     ))
   }) %>%
     dplyr::bind_rows() %>%
     sf::st_transform(sf::st_crs(input_sf)) %>%
-    sf::st_filter(input_sf) %>% # New step to only erase intersecting water areas
     dplyr::filter(dplyr::percent_rank(AWATER) >= area_threshold)
 
-  message("Erasing water area...\nIf this is slow, try a larger area threshold value.")
+  if (nrow(my_water) == 0) {
+    inform(
+      c(
+        "No overlapping water area found.",
+        "Returning unmodified `input_sf`."
+      )
+    )
+    return(input_sf)
+  }
+
+  inform(
+    c(
+      "Erasing water area..",
+      "If this is slow, try a larger area threshold value."
+    )
+  )
   erased_sf <- suppressMessages(st_erase(input_sf, my_water))
 
   return(erased_sf)
 
 }
 
+#' Is object a `sf` object?
+#'
+#' @param x Object to check.
+#' @noRd
+is_sf <- function(x) {
+  inherits(x, "sf")
+}
 
 #' Documentation Template for Functions that Utilize `load_tiger`
 #'

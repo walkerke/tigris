@@ -23,7 +23,7 @@ geo_join(spatial_data, data_frame, by_sp, by_df, by = NULL, how = "left")
 a joined spatial/data frame object
 }
 \description{
-This function should be considered deprecated.  Please update your workflow to use sf objects and dplyr's \code{*_join()} family of functions instead.
+This function should be considered deprecated.  Please update your workflow to use sf objects and dplyr's \verb{*_join()} family of functions instead.
 }
 \examples{
 \dontrun{

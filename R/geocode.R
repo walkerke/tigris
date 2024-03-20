@@ -5,10 +5,10 @@
 #' @param address A tibble/data frame with (at a minimum, others can be present)
 #'   either character columns street, city, and state OR numeric columns lat and
 #'   lon. Lat/lon columns take priority.
-#' @param geoid_type GEOID level to return, \code{c('county', 'tract', 'block group', 'block')}.
+#' @param geoid_type GEOID level to return, `c('county', 'tract', 'block group', 'block')`.
 #'   Defaults to block.
 #' @return the original tibble with GEOIDs appended as a new column called
-#'   \code{geoid}.
+#'   `geoid`.
 #'
 #' @author Josie Kressner, \email{josie@@transportfoundry.com}
 #'
@@ -97,7 +97,7 @@ call_geolocator <- function(street, city, state, zip = NA) {
         "&state=", state,
         "&zip=", zip
       )} else {
-        message("'zip' (", paste0(zip), ") was not a 5-character-long string composed of :digits:. Using only street, city, state.")
+        inform("'zip' (", paste0(zip), ") was not a 5-character-long string composed of :digits:. Using only street, city, state.")
         url <- paste0(
           "street=", utils::URLencode(street),
           "&city=", utils::URLencode(city),
@@ -115,13 +115,13 @@ call_geolocator <- function(street, city, state, zip = NA) {
   httr::stop_for_status(r)
   response <- httr::content(r)
   if (length(response$result$addressMatches) == 0) {
-    message(paste0("Address (",
+    inform(paste0("Address (",
                    street, " ", city, " ", state,
                    ") returned no address matches. An NA was returned."))
     return(NA_character_)
   } else {
     if (length(response$result$addressMatches) > 1) {
-      message(paste0("Address (",
+      inform(paste0("Address (",
                      street, " ", city, " ", state,
                      ") returned more than one address match. The first match was returned."))
     }
@@ -134,8 +134,13 @@ call_geolocator <- function(street, city, state, zip = NA) {
 #'
 #' @param lat A numeric value
 #' @param lon A numeric value
-#' @param benchmark time period when a snapshot of address ranges was taken
-#' @param vintage census or survey that the address range relates to
+#' @param benchmark time period when a snapshot of address ranges was taken. As
+#'   of early 2024, supported values include "Public_AR_Current",
+#'   "Public_AR_Census2020", "Public_AR_ACS2023".
+#' @param vintage census or survey that the address range relates to. See the
+#'   [Find Geographic Coordinates
+#'   form](https://geocoding.geo.census.gov/geocoder/geographies/coordinates)
+#'   for supported values for each benchmark.
 #'
 #' @return A character string representing the Census block of the supplied
 #'   lat/lon.
@@ -147,33 +152,16 @@ call_geolocator <- function(street, city, state, zip = NA) {
 #' @author Mark Richards, \email{Mark.Richards.002@@gmail.com}
 #' @export
 #'
-call_geolocator_latlon <- function(lat, lon, benchmark, vintage) {
-  if(missing(benchmark)) {
-    benchmark<-"Public_AR_Current"
-  } else {
-    benchmark<-benchmark
-  }
-  if(missing(vintage)) {
-    vintage<-"Current_Current"
-  } else {
-    vintage<-vintage
-  }
+call_geolocator_latlon <- function(lat, lon, benchmark = NULL, vintage = NULL) {
   # Build url
-  call_start <- "https://geocoding.geo.census.gov/geocoder/geographies/coordinates?"
+  url_full <- build_geolocator_laton_url(lat, lon, benchmark, vintage)
 
-  url <- paste0("x=", lon,"&y=", lat)
-
-  benchmark0 <- paste0("&benchmark=", benchmark)
-  vintage0 <- paste0("&vintage=", vintage, "&format=json")
-
-  url_full <- paste0(call_start, url, benchmark0, vintage0)
-  #print(url_full)
   # Check response
   r <- httr::GET(url_full)
   httr::stop_for_status(r)
   response <- httr::content(r)
   if (length(response$result$geographies$`2020 Census Blocks`[[1]]$GEOID) == 0) {
-    message(paste0("Lat/lon (", lat, ", ", lon,
+    inform(paste0("Lat/lon (", lat, ", ", lon,
                    ") returned no geocodes. An NA was returned."))
     return(NA_character_)
   } else {
@@ -187,12 +175,12 @@ call_geolocator_latlon <- function(lat, lon, benchmark, vintage) {
     return(NA_character_)
   } else {
     if (length(response[["result"]][["geographies"]][[response_block]][[1]]$GEOID) == 0) {
-      message(paste0("Lat/lon (", lat, ", ", lon,
+      inform(paste0("Lat/lon (", lat, ", ", lon,
                      ") returned no geocodes. An NA was returned."))
       return(NA_character_)
     } else {
       if (length(response[["result"]][["geographies"]][[response_block]][[1]]$GEOID) > 1) {
-        message(paste0("Lat/lon (", lat, ", ", lon,
+        inform(paste0("Lat/lon (", lat, ", ", lon,
                        ") returned more than geocode. The first match was returned."))
       }
       return(response[["result"]][["geographies"]][[response_block]][[1]]$GEOID)
@@ -200,4 +188,72 @@ call_geolocator_latlon <- function(lat, lon, benchmark, vintage) {
   }
 
   }
+}
+
+#' @noRd
+build_geolocator_laton_url <- function(
+    lat,
+    lon,
+    benchmark = NULL,
+    vintage = NULL,
+    base_url = "https://geocoding.geo.census.gov/geocoder/geographies/coordinates",
+    call = caller_env()
+    ) {
+  benchmark <- benchmark %||% "Public_AR_Current"
+  benchmark <- set_geolocator_benchmark(benchmark, call = call)
+
+  vintage <- vintage %||% "Current_Current"
+  vintage <- set_geolocator_vintage(vintage, benchmark, call = call)
+
+  paste0(
+    base_url, "?",
+    "x=", lon,"&y=", lat,
+    "&benchmark=", benchmark,
+    "&vintage=", vintage, "&format=json"
+  )
+}
+
+#' @noRd
+set_geolocator_benchmark <- function(
+    benchmark,
+    values = c("Public_AR_Current", "Public_AR_Census2020", "Public_AR_ACS2023"),
+    call = caller_env()
+) {
+
+  if (!(benchmark %in% values)) {
+    resp <- httr::GET("https://geocoding.geo.census.gov/geocoder/benchmarks")
+    values <- httr::content(resp)
+    values <- as.character(sapply(values[["benchmarks"]], `[`, "benchmarkName"))
+  }
+
+  arg_match(benchmark, values, error_call = call)
+}
+
+#' See form for possible values:
+#' https://geocoding.geo.census.gov/geocoder/geographies/coordinates?form
+#'
+#' @noRd
+set_geolocator_vintage <- function(
+    vintage,
+    benchmark,
+    call = caller_env()) {
+  if (benchmark == "Public_AR_Census2020") {
+    prefix <- c("Census2010", "Census2020")
+    suffix <- "Census2020"
+  } else {
+    prefix <- c(
+      "Current",
+      "Census2010",
+      "Census2020",
+      paste0("ACS", 2017:2023)
+    )
+
+    suffix <- switch (
+      benchmark,
+      "Public_AR_Current" = "Current",
+      "Public_AR_ACS2023" = "ACS2023"
+    )
+  }
+
+  arg_match(vintage, paste0(prefix, "_", suffix), error_call = call)
 }
