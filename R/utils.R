@@ -216,7 +216,8 @@ input_to_wkt <- function(input, arg = caller_arg(input), call = caller_env()) {
       input <- sf::st_bbox(input, crs = 4269)
     } else {
       abort(
-        c(paste0("Invalid input `", arg, "`"),
+        c(
+          paste0("Invalid input `", arg, "`"),
           "i" = "Supply an sf, sfc, bbox, or a length-4 vector that can be converted to a bbox."
         ),
         call = call
@@ -226,6 +227,18 @@ input_to_wkt <- function(input, arg = caller_arg(input), call = caller_env()) {
 
   if (!inherits(input, "sfc")) {
     input <- sf::st_as_sfc(input)
+  }
+
+  if (length(input) > 1) {
+    warn(
+      c(
+        "!" = paste0("`", arg, "` contains multiple geometries and may not work as expected."),
+        "i" = paste0("Unioning `", arg, "` geometries with `sf::st_union`.")
+      )
+    )
+
+    input <- sf::st_union(input, is_coverage = TRUE)
+    input <- sf::st_make_valid(input)
   }
 
   # Make NAD83 for coordinate alignment
