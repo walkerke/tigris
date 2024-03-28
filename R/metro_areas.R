@@ -86,7 +86,10 @@ urban_areas <- function(cb = FALSE, year = NULL, criteria = NULL, ...) {
 
   } else {
 
-    if (!is.null(criteria) && criteria == 2020) {
+    if (year >= 2023) {
+      url <- url_tiger("TIGER%s/UAC/tl_%s_us_uac20", year, year)
+
+    } else if (!is.null(criteria) && criteria == 2020) {
       if (year != 2020) {
         abort("2020 criteria is only supported when `year` is set to 2020 at the moment.")
       }
