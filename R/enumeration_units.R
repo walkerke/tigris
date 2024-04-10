@@ -663,10 +663,10 @@ zctas <- function(cb = FALSE, starts_with = NULL, year = NULL, state = NULL, ...
     )
 
     if (cb) {
-      check_tigris_year(
+      check_not_year(
         year,
         error_year = 2010,
-        message = "ZCTAs are only available by state for 2010 when cb = FALSE."
+        message = "ZCTAs are only available by state for 2010 when `cb = FALSE`."
       )
     }
   }
