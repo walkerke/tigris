@@ -55,7 +55,7 @@ counties <- function(state = NULL, cb = FALSE, resolution = '500k', year = NULL,
 
   check_tigris_resolution(resolution)
 
-  year <- set_tigris_year(year)
+  year <- set_tigris_year(year, min_year = 1990)
 
   if (cb) {
 
