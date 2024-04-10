@@ -22,7 +22,7 @@ test_that("congressional_districts works", {
   expect_s3_class(congressional_districts(state = state, year = 2014, resolution = res, cb = cb), "sf")
   expect_s3_class(congressional_districts(state = state, year = 2013, resolution = res, cb = cb), "sf")
   expect_s3_class(congressional_districts(state = state, year = 2011, resolution = res, cb = FALSE), "sf")
-  # expect_s3_class(congressional_districts(state = state, year = 2010, resolution = res, cb = FALSE), "sf")
+  expect_s3_class(congressional_districts(state = state, year = 2010, resolution = res, cb = FALSE), "sf")
 
 })
 
