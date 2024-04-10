@@ -84,12 +84,13 @@ validate_state <- function(state,
 #' - `NULL` if input is `NULL` and `allow_null = TRUE` and `require_county = FALSE`
 #' - valid county FIPS code if input is even pseudo-valid (i.e. single digit but w/in range)
 #' - `NULL` if input is not a valid FIPS code and `require_county = FALSE`
-#' - errors if input is not a valid FIPS code and `require_county = TRUE` or if `county` matched multiple values
+#' - errors if input is not a valid FIPS code and `require_county = TRUE` or if `county` matched multiple values and `multiple = FALSE`
 #' @noRd
 validate_county <- function(state,
                             county,
                             allow_null = TRUE,
                             require_county = FALSE,
+                            multiple = FALSE,
                             .msg = is_interactive(),
                             error_call = caller_env()) {
   # Get the state of the county
@@ -134,8 +135,9 @@ validate_county <- function(state,
       county_index <- grepl(sprintf("^%s", county), county_table$county, ignore.case = TRUE)
 
       matching_counties <- county_table$county[county_index] # Get the counties that match
+      match_len <- length(matching_counties)
 
-      if (length(matching_counties) == 0) {
+      if (match_len == 0) {
 
         msg <- sprintf(
           '"%s" is not a valid name for counties in %s',
@@ -149,18 +151,20 @@ validate_county <- function(state,
         warn(msg)
 
         return(invisible(NULL))
-      } else if (length(matching_counties) == 1) {
+      } else if (match_len == 1 || multiple && match_len > 1) {
+
+        county_code <- county_table[county_table[["county"]] %in% matching_counties, "county_code"]
 
         if (.msg)
           inform(sprintf(
             'Using FIPS code "%s" for "%s"',
-            county_table[county_table$county == matching_counties, "county_code"],
+            format_vec(county_code, after = ""),
             matching_counties
           ))
 
-        return(county_table[county_table$county == matching_counties, "county_code"])
+        return(county_code)
 
-      } else if (length(matching_counties) > 1) {
+      } else if (match_len > 1) {
 
         ctys <- format_vec(matching_counties)
 
@@ -186,7 +190,7 @@ validate_county <- function(state,
 #'
 #' @seealso [knitr::combine_words()]
 #' @noRd
-format_vec <- function(vec, and = "and ") {
+format_vec <- function(vec, and = "and ", after = ".") {
 
   out <- paste0(vec, ', ')
 
@@ -194,7 +198,7 @@ format_vec <- function(vec, and = "and ") {
 
   out[l - 1] <- paste0(out[l - 1], and)
 
-  out[l] <- gsub(', ', '.', out[l])
+  out[l] <- gsub(', ',  after, out[l])
 
   return(paste0(out, collapse = ''))
 
