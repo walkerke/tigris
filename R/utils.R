@@ -1,18 +1,19 @@
-# Called to check to see if "state" is a FIPS code, full name or abbreviation.
-#
-# returns NULL if input is NULL
-# returns valid state FIPS code if input is even pseud-valid (i.e. single digit but w/in range)
-# returns NULL if input is not a valid FIPS code and require_state = FALSE
-# errors if input is not a valid FIPS code and require_state = TRUE
+#' Check if state is a FIPS code, full name or abbreviation.
+#' @returns
+#' - `NULL` if input is `NULL` and `allow_null = TRUE` and `require_state = FALSE`
+#' - valid state FIPS code if input is even pseudo-valid (i.e. single digit but w/in range)
+#' - NULL if input is not a valid FIPS code and `require_state = FALSE`
+#' - errors if input is not a valid FIPS code and `require_state = TRUE` or if `state` matched multiple values
+#' @noRd
 validate_state <- function(state,
                            allow_null = TRUE,
                            require_state = FALSE,
-                           .msg = interactive(),
+                           .msg = is_interactive(),
                            error_call = caller_env()) {
 
   if (is.null(state)) {
     if (allow_null && !require_state) return(NULL)
-    abort("Invalid state", call = error_call)
+    abort("Invalid `state`", call = error_call)
   }
 
   state <- tolower(trimws(state)) # forgive white space
@@ -30,7 +31,7 @@ validate_state <- function(state,
       if (state_sub %in% fips_state_table$fips) {
         inform(
           sprintf(
-            "Using first two digits of %s - '%s' (%s) - for FIPS code.",
+            'Using first two digits of %s - "%s" (%s) - for FIPS code.',
             state, state_sub,
             fips_state_table[fips_state_table$fips == state_sub, "name"])
           )
@@ -54,7 +55,7 @@ validate_state <- function(state,
 
       if (.msg) {
         inform(
-          sprintf("Using FIPS code '%s' for state '%s'",
+          sprintf('Using FIPS code "%s" for state "%s"',
                   fips_state_table[fips_state_table$name == state, "fips"],
                   simpleCapSO(state))
         )
@@ -78,26 +79,31 @@ validate_state <- function(state,
   return(invisible(NULL))
 }
 
-# Some work on a validate_county function
-#
-#
+#' Check if state is a FIPS code, full name or abbreviation.
+#' @returns
+#' - `NULL` if input is `NULL` and `allow_null = TRUE` and `require_county = FALSE`
+#' - valid county FIPS code if input is even pseudo-valid (i.e. single digit but w/in range)
+#' - `NULL` if input is not a valid FIPS code and `require_county = FALSE`
+#' - errors if input is not a valid FIPS code and `require_county = TRUE` or if `county` matched multiple values
+#' @noRd
 validate_county <- function(state,
                             county,
                             allow_null = TRUE,
                             require_county = FALSE,
-                            .msg = interactive(),
+                            .msg = is_interactive(),
                             error_call = caller_env()) {
   # Get the state of the county
   state <- validate_state(
     state,
     allow_null = allow_null,
+    .msg = .msg,
     require_state = require_county,
     error_call = error_call
   )
 
   if (is.null(county)) {
     if (allow_null && !require_county) return(NULL)
-    abort("Invalid county", call = error_call)
+    abort("Invalid `county`", call = error_call)
   }
 
   county_table <- fips_codes[fips_codes$state_code == state, ] # Get a df for the requested state to work with
@@ -111,7 +117,7 @@ validate_county <- function(state,
 
     } else {
 
-      msg <- sprintf("'%s' is not a valid FIPS code for counties in %s",
+      msg <- sprintf('"%s" is not a valid FIPS code for counties in %s',
                      county, county_table$state_name[1])
 
       if (require_county) {
@@ -132,7 +138,7 @@ validate_county <- function(state,
       if (length(matching_counties) == 0) {
 
         msg <- sprintf(
-          "'%s' is not a valid name for counties in %s",
+          '"%s" is not a valid name for counties in %s',
           county, county_table$state_name[1]
         )
 
@@ -147,7 +153,7 @@ validate_county <- function(state,
 
         if (.msg)
           inform(sprintf(
-            "Using FIPS code '%s' for '%s'",
+            'Using FIPS code "%s" for "%s"',
             county_table[county_table$county == matching_counties, "county_code"],
             matching_counties
           ))
@@ -158,11 +164,9 @@ validate_county <- function(state,
 
         ctys <- format_vec(matching_counties)
 
-        msg <- warn(
-          paste0(
-            "Your county string matches ", ctys,
-            " Please refine your selection."
-          )
+        msg <- c(
+          paste0("`county` matches ", ctys),
+          "i" = "Please refine your selection."
         )
 
         if (require_county) {
@@ -178,16 +182,17 @@ validate_county <- function(state,
 
 }
 
-
-# Quick function to return formatted string for county codes
-
-format_vec <- function(vec) {
+#' Combine multiple words into a single string
+#'
+#' @seealso [knitr::combine_words()]
+#' @noRd
+format_vec <- function(vec, and = "and ") {
 
   out <- paste0(vec, ', ')
 
   l <- length(out)
 
-  out[l - 1] <- paste0(out[l - 1], 'and ')
+  out[l - 1] <- paste0(out[l - 1], and)
 
   out[l] <- gsub(', ', '.', out[l])
 
@@ -290,7 +295,6 @@ set_tigris_year <- function(year = NULL,
 check_tigris_year <- function(year,
                               min_year = 2011,
                               max_year = 2023,
-                              error_year = NULL,
                               message = NULL,
                               call = caller_env()) {
   year <- as.integer(year)
@@ -301,8 +305,6 @@ check_tigris_year <- function(year,
       call = call
     )
   }
-
-  check_not_year(year, error_year = error_year, call = call)
 
   if ((year >= min_year) && year <= max_year) {
     return(invisible(NULL))
