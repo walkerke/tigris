@@ -5,8 +5,17 @@ test_that("enumeration unit functions work", {
   expect_s3_class(counties(), "sf")
 
   state <- "WY"
-  expect_s3_class(counties(state = state), "sf")
+  counties <- counties(state = state)
+
+  expect_s3_class(counties, "sf")
   expect_s3_class(counties(state = state, cb = TRUE), "sf")
+
+  expect_s3_class(school_districts(state = state), "sf")
+
+  county <- "Niobrara"
+  expect_s3_class(tracts(state = state, county = county), "sf")
+  expect_s3_class(block_groups(state = state, county = county), "sf")
+  expect_s3_class(blocks(state = state, county = county), "sf")
 
   expect_s3_class(zctas(state = state, year = 2010), "sf")
 })
