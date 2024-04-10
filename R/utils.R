@@ -285,8 +285,7 @@ set_tigris_year <- function(year = NULL,
   as.integer(year)
 }
 
-#' Check if year is valid
-#'
+#' Check if year is valid within range and does not match error year
 #' @noRd
 check_tigris_year <- function(year,
                               min_year = 2011,
@@ -303,14 +302,7 @@ check_tigris_year <- function(year,
     )
   }
 
-  if (!is.null(error_year)) {
-    if (year == error_year) {
-      msg <- message %||% sprintf("`year` can't be %s", error_year)
-      abort(msg, call = call)
-    }
-
-    return(invisible(NULL))
-  }
+  check_not_year(year, error_year = error_year, call = call)
 
   if ((year >= min_year) && year <= max_year) {
     return(invisible(NULL))
@@ -347,6 +339,19 @@ check_tigris_year <- function(year,
   )
 }
 
+#' Check if year does not match supplied error year
+#' @noRd
+check_not_year <- function(year,
+                           error_year = NULL,
+                           message = NULL,
+                           call = caller_env()) {
+  if (is.null(error_year) || year != error_year) {
+    return(year)
+  }
+
+  msg <- message %||% sprintf("`year` can't be %s", error_year)
+  abort(msg, call = call)
+}
 
 #' Check if resolution is valid
 #'
@@ -389,11 +394,12 @@ remove_shp <- function(x) {
 #'
 #' @noRd
 check_cb_year <- function(year = 1990, error_year = 1990, call = caller_env()) {
- check_tigris_year(
+ check_not_year(
    year,
    error_year = error_year,
    message = sprintf("Please specify `cb = TRUE` to get %s data.", error_year),
-   call = call)
+   call = call
+ )
 }
 
 #' Static version of `stringr::str_pad` based on `stringstatic::str_pad()`

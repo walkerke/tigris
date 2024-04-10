@@ -24,7 +24,13 @@
 core_based_statistical_areas <- function(cb = FALSE, resolution = '500k', year = NULL, ...) {
 
   # Override standard default year per: https://github.com/walkerke/tigris/issues/184
-  year <- set_tigris_year(year, default = 2021, min_year = 2010, max_year = 2021)
+  year <- set_tigris_year(year, default = 2021, min_year = 2010)
+
+  check_not_year(
+    year,
+    message = "Core-based statistical area boundaries are unavailable for 2022.",
+    error_year = 2022
+  )
 
   if (cb) {
     if (year == 2010) {
@@ -125,7 +131,13 @@ urban_areas <- function(cb = FALSE, year = NULL, criteria = NULL, ...) {
 #' @export
 combined_statistical_areas <- function(cb = FALSE, resolution = '500k', year = NULL, ...) {
 
-  year <- set_tigris_year(year)
+  year <- set_tigris_year(year, default = 2021)
+
+  check_not_year(
+    year,
+    message = "Combined statistical area boundaries are unavailable for 2022.",
+    error_year = 2022
+  )
 
   check_tigris_resolution(resolution)
 
@@ -154,7 +166,7 @@ combined_statistical_areas <- function(cb = FALSE, resolution = '500k', year = N
 #' @export
 metro_divisions <- function(year = NULL, ...) {
 
-  year <- set_tigris_year(year)
+  year <- set_tigris_year(year, default = 2021)
 
   url <- url_tiger("TIGER%s/METDIV/tl_%s_us_metdiv", year, year)
 
@@ -195,7 +207,7 @@ metro_divisions <- function(year = NULL, ...) {
 #' }
 new_england <- function(type = 'necta', cb = FALSE, year = NULL, ...) {
 
-  year <- set_tigris_year(year)
+  year <- set_tigris_year(year, default = 2021, max_year = 2021)
 
   type <- arg_match0(type, c("necta", "combined", "divisions"))
 
@@ -211,21 +223,21 @@ new_england <- function(type = 'necta', cb = FALSE, year = NULL, ...) {
 
     }
 
-    return(load_tiger(url, tigris_type = "necta", ...))
+    tigris_type <- type
 
   } else if (type == 'combined') {
 
     url <- url_tiger("TIGER%s/CNECTA/tl_%s_us_cnecta", year, year)
 
-    return(load_tiger(url, tigris_type = "cnecta", ...))
+    tigris_type <- "cnecta"
 
   } else if (type == 'divisions') {
 
     url <- url_tiger("TIGER%s/NECTADIV/tl_%s_us_nectadiv", year, year)
 
-    return(load_tiger(url, tigris_type = "nectadiv", ...))
+    tigris_type <- "nectadiv"
 
   }
 
-
+  return(load_tiger(url, tigris_type = tigris_type, ...))
 }
