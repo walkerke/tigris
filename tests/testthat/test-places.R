@@ -1,14 +1,16 @@
 test_that("places errors", {
   expect_error(places(year = 2018))
   expect_error(places(year = 2017, cb = TRUE))
+  expect_error(places(year = 2009, state = "WY"))
 })
 
 test_that("places works", {
   withr::local_options(list(tigris_use_cache = TRUE))
   state <- "WY"
   expect_s3_class(places(year = 2019, cb = TRUE), "sf")
-  expect_s3_class(places(state = c(state, "SD")), "sf")
+  expect_s3_class(places(state = state, year = 2010), "sf")
 
+  expect_s3_class(places(state = c(state, "SD")), "sf")
   state_places <- places(state = state)
   expect_s3_class(state_places, "sf")
 

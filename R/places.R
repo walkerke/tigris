@@ -25,7 +25,11 @@ places <- function(state = NULL, cb = FALSE, year = NULL, ...) {
     return(p)
   }
 
-  year <- set_tigris_year(year)
+  year <- set_tigris_year(year, min_year = 2000)
+
+  if (year > 2000 && year < 2010) {
+    abort("`year` must be 2000 or greater than 2010.")
+  }
 
   if (is.null(state)) {
     if (year > 2018 && cb) {
@@ -39,12 +43,13 @@ places <- function(state = NULL, cb = FALSE, year = NULL, ...) {
   }
 
   if (cb) {
-    url_fmt <- "GENZ%s/shp/cb_%s_%s_place_500k"
+    url <- url_tiger("GENZ%s/shp/cb_%s_%s_place_500k", year, year, state)
+  } else if (year %in% c(2000, 2010)) {
+    suf <- substr(year, 3, 4)
+    url <- url_tiger("TIGER2010/PLACE/%s/tl_2010_%s_place%s", year, state, suf)
   } else {
-    url_fmt <- "TIGER%s/PLACE/tl_%s_%s_place"
+    url <- url_tiger("TIGER%s/PLACE/tl_%s_%s_place", year, year, state)
   }
-
-  url <- url_tiger(url_fmt, year, year, state)
 
   return(load_tiger(url, tigris_type = "place", ...))
 
