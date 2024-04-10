@@ -28,7 +28,7 @@ core_based_statistical_areas <- function(cb = FALSE, resolution = '500k', year =
 
   check_not_year(
     year,
-    message = "Core-based statistical area boundaries are unavailable for 2022.",
+    message = "Core-based statistical area boundaries are not available for 2022.",
     error_year = 2022
   )
 

@@ -69,7 +69,7 @@ pumas <- function(state = NULL, cb = FALSE, year = NULL, ...) {
     }
 
     if (year == 2020) {
-      inform("The 2020 CB PUMAs use the new 2020 PUMA boundary definitions.")
+      inform(c("i" = "The 2020 CB PUMAs use the new 2020 PUMA boundary definitions."))
       url <- url_tiger("GENZ%s/shp/cb_%s_%s_puma20_500k", year, year, state)
 
     } else {
