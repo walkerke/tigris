@@ -83,6 +83,8 @@ congressional_districts <- function(state = NULL, cb = FALSE, resolution = '500k
 
       state <- validate_state(state, require_state = TRUE)
       url <- url_tiger("TIGER%s/CD/tl_%s_%s_cd%s", year, year, state, congress)
+    } else if (year == 2010) {
+      url <- url_tiger("TIGER%s/CD/%s/tl_%s_us_cd%s", year, congress, year, congress)
     } else {
       url <- url_tiger("TIGER%s/CD/tl_%s_us_cd%s", year, year, congress)
     }
