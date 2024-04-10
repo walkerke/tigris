@@ -8,6 +8,7 @@ test_that("places works", {
   withr::local_options(list(tigris_use_cache = TRUE))
   state <- "WY"
   expect_s3_class(places(year = 2019, cb = TRUE), "sf")
+  expect_s3_class(places(state = state, year = 2000, cb = TRUE), "sf")
   expect_s3_class(places(state = state, year = 2010), "sf")
 
   expect_s3_class(places(state = c(state, "SD")), "sf")

@@ -43,7 +43,14 @@ places <- function(state = NULL, cb = FALSE, year = NULL, ...) {
   }
 
   if (cb) {
-    url <- url_tiger("GENZ%s/shp/cb_%s_%s_place_500k", year, year, state)
+    if (year == 2000) {
+      # TODO: Support for 1990 and 1998 places could also be added
+      # See https://www2.census.gov/geo/tiger/PREVGENZ/pl/
+      url <- url_tiger("PREVGENZ/pl/pl00shp/pl%s_d00_shp", state)
+    } else {
+      url <- url_tiger("GENZ%s/shp/cb_%s_%s_place_500k", year, year, state)
+    }
+
   } else if (year %in% c(2000, 2010)) {
     suf <- substr(year, 3, 4)
     url <- url_tiger("TIGER2010/PLACE/%s/tl_2010_%s_place%s", year, state, suf)
