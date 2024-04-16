@@ -61,7 +61,7 @@ landmarks <- function(state, type = "point", year = NULL, ...) {
 
   year <- set_tigris_year(year, min_year = 2010)
 
-  state <- validate_state(state)
+  state <- validate_state(state, require_state = TRUE)
 
   type <- arg_match0(type, c("area", "point"))
 

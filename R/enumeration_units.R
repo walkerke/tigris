@@ -637,8 +637,11 @@ block_groups <- function(state = NULL, county = NULL, cb = FALSE, year = NULL, .
 zctas <- function(cb = FALSE, starts_with = NULL, year = NULL, state = NULL, ...) {
   year <- set_tigris_year(
     year,
-    min_year = 1990,
-    message =  "Zip Code Tabulation Areas are only available beginning with the 2000 Census."
+    min_year = 2000,
+    message =  c(
+      "`year` must be 2000 or later.",
+      "i" = "Zip Code Tabulation Areas are only available beginning with the 2000 Census."
+    )
   )
 
   if (year > 2020 && cb) {
@@ -647,12 +650,6 @@ zctas <- function(cb = FALSE, starts_with = NULL, year = NULL, state = NULL, ...
         "i" = "Please use the argument `year = 2020` or `cb = FALSE` instead.")
     )
   }
-
-  check_tigris_year(
-    year,
-    min_year = 2000,
-    message =  "Zip Code Tabulation Areas are only available beginning with the 2000 Census."
-  )
 
   if (!is.null(state)) {
     check_tigris_year(
@@ -803,6 +800,15 @@ blocks <- function(state, county = NULL, year = NULL, ...) {
 
   year <- set_tigris_year(year, min_year = 2000)
 
+  state <- validate_state(state, allow_null = FALSE, require_state = TRUE)
+
+  county <- validate_county(state, county, multiple = TRUE)
+
+  check_not_year(
+    year,
+    error_year = c(2001:2009)
+  )
+
   if (length(county) > 1 && year < 2011) {
     p <- lapply(county, function(x) {
       blocks(state = state, county = x, year = year, ...)
@@ -811,9 +817,6 @@ blocks <- function(state, county = NULL, year = NULL, ...) {
 
     return(p)
   }
-
-  state <- validate_state(state, allow_null = FALSE)
-
 
   if (year >= 2014) {
 
@@ -835,8 +838,6 @@ blocks <- function(state, county = NULL, year = NULL, ...) {
 
     if (!is.null(county)) {
 
-      county <- validate_county(state, county)
-
       url <- url_tiger("TIGER2010/TABBLOCK/%s/tl_2010_%s%s_tabblock%s",
                        year, state, county, suf)
     } else {
@@ -845,8 +846,6 @@ blocks <- function(state, county = NULL, year = NULL, ...) {
                        year, state, suf)
     }
 
-  } else {
-    abort()
   }
 
   blks <- load_tiger(url, tigris_type = "block", ...)
@@ -907,7 +906,7 @@ county_subdivisions <- function(state, county = NULL, cb = FALSE, year = NULL, .
 
   year <- set_tigris_year(year, min_year = 2010)
 
-  state <- validate_state(state, allow_null = FALSE)
+  state <- validate_state(state, allow_null = FALSE, require_state = TRUE)
 
   if (cb) {
 
@@ -935,7 +934,7 @@ county_subdivisions <- function(state, county = NULL, cb = FALSE, year = NULL, .
 
   if (!is.null(county)) {
 
-    county <- sapply(county, function(x) { validate_county(state, x) })
+    county <- validate_county(state, county, multiple = TRUE)
 
     cs <- cs[cs$COUNTYFP %in% county, ]
 

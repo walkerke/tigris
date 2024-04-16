@@ -318,11 +318,11 @@ check_tigris_year <- function(year,
     abort(message, call = call)
   }
 
-  msg <- "%s is not currently available for years prior to %s."
+  msg <- "%s is not currently available for any year before %s."
   limit_year <- min_year
 
   if (year > max_year) {
-    msg <- "%s is not currently available for years after %s."
+    msg <- "%s is not currently available for any year after %s."
     limit_year <- max_year
   }
 
@@ -349,14 +349,19 @@ check_tigris_year <- function(year,
 #' @noRd
 check_not_year <- function(year,
                            error_year = NULL,
+                           ...,
                            message = NULL,
                            call = caller_env()) {
-  if (is.null(error_year) || year != error_year) {
+  if (is.null(error_year) || !any(year %in% error_year)) {
     return(year)
   }
 
-  msg <- message %||% sprintf("`year` can't be %s", error_year)
-  abort(msg, call = call)
+  msg <- message %||% sprintf(
+    "`year` can't be %s",
+    format_vec(error_year, and = "or ")
+  )
+
+  abort(c(msg, ...), call = call)
 }
 
 #' Check if resolution is valid
