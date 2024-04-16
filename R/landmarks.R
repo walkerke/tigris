@@ -19,7 +19,7 @@
 
 military <- function(year = NULL, ...) {
 
-  year <- set_tigris_year(year)
+  year <- set_tigris_year(year, min_year = 2010)
 
   url <- url_tiger("TIGER%s/MIL/tl_%s_us_mil", year, year)
 
@@ -59,7 +59,7 @@ military <- function(year = NULL, ...) {
 #' @export
 landmarks <- function(state, type = "point", year = NULL, ...) {
 
-  year <- set_tigris_year(year)
+  year <- set_tigris_year(year, min_year = 2010)
 
   state <- validate_state(state)
 

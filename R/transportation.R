@@ -42,7 +42,7 @@
 #' }
 roads <- function(state, county, year = NULL, ...) {
 
-  year <- set_tigris_year(year)
+  year <- set_tigris_year(year, min_year = 2010)
 
   if (length(county) > 1) {
     r <- lapply(county, function(x) {
@@ -65,10 +65,9 @@ roads <- function(state, county, year = NULL, ...) {
 
 #' Download a national primary roads shapefile into R
 #'
-#' From the Census Bureau: "Primary roads are generally divided,
-#' limited-access highways within the Federal interstate highway
-#' system or under state management. These highways are distinguished by the
-#' presence of interchanges
+#' From the Census Bureau: "Primary roads are generally divided, limited-access
+#' highways within the Federal interstate highway system or under state
+#' management. These highways are distinguished by the presence of interchanges
 #' and are accessible by ramps and may include some toll highways."
 #'
 #' @inheritParams load_tiger_doc_template
@@ -87,7 +86,7 @@ roads <- function(state, county, year = NULL, ...) {
 #' }
 primary_roads <- function(year = NULL, ...) {
 
-  year <- set_tigris_year(year)
+  year <- set_tigris_year(year, min_year = 2010)
 
   url <- url_tiger("TIGER%s/PRIMARYROADS/tl_%s_us_primaryroads",
                    year, year)
@@ -98,14 +97,14 @@ primary_roads <- function(year = NULL, ...) {
 
 #' Download a primary & secondary roads shapefile into R
 #'
-#' From the Census Bureau: "Primary roads are generally divided,
-#' limited-access highways within the Federal interstate highway
-#' system or under state management. These highways are distinguished by the presence of interchanges
-#' and are accessible by ramps and may include some toll highways. Secondary roads are main arteries,
-#'  usually in the U.S. highway, state
-#'  highway, or county highway system. These roads have one or more lanes of
-#'  traffic in each direction, may
-#'  or may not be divided, and usually have at-grade intersections with many other roads and driveways.
+#' From the Census Bureau: "Primary roads are generally divided, limited-access
+#' highways within the Federal interstate highway system or under state
+#' management. These highways are distinguished by the presence of interchanges
+#' and are accessible by ramps and may include some toll highways. Secondary
+#' roads are main arteries, usually in the U.S. highway, state highway, or
+#' county highway system. These roads have one or more lanes of traffic in each
+#' direction, may or may not be divided, and usually have at-grade intersections
+#' with many other roads and driveways.
 #'
 #' @param state The two-digit FIPS code of the state of the county you'd like
 #'        to download the roads for. Can also be state name or abbreviation
@@ -126,7 +125,7 @@ primary_roads <- function(year = NULL, ...) {
 #' }
 primary_secondary_roads <- function(state, year = NULL, ...) {
 
-  year <- set_tigris_year(year)
+  year <- set_tigris_year(year, min_year = 2010)
 
   state <- validate_state(state, require_state = TRUE)
 
@@ -157,7 +156,7 @@ primary_secondary_roads <- function(state, year = NULL, ...) {
 #' }
 rails <- function(year = NULL, ...) {
 
-  year <- set_tigris_year(year)
+  year <- set_tigris_year(year, min_year = 2010)
 
   url <- url_tiger("TIGER%s/RAILS/tl_%s_us_rails", year, year)
 

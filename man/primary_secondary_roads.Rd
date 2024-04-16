@@ -33,14 +33,14 @@ an sf object with columns
 }
 }
 \description{
-From the Census Bureau: "Primary roads are generally divided,
-limited-access highways within the Federal interstate highway
-system or under state management. These highways are distinguished by the presence of interchanges
-and are accessible by ramps and may include some toll highways. Secondary roads are main arteries,
-usually in the U.S. highway, state
-highway, or county highway system. These roads have one or more lanes of
-traffic in each direction, may
-or may not be divided, and usually have at-grade intersections with many other roads and driveways.
+From the Census Bureau: "Primary roads are generally divided, limited-access
+highways within the Federal interstate highway system or under state
+management. These highways are distinguished by the presence of interchanges
+and are accessible by ramps and may include some toll highways. Secondary
+roads are main arteries, usually in the U.S. highway, state highway, or
+county highway system. These roads have one or more lanes of traffic in each
+direction, may or may not be divided, and usually have at-grade intersections
+with many other roads and driveways.
 }
 \section{Additional Arguments}{
 

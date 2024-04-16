@@ -25,7 +25,7 @@
 #' }
 area_water <- function(state, county, year = NULL, ...) {
 
-  year <- set_tigris_year(year)
+  year <- set_tigris_year(year, min_year = 2010)
 
   if (length(county) > 1) {
     w <- lapply(county, function(x) {
@@ -76,7 +76,7 @@ area_water <- function(state, county, year = NULL, ...) {
 #' }
 linear_water <- function(state, county, year = NULL, ...) {
 
-  year <- set_tigris_year(year)
+  year <- set_tigris_year(year, min_year = 2010)
 
   if (length(county) > 1) {
     w <- lapply(county, function(x) {

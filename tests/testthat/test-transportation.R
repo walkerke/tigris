@@ -7,7 +7,10 @@ test_that("transportation functions work", {
   expect_s3_class(roads(state = state, county = c("001", "003")), "sf")
 
   expect_s3_class(primary_roads(), "sf")
+  expect_s3_class(primary_roads(year = 2010), "sf")
+
   expect_s3_class(primary_secondary_roads(state = state), "sf")
+  expect_s3_class(primary_secondary_roads(state = state, year = 2010), "sf")
 
   expect_s3_class(rails(), "sf")
 
