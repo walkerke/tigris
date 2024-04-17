@@ -257,6 +257,11 @@ input_to_wkt <- function(input, arg = caller_arg(input), call = caller_env()) {
   sf::st_as_text(input)
 }
 
+#' Get suffix of a 4 character year
+year_suf <- function(year) {
+  substr(year, 3, 4)
+}
+
 #' Set default year and validate year for tigris function
 #'
 #' [set_tigris_year()] returns year as a character string.
