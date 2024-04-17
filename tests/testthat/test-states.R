@@ -8,5 +8,14 @@ test_that("states works", {
 
   expect_s3_class(states(year = 2010), "sf")
   expect_s3_class(states(year = 2012), "sf")
-  expect_s3_class(states(), "sf")
+
+  tigris_states <- states()
+
+  expect_s3_class(tigris_states, "sf")
+
+  expect_snapshot(list_states(tigris_states))
+
+  expect_snapshot(filter_state(tigris_states, "Wyoming"))
+
+  expect_snapshot(grep_state(tigris_states, "north"))
 })
