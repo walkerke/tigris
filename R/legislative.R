@@ -255,10 +255,9 @@ voting_districts <- function(state = NULL, county = NULL, cb = FALSE, year = 202
 
     vtds <- load_tiger(url, tigris_type = "voting_districts", ...)
 
-    county <- validate_county(state, county, allow_null = TRUE)
-
     if (!is.null(county)) {
-      return(vtds[vtds$COUNTYFP20 == county,])
+      county <- validate_county(state, county, multiple = TRUE, require_county = TRUE)
+      return(vtds[vtds[["COUNTYFP20"]] %in% county, ])
     }
 
     return(vtds)
