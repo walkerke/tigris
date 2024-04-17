@@ -4,8 +4,13 @@ test_that("landmarks errors", {
 
 test_that("landmarks works", {
   withr::local_options(list(tigris_use_cache = TRUE))
+
   state <- "WY"
-  expect_s3_class(landmarks(state = state, type = "point"), "sf")
+  area_landmarks <- landmarks(state = state, type = "area")
+  point_landmarks <- landmarks(state = state, type = "point")
+
+  expect_snapshot(area_landmarks)
+  expect_snapshot(point_landmarks)
 })
 
 test_that("military works", {

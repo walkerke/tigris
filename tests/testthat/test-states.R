@@ -15,6 +15,8 @@ test_that("states works", {
 
   expect_snapshot(list_states(tigris_states))
 
+  expect_snapshot(list_states(tigris_states, sorted = FALSE))
+
   expect_snapshot(filter_state(tigris_states, "Wyoming"))
 
   expect_snapshot(grep_state(tigris_states, "north"))

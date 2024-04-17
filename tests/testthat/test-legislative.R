@@ -11,6 +11,9 @@ test_that("congressional_districts warns and errors", {
 test_that("congressional_districts works", {
   withr::local_options(list(tigris_use_cache = TRUE))
 
+  expect_s3_class(congressional_districts(), "sf")
+  expect_s3_class(congressional_districts(year = 2010), "sf")
+
   cb <- TRUE
   res <- "20m"
   state <- "WY"
@@ -52,15 +55,16 @@ test_that("state_legislative_districts works", {
 
 
 test_that("voting_districts errors", {
-  expect_error(state_legislative_districts(year = 2011, cb = TRUE))
-  expect_error(state_legislative_districts(year = 2018, cb = TRUE))
-  expect_error(state_legislative_districts(year = 2018))
+  expect_error(voting_districts())
+  expect_error(voting_districts(year = 2018, cb = TRUE))
+  expect_error(voting_districts(year = 2018))
 })
 
 
 test_that("voting_districts works", {
   withr::local_options(list(tigris_use_cache = TRUE))
 
+  expect_s3_class(voting_districts(cb = TRUE), "sf")
   state <- "WY"
 
   expect_s3_class(voting_districts(state = state, cb = TRUE), "sf")
