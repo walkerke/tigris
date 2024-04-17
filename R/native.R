@@ -123,7 +123,7 @@ alaska_native_regional_corporations <- function(cb = FALSE, year = NULL, ...) {
     if (year > 2010) {
       url <- url_tiger("TIGER%s/ANRC/tl_%s_02_anrc", year, year)
     } else if (year %in% c(2000, 2010)) {
-      url <- url_tiger("TIGER2010/ANRC/%s/tl_2010_02_us_aitsn%s", year, year_suf(year))
+      url <- url_tiger("TIGER2010/ANRC/%s/tl_2010_02_anrc%s", year, year_suf(year))
     }
   }
 
