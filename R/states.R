@@ -33,6 +33,7 @@ states <- function(cb = FALSE, resolution = '500k', year = NULL, ...) {
   check_tigris_resolution(resolution)
 
   year <- set_tigris_year(year, min_year = 1990)
+  check_not_year(year, c(1991:1999, 2001:2009))
 
   if (cb) {
 
@@ -46,17 +47,13 @@ states <- function(cb = FALSE, resolution = '500k', year = NULL, ...) {
 
       url <- url_tiger("GENZ2010/gz_2010_us_040_00_%s", resolution)
 
+    } else if (year > 2013) {
+
+      url <- url_tiger("GENZ%s/shp/cb_%s_us_state_%s", year, year, resolution)
+
     } else {
 
-      if (year > 2013) {
-
-        url <- url_tiger("GENZ%s/shp/cb_%s_us_state_%s", year, year, resolution)
-
-      } else {
-
-        url <- url_tiger("GENZ%s/shp/cb_%s_us_state_%s", year, year, resolution)
-      }
-
+      url <- url_tiger("GENZ%s/cb_%s_us_state_%s", year, year, resolution)
     }
 
   } else {
