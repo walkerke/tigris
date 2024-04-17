@@ -28,7 +28,7 @@ places <- function(state = NULL, cb = FALSE, year = NULL, ...) {
   year <- set_tigris_year(year, min_year = 2000)
 
   if (year > 2000 && year < 2010) {
-    abort("`year` must be 2000 or greater than 2010.")
+    abort("`year` must be 2000, 2010, or any year after 2010.")
   }
 
   if (is.null(state)) {
@@ -39,7 +39,7 @@ places <- function(state = NULL, cb = FALSE, year = NULL, ...) {
       abort("A state must be specified for this year/dataset combination.")
     }
   } else {
-    state <- validate_state(state, allow_null = FALSE)
+    state <- validate_state(state, allow_null = FALSE, require_state = TRUE)
   }
 
   if (cb) {
@@ -52,8 +52,7 @@ places <- function(state = NULL, cb = FALSE, year = NULL, ...) {
     }
 
   } else if (year %in% c(2000, 2010)) {
-    suf <- substr(year, 3, 4)
-    url <- url_tiger("TIGER2010/PLACE/%s/tl_2010_%s_place%s", year, state, suf)
+    url <- url_tiger("TIGER2010/PLACE/%s/tl_2010_%s_place%s", year, state, year_suf(year))
   } else {
     url <- url_tiger("TIGER%s/PLACE/tl_%s_%s_place", year, year, state)
   }
