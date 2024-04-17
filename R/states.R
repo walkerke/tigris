@@ -142,7 +142,7 @@ filter_state <- function(states, state) {
 #' }
 grep_state <- function(states, term) {
   if (is_tigris(states) & tigris_type(states) == "state") {
-    grep(term, list_states(states), value=TRUE, ignore.case=TRUE)
+    grep(term, list_states(states), value = TRUE, ignore.case = TRUE)
   }
 }
 
@@ -154,13 +154,9 @@ grep_state <- function(states, term) {
 #' @examples \dontrun{
 #' states() %>% list_states()
 #' }
-list_states <- function(states, sorted=TRUE) {
-  if (is_sf(states)) {
-    return(states$NAME)
-  }
-
+list_states <- function(states, sorted = TRUE) {
   if (is_tigris(states) & tigris_type(states) == "state") {
-    if (sorted) return(sort(states@data$NAME))
-    return(states@data$NAME)
+    if (sorted) return(sort(states$NAME))
+    return(states$NAME)
   }
 }
