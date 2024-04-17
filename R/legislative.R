@@ -176,7 +176,7 @@ state_legislative_districts <- function(state = NULL, house = "upper",
 
     if (year %in% c(2000, 2010)) {
       url <- url_tiger("TIGER2010/%s/%s/tl_2010_%s_%s%s",
-                       toupper(type), year, state, type, substr(year, 3, 4))
+                       toupper(type), year, state, type, year_suf(year))
     } else {
       url <- url_tiger("TIGER%s/%s/tl_%s_%s_%s",
                        year, toupper(type), year, state, type)

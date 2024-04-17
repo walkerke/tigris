@@ -61,7 +61,7 @@ counties <- function(state = NULL, cb = FALSE, resolution = '500k', year = NULL,
 
     if (year %in% c(1990, 2000)) {
 
-      suf <- substr(year, 3, 4)
+      suf <- year_suf(year)
 
       url <- url_tiger("PREVGENZ/co/co%sshp/co99_d%s_shp", suf, suf)
 
@@ -90,9 +90,7 @@ counties <- function(state = NULL, cb = FALSE, resolution = '500k', year = NULL,
 
     if (year %in% c(2000, 2010)) {
 
-      suf <- substr(year, 3, 4)
-
-      url <- url_tiger("TIGER2010/COUNTY/%s/tl_2010_us_county%s", year, suf)
+      url <- url_tiger("TIGER2010/COUNTY/%s/tl_2010_us_county%s", year, year_suf(year))
 
     } else {
 
@@ -242,7 +240,7 @@ tracts <- function(state = NULL, county = NULL, cb = FALSE, resolution = "500k",
 
     if (year %in% c(1990, 2000)) {
 
-      suf <- substr(year, 3, 4)
+      suf <- year_suf(year)
 
       url <- url_tiger("PREVGENZ/tr/tr%sshp/tr%s_d%s_shp", suf, state, suf)
 
@@ -271,9 +269,7 @@ tracts <- function(state = NULL, county = NULL, cb = FALSE, resolution = "500k",
 
     if (year %in% c(2000, 2010)) {
 
-      suf <- substr(year, 3, 4)
-
-      url <- url_tiger("TIGER2010/TRACT/%s/tl_2010_%s_tract%s", year, state, suf)
+      url <- url_tiger("TIGER2010/TRACT/%s/tl_2010_%s_tract%s", year, state, year_suf(year))
 
     } else {
 
@@ -491,7 +487,7 @@ block_groups <- function(state = NULL, county = NULL, cb = FALSE, year = NULL, .
 
     if (year %in% c(1990, 2000)) {
 
-      suf <- substr(year, 3, 4)
+      suf <- year_suf(year)
 
       url <- url_tiger("PREVGENZ/bg/bg%sshp/bg%s_d%s_shp", suf, state, suf)
 
@@ -520,9 +516,7 @@ block_groups <- function(state = NULL, county = NULL, cb = FALSE, year = NULL, .
 
     if (year %in% c(2000, 2010)) {
 
-      suf <- substr(year, 3, 4)
-
-      url <- url_tiger("TIGER2010/BG/%s/tl_2010_%s_bg%s", year, state, suf)
+      url <- url_tiger("TIGER2010/BG/%s/tl_2010_%s_bg%s", year, state, year_suf(year))
 
     } else {
 
@@ -710,7 +704,7 @@ zctas <- function(cb = FALSE, starts_with = NULL, year = NULL, state = NULL, ...
 
       if (year %in% c(2000, 2010)) {
 
-        suf <- substr(year, 3, 4)
+        suf <- year_suf(year)
 
         if (is.null(state)) {
           url <- url_tiger("TIGER2010/ZCTA5/%s/tl_2010_us_zcta5%s", year, suf)
@@ -834,7 +828,7 @@ blocks <- function(state, county = NULL, year = NULL, ...) {
   } else if (year %in% 2011:2013) {
     url <- url_tiger("TIGER%s/TABBLOCK/tl_%s_%s_tabblock", year, year, state)
   } else if (year %in% c(2000, 2010)) {
-    suf <- substr(year, 3, 4)
+    suf <- year_suf(year)
 
     if (!is.null(county)) {
 

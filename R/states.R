@@ -38,7 +38,7 @@ states <- function(cb = FALSE, resolution = '500k', year = NULL, ...) {
 
     if (year %in% c(1990, 2000)) {
 
-      suf <- substr(year, 3, 4)
+      suf <- year_suf(year)
 
       url <- url_tiger("PREVGENZ/st/st%sshp/st99_d%s_shp", suf, suf)
 
@@ -65,9 +65,7 @@ states <- function(cb = FALSE, resolution = '500k', year = NULL, ...) {
 
     if (year %in% c(2000, 2010)) {
 
-      suf <- substr(year, 3, 4)
-
-      url <- url_tiger("TIGER2010/STATE/%s/tl_2010_us_state%s", year, suf)
+      url <- url_tiger("TIGER2010/STATE/%s/tl_2010_us_state%s", year, year_suf(year))
 
     } else {
 
