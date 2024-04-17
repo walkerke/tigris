@@ -47,15 +47,10 @@ core_based_statistical_areas <- function(cb = FALSE, resolution = '500k', year =
     }
 
 
+  } else if (year == 2010) {
+    url <- url_tiger("TIGER2010/CBSA/2010/tl_2010_us_cbsa10")
   } else {
-    check_tigris_resolution(resolution)
-
-    if (year == 2010) {
-      url <- url_tiger("TIGER2010/CBSA/2010/tl_2010_us_cbsa10.zip")
-    } else {
-      url <- url_tiger("TIGER%s/CBSA/tl_%s_us_cbsa", year, year)
-    }
-
+    url <- url_tiger("TIGER%s/CBSA/tl_%s_us_cbsa", year, year)
   }
 
   return(load_tiger(url, tigris_type = "cbsa", ...))
@@ -64,14 +59,17 @@ core_based_statistical_areas <- function(cb = FALSE, resolution = '500k', year =
 
 #' Download an urban areas shapefile into R
 #'
-#' Urban areas include both "urbanized areas," which are densely developed areas with a population of at least 50,000,
-#'  and "urban clusters," which have a population of greater than 2,500 but less than 50,000.  For more information,
+#' Urban areas include both "urbanized areas," which are densely developed areas
+#' with a population of at least 50,000, and "urban clusters," which have a
+#' population of greater than 2,500 but less than 50,000.  For more information,
 #' please see the link provided.
 #'
 #' @param cb If cb is set to TRUE, download a generalized (1:500k)
 #'        cartographic boundary file.  Defaults to FALSE (the most detailed
-#'        TIGER/Line file).
-#' @param criteria If set to "2020" and the year is 2020, will download the new 2020 urban areas criteria. Not available for cartographic boundary shapefiles / other years at the moment.
+#'        TIGER/Line file). year must be a max of 2020 if `cb = TRUE`.
+#' @param criteria If set to "2020" and the year is 2020, will download the new
+#'   2020 urban areas criteria. Not available for cartographic boundary
+#'   shapefiles / other years at the moment.
 #' @inheritParams load_tiger_doc_template
 #' @inheritSection load_tiger_doc_template Additional Arguments
 #' @family metro area functions
@@ -79,33 +77,39 @@ core_based_statistical_areas <- function(cb = FALSE, resolution = '500k', year =
 #' @export
 urban_areas <- function(cb = FALSE, year = NULL, criteria = NULL, ...) {
 
-  year <- set_tigris_year(year)
-
   if (cb) {
+    year <- set_tigris_year(year, default = 2020, max_year = 2020)
+
     if (!is.null(criteria)) {
       abort("The `criteria` argument is not supported for cartographic boundary files")
     }
 
-    url <- url_tiger("GENZ%s/shp/cb_%s_us_ua10_500k", year, year)
+    if (year == 2020) {
+      url <- url_tiger("GENZ%s/shp/cb_%s_us_ua20_corrected_500k", year, year)
+    } else {
+      url <- url_tiger("GENZ%s/shp/cb_%s_us_ua10_500k", year, year)
+
+    }
 
     if (year == 2013) url <- remove_shp(url)
 
   } else {
 
+    year <- set_tigris_year(year)
+
     if (year >= 2023) {
       url <- url_tiger("TIGER%s/UAC/tl_%s_us_uac20", year, year)
 
     } else if (!is.null(criteria) && criteria == 2020) {
+
       if (year != 2020) {
-        abort("2020 criteria is only supported when `year` is set to 2020 at the moment.")
+        abort("`year` must be 2020 to use 2020 criteria.")
       }
 
       url <- url_tiger("TIGER%s/UAC/tl_%s_us_uac20", year, year)
-
     } else {
       url <- url_tiger("TIGER%s/UAC/tl_%s_us_uac10", year, year)
     }
-
 
   }
 

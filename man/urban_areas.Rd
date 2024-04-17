@@ -9,17 +9,20 @@ urban_areas(cb = FALSE, year = NULL, criteria = NULL, ...)
 \arguments{
 \item{cb}{If cb is set to TRUE, download a generalized (1:500k)
 cartographic boundary file.  Defaults to FALSE (the most detailed
-TIGER/Line file).}
+TIGER/Line file). year must be a max of 2020 if \code{cb = TRUE}.}
 
 \item{year}{the data year; defaults to 2022}
 
-\item{criteria}{If set to "2020" and the year is 2020, will download the new 2020 urban areas criteria. Not available for cartographic boundary shapefiles / other years at the moment.}
+\item{criteria}{If set to "2020" and the year is 2020, will download the new
+2020 urban areas criteria. Not available for cartographic boundary
+shapefiles / other years at the moment.}
 
 \item{...}{arguments to be passed to internal function \code{load_tiger}, which is not exported. See Additional Arguments.}
 }
 \description{
-Urban areas include both "urbanized areas," which are densely developed areas with a population of at least 50,000,
-and "urban clusters," which have a population of greater than 2,500 but less than 50,000.  For more information,
+Urban areas include both "urbanized areas," which are densely developed areas
+with a population of at least 50,000, and "urban clusters," which have a
+population of greater than 2,500 but less than 50,000.  For more information,
 please see the link provided.
 }
 \section{Additional Arguments}{
