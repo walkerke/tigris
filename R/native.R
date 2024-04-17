@@ -177,7 +177,7 @@ tribal_block_groups <- function(cb = FALSE, year = NULL, ...) {
     if (year > 2010) {
       url <- url_tiger("TIGER%s/TBG/tl_%s_us_tbg", year, year)
     } else if (year == 2010) {
-      url <- url_tiger("TIGER%s/TBG/tl_%s_us_tbg%s", year, year, year_suf(year))
+      url <- url_tiger("TIGER%s/TBG/%s/tl_%s_us_tbg%s", year, year, year, year_suf(year))
     }
   }
 
@@ -225,7 +225,7 @@ tribal_census_tracts <- function(cb = FALSE, year = NULL, ...) {
     if (year > 2010) {
       url <- url_tiger("TIGER%s/TTRACT/tl_%s_us_ttract", year, year)
     } else if (year == 2010) {
-      url <- url_tiger("TIGER%s/TTRACT/tl_%s_us_ttract%s", year, year, year_suf(year))
+      url <- url_tiger("TIGER%s/TTRACT/%s/tl_%s_us_ttract%s", year, year, year, year_suf(year))
     }
   }
 
