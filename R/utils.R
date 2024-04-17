@@ -258,6 +258,7 @@ input_to_wkt <- function(input, arg = caller_arg(input), call = caller_env()) {
 }
 
 #' Get suffix of a 4 character year
+#' @noRd
 year_suf <- function(year) {
   substr(year, 3, 4)
 }
