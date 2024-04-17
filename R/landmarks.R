@@ -53,7 +53,8 @@ military <- function(year = NULL, ...) {
 #' @seealso <https://www2.census.gov/geo/pdfs/maps-data/data/tiger/tgrshp2020/TGRSHP2020_TechDoc_Ch3.pdf>
 #'
 #' @param state The state for which you'd like to download the landmarks
-#' @param type Whether you would like to download point landmarks (`"point"`) or area landmarks (`"area"`). #'                Defaults to `"point"`.
+#' @param type Whether you would like to download point landmarks (`"point"`) or
+#'   area landmarks (`"area"`). Defaults to `"point"`.
 #' @inheritParams load_tiger_doc_template
 #' @inheritSection load_tiger_doc_template Additional Arguments
 #' @export

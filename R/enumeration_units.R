@@ -200,7 +200,8 @@ counties <- function(state = NULL, cb = FALSE, resolution = '500k', year = NULL,
 #' @param cb If cb is set to TRUE, download a generalized (1:500k)
 #'        tracts file.  Defaults to FALSE (the most detailed TIGER/Line file)
 #' @param resolution The resolution of the cartographic boundary file (if using cb = TRUE).
-#'        Defaults to '500k'; the other option is '5m' (1:5 million).  Resolution of '5m' is #'        only available for the national Census tract file for years 2022 and later.
+#'        Defaults to '500k'; the other option is '5m' (1:5 million).  Resolution of '5m' is
+#'        only available for the national Census tract file for years 2022 and later.
 #' @inheritParams load_tiger_doc_template
 #' @inheritSection load_tiger_doc_template Additional Arguments
 #' @family general area functions

@@ -27,7 +27,8 @@ Can also be a county name or vector of names.}
 tracts file.  Defaults to FALSE (the most detailed TIGER/Line file)}
 
 \item{resolution}{The resolution of the cartographic boundary file (if using cb = TRUE).
-Defaults to '500k'; the other option is '5m' (1:5 million).  Resolution of '5m' is #'        only available for the national Census tract file for years 2022 and later.}
+Defaults to '500k'; the other option is '5m' (1:5 million).  Resolution of '5m' is
+only available for the national Census tract file for years 2022 and later.}
 
 \item{year}{the data year; defaults to 2022}
 

@@ -36,7 +36,8 @@ of administering elections. Some States also use groupings of these entities
 to define their State and local legislative districts, as well as the districts they
 define for election of members to the U.S. House of Representatives. In a
 nationwide cooperative program for the 1980 census, the Census Bureau
-gave States the opportunity to request use of these election precinct boundaries as the boundaries of #' census enumeration districts (EDs) or, in some areas, census blocks.
+gave States the opportunity to request use of these election precinct boundaries as the boundaries of
+census enumeration districts (EDs) or, in some areas, census blocks.
 
 Support for voting districts in tigris 1.5 and higher is aligned with the 2020 PL redistricting
 data.  The argument \code{cb = FALSE} retrieves voting districts from the TIGER/Line PL

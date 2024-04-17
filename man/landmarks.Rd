@@ -9,7 +9,8 @@ landmarks(state, type = "point", year = NULL, ...)
 \arguments{
 \item{state}{The state for which you'd like to download the landmarks}
 
-\item{type}{Whether you would like to download point landmarks (\code{"point"}) or area landmarks (\code{"area"}). #'                Defaults to \code{"point"}.}
+\item{type}{Whether you would like to download point landmarks (\code{"point"}) or
+area landmarks (\code{"area"}). Defaults to \code{"point"}.}
 
 \item{year}{the data year; defaults to 2022}
 
