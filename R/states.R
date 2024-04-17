@@ -155,6 +155,10 @@ grep_state <- function(states, term) {
 #' states() %>% list_states()
 #' }
 list_states <- function(states, sorted=TRUE) {
+  if (is_sf(states)) {
+    return(states$NAME)
+  }
+
   if (is_tigris(states) & tigris_type(states) == "state") {
     if (sorted) return(sort(states@data$NAME))
     return(states@data$NAME)
