@@ -29,14 +29,19 @@
 #' }
 native_areas <- function(cb = FALSE, year = NULL, ...) {
 
-  year <- set_tigris_year(year)
-
   if (cb) {
-    url <- url_tiger("GENZ%s/shp/cb_%s_us_aiannh_500k",
-                   year, year)
+    year <- set_tigris_year(year)
+    url <- url_tiger("GENZ%s/shp/cb_%s_us_aiannh_500k", year, year)
   } else {
-    url <- url_tiger("TIGER%s/AIANNH/tl_%s_us_aiannh",
-                   year, year)
+
+    year <- set_tigris_year(year, min_year = 2000)
+    check_not_year(year, error_year = c(2001:2009))
+
+    if (year > 2010) {
+      url <- url_tiger("TIGER%s/AIANNH/tl_%s_us_aiannh", year, year)
+    } else if (year %in% c(2000, 2010)) {
+      url <- url_tiger("TIGER2010/AIANNH/%s/tl_2010_us_aiannh%s", year, year_suf(year))
+    }
   }
 
   return(load_tiger(url, tigris_type = "native areas", ...))
@@ -70,18 +75,19 @@ native_areas <- function(cb = FALSE, year = NULL, ...) {
 #' }
 tribal_subdivisions_national <- function(cb = FALSE, year = NULL, ...) {
 
-  year <- set_tigris_year(year)
-
   if (cb) {
-    url <- url_tiger("GENZ%s/shp/cb_%s_us_aitsn_500k",
-                   year, year)
+    year <- set_tigris_year(year)
+    url <- url_tiger("GENZ%s/shp/cb_%s_us_aitsn_500k", year, year)
   } else {
-    if (year < 2015) {
-      url <- url_tiger("TIGER%s/AITS/tl_%s_us_aitsn",
-                     year, year)
-    } else {
-      url <- url_tiger("TIGER%s/AITSN/tl_%s_us_aitsn",
-                     year, year)
+    year <- set_tigris_year(year, min_year = 2000)
+    check_not_year(year, error_year = c(2001:2009))
+
+    if (year > 2015) {
+      url <- url_tiger("TIGER%s/AITSN/tl_%s_us_aitsn", year, year)
+    } else if (year > 2010 && year < 2015) {
+      url <- url_tiger("TIGER%s/AITS/tl_%s_us_aitsn", year, year)
+    } else if (year %in% c(2000, 2010)) {
+      url <- url_tiger("TIGER2010/AITS/%s/tl_2010_us_aitsn%s", year, year_suf(year))
     }
   }
 
@@ -106,14 +112,19 @@ tribal_subdivisions_national <- function(cb = FALSE, year = NULL, ...) {
 #' @export
 alaska_native_regional_corporations <- function(cb = FALSE, year = NULL, ...) {
 
-  year <- set_tigris_year(year)
 
   if (cb) {
-    url <- url_tiger("GENZ%s/shp/cb_%s_02_anrc_500k",
-                   year, year)
+    year <- set_tigris_year(year)
+    url <- url_tiger("GENZ%s/shp/cb_%s_02_anrc_500k", year, year)
   } else {
-    url <- url_tiger("TIGER%s/ANRC/tl_%s_02_anrc",
-                   year, year)
+    year <- set_tigris_year(year, min_year = 2000)
+    check_not_year(year, error_year = c(2001:2009))
+
+    if (year > 2010) {
+      url <- url_tiger("TIGER%s/ANRC/tl_%s_02_anrc", year, year)
+    } else if (year %in% c(2000, 2010)) {
+      url <- url_tiger("TIGER2010/ANRC/%s/tl_2010_02_us_aitsn%s", year, year_suf(year))
+    }
   }
 
   return(load_tiger(url, tigris_type = "ANRCs", ...))
@@ -157,14 +168,17 @@ alaska_native_regional_corporations <- function(cb = FALSE, year = NULL, ...) {
 #' }
 tribal_block_groups <- function(cb = FALSE, year = NULL, ...) {
 
-  year <- set_tigris_year(year)
-
   if (cb) {
-    url <- url_tiger("GENZ%s/shp/cb_%s_us_tbg_500k",
-                   year, year)
+    year <- set_tigris_year(year)
+    url <- url_tiger("GENZ%s/shp/cb_%s_us_tbg_500k", year, year)
   } else {
-    url <- url_tiger("TIGER%s/TBG/tl_%s_us_tbg",
-                   year, year)
+    year <- set_tigris_year(year, min_year = 2010)
+
+    if (year > 2010) {
+      url <- url_tiger("TIGER%s/TBG/tl_%s_us_tbg", year, year)
+    } else if (year == 2010) {
+      url <- url_tiger("TIGER%s/TBG/tl_%s_us_tbg%s", year, year, year_suf(year))
+    }
   }
 
   return(load_tiger(url, tigris_type = "tribal block groups", ...))
@@ -203,14 +217,16 @@ tribal_block_groups <- function(cb = FALSE, year = NULL, ...) {
 #' }
 tribal_census_tracts <- function(cb = FALSE, year = NULL, ...) {
 
-  year <- set_tigris_year(year)
-
   if (cb) {
-    url <- url_tiger("GENZ%s/shp/cb_%s_us_ttract_500k",
-                   year, year)
+    year <- set_tigris_year(year)
+    url <- url_tiger("GENZ%s/shp/cb_%s_us_ttract_500k", year, year)
   } else {
-    url <- url_tiger("TIGER%s/TTRACT/tl_%s_us_ttract",
-                   year, year)
+    year <- set_tigris_year(year, min_year = 2010)
+    if (year > 2010) {
+      url <- url_tiger("TIGER%s/TTRACT/tl_%s_us_ttract", year, year)
+    } else if (year == 2010) {
+      url <- url_tiger("TIGER%s/TTRACT/tl_%s_us_ttract%s", year, year, year_suf(year))
+    }
   }
 
   return(load_tiger(url, tigris_type = "tribal tracts", ...))
