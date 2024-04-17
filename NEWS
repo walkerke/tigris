@@ -1,3 +1,44 @@
+tigris (development)
+-------------------------------------------------------
+
+### New features
+
+* Functions in tigris now default to a year of 2022.
+
+New support for downloading multiple existing or new datasets:
+
+* 2022 or 2023 (118th Congress) data for `congressional_districts()` (#180)
+
+* 2010 data for `area_water()`, `linear_water()`, `roads()`, `primary_roads()`, `primary_secondary_roads()`, `rails()`, `military()`, `landmarks()`,  `tribal_block_groups()` and `tribal_census_tracts()`.
+
+* 2000 and 2010 data for `places()` (#129), `native_areas()`, `tribal_subdivisions_national()`, and `alaska_native_regional_corporations()`.
+
+Improved input validation both for specific functions and in general:
+
+* All functions use consistent validation for `year`, `state`, and `county` parameters. If state or county is required, functions error (instead of warning) for `NULL` or invalid values.
+
+* Error when `year = 2022` for `combined_statistical_areas()` and `core_based_statistical_areas()`. (#184)
+
+* Error if URL does not exist (rather than retrying download). (#185)
+
+* Warn users when `filter_by` contains multiple geometries and only part of the filter can be used.
+
+### Bug fixes
+
+* `erase_water()` will not fail when `input_sf` doesn't intersect with any water areas. (#172, #182)
+
+### Internal changes
+
+* Remove `{stringr}` and `{uuid}` from Imports and add `{rlang}`
+
+* Add `{withr}` to Suggests (for tests only).
+
+* Switch to use `rlang::abort()`, `rlang::warn()` and `rlang::inform()` for all errors, warnings, and messages.
+
+* Add `multiple` argument to `validate_county()` to allow validation of multiple counties in a single call.
+
+* Refactor and add helper functions (`set_tigris_year()`, `check_tigris_year()`, and `url_tiger()`) to reduce duplication and make code more maintainable.
+
 tigris 2.0
 -------------------------------------------------------
 * A new filter_by argument allows users to subset datasets by a bounding box or another sf object when requesting data.
