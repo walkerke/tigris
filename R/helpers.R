@@ -18,6 +18,13 @@
 #' Sys.getenv('TIGRIS_CACHE_DIR')
 #' }
 tigris_cache_dir <- function(path) {
+
+  if (!file.exists(path)) {
+    stop(sprintf(
+      "The path %s does not exist exist.\n",
+      no_path))
+  }
+
   home <- Sys.getenv("HOME")
   renv <- file.path(home, ".Renviron")
   if (!file.exists(renv)) {
