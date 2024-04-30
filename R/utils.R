@@ -219,42 +219,58 @@ input_to_wkt <- function(input, arg = caller_arg(input), call = caller_env()) {
     return(character(0))
   }
 
+  input_sfc <- prep_input_sfc(
+    input = input,
+    arg = arg,
+    call = call
+  )
+
+  # Convert to WKT
+  sf::st_as_text(input_sfc)
+}
+
+#' Prep sfc from sf, sfc, or bbox input
+#' @noRd
+prep_input_sfc <- function(input, arg = caller_arg(input), call = caller_env()) {
+
+  if (!inherits(input, "bbox") && is.numeric(input) && (length(input) == 4)) {
+    names(input) <- c("xmin", "ymin", "xmax", "ymax")
+    input <- sf::st_bbox(input, crs = 4269)
+  }
+
   if (!inherits(input, c("sf", "sfc", "bbox"))) {
-    if (is.numeric(input) && (length(input) == 4)) {
-      names(input) <- c("xmin", "ymin", "xmax", "ymax")
-      input <- sf::st_bbox(input, crs = 4269)
-    } else {
-      abort(
-        c(
-          paste0("Invalid input `", arg, "`"),
-          "i" = "Supply an sf, sfc, bbox, or a length-4 vector that can be converted to a bbox."
-        ),
-        call = call
-      )
-    }
+    abort(
+      c(
+        paste0("Invalid input `", arg, "`"),
+        "i" = "Supply an sf, sfc, bbox, or a length-4 vector
+          that can be converted to a bbox."
+      ),
+      call = call
+    )
   }
 
   if (!inherits(input, "sfc")) {
     input <- sf::st_as_sfc(input)
   }
 
+  if (!all(sf::st_is_valid(input))) {
+    input <- sf::st_make_valid(input)
+  }
+
   if (length(input) > 1) {
-    warn(
+    inform(
       c(
         "!" = paste0("`", arg, "` contains multiple geometries and may not work as expected."),
         "i" = paste0("Unioning `", arg, "` geometries with `sf::st_union`.")
       )
     )
 
-    input <- sf::st_union(input, is_coverage = TRUE)
+    input <- sf::st_union(input)
     input <- sf::st_make_valid(input)
   }
 
   # Make NAD83 for coordinate alignment
-  input <- sf::st_transform(input, 4269)
-
-  # Convert to WKT
-  sf::st_as_text(input)
+  sf::st_transform(input, crs = 4269)
 }
 
 #' Get suffix of a 4 character year
