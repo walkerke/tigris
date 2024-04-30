@@ -70,8 +70,8 @@ tigris_cache_dir <- function(path) {
 #' @return sf or sp data frame
 #'
 load_tiger <- function(url,
-                       refresh=getOption("tigris_refresh", FALSE),
-                       tigris_type=NULL,
+                       refresh = getOption("tigris_refresh", FALSE),
+                       tigris_type = NULL,
                        class = getOption("tigris_class", "sf"),
                        progress_bar = TRUE,
                        keep_zipped_shapefile = FALSE,
@@ -130,7 +130,7 @@ load_tiger <- function(url,
 
           while (i < 4) {
 
-            inform(sprintf("Previous download failed.  Re-download attempt %s of 3...",
+            inform(sprintf("Previous download failed. Re-download attempt %s of 3...",
                             as.character(i)))
 
             if (progress_bar) {
@@ -155,7 +155,11 @@ load_tiger <- function(url,
 
           if (i == 4) {
             abort(
-              "Download failed; check your internet connection or the status of the Census Bureau website at http://www2.census.gov/geo/tiger/.",
+              c(
+                "Download failed",
+                "*" = "Check your internet connection or the status of
+                the Census Bureau website at http://www2.census.gov/geo/tiger/"
+              ),
               call = call
             )
           }
@@ -667,6 +671,7 @@ rbind_tigris <- function(..., call = caller_env()) {
 #'   for a given location.
 #' @param year The year to use for the water layer; defaults to 2022 unless the
 #'   `tigris_year` option is otherwise set.
+#' @inheritParams rlang::args_error_context
 #' @return An output sf object representing the polygons in `input_sf` with
 #'   water areas erased.
 #' @export
@@ -689,52 +694,64 @@ rbind_tigris <- function(..., call = caller_env()) {
 #' }
 erase_water <- function(input_sf,
                         area_threshold = 0.75,
-                        year = NULL) {
-
+                        year = NULL,
+                        arg = caller_arg(input_sf),
+                        call = caller_env()) {
   if (!is_sf(input_sf)) {
-    abort("The input dataset is not an sf object.")
+    abort(
+      "`{arg}` must be an sf object.",
+      call = call
+    )
   }
 
   year <- set_tigris_year(year, quiet = TRUE)
 
-  # Define st_erase function internally
-  st_erase <- function(x, y) {
-    suppressWarnings(sf::st_difference(x, sf::st_union(y)))
-  }
+  filter_by <- prep_input_sfc(input_sf, arg = arg, call = call)
 
   # Grab a dataset of counties that overlap the input sf object quietly
-  county_overlay <- counties(cb = TRUE, resolution = "500k", progress_bar = FALSE,
-                                     year = year, filter_by = input_sf) %>%
-    sf::st_transform(sf::st_crs(input_sf))
+  county_overlay <- counties(
+    cb = TRUE,
+    resolution = "500k",
+    progress_bar = FALSE,
+    year = year,
+    filter_by = filter_by
+  )
 
   # If nothing returned, exit
   if (nrow(county_overlay) == 0) {
-    abort("Your dataset does not appear to be in the United States; this function is not appropriate for your data.")
+    inform(
+      "`input_sf` does not appear to intersect any United States counties.",
+      "i" = "Returning unmodified `input_sf` input."
+    )
+
+    return(input_sf)
   }
 
   # Get a list of GEOIDs
   county_GEOIDs <- county_overlay$GEOID
 
   # Fetch water for those GEOIDs
-  inform("Fetching area water data for your dataset's location...")
-  my_water <- lapply(county_GEOIDs, function(cty) {
-    suppressMessages(area_water(
-      state = substr(cty, 1, 2),
-      county = substr(cty, 3, 5),
-      progress_bar = FALSE,
-      year = year,
-      filter_by = input_sf
-    ))
-  }) %>%
+  inform("Fetching area water data for `input_sf` location...")
+  county_water <- lapply(
+    county_GEOIDs,
+    function(cty) {
+      suppressMessages(area_water(
+        state = substr(cty, 1, 2),
+        county = substr(cty, 3, 5),
+        progress_bar = FALSE,
+        year = year,
+        filter_by = filter_by
+      ))
+    }
+  ) %>%
     dplyr::bind_rows() %>%
-    sf::st_transform(sf::st_crs(input_sf)) %>%
     dplyr::filter(dplyr::percent_rank(AWATER) >= area_threshold)
 
-  if (nrow(my_water) == 0) {
+  if (nrow(county_water) == 0) {
     inform(
       c(
         "No overlapping water area found.",
-        "Returning unmodified `input_sf`."
+        "i" = "Returning unmodified `input_sf`"
       )
     )
     return(input_sf)
@@ -746,10 +763,30 @@ erase_water <- function(input_sf,
       "If this is slow, try a larger area threshold value."
     )
   )
-  erased_sf <- suppressMessages(st_erase(input_sf, my_water))
+
+  erased_sf <- suppressMessages(st_erase(input_sf, county_water))
 
   return(erased_sf)
+}
 
+#' Erase x geometry intersecting with y using [sf::st_difference()]
+#' @noRd
+st_erase <- function(x, y, ...) {
+  if (!all(sf::st_is_valid(x))) {
+    x <- sf::st_make_valid(x)
+  }
+
+  if (!all(sf::st_is_valid(y))) {
+    y <- sf::st_make_valid(y)
+  }
+
+  x_crs <- sf::st_crs(x)
+
+  if (sf::st_crs(y) != sf::st_crs(x)) {
+    y <- sf::st_transform(y, crs = x_crs)
+  }
+
+  suppressWarnings(sf::st_difference(x, sf::st_union(y), ...))
 }
 
 #' Is object a `sf` object?

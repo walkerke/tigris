@@ -4,7 +4,13 @@
 \alias{erase_water}
 \title{Erase water area from an input polygon dataset}
 \usage{
-erase_water(input_sf, area_threshold = 0.75, year = NULL)
+erase_water(
+  input_sf,
+  area_threshold = 0.75,
+  year = NULL,
+  arg = caller_arg(input_sf),
+  call = caller_env()
+)
 }
 \arguments{
 \item{input_sf}{An input sf object, ideally obtained with the tigris package
@@ -18,6 +24,15 @@ for a given location.}
 
 \item{year}{The year to use for the water layer; defaults to 2022 unless the
 \code{tigris_year} option is otherwise set.}
+
+\item{arg}{An argument name as a string. This argument
+will be mentioned in error messages as the input that is at the
+origin of a problem.}
+
+\item{call}{The execution environment of a currently
+running function, e.g. \code{caller_env()}. The function will be
+mentioned in error messages as the source of the error. See the
+\code{call} argument of \code{\link[rlang:abort]{abort()}} for more information.}
 }
 \value{
 An output sf object representing the polygons in \code{input_sf} with
