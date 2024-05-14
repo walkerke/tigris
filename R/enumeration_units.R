@@ -33,7 +33,7 @@
 #' @param cb If cb is set to TRUE, download a generalized (1:500k)
 #'        counties file.  Defaults to FALSE (the most detailed TIGER file).
 #' @param resolution The resolution of the cartographic boundary file (if `cb = TRUE`).
-#'        Defaults to '500k'; options include '5m' (1:5 million) and '20m' (1:20 million).
+#'        Defaults to "500k"; options include "5m" (1:5 million) and "20m" (1:20 million).
 #' @inheritParams load_tiger_doc_template
 #' @inheritSection load_tiger_doc_template Additional Arguments
 #'
@@ -51,7 +51,7 @@
 #'                    fill="white", size=0.25)
 #' gg
 #' }
-counties <- function(state = NULL, cb = FALSE, resolution = '500k', year = NULL, ...) {
+counties <- function(state = NULL, cb = FALSE, resolution = "500k", year = NULL, ...) {
 
   check_tigris_resolution(resolution)
 
@@ -102,11 +102,11 @@ counties <- function(state = NULL, cb = FALSE, resolution = '500k', year = NULL,
 
   ctys <- load_tiger(url, tigris_type = "county", ...)
 
-  state <- unlist(sapply(state, validate_state, USE.NAMES=FALSE))
+  state <- unlist(sapply(state, validate_state, USE.NAMES = FALSE))
 
   if (!is.null(state)) {
 
-    ctys <- ctys[ctys$STATEFP %in% state,]
+    ctys <- ctys[ctys$STATEFP %in% state, ]
 
   }
 
@@ -118,36 +118,36 @@ counties <- function(state = NULL, cb = FALSE, resolution = '500k', year = NULL,
     }
     if (year == 1990) {
       ctys <- ctys %>%
-        mutate(id = paste0(.data$ST, .data$CO)) %>%
-        group_by(.data$id) %>%
-        summarize(AREA = sum(.data$AREA),
-                  PERIMETER = sum(.data$PERIMETER),
-                  ST = first(.data$ST),
-                  CO = first(.data$CO),
-                  CO99_D90_ = first(.data$CO99_D90_),
-                  CO99_D90_I = first(.data$CO99_D90_I),
-                  NAME = first(.data$NAME),
-                  COUNTYFP = first(.data$COUNTYFP),
-                  STATEFP = first(.data$STATEFP)) %>%
-        select(-.data$id) %>%
+        mutate(id = paste0(ST, CO)) %>%
+        group_by(id) %>%
+        summarize(AREA = sum(AREA),
+                  PERIMETER = sum(PERIMETER),
+                  ST = first(ST),
+                  CO = first(CO),
+                  CO99_D90_ = first(CO99_D90_),
+                  CO99_D90_I = first(CO99_D90_I),
+                  NAME = first(NAME),
+                  COUNTYFP = first(COUNTYFP),
+                  STATEFP = first(STATEFP)) %>%
+        select(-id) %>%
         st_cast("MULTIPOLYGON")
 
     } else if (year == 2000) {
       ctys <- ctys %>%
-        mutate(id = paste0(.data$STATE, .data$COUNTY)) %>%
-        group_by(.data$id) %>%
-        summarize(AREA = sum(.data$AREA),
-                  PERIMETER = sum(.data$PERIMETER),
-                  STATE = first(.data$STATE),
-                  COUNTY = first(.data$COUNTY),
-                  CO99_D00_ = first(.data$CO99_D00_),
-                  CO99_D00_I = first(.data$CO99_D00_I),
-                  NAME = first(.data$NAME),
-                  LSAD = first(.data$LSAD),
-                  LSAD_TRANS = first(.data$LSAD_TRANS),
-                  COUNTYFP = first(.data$COUNTYFP),
-                  STATEFP = first(.data$STATEFP)) %>%
-        select(-.data$id) %>%
+        mutate(id = paste0(STATE, COUNTY)) %>%
+        group_by(id) %>%
+        summarize(AREA = sum(AREA),
+                  PERIMETER = sum(PERIMETER),
+                  STATE = first(STATE),
+                  COUNTY = first(COUNTY),
+                  CO99_D00_ = first(CO99_D00_),
+                  CO99_D00_I = first(CO99_D00_I),
+                  NAME = first(NAME),
+                  LSAD = first(LSAD),
+                  LSAD_TRANS = first(LSAD_TRANS),
+                  COUNTYFP = first(COUNTYFP),
+                  STATEFP = first(STATEFP)) %>%
+        select(-id) %>%
         st_cast("MULTIPOLYGON")
     }
     if (any(sclass == "SpatialPolygonsDataFrame")) {
@@ -155,7 +155,7 @@ counties <- function(state = NULL, cb = FALSE, resolution = '500k', year = NULL,
     }
   }
 
-  attr(ctys, 'tigris') <- 'county'
+  attr(ctys, "tigris") <- "county"
 
   return(ctys)
 
@@ -164,17 +164,16 @@ counties <- function(state = NULL, cb = FALSE, resolution = '500k', year = NULL,
 #' Download a Census tracts shapefile into R, and optionally subset by county
 #'
 #' Description from the US Census Bureau (see link for source):
-#' Census Tracts are small, relatively permanent statistical subdivisions of
-#' a county or equivalent entity that are updated by local participants prior
-#' to each decennial census as part of the Census Bureau's Participant
-#' Statistical Areas Program. The Census Bureau delineates census tracts in
-#' situations where no local participant existed or where state, local, or
-#' tribal governments declined to participate. The primary purpose of census
-#' tracts is to provide a stable set of geographic units for the presentation
-#' of statistical data.
+#' Census Tracts are small, relatively permanent statistical subdivisions of a
+#' county or equivalent entity that are updated by local participants prior to
+#' each decennial census as part of the Census Bureau's Participant Statistical
+#' Areas Program. The Census Bureau delineates census tracts in situations where
+#' no local participant existed or where state, local, or tribal governments
+#' declined to participate. The primary purpose of census tracts is to provide a
+#' stable set of geographic units for the presentation of statistical data.
 #'
-#' Census tracts generally have a population size between 1,200 and 8,000 people,
-#' with an optimum size of 4,000 people. A census tract usually covers a
+#' Census tracts generally have a population size between 1,200 and 8,000
+#' people, with an optimum size of 4,000 people. A census tract usually covers a
 #' contiguous area; however, the spatial size of census tracts varies widely
 #' depending on the density of settlement.  Census tract boundaries are
 #' delineated with the intention of being maintained over a long time so that
@@ -191,17 +190,18 @@ counties <- function(state = NULL, cb = FALSE, resolution = '500k', year = NULL,
 #' geographic hierarchy.
 #'
 #' @param state The two-digit FIPS code (string) of the state you want. Can also
-#'        be state name or state abbreviation. When `NULL` and combined with
-#'        `cb = TRUE`, a national dataset of Census tracts will be returned for
-#'        years 2019 and later.
+#'   be state name or state abbreviation. When `NULL` and combined with `cb =
+#'   TRUE`, a national dataset of Census tracts will be returned for years 2019
+#'   and later.
 #' @param county The three-digit FIPS code (string) of the county you'd like to
-#'        subset for, or a vector of FIPS codes if you desire multiple counties.
-#'        Can also be a county name or vector of names.
-#' @param cb If cb is set to TRUE, download a generalized (1:500k)
-#'        tracts file.  Defaults to FALSE (the most detailed TIGER/Line file)
-#' @param resolution The resolution of the cartographic boundary file (if using cb = TRUE).
-#'        Defaults to '500k'; the other option is '5m' (1:5 million).  Resolution of '5m' is
-#'        only available for the national Census tract file for years 2022 and later.
+#'   subset for, or a vector of FIPS codes if you desire multiple counties. Can
+#'   also be a county name or vector of names.
+#' @param cb If cb is set to TRUE, download a generalized (1:500k) tracts file.
+#'   Defaults to FALSE (the most detailed TIGER/Line file)
+#' @param resolution The resolution of the cartographic boundary file (if using
+#'   cb = TRUE). Defaults to "500k"; the other option is "5m" (1:5 million).
+#'   Resolution of "5m" is only available for the national Census tract file for
+#'   years 2022 and later.
 #' @inheritParams load_tiger_doc_template
 #' @inheritSection load_tiger_doc_template Additional Arguments
 #' @family general area functions
@@ -223,7 +223,10 @@ tracts <- function(state = NULL, county = NULL, cb = FALSE, resolution = "500k",
   year <- set_tigris_year(year, min_year = 1990)
 
   if ((resolution == "5m" && year < 2022) || (resolution == "5m" && !is.null(state))) {
-    abort("`resolution = '5m'` for Census tracts is only available for the national Census tract CB file in years 2022 and later.")
+    abort(
+      '`resolution = "5m"` for Census tracts is only available for the
+      national Census tract CB file in years 2022 and later.'
+    )
   }
 
   if (is.null(state)) {
@@ -299,36 +302,36 @@ tracts <- function(state = NULL, county = NULL, cb = FALSE, resolution = "500k",
     }
     if (year == 1990) {
       trcts <- trcts %>%
-        mutate(TRACTSUF = ifelse(is.na(.data$TRACTSUF), "00", .data$TRACTSUF)) %>%
-        mutate(id = paste0(.data$ST, .data$CO, .data$TRACTBASE, .data$TRACTSUF)) %>%
-        group_by(.data$id) %>%
-        summarize(AREA = sum(.data$AREA),
-                  PERIMETER = sum(.data$PERIMETER),
-                  ST = first(.data$ST),
-                  CO = first(.data$CO),
-                  TRACTBASE = first(.data$TRACTBASE),
-                  TRACTSUF = first(.data$TRACTSUF),
-                  TRACT_NAME = first(.data$TRACT_NAME),
-                  COUNTYFP = first(.data$COUNTYFP),
-                  STATEFP = first(.data$STATEFP)) %>%
-        select(-.data$id) %>%
+        mutate(TRACTSUF = ifelse(is.na(TRACTSUF), "00", TRACTSUF)) %>%
+        mutate(id = paste0(ST, CO, TRACTBASE, TRACTSUF)) %>%
+        group_by(id) %>%
+        summarize(AREA = sum(AREA),
+                  PERIMETER = sum(PERIMETER),
+                  ST = first(ST),
+                  CO = first(CO),
+                  TRACTBASE = first(TRACTBASE),
+                  TRACTSUF = first(TRACTSUF),
+                  TRACT_NAME = first(TRACT_NAME),
+                  COUNTYFP = first(COUNTYFP),
+                  STATEFP = first(STATEFP)) %>%
+        select(-id) %>%
         st_cast("MULTIPOLYGON")
 
     } else if (year == 2000) {
       trcts <- trcts %>%
-        mutate(TRACT = pad_str(.data$TRACT, 6, "right", "0")) %>%
-        mutate(id = paste0(.data$STATE, .data$COUNTY, .data$TRACT)) %>%
-        group_by(.data$id) %>%
-        summarize(AREA = sum(.data$AREA),
-                  PERIMETER = sum(.data$PERIMETER),
-                  STATE = first(.data$STATE),
-                  COUNTY = first(.data$COUNTY),
-                  TRACT = first(.data$TRACT),
-                  NAME = first(.data$NAME),
-                  LSAD = first(.data$LSAD),
-                  COUNTYFP = first(.data$COUNTYFP),
-                  STATEFP = first(.data$STATEFP)) %>%
-        select(-.data$id) %>%
+        mutate(TRACT = pad_str(TRACT, 6, "right", "0")) %>%
+        mutate(id = paste0(STATE, COUNTY, TRACT)) %>%
+        group_by(id) %>%
+        summarize(AREA = sum(AREA),
+                  PERIMETER = sum(PERIMETER),
+                  STATE = first(STATE),
+                  COUNTY = first(COUNTY),
+                  TRACT = first(TRACT),
+                  NAME = first(NAME),
+                  LSAD = first(LSAD),
+                  COUNTYFP = first(COUNTYFP),
+                  STATEFP = first(STATEFP)) %>%
+        select(-id) %>%
         st_cast("MULTIPOLYGON")
     }
     if (any(sclass == "SpatialPolygonsDataFrame")) {
@@ -383,13 +386,13 @@ tracts <- function(state = NULL, county = NULL, cb = FALSE, resolution = "500k",
 #'               color = "black",
 #'               weight = 0.5)
 #' }
-school_districts <- function(state = NULL, type = 'unified',
+school_districts <- function(state = NULL, type = "unified",
                              cb = FALSE, year = NULL, ...) {
   year <- set_tigris_year(year)
 
   type <- arg_match0(
     type,
-    values = c('unified', 'elementary', 'secondary')
+    values = c("unified", "elementary", "secondary")
   )
 
   if (is.null(state)) {
@@ -546,37 +549,37 @@ block_groups <- function(state = NULL, county = NULL, cb = FALSE, year = NULL, .
     }
     if (year == 1990) {
       bgs <- bgs %>%
-        group_by(.data$GEOID) %>%
-        summarize(AREA = sum(.data$AREA),
-                  PERIMETER = sum(.data$PERIMETER),
-                  ST = first(.data$ST),
-                  CO = first(.data$CO),
-                  TRACT = first(.data$TRACT),
-                  BG = first(.data$BG),
-                  AREALAND = first(.data$AREALAND),
-                  AREAWAT = first(.data$AREAWAT),
-                  AREATOT = first(.data$AREATOT),
-                  NAME = first(.data$NAME),
-                  COUNTYFP = first(.data$COUNTYFP),
-                  STATEFP = first(.data$STATEFP)) %>%
+        group_by(GEOID) %>%
+        summarize(AREA = sum(AREA),
+                  PERIMETER = sum(PERIMETER),
+                  ST = first(ST),
+                  CO = first(CO),
+                  TRACT = first(TRACT),
+                  BG = first(BG),
+                  AREALAND = first(AREALAND),
+                  AREAWAT = first(AREAWAT),
+                  AREATOT = first(AREATOT),
+                  NAME = first(NAME),
+                  COUNTYFP = first(COUNTYFP),
+                  STATEFP = first(STATEFP)) %>%
         st_cast("MULTIPOLYGON")
     } else if (year == 2000) {
       bgs <- bgs %>%
-        mutate(TRACT = pad_str(.data$TRACT, 6, "right", "0")) %>%
-        mutate(id = paste0(.data$STATE, .data$COUNTY, .data$TRACT, .data$BLKGROUP)) %>%
-        group_by(.data$id) %>%
-        summarize(AREA = sum(.data$AREA),
-                  PERIMETER = sum(.data$PERIMETER),
-                  STATE = first(.data$STATE),
-                  COUNTY = first(.data$COUNTY),
-                  TRACT = first(.data$TRACT),
-                  BLKGROUP = first(.data$BLKGROUP),
-                  NAME = first(.data$NAME),
-                  LSAD = first(.data$LSAD),
-                  LSAD_TRANS = first(.data$LSAD_TRANS),
-                  COUNTYFP = first(.data$COUNTYFP),
-                  STATEFP = first(.data$STATEFP)) %>%
-        select(-.data$id) %>%
+        mutate(TRACT = pad_str(TRACT, 6, "right", "0")) %>%
+        mutate(id = paste0(STATE, COUNTY, TRACT, BLKGROUP)) %>%
+        group_by(id) %>%
+        summarize(AREA = sum(AREA),
+                  PERIMETER = sum(PERIMETER),
+                  STATE = first(STATE),
+                  COUNTY = first(COUNTY),
+                  TRACT = first(TRACT),
+                  BLKGROUP = first(BLKGROUP),
+                  NAME = first(NAME),
+                  LSAD = first(LSAD),
+                  LSAD_TRANS = first(LSAD_TRANS),
+                  COUNTYFP = first(COUNTYFP),
+                  STATEFP = first(STATEFP)) %>%
+        select(-id) %>%
         st_cast("MULTIPOLYGON")
     }
     if (any(sclass == "SpatialPolygonsDataFrame")) {
@@ -750,28 +753,31 @@ zctas <- function(cb = FALSE, starts_with = NULL, year = NULL, state = NULL, ...
 
 #' Download a Census block shapefile into R
 #'
-#' Description from the US Census Bureau (see link for source): Census blocks are statistical areas
-#' bounded on all sides by visible features, such as streets, roads,
-#' streams, and railroad tracks, and by non-visible boundaries such as city, town, township, and county
-#' limits, and short line-of-sight extensions of streets and roads. Generally, census blocks are small in area;
-#' for example, a block in a city. Census blocks in suburban and rural areas may be large, irregular and
-#' bounded by a variety of features, such as roads, streams, and/or transmission line rights-of-way. In
-#' remote areas census blocks may encompass hundreds of square miles. Census blocks cover all territory
-#' in the United States, Puerto Rico, and the Island areas. Blocks do not cross the boundaries of any entity
-#' for which the Census Bureau tabulates data.
+#' Description from the US Census Bureau (see link for source): Census blocks
+#' are statistical areas bounded on all sides by visible features, such as
+#' streets, roads, streams, and railroad tracks, and by non-visible boundaries
+#' such as city, town, township, and county limits, and short line-of-sight
+#' extensions of streets and roads. Generally, census blocks are small in area;
+#' for example, a block in a city. Census blocks in suburban and rural areas may
+#' be large, irregular and bounded by a variety of features, such as roads,
+#' streams, and/or transmission line rights-of-way. In remote areas census
+#' blocks may encompass hundreds of square miles. Census blocks cover all
+#' territory in the United States, Puerto Rico, and the Island areas. Blocks do
+#' not cross the boundaries of any entity for which the Census Bureau tabulates
+#' data.
 #'
 #' This function will download an entire block shapefile for a selected state
 #' into R, and optionally subset by county. **A warning:** Census block
-#' shapefiles are often very large, especially for large states - for example, the
-#' block file for Texas is 462MB zipped!  If you have a slow or unreliable internet
-#' connection, or insufficient memory, this may prove burdensome given that you
-#' have to first download by state and then subset.
+#' shapefiles are often very large, especially for large states - for example,
+#' the block file for Texas is 462MB zipped!  If you have a slow or unreliable
+#' internet connection, or insufficient memory, this may prove burdensome given
+#' that you have to first download by state and then subset.
 #'
 #' @param state The two-digit FIPS code (string) of the state you want. Can also
-#'        be state name or state abbreviation.
+#'   be state name or state abbreviation.
 #' @param county The three-digit FIPS code (string) of the county you'd like to
-#'        subset for, or a vector of FIPS codes if you desire multiple counties.
-#'        Can also be a county name or vector of names.
+#'   subset for, or a vector of FIPS codes if you desire multiple counties. Can
+#'   also be a county name or vector of names.
 #' @inheritParams load_tiger_doc_template
 #' @inheritSection load_tiger_doc_template Additional Arguments
 #' @family general area functions
@@ -869,20 +875,20 @@ blocks <- function(state, county = NULL, year = NULL, ...) {
 
 #' Download a county subdivision shapefile into R
 #'
-#' From the US Census Bureau (see link for source, and more information): "All counties and
-#' statistically equivalent entities consist of one or more geographic units that the Bureau
-#' of the Census recognizes as county subdivisions. The two major types of county subdivisions
-#'  are minor civil divisions(MCDs) and census county divisions (CCDs).
-#'  A State has either MCDs or their statistical equivalents, or CCDs; it cannot
-#'  contain both."
+#' From the US Census Bureau (see link for source, and more information): "All
+#' counties and statistically equivalent entities consist of one or more
+#' geographic units that the Bureau of the Census recognizes as county
+#' subdivisions. The two major types of county subdivisions are minor civil
+#' divisions(MCDs) and census county divisions (CCDs). A State has either MCDs
+#' or their statistical equivalents, or CCDs; it cannot contain both."
 #'
 #' @param state The two-digit FIPS code (string) of the state you want. Can also
-#'        be state name or state abbreviation.
+#'   be state name or state abbreviation.
 #' @param county The three-digit FIPS code (string) of the county you'd like to
-#'        subset for, or a vector of FIPS codes if you desire multiple counties.
-#'        Can also be a county name or vector of names.
-#' @param cb If cb is set to TRUE, download a generalized (1:500k)
-#'        file.  Defaults to FALSE (the most detailed TIGER/Line file)
+#'   subset for, or a vector of FIPS codes if you desire multiple counties. Can
+#'   also be a county name or vector of names.
+#' @param cb If cb is set to `TRUE`, download a generalized (1:500k) file.
+#'   Defaults to `FALSE` (the most detailed TIGER/Line file)
 #' @inheritParams load_tiger_doc_template
 #' @inheritSection load_tiger_doc_template Additional Arguments
 #' @family general area functions
