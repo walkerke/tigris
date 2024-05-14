@@ -2,9 +2,9 @@
 #'
 #' This function will shift and optionally rescale a US dataset for thematic mapping of Alaska,
 #' Hawaii, and Puerto Rico with respect to the continental United States.  Features in the continental
-#' United States will have their CRS transformed to USA Contiguous Albers Equal Area Conic ('ESRI:102003').
+#' United States will have their CRS transformed to USA Contiguous Albers Equal Area Conic ("ESRI:102003").
 #' Alaska, Hawaii, and Puerto Rico features are transformed to appropriate coordinate systems for those areas,
-#' then shifted and optionally re-scaled before being assigned the 'ESRI:102003' CRS.  Options for users
+#' then shifted and optionally re-scaled before being assigned the "ESRI:102003" CRS.  Options for users
 #' include `preserve_area` which allows for preservation of the area of AK/HI/PR relative to the
 #' continental US if desired, and two possible arrangements which are specified with `position = "below"`
 #' or `position = "outside"`
@@ -95,7 +95,7 @@ shift_geometry <- function(input_sf,
   # Do the CRS transformation here to avoid S2 issues with sf 1.0
   minimal_states <- states(cb = TRUE, resolution = "20m", progress_bar = FALSE,
                                    year = 2020) %>%
-    sf::st_transform('ESRI:102003')
+    sf::st_transform("ESRI:102003")
 
   # Make some bboxes to check to see if shifting geometry even makes sense
   ak_bbox <- minimal_states %>%
@@ -122,10 +122,10 @@ shift_geometry <- function(input_sf,
   if (!any(ak_check) && !any(hi_check) && !any(pr_check)) {
     warn(
       c("i" = "None of your features are in Alaska, Hawaii, or Puerto Rico, so no geometries will be shifted.",
-        "v" = "Transforming your object's CRS to 'ESRI:102003'")
+        "v" = 'Transforming your object\'s CRS to "ESRI:102003"')
     )
 
-    transformed_output <- sf::st_transform(input_sf, 'ESRI:102003')
+    transformed_output <- sf::st_transform(input_sf, "ESRI:102003")
 
     return(transformed_output)
 
@@ -181,10 +181,10 @@ shift_geometry <- function(input_sf,
   }
 
   cont_us <- dplyr::filter(minimal_states, !GEOID %in% c("02", "15", "72")) %>%
-    sf::st_transform('ESRI:102003')
+    sf::st_transform("ESRI:102003")
 
   us_lower48 <- dplyr::filter(input_sf, !state_fips %in% c("02", "15", "72")) %>%
-    sf::st_transform('ESRI:102003')
+    sf::st_transform("ESRI:102003")
 
   bb <- sf::st_bbox(cont_us)
 
@@ -207,22 +207,22 @@ shift_geometry <- function(input_sf,
       if (position == "below") {
         st_geometry(ak_rescaled) <- place_geometry_wilke(
           sf::st_geometry(ak_rescaled),
-          c(bb$xmin + 0.08*(bb$xmax - bb$xmin),
-            bb$ymin + 0.07*(bb$ymax - bb$ymin)),
+          c(bb$xmin + 0.08 * (bb$xmax - bb$xmin),
+            bb$ymin + 0.07 * (bb$ymax - bb$ymin)),
           scale = 0.5,
           centroid = ak_centroid
         )
       } else if (position == "outside") {
         st_geometry(ak_rescaled) <- place_geometry_wilke(
           sf::st_geometry(ak_rescaled),
-          c(bb$xmin - 0.08*(bb$xmax - bb$xmin),
-            bb$ymin + 1.2*(bb$ymax - bb$ymin)),
+          c(bb$xmin - 0.08 * (bb$xmax - bb$xmin),
+            bb$ymin + 1.2 * (bb$ymax - bb$ymin)),
           scale = 0.5,
           centroid = ak_centroid
         )
       }
 
-      sf::st_crs(ak_rescaled) <- 'ESRI:102003'
+      sf::st_crs(ak_rescaled) <- "ESRI:102003"
 
       shapes_list <- c(shapes_list, list(ak_rescaled))
     }
@@ -241,8 +241,8 @@ shift_geometry <- function(input_sf,
 
         sf::st_geometry(hi_rescaled) <- place_geometry_wilke(
           sf::st_geometry(hi_rescaled),
-          c(bb$xmin + 0.35*(bb$xmax - bb$xmin),
-            bb$ymin + 0.*(bb$ymax - bb$ymin)),
+          c(bb$xmin + 0.35 * (bb$xmax - bb$xmin),
+            bb$ymin + 0. * (bb$ymax - bb$ymin)),
           scale = 1.5,
           centroid = hi_centroid
         )
@@ -251,15 +251,15 @@ shift_geometry <- function(input_sf,
 
         sf::st_geometry(hi_rescaled) <- place_geometry_wilke(
           sf::st_geometry(hi_rescaled),
-          c(bb$xmin - 0.*(bb$xmax - bb$xmin),
-            bb$ymin + 0.2*(bb$ymax - bb$ymin)),
+          c(bb$xmin - 0.0 * (bb$xmax - bb$xmin),
+            bb$ymin + 0.2 * (bb$ymax - bb$ymin)),
           scale = 1.5,
           centroid = hi_centroid
         )
 
       }
 
-      st_crs(hi_rescaled) <- 'ESRI:102003'
+      st_crs(hi_rescaled) <- "ESRI:102003"
 
       shapes_list <- c(shapes_list, list(hi_rescaled))
 
@@ -273,22 +273,22 @@ shift_geometry <- function(input_sf,
       if (position == "below") {
         sf::st_geometry(pr_rescaled) <- place_geometry_wilke(
           sf::st_geometry(pr_rescaled),
-          c(bb$xmin + 0.65*(bb$xmax - bb$xmin),
-            bb$ymin + 0.*(bb$ymax - bb$ymin)),
+          c(bb$xmin + 0.65 * (bb$xmax - bb$xmin),
+            bb$ymin + 0. * (bb$ymax - bb$ymin)),
           scale = 2.5,
           centroid = pr_centroid
         )
       } else if (position == "outside") {
         sf::st_geometry(pr_rescaled) <- place_geometry_wilke(
           sf::st_geometry(pr_rescaled),
-          c(bb$xmin + 0.95*(bb$xmax - bb$xmin),
-            bb$ymin - 0.05*(bb$ymax - bb$ymin)),
+          c(bb$xmin + 0.95 * (bb$xmax - bb$xmin),
+            bb$ymin - 0.05 * (bb$ymax - bb$ymin)),
           scale = 2.5,
           centroid = pr_centroid
         )
       }
 
-      st_crs(pr_rescaled) <- 'ESRI:102003'
+      st_crs(pr_rescaled) <- "ESRI:102003"
 
       shapes_list <- c(shapes_list, list(pr_rescaled))
     }
@@ -311,16 +311,16 @@ shift_geometry <- function(input_sf,
       if (position == "below") {
         st_geometry(ak_shifted) <- place_geometry_wilke(
           sf::st_geometry(ak_shifted),
-          c(bb$xmin + 0.2*(bb$xmax - bb$xmin),
-            bb$ymin - 0.13*(bb$ymax - bb$ymin)),
+          c(bb$xmin + 0.2 * (bb$xmax - bb$xmin),
+            bb$ymin - 0.13 * (bb$ymax - bb$ymin)),
           scale = 1,
           centroid = ak_centroid
         )
       } else if (position == "outside") {
         st_geometry(ak_shifted) <- place_geometry_wilke(
           sf::st_geometry(ak_shifted),
-          c(bb$xmin - 0.25*(bb$xmax - bb$xmin),
-            bb$ymin + 1.35*(bb$ymax - bb$ymin)),
+          c(bb$xmin - 0.25 * (bb$xmax - bb$xmin),
+            bb$ymin + 1.35 * (bb$ymax - bb$ymin)),
           scale = 1,
           centroid = ak_centroid
         )
@@ -328,7 +328,7 @@ shift_geometry <- function(input_sf,
 
 
 
-      sf::st_crs(ak_shifted) <- 'ESRI:102003'
+      sf::st_crs(ak_shifted) <- "ESRI:102003"
 
       shapes_list <- c(shapes_list, list(ak_shifted))
     }
@@ -345,22 +345,22 @@ shift_geometry <- function(input_sf,
       if (position == "below") {
         sf::st_geometry(hi_shifted) <- place_geometry_wilke(
           sf::st_geometry(hi_shifted),
-          c(bb$xmin + 0.6*(bb$xmax - bb$xmin),
-            bb$ymin - 0.1*(bb$ymax - bb$ymin)),
+          c(bb$xmin + 0.6 * (bb$xmax - bb$xmin),
+            bb$ymin - 0.1 * (bb$ymax - bb$ymin)),
           scale = 1,
           centroid = hi_centroid
         )
       } else if (position == "outside") {
         sf::st_geometry(hi_shifted) <- place_geometry_wilke(
           sf::st_geometry(hi_shifted),
-          c(bb$xmin - 0.*(bb$xmax - bb$xmin),
-            bb$ymin + 0.2*(bb$ymax - bb$ymin)),
+          c(bb$xmin - 0. * (bb$xmax - bb$xmin),
+            bb$ymin + 0.2 * (bb$ymax - bb$ymin)),
           scale = 1,
           centroid = hi_centroid
         )
       }
 
-      st_crs(hi_shifted) <- 'ESRI:102003'
+      st_crs(hi_shifted) <- "ESRI:102003"
 
       shapes_list <- c(shapes_list, list(hi_shifted))
     }
@@ -373,22 +373,22 @@ shift_geometry <- function(input_sf,
       if (position == "below") {
         sf::st_geometry(pr_shifted) <- place_geometry_wilke(
           sf::st_geometry(pr_shifted),
-          c(bb$xmin + 0.75*(bb$xmax - bb$xmin),
-            bb$ymin - 0.1*(bb$ymax - bb$ymin)),
+          c(bb$xmin + 0.75 * (bb$xmax - bb$xmin),
+            bb$ymin - 0.1 * (bb$ymax - bb$ymin)),
           scale = 1,
           centroid = pr_centroid
         )
       } else if (position == "outside") {
         sf::st_geometry(pr_shifted) <- place_geometry_wilke(
           sf::st_geometry(pr_shifted),
-          c(bb$xmin + 0.95*(bb$xmax - bb$xmin),
-            bb$ymin - 0.05*(bb$ymax - bb$ymin)),
+          c(bb$xmin + 0.95 * (bb$xmax - bb$xmin),
+            bb$ymin - 0.05 * (bb$ymax - bb$ymin)),
           scale = 1,
           centroid = pr_centroid
         )
       }
 
-      st_crs(pr_shifted) <- 'ESRI:102003'
+      st_crs(pr_shifted) <- "ESRI:102003"
 
       shapes_list <- c(shapes_list, list(pr_shifted))
 

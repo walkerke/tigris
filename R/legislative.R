@@ -14,7 +14,7 @@
 #'        cartographic boundary file.  Defaults to FALSE (the most detailed
 #'        TIGER/Line file).
 #' @param resolution The resolution of the cartographic boundary file (if `cb = TRUE`).
-#'        Defaults to '500k'; options include '5m' (1:5 million) and '20m' (1:20 million).
+#'        Defaults to "500k"; options include "5m" (1:5 million) and "20m" (1:20 million).
 #' @inheritParams load_tiger_doc_template
 #' @inheritSection load_tiger_doc_template Additional Arguments
 #' @family legislative district functions
@@ -30,7 +30,7 @@
 #'    addTiles() %>%
 #'    addPolygons()
 #' }
-congressional_districts <- function(state = NULL, cb = FALSE, resolution = '500k', year = NULL, ...) {
+congressional_districts <- function(state = NULL, cb = FALSE, resolution = "500k", year = NULL, ...) {
 
   year <- set_tigris_year(year, min_year = 2010)
 
@@ -90,12 +90,12 @@ congressional_districts <- function(state = NULL, cb = FALSE, resolution = '500k
     }
   }
 
-  cds <- load_tiger(url, tigris_type="congressional_districts", ...)
+  cds <- load_tiger(url, tigris_type = "congressional_districts", ...)
 
   if (!is.null(state)) {
 
-    state <- unlist(sapply(state, validate_state, USE.NAMES=FALSE))
-    cds <- cds[cds$STATEFP %in% state,]
+    state <- unlist(sapply(state, validate_state, USE.NAMES = FALSE))
+    cds <- cds[cds$STATEFP %in% state, ]
 
   }
 
@@ -184,7 +184,7 @@ state_legislative_districts <- function(state = NULL, house = "upper",
 
   }
 
-  return(load_tiger(url, tigris_type="state_legislative_districts", ...))
+  return(load_tiger(url, tigris_type = "state_legislative_districts", ...))
 
 }
 
@@ -278,5 +278,3 @@ voting_districts <- function(state = NULL, county = NULL, cb = FALSE, year = 202
   return(load_tiger(url, tigris_type = 'voting_districts', ...))
 
 }
-
-

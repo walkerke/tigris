@@ -72,8 +72,8 @@ places <- function(state = NULL, cb = FALSE, year = NULL, ...) {
 #' places("Maine") %>% filter_place("berwick")
 #' }
 filter_place <- function(places, place) {
-  if (is_tigris(places) & tigris_type(places) == "place") {
-    tmp <- places[tolower(places$NAME) %in% tolower(place),]
+  if (is_tigris(places) && tigris_type(places) == "place") {
+    tmp <- places[tolower(places$NAME) %in% tolower(place), ]
     attr(tmp, "tigris") <- "place"
     return(tmp)
   }
@@ -91,7 +91,7 @@ filter_place <- function(places, place) {
 #' places("Maine") %>% grep_place("south")
 #' }
 grep_place <- function(places, term) {
-  if (is_tigris(places) & tigris_type(places) == "place") {
+  if (is_tigris(places) && tigris_type(places) == "place") {
     grep(term, list_places(places), value=TRUE, ignore.case=TRUE)
   }
 }

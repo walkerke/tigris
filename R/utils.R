@@ -192,15 +192,15 @@ validate_county <- function(state,
 #' @noRd
 format_vec <- function(vec, and = "and ", after = ".") {
 
-  out <- paste0(vec, ', ')
+  out <- paste0(vec, ", ")
 
   l <- length(out)
 
   out[l - 1] <- paste0(out[l - 1], and)
 
-  out[l] <- gsub(', ',  after, out[l])
+  out[l] <- gsub(", ",  after, out[l])
 
-  return(paste0(out, collapse = ''))
+  return(paste0(out, collapse = ""))
 
 }
 
@@ -209,7 +209,7 @@ format_vec <- function(vec, and = "and ", after = ".") {
 simpleCapSO <- function(x) {
   s <- strsplit(x, " ")[[1]]
   paste(toupper(substring(s, 1,1)), substring(s, 2),
-        sep="", collapse=" ")
+        sep = "", collapse = " ")
 }
 
 

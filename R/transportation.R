@@ -1,15 +1,15 @@
 #' Download a roads shapefile into R
 #'
 #' From the Census Bureau: "The content of the all roads shapefile includes
-#' primary roads, secondary roads, local neighborhood roads,
-#' rural roads, city streets, vehicular trails (4WD), ramps, service drives,
-#' walkways, stairways, alleys, and private roads."
+#' primary roads, secondary roads, local neighborhood roads, rural roads, city
+#' streets, vehicular trails (4WD), ramps, service drives, walkways, stairways,
+#' alleys, and private roads."
 #'
-#' @param state A character vector of the two-digit FIPS code of the state of the county
-#'        you'd like to download the roads for. Can also be state name or abbreviation
-#'        (case-insensitive).
-#' @param county A character vector of the three-digit FIPS code of the county you'd like
-#'        the roads for. Can also be a county name.
+#' @param state A character vector of the two-digit FIPS code of the state of
+#'   the county you'd like to download the roads for. Can also be state name or
+#'   abbreviation (case-insensitive).
+#' @param county A character vector of the three-digit FIPS code of the county
+#'   you'd like the roads for. Can also be a county name.
 #' @inheritParams load_tiger_doc_template
 #' @inheritSection load_tiger_doc_template Additional Arguments
 #' @family transportation functions
@@ -106,9 +106,9 @@ primary_roads <- function(year = NULL, ...) {
 #' direction, may or may not be divided, and usually have at-grade intersections
 #' with many other roads and driveways.
 #'
-#' @param state The two-digit FIPS code of the state of the county you'd like
-#'        to download the roads for. Can also be state name or abbreviation
-#'        (case-insensitive).
+#' @param state The two-digit FIPS code of the state of the county you'd like to
+#'   download the roads for. Can also be state name or abbreviation
+#'   (case-insensitive).
 #' @inheritParams load_tiger_doc_template
 #' @inheritSection load_tiger_doc_template Additional Arguments
 #' @inherit roads return

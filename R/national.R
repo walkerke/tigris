@@ -1,7 +1,7 @@
 #' Download a US regions cartographic boundary shapefile into R
 #'
-#' @param resolution The resolution of the cartographic boundary file.
-#'        Defaults to '500k'; options include '5m' (1:5 million) and '20m' (1:20 million).
+#' @param resolution The resolution of the cartographic boundary file. Defaults
+#'   to "500k"; options include "5m" (1:5 million) and "20m" (1:20 million).
 #' @inheritParams load_tiger_doc_template
 #' @inheritSection load_tiger_doc_template Additional Arguments
 #'
@@ -17,7 +17,7 @@
 #'    addPolygons()
 #' }
 #' @export
-regions <- function(resolution = '500k', year = NULL, ...) {
+regions <- function(resolution = "500k", year = NULL, ...) {
 
   year <- set_tigris_year(year)
 
@@ -35,7 +35,7 @@ regions <- function(resolution = '500k', year = NULL, ...) {
 #' Download a US Census divisions cartographic boundary shapefile into R
 #'
 #' @param resolution The resolution of the cartographic boundary file.
-#'        Defaults to '500k'; options include '5m' (1:5 million) and '20m' (1:20 million).
+#'        Defaults to "500k"; options include "5m" (1:5 million) and "20m" (1:20 million).
 #' @inheritParams load_tiger_doc_template
 #' @inheritSection load_tiger_doc_template Additional Arguments
 #'
@@ -51,7 +51,7 @@ regions <- function(resolution = '500k', year = NULL, ...) {
 #'    addTiles() %>%
 #'    addPolygons()
 #' }
-divisions <- function(resolution = '500k', year = NULL, ...) {
+divisions <- function(resolution = "500k", year = NULL, ...) {
 
   year <- set_tigris_year(year)
 
@@ -68,8 +68,8 @@ divisions <- function(resolution = '500k', year = NULL, ...) {
 
 #' Download a US national boundary shapefile into R
 #'
-#' @param resolution The resolution of the cartographic boundary file.
-#'        Defaults to '5m'; options include '5m' (1:5 million) and '20m' (1:20 million).
+#' @param resolution The resolution of the cartographic boundary file. Defaults
+#'   to "5m"; options include "5m" (1:5 million) and "20m" (1:20 million).
 #' @inheritParams load_tiger_doc_template
 #' @inheritSection load_tiger_doc_template Additional Arguments
 #' @family national cartographic boundary functions
@@ -78,17 +78,17 @@ divisions <- function(resolution = '500k', year = NULL, ...) {
 #' library(tigris)
 #' library(leaflet)
 #'
-#' boundary <- nation(resolution = '20m')
+#' boundary <- nation(resolution = "20m")
 #'
 #' leaflet(boundary) %>%
 #'    addTiles() %>%
 #'    addPolygons()
 #' }
-nation <- function(resolution = '5m', year = NULL, ...) {
+nation <- function(resolution = "5m", year = NULL, ...) {
 
   year <- set_tigris_year(year)
 
-  check_tigris_resolution(resolution, values = c('5m', '20m'))
+  check_tigris_resolution(resolution, values = c("5m", "20m"))
 
   url <- url_tiger("GENZ%s/shp/cb_%s_us_nation_%s",
                  year, year, resolution)
@@ -98,4 +98,3 @@ nation <- function(resolution = '5m', year = NULL, ...) {
   return(nat)
 
 }
-

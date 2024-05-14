@@ -90,6 +90,3 @@ pumas <- function(state = NULL, cb = FALSE, year = NULL, ...) {
   return(pm)
 
 }
-
-
-

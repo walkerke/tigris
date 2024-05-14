@@ -328,7 +328,7 @@ rename_fips_cols <- function(obj) {
 #' ## [1] 169
 #'
 #' }
-geo_join <- function(spatial_data, data_frame, by_sp, by_df, by = NULL, how = 'left') {
+geo_join <- function(spatial_data, data_frame, by_sp, by_df, by = NULL, how = "left") {
 
   .Deprecated("dplyr::left_join()",
               package = "tigris",
@@ -350,7 +350,7 @@ geo_join <- function(spatial_data, data_frame, by_sp, by_df, by = NULL, how = 'l
                                     data_frame[match(spatial_data@data[[by_sp]],
                                                      data_frame[[by_df]]), ])
 
-    if (how == 'inner') {
+    if (how == "inner") {
 
       matches <- match(spatial_data@data[[by_sp]], data_frame[[by_df]])
 
@@ -358,7 +358,7 @@ geo_join <- function(spatial_data, data_frame, by_sp, by_df, by = NULL, how = 'l
 
       return(spatial_data)
 
-    } else if (how == 'left') {
+    } else if (how == "left") {
 
       return(spatial_data)
 
@@ -550,11 +550,11 @@ rbind_tigris <- function(..., call = caller_env()) {
 
   #handling for attempts to rbind disparate school districts
 
-  if(all(obj_attrs %in% c("unsd", "elsd", "scsd"))){ # 3 school district types
+  if(all(obj_attrs %in% c("unsd", "elsd", "scsd"))) { # 3 school district types
 
     warn("Multiple school district tigris types. Coercing to \'sdall\'.")
 
-    elements <- lapply(seq_along(elements), function(x){
+    elements <- lapply(seq_along(elements), function(x) {
                   names(elements[[x]])[2] <- "SDLEA" # Used in some spots elsewhere in TIGER
                   attr(elements[[x]], "tigris") <- "sdall" # New type
                   elements[[x]]

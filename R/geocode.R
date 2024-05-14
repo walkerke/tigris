@@ -20,19 +20,19 @@
 #' )
 #' append_geoid(airports, 'tract')
 #' }
-append_geoid <- function(address, geoid_type = 'block') {
+append_geoid <- function(address, geoid_type = "block") {
 
   if ("lat" %in% colnames(address) && "lon" %in% colnames(address)) {
     # Call for each row of the data
-    geoids <- vector(mode="character", length = nrow(address))
-    for (i in 1:nrow(address)) {
+    geoids <- vector(mode = "character", length = nrow(address))
+    for (i in seq_len(nrow(address))) {
       geoids[i] <- call_geolocator_latlon(address$lat[i], address$lon[i])
     }
   } else {
     # If street, city, or state columns are factors, convert them
     # Call for each row of the data
-    geoids <- vector(mode="character", length = nrow(address))
-    for (i in 1:nrow(address)) {
+    geoids <- vector(mode = "character", length = nrow(address))
+    for (i in seq_len(nrow(address))) {
       geoids[i] <- call_geolocator(
         as.character(address$street[i]),
         as.character(address$city[i]),
@@ -45,11 +45,11 @@ append_geoid <- function(address, geoid_type = 'block') {
   address <- dplyr::mutate(address, geoid = geoids)
 
   # AABBBCCCCCCDEEE
-  if (geoid_type == 'county') {
+  if (geoid_type == "county") {
     end <- 5
-  } else if (geoid_type == 'tract') {
+  } else if (geoid_type == "tract") {
     end <- 11
-  } else if (geoid_type == 'block group') {
+  } else if (geoid_type == "block group") {
     end <- 12
   } else {
     end <- 15
@@ -71,8 +71,8 @@ append_geoid <- function(address, geoid_type = 'block') {
 #' @return A character string representing the Census block of the supplied
 #'   address.
 #'
-#' importFrom utils URLencode
-#' importFrom httr GET stop_for_status
+#' @importFrom utils URLencode
+#' @importFrom httr GET stop_for_status
 #'
 #' @export
 #'
@@ -80,23 +80,25 @@ call_geolocator <- function(street, city, state, zip = NA) {
 
   call_start <- "https://geocoding.geo.census.gov/geocoder/geographies/address?"
 
-  if(is.na(zip)){
+  if (is.na(zip)) {
     # Build url when zip is default/NA
     url <- paste0(
       "street=", utils::URLencode(street),
       "&city=", utils::URLencode(city),
       "&state=", state
-    )}
+    )
+  }
 
-  if(!is.na(zip)){
+  if (!is.na(zip)) {
     # Build url when zip is not default/NA
-    if(inherits(zip, "character") & nchar(zip) == 5 & !grepl("\\D", zip)){
+    if (inherits(zip, "character") && nchar(zip) == 5 && !grepl("\\D", zip)) {
       url <- paste0(
         "street=", utils::URLencode(street),
         "&city=", utils::URLencode(city),
         "&state=", state,
         "&zip=", zip
-      )} else {
+      )
+    } else {
         inform("'zip' (", paste0(zip), ") was not a 5-character-long string composed of :digits:. Using only street, city, state.")
         url <- paste0(
           "street=", utils::URLencode(street),
@@ -167,11 +169,11 @@ call_geolocator_latlon <- function(lat, lon, benchmark = NULL, vintage = NULL) {
   } else {
 
   #regex search for block group geography in response
-  response_block<-grep(response[["result"]][["geographies"]], pattern = ".Block.")
+  response_block <- grep(response[["result"]][["geographies"]], pattern = ".Block.")
 
   #check If a block group result is found or return NA
   #If block group response is found check GEOID length and return either NA for missing data or the value
-  if(length(response_block) == 0){
+  if (length(response_block) == 0) {
     return(NA_character_)
   } else {
     if (length(response[["result"]][["geographies"]][[response_block]][[1]]$GEOID) == 0) {

@@ -1,18 +1,21 @@
 #' Download a core-based statistical area shapefile into R
 #'
-#' Core-based statistical areas include both metropolitan areas and micropolitan areas.  The US Census
-#' Bureau defines these areas as follows: "A metro area contains a core urban area of 50,000 or more population, and a
-#' micro area contains an urban core of at least 10,000 (but less than 50,000) population. Each metro or micro area
-#' consists of one or more counties and includes the counties containing the core urban area, as well as any adjacent
-#' counties that have a high degree of social and economic integration (as measured by commuting to work) with the urban
-#' core."  Please see the link provided for more information
+#' Core-based statistical areas include both metropolitan areas and micropolitan
+#' areas. The US Census Bureau defines these areas as follows: "A metro area
+#' contains a core urban area of 50,000 or more population, and a micro area
+#' contains an urban core of at least 10,000 (but less than 50,000) population.
+#' Each metro or micro area consists of one or more counties and includes the
+#' counties containing the core urban area, as well as any adjacent counties
+#' that have a high degree of social and economic integration (as measured by
+#' commuting to work) with the urban core." Please see the link provided for
+#' more information
 #'
-#'
-#' @param cb If cb is set to TRUE, download a generalized (1:500k)
-#'        cartographic boundary file.  Defaults to FALSE (the most detailed
-#'        TIGER/Line file).
-#' @param resolution The resolution of the cartographic boundary file (if `cb = TRUE`).
-#'        Defaults to '500k'; options include '5m' (1:5 million) and '20m' (1:20 million).
+#' @param cb If cb is set to `TRUE`, download a generalized (1:500k)
+#'   cartographic boundary file.  Defaults to `FALSE` (the most detailed
+#'   TIGER/Line file).
+#' @param resolution The resolution of the cartographic boundary file (if `cb =
+#'   TRUE`). Defaults to "500k"; options include "5m" (1:5 million) and "20m"
+#'   (1:20 million).
 #' @param year year of data to return. As of Jan. 2024,
 #'   `core_based_statistical_areas` has a maximum year of 2021, a minimum of
 #'   2010, and defaults to 2021 if no option is set.
@@ -21,7 +24,7 @@
 #' @family metro area functions
 #' @seealso <https://www.census.gov/programs-surveys/metro-micro.html>
 #' @export
-core_based_statistical_areas <- function(cb = FALSE, resolution = '500k', year = NULL, ...) {
+core_based_statistical_areas <- function(cb = FALSE, resolution = "500k", year = NULL, ...) {
 
   # Override standard default year per: https://github.com/walkerke/tigris/issues/184
   year <- set_tigris_year(year, default = 2021, min_year = 2010)
@@ -64,9 +67,9 @@ core_based_statistical_areas <- function(cb = FALSE, resolution = '500k', year =
 #' population of greater than 2,500 but less than 50,000.  For more information,
 #' please see the link provided.
 #'
-#' @param cb If cb is set to TRUE, download a generalized (1:500k)
-#'        cartographic boundary file.  Defaults to FALSE (the most detailed
-#'        TIGER/Line file). year must be a max of 2020 if `cb = TRUE`.
+#' @param cb If cb is set to `TRUE`, download a generalized (1:500k)
+#'   cartographic boundary file.  Defaults to `FALSE` (the most detailed
+#'   TIGER/Line file). year must be a max of 2020 if `cb = TRUE`.
 #' @param criteria If set to "2020" and the year is 2020, will download the new
 #'   2020 urban areas criteria. Not available for cartographic boundary
 #'   shapefiles / other years at the moment.
@@ -81,7 +84,10 @@ urban_areas <- function(cb = FALSE, year = NULL, criteria = NULL, ...) {
     year <- set_tigris_year(year, default = 2020, max_year = 2020)
 
     if (!is.null(criteria)) {
-      abort("The `criteria` argument is not supported for cartographic boundary files")
+      abort(
+        "The `criteria` argument is not supported
+        for cartographic boundary files"
+      )
     }
 
     if (year == 2020) {
@@ -119,21 +125,23 @@ urban_areas <- function(cb = FALSE, year = NULL, criteria = NULL, ...) {
 
 #' Download a combined statistical areas shapefile into R
 #'
-#' Combined statistical areas are "two or more adjacent CBSAs that have significant
-#' employment interchanges."  In turn, CSAs are composed of multiple metropolitan and/or micropolitan areas, and should
-#' not be compared with individual core-based statistical areas.
+#' Combined statistical areas are "two or more adjacent CBSAs that have
+#' significant employment interchanges."  In turn, CSAs are composed of multiple
+#' metropolitan and/or micropolitan areas, and should not be compared with
+#' individual core-based statistical areas.
 #'
-#' @param cb If cb is set to TRUE, download a generalized (1:500k)
-#'        cartographic boundary file.  Defaults to FALSE (the most detailed
-#'        TIGER/Line file).
-#' @param resolution The resolution of the cartographic boundary file (if `cb = TRUE`).
-#'        Defaults to '500k'; options include '5m' (1:5 million) and '20m' (1:20 million).
+#' @param cb If cb is set to `TRUE`, download a generalized (1:500k)
+#'   cartographic boundary file.  Defaults to `FALSE` (the most detailed
+#'   TIGER/Line file).
+#' @param resolution The resolution of the cartographic boundary file (if `cb =
+#'   TRUE`). Defaults to "500k"; options include "5m" (1:5 million) and "20m"
+#'   (1:20 million).
 #' @inheritParams load_tiger_doc_template
 #' @inheritSection load_tiger_doc_template Additional Arguments
 #' @family metro area functions
 #' @seealso <https://www2.census.gov/geo/pdfs/maps-data/data/tiger/tgrshp2020/TGRSHP2020_TechDoc.pdf>
 #' @export
-combined_statistical_areas <- function(cb = FALSE, resolution = '500k', year = NULL, ...) {
+combined_statistical_areas <- function(cb = FALSE, resolution = "500k", year = NULL, ...) {
 
   year <- set_tigris_year(year, default = 2021)
 
@@ -160,8 +168,9 @@ combined_statistical_areas <- function(cb = FALSE, resolution = '500k', year = N
 
 #' Download a metropolitan divisions shapefile into R.
 #'
-#' Metropolitan divisions are subdivisions of metropolitan areas with population of at least 2.5 million.  Please note:
-#' not all metropolitan areas have metropolitan divisions.
+#' Metropolitan divisions are subdivisions of metropolitan areas with population
+#' of at least 2.5 million.  Please note: not all metropolitan areas have
+#' metropolitan divisions.
 #'
 #' @inheritParams load_tiger_doc_template
 #' @inheritSection load_tiger_doc_template Additional Arguments
@@ -191,11 +200,12 @@ metro_divisions <- function(year = NULL, ...) {
 #' NECTAs that have significant employment interchange, like Combined Statistical Areas;
 #' NECTA divisions are subdivisions of NECTAs.
 #'
-#' @param type Specify whether to download the New England City and Town Areas file (`'necta'`, the default),
-#'        the combined NECTA file (`'combined'`), or the NECTA divisions file (`'divisions'`).
-#' @param cb If cb is set to TRUE, download a generalized (1:500k)
-#'        cartographic boundary file.  Defaults to FALSE (the most detailed
-#'        TIGER/Line file).  Only available when `type = 'necta'`.
+#' @param type Specify whether to download the New England City and Town Areas
+#'   file (`'necta'`, the default), the combined NECTA file (`'combined'`), or
+#'   the NECTA divisions file (`'divisions'`).
+#' @param cb If cb is set to `TRUE`, download a generalized (1:500k)
+#'   cartographic boundary file.  Defaults to `FALSE` (the most detailed
+#'   TIGER/Line file). Only available when `type = 'necta'`.
 #' @inheritParams load_tiger_doc_template
 #' @inheritSection load_tiger_doc_template Additional Arguments
 #' @family metro area functions
@@ -209,7 +219,7 @@ metro_divisions <- function(year = NULL, ...) {
 #' plot(ne$geometry)
 #'
 #' }
-new_england <- function(type = 'necta', cb = FALSE, year = NULL, ...) {
+new_england <- function(type = "necta", cb = FALSE, year = NULL, ...) {
 
   year <- set_tigris_year(year, default = 2021, max_year = 2021)
 
@@ -229,13 +239,13 @@ new_england <- function(type = 'necta', cb = FALSE, year = NULL, ...) {
 
     tigris_type <- type
 
-  } else if (type == 'combined') {
+  } else if (type == "combined") {
 
     url <- url_tiger("TIGER%s/CNECTA/tl_%s_us_cnecta", year, year)
 
     tigris_type <- "cnecta"
 
-  } else if (type == 'divisions') {
+  } else if (type == "divisions") {
 
     url <- url_tiger("TIGER%s/NECTADIV/tl_%s_us_nectadiv", year, year)
 

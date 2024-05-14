@@ -3,13 +3,14 @@
 #' States and Equivalent Entities are the primary governmental divisions of the
 #' United States.  In addition to the 50 states, the Census Bureau treats the
 #' District of Columbia, Puerto Rico, American Samoa, the Commonwealth of the
-#' Northern Mariana Islands, Guam, and the U.S. Virgin Islands as the statistical
-#' equivalents of states for the purpose of data presentation.
+#' Northern Mariana Islands, Guam, and the U.S. Virgin Islands as the
+#' statistical equivalents of states for the purpose of data presentation.
 #'
-#' @param cb If cb is set to TRUE, download a generalized (1:500k)
-#'        states file.  Defaults to FALSE (the most detailed TIGER/Line file)
-#' @param resolution The resolution of the cartographic boundary file (if `cb = TRUE`).
-#'        Defaults to '500k'; options include '5m' (1:5 million) and '20m' (1:20 million).
+#' @param cb If cb is set to `TRUE`, download a generalized (1:500k) states
+#'   file. Defaults to `FALSE` (the most detailed TIGER/Line file)
+#' @param resolution The resolution of the cartographic boundary file (if `cb =
+#'   TRUE`). Defaults to "500k"; options include "5m" (1:5 million) and "20m"
+#'   (1:20 million).
 #' @inheritParams load_tiger_doc_template
 #' @inheritSection load_tiger_doc_template Additional Arguments
 #' @export
@@ -28,7 +29,7 @@
 #'               weight = 0.5) %>%
 #'   setView(-98.5795, 39.8282, zoom=3)
 #' }
-states <- function(cb = FALSE, resolution = '500k', year = NULL, ...) {
+states <- function(cb = FALSE, resolution = "500k", year = NULL, ...) {
 
   check_tigris_resolution(resolution)
 
