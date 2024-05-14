@@ -26,7 +26,6 @@ test_that("congressional_districts works", {
   expect_s3_class(congressional_districts(state = state, year = 2013, resolution = res, cb = cb), "sf")
   expect_s3_class(congressional_districts(state = state, year = 2011, resolution = res, cb = FALSE), "sf")
   expect_s3_class(congressional_districts(state = state, year = 2010, resolution = res, cb = FALSE), "sf")
-
 })
 
 
@@ -42,15 +41,50 @@ test_that("state_legislative_districts works", {
   state <- "WY"
 
   expect_s3_class(state_legislative_districts(cb = TRUE, year = 2019, ), "sf")
-  expect_s3_class(state_legislative_districts(state = state, house = "upper"), "sf")
-  expect_s3_class(state_legislative_districts(state = state, house = "lower"), "sf")
-  expect_s3_class(state_legislative_districts(state = 31, house = "lower"), "sf")
-  expect_s3_class(state_legislative_districts(state = state, house = "lower", cb = TRUE, year = 2010), "sf")
-  expect_s3_class(state_legislative_districts(state = state, house = "upper", cb = TRUE, year = 2010), "sf")
-  expect_s3_class(state_legislative_districts(state = state, house = "upper", cb = TRUE, year = 2013), "sf")
-  expect_s3_class(state_legislative_districts(state = state, house = "upper", year = 2010), "sf")
-  expect_s3_class(state_legislative_districts(state = state, house = "upper"), "sf")
-
+  expect_s3_class(
+    state_legislative_districts(state = state, house = "upper"),
+    "sf"
+  )
+  expect_s3_class(
+    state_legislative_districts(state = state, house = "lower"),
+    "sf"
+  )
+  expect_s3_class(
+    state_legislative_districts(state = 31, house = "lower"),
+    "sf"
+  )
+  expect_s3_class(
+    state_legislative_districts(
+      state = state, house = "lower",
+      cb = TRUE, year = 2010
+    ),
+    "sf"
+  )
+  expect_s3_class(
+    state_legislative_districts(
+      state = state, house = "upper",
+      cb = TRUE, year = 2010
+    ),
+    "sf"
+  )
+  expect_s3_class(
+    state_legislative_districts(
+      state = state, house = "upper",
+      cb = TRUE, year = 2013
+    ),
+    "sf"
+  )
+  expect_s3_class(
+    state_legislative_districts(
+      state = state, house = "upper",
+      year = 2010
+    ),
+    "sf"
+  )
+  expect_s3_class(
+    state_legislative_districts(state = state, house = "upper"),
+    "sf"
+  )
 })
 
 
@@ -71,5 +105,3 @@ test_that("voting_districts works", {
   expect_s3_class(voting_districts(state = state, county = "Albany"), "sf")
   expect_s3_class(voting_districts(state = state, year = 2012), "sf")
 })
-
-
