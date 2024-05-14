@@ -2,10 +2,6 @@
 #'
 #' Built-in dataset for use with the `lookup_code` function.
 #' To access the data directly, issue the command `data(fips_codes)`.
-
-#' @title Dataset with FIPS codes for US states and counties
-#' @description Built-in dataset for use with the `lookup_code` function.
-#'              To access the data directly, issue the command `data(fips_codes)`.
 #'
 #' \itemize{
 #'   \item `county`: County name, title-case

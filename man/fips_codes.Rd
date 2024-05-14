@@ -13,7 +13,8 @@ data(fips_codes)
 \description{
 Built-in dataset for use with the \code{lookup_code} function.
 To access the data directly, issue the command \code{data(fips_codes)}.
-
+}
+\details{
 \itemize{
 \item \code{county}: County name, title-case
 \item \code{county_code}: County code. (3-digit, 0-padded, character)
@@ -21,12 +22,6 @@ To access the data directly, issue the command \code{data(fips_codes)}.
 \item \code{state_code}: State FIPS code (2-digit, 0-padded, character)
 \item \code{state_name}: Title-case name of state
 }
-}
-\details{
-Dataset with FIPS codes for US states and counties
-
-Built-in dataset for use with the \code{lookup_code} function.
-To access the data directly, issue the command \code{data(fips_codes)}.
 }
 \note{
 Last updated 2023-05-18
