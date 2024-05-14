@@ -12,8 +12,9 @@ metro_divisions(year = NULL, ...)
 \item{...}{arguments to be passed to internal function \code{load_tiger}, which is not exported. See Additional Arguments.}
 }
 \description{
-Metropolitan divisions are subdivisions of metropolitan areas with population of at least 2.5 million.  Please note:
-not all metropolitan areas have metropolitan divisions.
+Metropolitan divisions are subdivisions of metropolitan areas with population
+of at least 2.5 million.  Please note: not all metropolitan areas have
+metropolitan divisions.
 }
 \section{Additional Arguments}{
 

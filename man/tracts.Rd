@@ -15,20 +15,20 @@ tracts(
 }
 \arguments{
 \item{state}{The two-digit FIPS code (string) of the state you want. Can also
-be state name or state abbreviation. When \code{NULL} and combined with
-\code{cb = TRUE}, a national dataset of Census tracts will be returned for
-years 2019 and later.}
+be state name or state abbreviation. When \code{NULL} and combined with \code{cb = TRUE}, a national dataset of Census tracts will be returned for years 2019
+and later.}
 
 \item{county}{The three-digit FIPS code (string) of the county you'd like to
-subset for, or a vector of FIPS codes if you desire multiple counties.
-Can also be a county name or vector of names.}
+subset for, or a vector of FIPS codes if you desire multiple counties. Can
+also be a county name or vector of names.}
 
-\item{cb}{If cb is set to TRUE, download a generalized (1:500k)
-tracts file.  Defaults to FALSE (the most detailed TIGER/Line file)}
+\item{cb}{If cb is set to TRUE, download a generalized (1:500k) tracts file.
+Defaults to FALSE (the most detailed TIGER/Line file)}
 
-\item{resolution}{The resolution of the cartographic boundary file (if using cb = TRUE).
-Defaults to '500k'; the other option is '5m' (1:5 million).  Resolution of '5m' is
-only available for the national Census tract file for years 2022 and later.}
+\item{resolution}{The resolution of the cartographic boundary file (if using
+cb = TRUE). Defaults to "500k"; the other option is "5m" (1:5 million).
+Resolution of "5m" is only available for the national Census tract file for
+years 2022 and later.}
 
 \item{year}{the data year; defaults to 2022}
 
@@ -36,18 +36,17 @@ only available for the national Census tract file for years 2022 and later.}
 }
 \description{
 Description from the US Census Bureau (see link for source):
-Census Tracts are small, relatively permanent statistical subdivisions of
-a county or equivalent entity that are updated by local participants prior
-to each decennial census as part of the Census Bureau's Participant
-Statistical Areas Program. The Census Bureau delineates census tracts in
-situations where no local participant existed or where state, local, or
-tribal governments declined to participate. The primary purpose of census
-tracts is to provide a stable set of geographic units for the presentation
-of statistical data.
+Census Tracts are small, relatively permanent statistical subdivisions of a
+county or equivalent entity that are updated by local participants prior to
+each decennial census as part of the Census Bureau's Participant Statistical
+Areas Program. The Census Bureau delineates census tracts in situations where
+no local participant existed or where state, local, or tribal governments
+declined to participate. The primary purpose of census tracts is to provide a
+stable set of geographic units for the presentation of statistical data.
 }
 \details{
-Census tracts generally have a population size between 1,200 and 8,000 people,
-with an optimum size of 4,000 people. A census tract usually covers a
+Census tracts generally have a population size between 1,200 and 8,000
+people, with an optimum size of 4,000 people. A census tract usually covers a
 contiguous area; however, the spatial size of census tracts varies widely
 depending on the density of settlement.  Census tract boundaries are
 delineated with the intention of being maintained over a long time so that

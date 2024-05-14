@@ -7,21 +7,22 @@
 combined_statistical_areas(cb = FALSE, resolution = "500k", year = NULL, ...)
 }
 \arguments{
-\item{cb}{If cb is set to TRUE, download a generalized (1:500k)
-cartographic boundary file.  Defaults to FALSE (the most detailed
+\item{cb}{If cb is set to \code{TRUE}, download a generalized (1:500k)
+cartographic boundary file.  Defaults to \code{FALSE} (the most detailed
 TIGER/Line file).}
 
-\item{resolution}{The resolution of the cartographic boundary file (if \code{cb = TRUE}).
-Defaults to '500k'; options include '5m' (1:5 million) and '20m' (1:20 million).}
+\item{resolution}{The resolution of the cartographic boundary file (if \code{cb = TRUE}). Defaults to "500k"; options include "5m" (1:5 million) and "20m"
+(1:20 million).}
 
 \item{year}{the data year; defaults to 2022}
 
 \item{...}{arguments to be passed to internal function \code{load_tiger}, which is not exported. See Additional Arguments.}
 }
 \description{
-Combined statistical areas are "two or more adjacent CBSAs that have significant
-employment interchanges."  In turn, CSAs are composed of multiple metropolitan and/or micropolitan areas, and should
-not be compared with individual core-based statistical areas.
+Combined statistical areas are "two or more adjacent CBSAs that have
+significant employment interchanges."  In turn, CSAs are composed of multiple
+metropolitan and/or micropolitan areas, and should not be compared with
+individual core-based statistical areas.
 }
 \section{Additional Arguments}{
 

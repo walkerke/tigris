@@ -7,8 +7,8 @@
 primary_secondary_roads(state, year = NULL, ...)
 }
 \arguments{
-\item{state}{The two-digit FIPS code of the state of the county you'd like
-to download the roads for. Can also be state name or abbreviation
+\item{state}{The two-digit FIPS code of the state of the county you'd like to
+download the roads for. Can also be state name or abbreviation
 (case-insensitive).}
 
 \item{year}{the data year; defaults to 2022}

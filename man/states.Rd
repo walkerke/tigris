@@ -7,11 +7,11 @@
 states(cb = FALSE, resolution = "500k", year = NULL, ...)
 }
 \arguments{
-\item{cb}{If cb is set to TRUE, download a generalized (1:500k)
-states file.  Defaults to FALSE (the most detailed TIGER/Line file)}
+\item{cb}{If cb is set to \code{TRUE}, download a generalized (1:500k) states
+file. Defaults to \code{FALSE} (the most detailed TIGER/Line file)}
 
-\item{resolution}{The resolution of the cartographic boundary file (if \code{cb = TRUE}).
-Defaults to '500k'; options include '5m' (1:5 million) and '20m' (1:20 million).}
+\item{resolution}{The resolution of the cartographic boundary file (if \code{cb = TRUE}). Defaults to "500k"; options include "5m" (1:5 million) and "20m"
+(1:20 million).}
 
 \item{year}{the data year; defaults to 2022}
 
@@ -21,8 +21,8 @@ Defaults to '500k'; options include '5m' (1:5 million) and '20m' (1:20 million).
 States and Equivalent Entities are the primary governmental divisions of the
 United States.  In addition to the 50 states, the Census Bureau treats the
 District of Columbia, Puerto Rico, American Samoa, the Commonwealth of the
-Northern Mariana Islands, Guam, and the U.S. Virgin Islands as the statistical
-equivalents of states for the purpose of data presentation.
+Northern Mariana Islands, Guam, and the U.S. Virgin Islands as the
+statistical equivalents of states for the purpose of data presentation.
 }
 \section{Additional Arguments}{
 

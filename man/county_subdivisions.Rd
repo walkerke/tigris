@@ -11,23 +11,23 @@ county_subdivisions(state, county = NULL, cb = FALSE, year = NULL, ...)
 be state name or state abbreviation.}
 
 \item{county}{The three-digit FIPS code (string) of the county you'd like to
-subset for, or a vector of FIPS codes if you desire multiple counties.
-Can also be a county name or vector of names.}
+subset for, or a vector of FIPS codes if you desire multiple counties. Can
+also be a county name or vector of names.}
 
-\item{cb}{If cb is set to TRUE, download a generalized (1:500k)
-file.  Defaults to FALSE (the most detailed TIGER/Line file)}
+\item{cb}{If cb is set to \code{TRUE}, download a generalized (1:500k) file.
+Defaults to \code{FALSE} (the most detailed TIGER/Line file)}
 
 \item{year}{the data year; defaults to 2022}
 
 \item{...}{arguments to be passed to internal function \code{load_tiger}, which is not exported. See Additional Arguments.}
 }
 \description{
-From the US Census Bureau (see link for source, and more information): "All counties and
-statistically equivalent entities consist of one or more geographic units that the Bureau
-of the Census recognizes as county subdivisions. The two major types of county subdivisions
-are minor civil divisions(MCDs) and census county divisions (CCDs).
-A State has either MCDs or their statistical equivalents, or CCDs; it cannot
-contain both."
+From the US Census Bureau (see link for source, and more information): "All
+counties and statistically equivalent entities consist of one or more
+geographic units that the Bureau of the Census recognizes as county
+subdivisions. The two major types of county subdivisions are minor civil
+divisions(MCDs) and census county divisions (CCDs). A State has either MCDs
+or their statistical equivalents, or CCDs; it cannot contain both."
 }
 \section{Additional Arguments}{
 

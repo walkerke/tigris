@@ -11,31 +11,34 @@ blocks(state, county = NULL, year = NULL, ...)
 be state name or state abbreviation.}
 
 \item{county}{The three-digit FIPS code (string) of the county you'd like to
-subset for, or a vector of FIPS codes if you desire multiple counties.
-Can also be a county name or vector of names.}
+subset for, or a vector of FIPS codes if you desire multiple counties. Can
+also be a county name or vector of names.}
 
 \item{year}{the data year; defaults to 2022}
 
 \item{...}{arguments to be passed to internal function \code{load_tiger}, which is not exported. See Additional Arguments.}
 }
 \description{
-Description from the US Census Bureau (see link for source): Census blocks are statistical areas
-bounded on all sides by visible features, such as streets, roads,
-streams, and railroad tracks, and by non-visible boundaries such as city, town, township, and county
-limits, and short line-of-sight extensions of streets and roads. Generally, census blocks are small in area;
-for example, a block in a city. Census blocks in suburban and rural areas may be large, irregular and
-bounded by a variety of features, such as roads, streams, and/or transmission line rights-of-way. In
-remote areas census blocks may encompass hundreds of square miles. Census blocks cover all territory
-in the United States, Puerto Rico, and the Island areas. Blocks do not cross the boundaries of any entity
-for which the Census Bureau tabulates data.
+Description from the US Census Bureau (see link for source): Census blocks
+are statistical areas bounded on all sides by visible features, such as
+streets, roads, streams, and railroad tracks, and by non-visible boundaries
+such as city, town, township, and county limits, and short line-of-sight
+extensions of streets and roads. Generally, census blocks are small in area;
+for example, a block in a city. Census blocks in suburban and rural areas may
+be large, irregular and bounded by a variety of features, such as roads,
+streams, and/or transmission line rights-of-way. In remote areas census
+blocks may encompass hundreds of square miles. Census blocks cover all
+territory in the United States, Puerto Rico, and the Island areas. Blocks do
+not cross the boundaries of any entity for which the Census Bureau tabulates
+data.
 }
 \details{
 This function will download an entire block shapefile for a selected state
 into R, and optionally subset by county. \strong{A warning:} Census block
-shapefiles are often very large, especially for large states - for example, the
-block file for Texas is 462MB zipped!  If you have a slow or unreliable internet
-connection, or insufficient memory, this may prove burdensome given that you
-have to first download by state and then subset.
+shapefiles are often very large, especially for large states - for example,
+the block file for Texas is 462MB zipped!  If you have a slow or unreliable
+internet connection, or insufficient memory, this may prove burdensome given
+that you have to first download by state and then subset.
 }
 \section{Additional Arguments}{
 

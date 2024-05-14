@@ -7,8 +7,8 @@
 regions(resolution = "500k", year = NULL, ...)
 }
 \arguments{
-\item{resolution}{The resolution of the cartographic boundary file.
-Defaults to '500k'; options include '5m' (1:5 million) and '20m' (1:20 million).}
+\item{resolution}{The resolution of the cartographic boundary file. Defaults
+to "500k"; options include "5m" (1:5 million) and "20m" (1:20 million).}
 
 \item{year}{the data year; defaults to 2022}
 

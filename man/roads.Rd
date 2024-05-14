@@ -7,12 +7,12 @@
 roads(state, county, year = NULL, ...)
 }
 \arguments{
-\item{state}{A character vector of the two-digit FIPS code of the state of the county
-you'd like to download the roads for. Can also be state name or abbreviation
-(case-insensitive).}
+\item{state}{A character vector of the two-digit FIPS code of the state of
+the county you'd like to download the roads for. Can also be state name or
+abbreviation (case-insensitive).}
 
-\item{county}{A character vector of the three-digit FIPS code of the county you'd like
-the roads for. Can also be a county name.}
+\item{county}{A character vector of the three-digit FIPS code of the county
+you'd like the roads for. Can also be a county name.}
 
 \item{year}{the data year; defaults to 2022}
 
@@ -37,9 +37,9 @@ an sf object with columns
 }
 \description{
 From the Census Bureau: "The content of the all roads shapefile includes
-primary roads, secondary roads, local neighborhood roads,
-rural roads, city streets, vehicular trails (4WD), ramps, service drives,
-walkways, stairways, alleys, and private roads."
+primary roads, secondary roads, local neighborhood roads, rural roads, city
+streets, vehicular trails (4WD), ramps, service drives, walkways, stairways,
+alleys, and private roads."
 }
 \section{Additional Arguments}{
 

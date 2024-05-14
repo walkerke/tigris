@@ -7,8 +7,8 @@
 nation(resolution = "5m", year = NULL, ...)
 }
 \arguments{
-\item{resolution}{The resolution of the cartographic boundary file.
-Defaults to '5m'; options include '5m' (1:5 million) and '20m' (1:20 million).}
+\item{resolution}{The resolution of the cartographic boundary file. Defaults
+to "5m"; options include "5m" (1:5 million) and "20m" (1:20 million).}
 
 \item{year}{the data year; defaults to 2022}
 
@@ -36,7 +36,7 @@ option \code{"tigris_refresh"} if it is set. Specifying this argument will overr
 library(tigris)
 library(leaflet)
 
-boundary <- nation(resolution = '20m')
+boundary <- nation(resolution = "20m")
 
 leaflet(boundary) \%>\%
    addTiles() \%>\%

@@ -7,12 +7,13 @@
 new_england(type = "necta", cb = FALSE, year = NULL, ...)
 }
 \arguments{
-\item{type}{Specify whether to download the New England City and Town Areas file (\code{'necta'}, the default),
-the combined NECTA file (\code{'combined'}), or the NECTA divisions file (\code{'divisions'}).}
+\item{type}{Specify whether to download the New England City and Town Areas
+file (\code{'necta'}, the default), the combined NECTA file (\code{'combined'}), or
+the NECTA divisions file (\code{'divisions'}).}
 
-\item{cb}{If cb is set to TRUE, download a generalized (1:500k)
-cartographic boundary file.  Defaults to FALSE (the most detailed
-TIGER/Line file).  Only available when \code{type = 'necta'}.}
+\item{cb}{If cb is set to \code{TRUE}, download a generalized (1:500k)
+cartographic boundary file.  Defaults to \code{FALSE} (the most detailed
+TIGER/Line file). Only available when \code{type = 'necta'}.}
 
 \item{year}{the data year; defaults to 2022}
 

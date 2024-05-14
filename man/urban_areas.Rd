@@ -7,8 +7,8 @@
 urban_areas(cb = FALSE, year = NULL, criteria = NULL, ...)
 }
 \arguments{
-\item{cb}{If cb is set to TRUE, download a generalized (1:500k)
-cartographic boundary file.  Defaults to FALSE (the most detailed
+\item{cb}{If cb is set to \code{TRUE}, download a generalized (1:500k)
+cartographic boundary file.  Defaults to \code{FALSE} (the most detailed
 TIGER/Line file). year must be a max of 2020 if \code{cb = TRUE}.}
 
 \item{year}{the data year; defaults to 2022}
