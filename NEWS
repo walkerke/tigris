@@ -35,7 +35,7 @@ Improved input validation both for specific functions and in general:
 
 * Switch to use `rlang::abort()`, `rlang::warn()` and `rlang::inform()` for all errors, warnings, and messages.
 
-* Add `multiple` argument to `validate_county()` to allow validation of multiple counties in a single call.
+* Add `multiple` argument to `validate_state()` and `validate_county()` to allow validation of multiple states or counties in a single call. Export both validation functions as internal functions.
 
 * Refactor and add helper functions (`set_tigris_year()`, `check_tigris_year()`, and `url_tiger()`) to reduce duplication and make code more maintainable.
 
