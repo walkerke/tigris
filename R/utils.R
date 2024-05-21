@@ -170,6 +170,7 @@ validate_state <- function(state,
     state,
     allow_null = allow_null,
     require_arg = require_state,
+    multiple = multiple,
     error_call = error_call
   )
 
@@ -386,6 +387,7 @@ validate_county <- function(state,
     county,
     allow_null = allow_null,
     require_arg = require_county,
+    multiple = multiple,
     error_call = error_call
   )
 
@@ -439,7 +441,7 @@ validate_county <- function(state,
         "Using FIPS code ",
         format_vec(
           paste0(
-            county_fips[!na_county_fips], " for ", county[!na_county_fips]
+            "'", county_fips[!na_county_fips], "' for '", county[!na_county_fips], "'"
           )
         )
       )
@@ -448,7 +450,10 @@ validate_county <- function(state,
     if (any(na_county_fips)) {
       message <- c(
         message,
-        "!" = paste0("Dropping invalid `county` values: ", format_vec(county[na_county_fips]))
+        "!" = paste0(
+          "Dropping invalid `county` values: ",
+          paste0("'", format_vec(county[na_county_fips]), "'")
+        )
       )
     }
 
