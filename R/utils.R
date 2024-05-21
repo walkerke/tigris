@@ -1,3 +1,127 @@
+grepl
+
+#' Is x only digits?
+#' @noRd
+is_digits <- function(x) {
+  grepl("^[[:digit:]]+$", x)
+}
+
+#' Is x only alpha characters?
+#' @noRd
+is_alpha <- function(x) {
+  grepl("^[[:alpha:]]+", x)
+}
+
+#' Pad a short FIPS code
+#' @noRd
+pad_fips <- function(string, width = 2) {
+  pad_str(string, width = width, pad = "0")
+}
+
+#' Is x a state FIPS?
+#' @noRd
+is_stfips <- function(x) {
+  is_digits(x) & (nchar(x) == 2) & (x %in% fips_state_table[["fips"]])
+}
+
+#' Is x a state name?
+#' @noRd
+is_stname <- function(x) {
+  (nchar(x) > 2) & (tolower(x) %in% fips_state_table[["name"]])
+}
+
+#' Is x a state USPS abbreviation?
+#' @noRd
+is_stusps <- function(x) {
+  is_alpha(x) & (nchar(x) == 2) & (tolower(x) %in% fips_state_table[["abb"]])
+}
+
+#' Match state name values
+#' @noRd
+match_state_name <- function(state,
+                             multiple = FALSE,
+                             require_state = FALSE,
+                             error_arg = caller_arg(state),
+                             error_call = caller_env()) {
+  state <- tolower(state)
+  state_fips <- rep_along(state, NA_character_)
+
+  is_state_abb <- is_stusps(state)
+  is_state_name <- is_stname(state)
+
+  if (any(is_state_abb)) {
+    state_abb <- match(state, fips_state_table[["abb"]])
+    state_abb <- state_abb[!is.na(state_abb)]
+    state_fips[is_state_abb] <- fips_state_table[state_abb, "fips"]
+  }
+
+  if (any(is_state_name)) {
+    state_names <- match(state, fips_state_table[["name"]])
+    state_names <- state_names[!is.na(state_names)]
+    state_fips[is_state_name] <- fips_state_table[state_names, "fips"]
+  }
+
+  if (!require_state) {
+    return(state_fips)
+  }
+
+  arg_match(
+    state_fips,
+    multiple = multiple,
+    values = fips_state_table[["fips"]],
+    error_arg = error_arg,
+    error_call = error_call
+  )
+}
+
+#' Match state FIPS to valid values
+#' @noRd
+match_state_fips <- function(state,
+                             values = NULL,
+                             strict = FALSE,
+                             multiple = FALSE,
+                             require_state = FALSE,
+                             error_arg = "state",
+                             error_call = caller_env()) {
+  # forgive 1-digit FIPS codes or county FIPS codes
+  if (!strict) {
+    short_state <- nchar(state) < 2
+    long_state <- nchar(state) > 2
+
+    if (any(short_state)) {
+      state[short_state] <- pad_fips(state[short_state], 2)
+    }
+
+    if (any(long_state)) {
+      inform_vec(
+        "Subsetting first two digits from supplied `state` to make valid FIPS codes:",
+        state[long_state]
+      )
+      state[long_state] <- substr(state[long_state], 1, 2)
+    }
+  }
+
+  values <- values %||% fips_state_table[["fips"]]
+  valid_state <- state %in% values
+
+  if (all(valid_state)) {
+    return(state)
+  }
+
+  if (!require_state) {
+    state[!valid_state] <- NA_character_
+    return(state)
+  }
+
+  arg_match(
+    state,
+    multiple = multiple,
+    values = values,
+    error_arg = error_arg,
+    error_call = error_call
+  )
+}
+
 #' Check if state is a FIPS code, full name or abbreviation.
 #' @returns
 #' - `NULL` if input is `NULL` and `allow_null = TRUE` and `require_state = FALSE`
@@ -8,78 +132,203 @@
 validate_state <- function(state,
                            allow_null = TRUE,
                            require_state = FALSE,
+                           multiple = FALSE,
+                           strict = FALSE,
                            .msg = is_interactive(),
                            error_call = caller_env()) {
-
   if (is.null(state)) {
-    if (allow_null && !require_state) return(NULL)
+    if (allow_null && !require_state) {
+      return(invisible(NULL))
+    }
+
     abort("Invalid `state`", call = error_call)
   }
 
-  state <- tolower(trimws(state)) # forgive white space
-
-  if (grepl("^[[:digit:]]+$", state)) { # we prbly have FIPS
-
-    state <- sprintf("%02d", as.numeric(state)) # forgive 1-digit FIPS codes
-
-    if (state %in% fips_state_table$fips) {
-      return(state)
-    } else {
-      # perhaps they passed in a county FIPS by accident so forgive that, too,
-      # but warn the caller
-      state_sub <- substr(state, 1, 2)
-      if (state_sub %in% fips_state_table$fips) {
-        inform(
-          sprintf(
-            'Using first two digits of %s - "%s" (%s) - for FIPS code.',
-            state, state_sub,
-            fips_state_table[fips_state_table$fips == state_sub, "name"])
-          )
-        return(state_sub)
-      }
-    }
-
-  } else if (grepl("^[[:alpha:]]+", state)) { # we might have state abbrev or name
-
-    if (nchar(state) == 2 & state %in% fips_state_table$abb) { # yay, an abbrev!
-
-      if (.msg)
-        inform(
-          sprintf("Using FIPS code '%s' for state '%s'",
-                  fips_state_table[fips_state_table$abb == state, "fips"],
-                  toupper(state))
-          )
-      return(fips_state_table[fips_state_table$abb == state, "fips"])
-
-    } else if (nchar(state) > 2 & state %in% fips_state_table$name) { # yay, a name!
-
-      if (.msg) {
-        inform(
-          sprintf('Using FIPS code "%s" for state "%s"',
-                  fips_state_table[fips_state_table$name == state, "fips"],
-                  simpleCapSO(state))
-        )
-      }
-
-      return(fips_state_table[fips_state_table$name == state, "fips"])
-    }
-
+  if (!multiple && length(state) > 1) {
+    abort(
+      "`state` must be length 1 if `multiple = FALSE`",
+      error_call = error_call
+    )
   }
 
-  msg <- sprintf(
-    "'%s' is not a valid FIPS code or state name/abbreviation", state
+  state <- trimws(state) # forgive white space
+  state_fips <- rep_along(state, NA_character_)
+  state_likely_fips <- is_digits(state)
+  state_likely_name <- is_alpha(state)
+
+  if (any(state_likely_fips)) { # we prbly have FIPS
+    state_fips[state_likely_fips] <- match_state_fips(
+      state[state_likely_fips],
+      multiple = multiple,
+      require_state = require_state,
+      error_call = error_call
+    )
+  }
+
+  if (any(state_likely_name)) { # we might have state abbrev or name
+    state_fips[state_likely_name] <- match_state_name(
+      state[state_likely_name],
+      multiple = multiple,
+      require_state = require_state,
+      error_call = error_call
+    )
+  }
+
+  state_is_fips <- is_stfips(state_fips)
+
+  if (all(state_is_fips)) {
+    return(state_fips)
+  }
+
+  if (!any(state_is_fips)) {
+    warn("`state` contains no valid FIPS codes or state name/abbreviations")
+    return(NULL)
+  }
+
+  message <- paste0(
+    "`state` contains invalid FIPS codes or state name/abbreviations",
+    format_vec(
+      before = ": ",
+      state[!state_is_fips],
+      after = ""
+    )
   )
 
-  if (require_state) {
-    abort(msg, call = error_call)
-  }
+  warn(message)
 
-  warn(msg)
-
-  return(invisible(NULL))
+  state[state_is_fips]
 }
 
-#' Check if state is a FIPS code, full name or abbreviation.
+#' Get a vector of county FIPS codes named with county names
+#' @noRd
+county_values <- function(state,
+                          ...,
+                          require_state = TRUE,
+                          multiple = FALSE,
+                          error_call = error_call()) {
+  state <- validate_state(
+    state,
+    require_state = require_state,
+    ...,
+    multiple = multiple,
+    error_call = error_call
+  )
+
+  if (!require_state && is.null(state)) {
+    return(NULL)
+  }
+
+  state_counties <- fips_codes[fips_codes[["state_code"]] == state, ]
+  set_names(state_counties[["county_code"]], state_counties[["county"]])
+}
+
+#' Match county FIPS values
+#' @noRd
+match_county_fips <- function(county,
+                              values = NULL,
+                              state = NULL,
+                              multiple = FALSE,
+                              require_county = FALSE,
+                              strict = FALSE,
+                              error_call = error_call()) {
+  if (is.null(values) && !is.null(state)) {
+    values <- county_values(state, error_call = error_call)
+  }
+
+  # forgive 1-digit FIPS codes or county FIPS codes
+  if (!strict) {
+    short_county <- nchar(county) < 3
+
+    if (any(short_county)) {
+      county[short_county] <- pad_fips(county[short_county], 3)
+    }
+  }
+
+  valid_county <- county %in% values
+
+  if (all(valid_county)) {
+    return(county)
+  }
+
+  if (!require_county) {
+    county[!valid_county] <- NA_character_
+    return(county)
+  }
+
+  arg_match(
+    county,
+    values = values,
+    multiple = multiple,
+    error_call = error_call
+  )
+}
+
+#' Match county name values
+#' @noRd
+match_county_name <- function(county,
+                              values = NULL,
+                              state = NULL,
+                              require_county = FALSE,
+                              multiple = FALSE,
+                              error_call = error_call()) {
+  if (is.null(values) && !is.null(state)) {
+    values <- county_values(state, error_call = error_call)
+  }
+
+  county_matches <- lapply(
+    sprintf("^%s", county),
+    \(p) {
+      values[grepl(p, names(values), ignore.case = TRUE)]
+    }
+  )
+
+  missing_matches <- vapply(county_matches, is_empty, logical(1))
+  uncertain_matches <- vapply(county_matches, \(x) {
+    length(x) > 1
+  }, logical(1))
+
+  message <- NULL
+
+  if (!any(missing_matches) && !any(uncertain_matches)) {
+    return(as.character(county_matches))
+  }
+
+  if (any(missing_matches)) {
+    missing_county <- county[missing_matches]
+    county_matches[missing_matches] <- NA_character_
+
+    message <- c(
+      message,
+      paste0(
+        "`county` input can't be matched to any valid value: ", format_vec(missing_county)
+      )
+    )
+  }
+
+  if (any(uncertain_matches)) {
+    uncertain_county <- county[uncertain_matches]
+    county_matches[uncertain_matches] <- NA_character_
+
+    message <- c(
+      message,
+      paste0(
+        "`county` input is ambigous and matches multiple values: ", format_vec(uncertain_county)
+      )
+    )
+  }
+
+  county_matches <- as.character(county_matches)
+
+  if (require_county) {
+    abort(message, call = error_call)
+  }
+
+  warn(message)
+
+  county_matches
+}
+
+#' Check if county is a FIPS code, full name or abbreviation.
 #' @returns
 #' - `NULL` if input is `NULL` and `allow_null = TRUE` and `require_county = FALSE`
 #' - valid county FIPS code if input is even pseudo-valid (i.e. single digit but w/in range)
@@ -94,122 +343,130 @@ validate_county <- function(state,
                             .msg = is_interactive(),
                             error_call = caller_env()) {
   # Get the state of the county
-  state <- validate_state(
+  county_values <- county_values(
     state,
     allow_null = allow_null,
     .msg = .msg,
     require_state = require_county,
+    multiple = FALSE,
     error_call = error_call
   )
 
   if (is.null(county)) {
-    if (allow_null && !require_county) return(NULL)
+    if (allow_null && !require_county) {
+      return(invisible(NULL))
+    }
     abort("Invalid `county`", call = error_call)
   }
 
-  county_table <- fips_codes[fips_codes$state_code == state, ] # Get a df for the requested state to work with
-
-  if (grepl("^[[:digit:]]+$", county)) { # probably a FIPS code
-
-    county <- sprintf("%03d", as.numeric(county)) # in case they passed in 1 or 2 digit county codes
-
-    if (county %in% county_table$county_code) {
-      return(county)
-
-    } else {
-
-      msg <- sprintf('"%s" is not a valid FIPS code for counties in %s',
-                     county, county_table$state_name[1])
-
-      if (require_county) {
-        abort(msg, call = error_call)
-      }
-
-      warn(msg)
-
-      return(invisible(NULL))
-    }
-
-  } else if ((grepl("^[[:alpha:]]+", county))) { # should be a county name
-
-      county_index <- grepl(sprintf("^%s", county), county_table$county, ignore.case = TRUE)
-
-      matching_counties <- county_table$county[county_index] # Get the counties that match
-      match_len <- length(matching_counties)
-
-      if (match_len == 0) {
-
-        msg <- sprintf(
-          '"%s" is not a valid name for counties in %s',
-          county, county_table$state_name[1]
-        )
-
-        if (require_county) {
-          abort(msg, call = error_call)
-        }
-
-        warn(msg)
-
-        return(invisible(NULL))
-      } else if (match_len == 1 || multiple && match_len > 1) {
-
-        county_code <- county_table[county_table[["county"]] %in% matching_counties, "county_code"]
-
-        if (.msg)
-          inform(sprintf(
-            'Using FIPS code "%s" for "%s"',
-            format_vec(county_code, after = ""),
-            matching_counties
-          ))
-
-        return(county_code)
-
-      } else if (match_len > 1) {
-
-        ctys <- format_vec(matching_counties)
-
-        msg <- c(
-          paste0("`county` matches ", ctys),
-          "i" = "Please refine your selection."
-        )
-
-        if (require_county) {
-          abort(msg, call = error_call)
-        }
-
-        warn(msg)
-
-        return(invisible(NULL))
-      }
-
+  if (!multiple && length(county) > 1) {
+    abort(
+      "`county` must be length 1 if `multiple = FALSE`",
+      error_call = error_call
+    )
   }
 
+  county_fips <- rep_along(county, NA_character_)
+  county_likely_fips <- is_digits(county)
+  county_likely_name <- is_alpha(county)
+
+  if (any(county_likely_fips)) { # probably a FIPS code
+    county_fips[county_likely_fips] <- match_county_fips(
+      county = county[county_likely_fips],
+      values = county_values,
+      multiple = multiple,
+      require_county = require_county,
+      error_call = error_call
+    )
+  }
+
+  if (any(county_likely_name)) { # should be a county name
+    county_fips[county_likely_name] <- match_county_name(
+      county = county[county_likely_name],
+      values = county_values,
+      require_county = require_county,
+      multiple = multiple,
+      error_call = error_call
+    )
+  }
+
+  na_county_fips <- is.na(county_fips)
+
+  if (.msg) {
+    message <- c(
+      "i" = paste0(
+        "Using FIPS code ",
+        format_vec(
+          paste0(
+            county_fips[!na_county_fips], " for ", county[!na_county_fips]
+          )
+        )
+      )
+    )
+
+    if (any(na_county_fips)) {
+      message <- c(
+        message,
+        "!" = paste0("Dropping invalid `county` values: ", format_vec(county[!na_county_fips]))
+      )
+    }
+
+    inform(message)
+  }
+
+  if (all(na_county_fips)) {
+    return(NULL)
+  }
+
+  county_fips[!na_county_fips]
 }
 
 #' Combine multiple words into a single string
 #'
 #' @seealso [knitr::combine_words()]
 #' @noRd
-format_vec <- function(vec, and = "and ", after = ".") {
+format_vec <- function(vec, and = "and ", before = "", after = ".") {
+  l <- length(vec)
+
+  if (l == 2) {
+    out <- paste0(before, vec[[1]], " ", and, vec[[2]], after)
+    return(out)
+  }
 
   out <- paste0(vec, ", ")
 
-  l <- length(out)
 
   out[l - 1] <- paste0(out[l - 1], and)
 
-  out[l] <- gsub(", ",  after, out[l])
+  out[l] <- gsub(", ", after, out[l])
 
-  return(paste0(out, collapse = ""))
+  paste0(before, paste0(out, collapse = ""))
+}
 
+#' Create an inform message with a formatted vector
+#' @noRd
+inform_vec <- function(message = NULL,
+                       x = NULL,
+                       and = "and ",
+                       before = ": ",
+                       after = "",
+                       ...) {
+  if (is.null(x)) {
+    x <- after
+  } else {
+    x <- format_vec(x, before = before, and = and, after = after)
+  }
+
+  inform(message = paste0(message, x), ...)
 }
 
 # Function from SO to do proper capitalization
 
 simpleCapSO <- function(x) {
   s <- strsplit(x, " ")[[1]]
-  paste(toupper(substring(s, 1,1)), substring(s, 2),
-        sep = "", collapse = " ")
+  paste(toupper(substring(s, 1, 1)), substring(s, 2),
+    sep = "", collapse = " "
+  )
 }
 
 
@@ -439,14 +696,13 @@ check_cb_year <- function(year = 1990, error_year = 1990, call = caller_env()) {
 #'
 #' @noRd
 pad_str <- function(
-    string, width, side = c("left", "right", "both"), pad = " "
-) {
-
+    string, width, side = c("left", "right", "both"), pad = " ") {
   pad_width <- width - nchar(string, type = "width")
   pad_width[pad_width < 0] <- 0
 
-  switch(
-    side,
+  side <- match.arg(side)
+
+  switch(side,
     "left" = paste0(strrep(pad, pad_width), string),
     "right" = paste0(string, strrep(pad, pad_width)),
     "both" = paste0(
