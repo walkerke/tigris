@@ -160,6 +160,7 @@ match_state_fips <- function(state,
 #' - NULL if input is not a valid FIPS code and `require_state = FALSE`
 #' - errors if input is not a valid FIPS code and `require_state = TRUE` or if `state` matched multiple values
 #' @keywords internal
+#' @export
 validate_state <- function(state,
                            allow_null = TRUE,
                            require_state = FALSE,
@@ -376,6 +377,7 @@ match_county_name <- function(county,
 #' - `NULL` if input is not a valid FIPS code and `require_county = FALSE`
 #' - errors if input is not a valid FIPS code and `require_county = TRUE` or if `county` matched multiple values and `multiple = FALSE`
 #' @keywords internal
+#' @export
 validate_county <- function(state,
                             county,
                             allow_null = TRUE,
@@ -507,7 +509,7 @@ inform_vec <- function(message = NULL,
 }
 
 # Function from SO to do proper capitalization
-
+#' @noRd
 simpleCapSO <- function(x) {
   s <- strsplit(x, " ")[[1]]
   paste(toupper(substring(s, 1, 1)), substring(s, 2),
@@ -517,7 +519,11 @@ simpleCapSO <- function(x) {
 
 
 # Function to convert input shape to WKT for filter_by param
-input_to_wkt <- function(input, arg = caller_arg(input), call = caller_env()) {
+#' @noRd
+#' @importFrom sf st_as_text
+input_to_wkt <- function(input,
+                         arg = caller_arg(input),
+                         call = caller_env()) {
   if (is.null(input)) {
     return(character(0))
   }
@@ -534,7 +540,10 @@ input_to_wkt <- function(input, arg = caller_arg(input), call = caller_env()) {
 
 #' Prep sfc from sf, sfc, or bbox input
 #' @noRd
-prep_input_sfc <- function(input, arg = caller_arg(input), call = caller_env()) {
+#' @importFrom sf st_bbox st_as_sfc st_make_valid st_union st_transform
+prep_input_sfc <- function(input,
+                           arg = caller_arg(input),
+                           call = caller_env()) {
 
   if (!inherits(input, "bbox") && is.numeric(input) && (length(input) == 4)) {
     names(input) <- c("xmin", "ymin", "xmax", "ymax")
