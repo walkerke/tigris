@@ -65,10 +65,12 @@ tigris_cache_dir <- function(path) {
 #'   Can be an sf object, sfc object, an object of class `bbox`, or a length-4
 #'   vector of format `c(xmin, ymin, xmax, ymax)` that can be converted to a
 #'   bbox. Geometries that intersect the input to `filter_by` will be returned.
+#' @param query SQL query passed to [sf::st_read()]. query can be used to filter
+#'   results by state or other attributes.
+#' @param crs Output coordinate reference system. Defaults to `NULL`.
 #' @inheritParams rlang::args_error_context
 #'
 #' @return sf or sp data frame
-#'
 load_tiger <- function(url,
                        refresh = getOption("tigris_refresh", FALSE),
                        tigris_type = NULL,
@@ -76,6 +78,8 @@ load_tiger <- function(url,
                        progress_bar = TRUE,
                        keep_zipped_shapefile = FALSE,
                        filter_by = NULL,
+                       query = NA,
+                       crs = NULL,
                        call = caller_env()) {
   # Process filter_by
   wkt_filter <- input_to_wkt(filter_by, call = call)
@@ -100,21 +104,18 @@ load_tiger <- function(url,
 
       if (refresh || !file.exists(shp_loc)) {
 
-        check_tigris_url(url, call = call)
-
-        if (progress_bar) {
-          try(GET(url,
-                  write_disk(file_loc, overwrite=refresh),
-                  progress(type="down")), silent=TRUE)
-        } else {
-          try(GET(url,
-                  write_disk(file_loc, overwrite=refresh)),
-                  silent=TRUE)
-        }
+        tiger_download(
+          url = url,
+          path = file_loc,
+          overwrite = refresh,
+          progress_bar = progress_bar,
+          call = call
+        )
 
         unzip_tiger <- function() {
           unzip(file_loc, exdir = cache_dir, overwrite=TRUE)
         }
+
         remove_zip_tiger <- function() {
           if (file.exists(file_loc) && file.exists(shp_loc)) {
             invisible(file.remove(file_loc))
@@ -130,18 +131,20 @@ load_tiger <- function(url,
 
           while (i < 4) {
 
-            inform(sprintf("Previous download failed. Re-download attempt %s of 3...",
-                            as.character(i)))
+            inform(
+              sprintf(
+                "Previous download failed. Re-download attempt %s of 3...",
+                as.character(i)
+              )
+            )
 
-            if (progress_bar) {
-              try(GET(url,
-                      write_disk(file_loc, overwrite=TRUE),
-                      progress(type="down")), silent=TRUE)
-            } else {
-              try(GET(url,
-                      write_disk(file_loc, overwrite=TRUE)),
-                      silent=TRUE)
-            }
+            tiger_download(
+              url = url,
+              path = file_loc,
+              overwrite = TRUE,
+              progress_bar = progress_bar,
+              call = call
+            )
 
             t <- tryCatch(unzip_tiger(), warning = function(w) w)
 
@@ -183,18 +186,15 @@ load_tiger <- function(url,
 
   } else {
 
-    check_tigris_url(url, call = call)
-
     tmp <- tempdir()
     file_loc <- file.path(tmp, tiger_file)
 
-    if (progress_bar) {
-      try(GET(url, write_disk(file_loc),
-              progress(type = "down")), silent = TRUE)
-    } else {
-      try(GET(url, write_disk(file_loc)),
-              silent = TRUE)
-    }
+    tiger_download(
+      url = url,
+      path = file_loc,
+      progress_bar = progress_bar,
+      call = call
+    )
 
     unzip(file_loc, exdir = tmp)
     shape <- gsub(".zip", "", tiger_file)
@@ -203,18 +203,52 @@ load_tiger <- function(url,
 
   }
 
-  obj <- st_read(dsn = dsn, layer = shape,
-                 quiet = TRUE, stringsAsFactors = FALSE,
-                 wkt_filter = wkt_filter)
+  tiger_read(
+    dsn = dsn,
+    layer = shape,
+    tigris_type = tigris_type,
+    class = class,
+    query = query,
+    wkt_filter = wkt_filter
+  )
+}
 
-  if (is.na(st_crs(obj)$proj4string)) {
-    st_crs(obj) <- "+proj=longlat +datum=NAD83 +no_defs"
+
+#' Read Tiger shapefile
+#' @noRd
+#' @importFrom sf st_read st_crs as_Spatial
+tiger_read <- function(dsn,
+                       layer,
+                       tigris_type = NULL,
+                       class = getOption("tigris_class", "sf"),
+                       query = NA,
+                       wkt_filter = character(0),
+                       quiet = TRUE,
+                       crs = NULL,
+                       stringsAsFactors = FALSE) {
+  obj <- sf::st_read(
+    dsn = dsn,
+    layer = layer,
+    query = query,
+    quiet = quiet,
+    stringsAsFactors = stringsAsFactors,
+    wkt_filter = wkt_filter
+  )
+
+  if (is.na(sf::st_crs(obj)$proj4string)) {
+    sf::st_crs(obj) <- "+proj=longlat +datum=NAD83 +no_defs"
+  }
+
+  if (!is.null(crs)) {
+    obj <- sf::st_transform(obj, crs = crs)
   }
 
   attr(obj, "tigris") <- "tigris"
 
   # this will help identify the object "sub type"
-  if (!is.null(tigris_type)) attr(obj, "tigris") <- tigris_type
+  if (!is.null(tigris_type)) {
+    attr(obj, "tigris") <- tigris_type
+  }
 
   obj <- rename_fips_cols(obj)
 
@@ -223,11 +257,41 @@ load_tiger <- function(url,
       c(
         "!" = "Spatial* (sp) classes are no longer formally supported in tigris as of version 2.0.",
         "i" = "We strongly recommend updating your workflow to use sf objects (the default in tigris) instead."
-        )
-     )
+      )
+    )
     return(sf::as_Spatial(obj))
+  }
+
+  obj
+}
+
+#' Try downloading
+#' @noRd
+#' @importFrom httr GET write_disk progress
+tiger_download <- function(url,
+                           path,
+                           overwrite = FALSE,
+                           progress_bar = TRUE,
+                           call = caller_env()) {
+  check_tigris_url(url, call = call)
+
+  if (progress_bar) {
+    try(
+      httr::GET(
+        url,
+        httr::write_disk(path, overwrite = overwrite),
+        progress(type = "down")
+      ),
+      silent = TRUE
+    )
   } else {
-    return(obj)
+    try(
+      httr::GET(
+        url,
+        httr::write_disk(path, overwrite = overwrite)
+      ),
+      silent = TRUE
+    )
   }
 }
 
@@ -251,14 +315,15 @@ get_tigris_cache_dir <- function() {
 #' Check URL
 #'
 #' @noRd
+#' @importFrom httr HEAD http_error
 check_tigris_url <- function(url, call = caller_env()) {
   if (!is_string(url)) {
     abort("`url` must be a string", call = call)
   }
 
-  resp <- HEAD(url)
+  resp <- httr::HEAD(url)
 
-  if (http_error(resp)) {
+  if (httr::http_error(resp)) {
     abort(
       paste0("`url` can't be found: ", url),
       call = call

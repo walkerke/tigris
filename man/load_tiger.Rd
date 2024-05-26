@@ -12,6 +12,8 @@ load_tiger(
   progress_bar = TRUE,
   keep_zipped_shapefile = FALSE,
   filter_by = NULL,
+  query = NA,
+  crs = NULL,
   call = caller_env()
 )
 }
@@ -40,6 +42,11 @@ configuration of global option "tigris_use_cache"). Defaults to FALSE.}
 Can be an sf object, sfc object, an object of class \code{bbox}, or a length-4
 vector of format \code{c(xmin, ymin, xmax, ymax)} that can be converted to a
 bbox. Geometries that intersect the input to \code{filter_by} will be returned.}
+
+\item{query}{SQL query passed to \code{\link[sf:st_read]{sf::st_read()}}. query can be used to filter
+results by state or other attributes.}
+
+\item{crs}{Output coordinate reference system. Defaults to \code{NULL}.}
 
 \item{call}{The execution environment of a currently
 running function, e.g. \code{caller_env()}. The function will be
