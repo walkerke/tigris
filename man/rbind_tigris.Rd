@@ -7,7 +7,8 @@
 rbind_tigris(..., call = caller_env())
 }
 \arguments{
-\item{...}{individual (optionally names) \code{tigris} Spatial objects or a list of them}
+\item{...}{individual (optionally names) \code{tigris} Spatial objects or a list
+of them}
 
 \item{call}{The execution environment of a currently
 running function, e.g. \code{caller_env()}. The function will be
