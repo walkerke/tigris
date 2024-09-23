@@ -1,6 +1,6 @@
 test_that("congressional_districts warns and errors", {
   # FIXME: This is not working
-  # expect_warning(congressional_districts(state = "WYO", year = 2010))
+  expect_warning(congressional_districts(state = "WYO", year = 2010))
 
   expect_error(congressional_districts(year = 2009))
   expect_error(congressional_districts(year = 2012, cb = TRUE))

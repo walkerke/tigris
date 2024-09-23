@@ -66,3 +66,39 @@
       9  POINT (-109.5163 43.63829)
       10 POINT (-107.7045 43.64412)
 
+# military works
+
+    Code
+      military(progress_bar = FALSE)
+    Message
+      Retrieving data for the year 2022
+    Output
+      Simple feature collection with 858 features and 8 fields
+      Geometry type: MULTIPOLYGON
+      Dimension:     XY
+      Bounding box:  xmin: -159.7881 ymin: 13.30706 xmax: 174.156 ymax: 64.87795
+      Geodetic CRS:  NAD83
+      First 10 features:
+         ANSICODE        AREAID                   FULLNAME MTFCC    ALAND AWATER
+      1      <NA>  110509768024   Tripler Army Medical Ctr K2110  1443458      0
+      2      <NA>  110509767829              Makua Mil Res K2110 17406401      0
+      3      <NA>  110435324283        Stone Ranch Mil Res K2110  7440946      0
+      4      <NA>  110507841923  Ng Havre de Grace Mil Res K2110   304109      0
+      5      <NA>  110509768183           Aliamanu Mil Res K2110  2104133      0
+      6      <NA>  110509768096        Waianae-Kai Mil Res K2110    34407      0
+      7      <NA>  110509768142 Schofield Barracks Mil Res K2110 20509112      0
+      8      <NA>  110509768059           Helemano Mil Res K2110  1204608      0
+      9      <NA> 1108310660208   Ng Mta Gunpowder Mil Res K2110  1032570  10372
+      10     <NA> 1108301385692          Ng Papago Mil Res K2110  1844509      0
+            INTPTLAT     INTPTLON                       geometry
+      1  +21.3620086 -157.8896492 MULTIPOLYGON (((-157.8982 2...
+      2  +21.5307680 -158.2068764 MULTIPOLYGON (((-158.2406 2...
+      3  +41.3654109  -72.2716641 MULTIPOLYGON (((-72.26356 4...
+      4  +39.5327115  -76.1041621 MULTIPOLYGON (((-76.11008 3...
+      5  +21.3609483 -157.9117716 MULTIPOLYGON (((-157.9238 2...
+      6  +21.4469221 -158.1909990 MULTIPOLYGON (((-158.1931 2...
+      7  +21.4993768 -158.0824984 MULTIPOLYGON (((-158.1151 2...
+      8  +21.5361123 -158.0194801 MULTIPOLYGON (((-158.0267 2...
+      9  +39.4306656  -76.5068215 MULTIPOLYGON (((-76.51083 3...
+      10 +33.4673291 -111.9621997 MULTIPOLYGON (((-111.9698 3...
+

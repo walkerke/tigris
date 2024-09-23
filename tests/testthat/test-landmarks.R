@@ -15,5 +15,5 @@ test_that("landmarks works", {
 
 test_that("military works", {
   withr::local_options(list(tigris_use_cache = TRUE))
-  expect_s3_class(military(), "sf")
+  expect_snapshot(military(progress_bar = FALSE))
 })
