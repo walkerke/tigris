@@ -24,7 +24,7 @@
 #'    - "I": interstate
 #'    - "M": common name
 #'    - "O": other
-#'    - "S": state regonized
+#'    - "S": state recognized
 #'    - "U": U.S.
 #'  - `MTFCC`: 5-digit geographic code assignment [(see annual assignments)](https://www.census.gov/library/reference/code-lists/mt-feature-class-codes.html)
 #' @examples \dontrun{
