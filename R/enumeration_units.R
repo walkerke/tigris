@@ -51,6 +51,7 @@
 #'                    fill="white", size=0.25)
 #' gg
 #' }
+#' @importFrom sf st_cast
 counties <- function(state = NULL, cb = FALSE, resolution = "500k", year = NULL, ...) {
 
   check_tigris_resolution(resolution)
@@ -102,7 +103,7 @@ counties <- function(state = NULL, cb = FALSE, resolution = "500k", year = NULL,
 
   ctys <- load_tiger(url, tigris_type = "county", ...)
 
-  state <- unlist(sapply(state, validate_state, USE.NAMES = FALSE))
+  state <- validate_state(state, multiple = TRUE)
 
   if (!is.null(state)) {
 
@@ -286,13 +287,16 @@ tracts <- function(state = NULL, county = NULL, cb = FALSE, resolution = "500k",
   trcts <- load_tiger(url, tigris_type = "tract", ...)
 
   if (!is.null(county)) {
+    county <- validate_county(
+      state = state,
+      county = county,
+      multiple = TRUE
+    )
 
-     county <- sapply(county, function(x) { validate_county(state, x) })
-
-     trcts <- trcts[trcts$COUNTYFP %in% county, ]
-
+    if (!is.null(county)) {
+      trcts <- trcts[trcts[["COUNTYFP"]] %in% county, ]
+    }
   }
-
 
 # Dissolve polygons for 1990 and 2000 CB
   if (cb && year %in% c(1990, 2000)) {
@@ -535,9 +539,15 @@ block_groups <- function(state = NULL, county = NULL, cb = FALSE, year = NULL, .
 
   if (!is.null(county)) {
 
-    county <- sapply(county, function(x) { validate_county(state, x) })
+    county <- validate_county(state = state, county, multiple = TRUE)
 
-    bgs <- bgs[bgs$COUNTYFP %in% county, ]
+    if (!is.null(county)) {
+      bgs <- bgs[bgs$COUNTYFP %in% county, ]
+    } else {
+      warn(
+        "Ignoring invalid input `county`."
+      )
+    }
 
   }
 
@@ -852,19 +862,13 @@ blocks <- function(state, county = NULL, year = NULL, ...) {
   blks <- load_tiger(url, tigris_type = "block", ...)
 
   if (!is.null(county) && year > 2010) {
-
+    county <- validate_county(state = state, county = county, multiple = TRUE)
+    county_col <- "COUNTYFP10"
     if (year >= 2020) {
-      county <- sapply(county, function(x) { validate_county(state, x) })
-
-      blks <- blks[blks$COUNTYFP20 %in% county, ]
-    } else {
-
-      county <- sapply(county, function(x) { validate_county(state, x) })
-
-      blks <- blks[blks$COUNTYFP10 %in% county, ]
-
+      county_col <- "COUNTYFP20"
     }
 
+    blks <- blks[blks[[county_col]] %in% county, ]
   }
 
   attr(blks, "tigris") <- "block"
