@@ -92,15 +92,19 @@ congressional_districts <- function(state = NULL, cb = FALSE, resolution = "500k
 
   cds <- load_tiger(url, tigris_type = "congressional_districts", ...)
 
-  if (!is.null(state)) {
-
-    state <- unlist(sapply(state, validate_state, USE.NAMES = FALSE))
-    cds <- cds[cds$STATEFP %in% state, ]
-
+  if (is.null(state)) {
+    return(cds)
   }
 
-  return(cds)
+  valid_state <- validate_state(state, multiple = TRUE)
 
+  if (!is.null(valid_state)) {
+    return(cds[cds[["STATEFP"]] %in% valid_state, ])
+  }
+
+  warn("Ignoring invalid input state.")
+
+  cds
 }
 
 #' Download a state legislative districts shapefile into R - upper or lower
