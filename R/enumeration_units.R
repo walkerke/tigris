@@ -51,7 +51,7 @@
 #'                    fill="white", size=0.25)
 #' gg
 #' }
-#' @importFrom sf st_cast
+#' @importFrom sf st_cast st_as_sf
 counties <- function(state = NULL, cb = FALSE, resolution = "500k", year = NULL, ...) {
 
   check_tigris_resolution(resolution)

@@ -33,7 +33,6 @@
 ## usethis namespace: start
 #' @import utils
 #' @import httr
-#' @import sf
 #' @import dplyr
 #' @import rlang
 #' @importFrom methods as
