@@ -216,7 +216,7 @@ load_tiger <- function(url,
 
 #' Read Tiger shapefile
 #' @noRd
-#' @importFrom sf st_read st_crs as_Spatial
+#' @importFrom sf st_read st_crs st_transform as_Spatial
 tiger_read <- function(dsn,
                        layer,
                        tigris_type = NULL,
@@ -236,6 +236,7 @@ tiger_read <- function(dsn,
   )
 
   if (is.na(sf::st_crs(obj)$proj4string)) {
+    # FIXME: Should this be changed to sf::st_crs(obj) <- sf::st_crs(4269)
     sf::st_crs(obj) <- "+proj=longlat +datum=NAD83 +no_defs"
   }
 
@@ -441,7 +442,7 @@ geo_join <- function(spatial_data, data_frame, by_sp, by_df, by = NULL, how = "l
 
       joined <- spatial_data %>%
         inner_join(data_frame, by = join_vars) %>%
-        st_as_sf()
+        sf::st_as_sf()
 
       attr(joined, "tigris") <- tigris_type(spatial_data)
 
@@ -457,15 +458,15 @@ geo_join <- function(spatial_data, data_frame, by_sp, by_df, by = NULL, how = "l
 
       joined <- spatial_data %>%
         left_join(df_unique, by = join_vars) %>%
-        st_as_sf()
+        sf::st_as_sf()
 
-      if (!is.na(st_crs(spatial_data)$epsg)) {
-        crs <- st_crs(spatial_data)$epsg
+      if (!is.na(sf::st_crs(spatial_data)$epsg)) {
+        crs <- sf::st_crs(spatial_data)$epsg
       } else {
-        crs <- st_crs(spatial_data)$proj4string
+        crs <- sf::st_crs(spatial_data)$proj4string
       }
 
-      st_crs(joined) <- crs # re-assign the CRS
+      sf::st_crs(joined) <- crs # re-assign the CRS
 
       attr(joined, "tigris") <- tigris_type(spatial_data)
 
@@ -573,11 +574,64 @@ list_counties <- function(state) {
 
 }
 
+#' @noRd
+inherits_Spatial <- function(x) {
+  inherits_any(
+    x,
+    class = c("SpatialGridDataFrame", "SpatialLinesDataFrame",
+              "SpatialPixelsDataFrame", "SpatialPointsDataFrame",
+              "SpatialPolygonsDataFrame")
+  )
+}
+
+#' @noRd
+check_not_Spatial <- function(x) {
+  if (!inherits_Spatial(x)) {
+    return(invisible(NULL))
+  }
+
+  abort(
+    c(
+      "Spatial* classes are no longer supported in tigris as of version 2.0.",
+      "i" = "You will need to install an earlier version of tigris with `remotes::install_version()`."
+    ),
+    call = call
+  )
+}
+
+#' @noRd
+list_check_all_crs <- function(x, call = caller_env()) {
+  crs <- sapply(
+    x,
+    function(x) {
+      sf::st_crs(x)[["epsg"]]
+    }
+  )
+
+  if (length(unique(crs)) > 1) {
+    abort(
+      "All elements must share a single coordinate reference system.",
+      call = call
+    )
+  }
+}
+
+#' @noRd
+list_st_cast <- function(x, to, ...) {
+  lapply(
+    x,
+    function(x) {
+      sf::st_cast(x, to, ...)
+    }
+  )
+}
+
 #' Row-bind `tigris` Spatial objects
 #'
 #' If multiple school district types are rbound, coerces to "sdall" and does it
 #'
-#' @param ... individual (optionally names) `tigris` Spatial objects or a list of them
+#' @param ... individual (optionally names) `tigris` Spatial objects or a list
+#'   of them
 #' @inheritParams rlang::args_error_context
 #' @return one combined Spatial object
 #' @export
@@ -591,13 +645,15 @@ list_counties <- function(state) {
 #'   rbind_tigris()
 #' }
 
+#' @importFrom sf st_geometry_type
 rbind_tigris <- function(..., call = caller_env()) {
-
   elements <- list(...)
 
-  if ((length(elements) == 1) &
-      inherits(elements, "list")) {
-    elements <- unlist(elements, recursive = FALSE) # Necessary given structure of sf objects
+  if (has_length(elements, 1) && inherits(elements, "list")) {
+    elements <- unlist(
+      elements,
+      recursive = FALSE # Necessary given structure of sf objects
+    )
   }
 
   obj_classes <- unique(sapply(elements, class))
@@ -606,28 +662,32 @@ rbind_tigris <- function(..., call = caller_env()) {
 
   if (any(c("SpatialGridDataFrame", "SpatialLinesDataFrame",
         "SpatialPixelsDataFrame", "SpatialPointsDataFrame",
-        "SpatialPolygonsDataFrame") %in% obj_classes) &
+        "SpatialPolygonsDataFrame") %in% obj_classes) &&
       "sf" %in% obj_classes) {
 
     abort("Cannot combine sp and sf objects", call = call)
-
   }
 
-  #handling for attempts to rbind disparate school districts
+  check_not_Spatial(elements[[1]])
 
+  # handling for attempts to rbind disparate school districts
   if(all(obj_attrs %in% c("unsd", "elsd", "scsd"))) { # 3 school district types
+    warn(
+      c("Multiple school district tigris types.",
+        "*" = 'Coercing to "sdall"')
+    )
 
-    warn("Multiple school district tigris types. Coercing to \'sdall\'.")
-
-    elements <- lapply(seq_along(elements), function(x) {
-                  names(elements[[x]])[2] <- "SDLEA" # Used in some spots elsewhere in TIGER
-                  attr(elements[[x]], "tigris") <- "sdall" # New type
-                  elements[[x]]
-    })
+    elements <- lapply(
+      seq_along(elements),
+      function(x) {
+        names(elements[[x]])[2] <- "SDLEA" # Used in some spots elsewhere in TIGER
+        attr(elements[[x]], "tigris") <- "sdall" # New type
+        elements[[x]]
+      }
+    )
 
     obj_attrs <- sapply(elements, attr, "tigris")
     obj_attrs_u <- unique(obj_attrs)
-
   }
 
   # all same type
@@ -635,67 +695,40 @@ rbind_tigris <- function(..., call = caller_env()) {
   # none are from outside tigris
   # all same tigris "type"
 
-  if (obj_classes[1] %in% c("SpatialGridDataFrame", "SpatialLinesDataFrame",
-                         "SpatialPixelsDataFrame", "SpatialPointsDataFrame",
-                         "SpatialPolygonsDataFrame")) {
+  list_check_all_crs(elements, call = call)
 
-    abort(
-      c(
-        "Spatial* classes are no longer supported in tigris as of version 2.0.",
-        "i" = "You will need to install an earlier version of tigris with `remotes::install_version()`."
-      ),
-      call = call
-    )
+  if ("sf" %in% obj_classes) {
 
-  } else if ("sf" %in% obj_classes) {
-
-    crs <- unique(sapply(elements, function(x) {
-      return(st_crs(x)$epsg)
-    }))
-
-    if (length(crs) > 1) {
-      abort(
-        "All objects must share a single coordinate reference system.",
-        call = call
-      )
-    }
-
-    if (!any(sapply(obj_attrs, is.null)) &
-        length(obj_attrs_u)==1) {
+    if (!any(sapply(obj_attrs, is.null)) && has_length(obj_attrs_u, 1)) {
 
       geometries <- unlist(lapply(elements, function(x) {
-        geoms <- st_geometry_type(x)
+        geoms <- sf::st_geometry_type(x)
         unique(geoms)
       }))
 
       # Cast polygon to multipolygon to allow for rbind-ing
       # This will need to be checked for linear objects as well
-      if ("POLYGON" %in% geometries & "MULTIPOLYGON" %in% geometries) {
-        elements <- lapply(elements, function(x) {
-          st_cast(x, "MULTIPOLYGON")
-        })
+      if ("POLYGON" %in% geometries && "MULTIPOLYGON" %in% geometries) {
+        elements <- list_st_cast(elements, "MULTIPOLYGON")
       }
 
-      if ("LINESTRING" %in% geometries & "MULTILINESTRING" %in% geometries) {
-        elements <- lapply(elements, function(x) {
-          st_cast(x, "MULTILINESTRING")
-        })
+      if ("LINESTRING" %in% geometries && "MULTILINESTRING" %in% geometries) {
+        elements <- list_st_cast(elements, "MULTILINESTRING")
       }
 
       tmp <- Reduce(rbind, elements) # bind_rows not working atm
 
       # Re-assign the original CRS if missing
-      if (is.na(st_crs(tmp)$proj4string)) {
-        st_crs(tmp) <- crs
+      if (is.na(sf::st_crs(tmp)$proj4string)) {
+        sf::st_crs(tmp) <- crs
       }
 
       attr(tmp, "tigris") <- obj_attrs_u
       return(tmp)
-
-    } else {
-      abort("Objects must all be the same type of tigris object.", call = call)
     }
 
+
+    abort("Objects must all be the same type of tigris object.", call = call)
   }
 
 }
@@ -793,7 +826,7 @@ erase_water <- function(input_sf,
   }
 
   # Get a list of GEOIDs
-  county_GEOIDs <- county_overlay$GEOID
+  county_GEOIDs <- county_overlay[["GEOID"]]
 
   # Fetch water for those GEOIDs
   inform("Fetching area water data for `input_sf` location...")
@@ -829,29 +862,40 @@ erase_water <- function(input_sf,
     )
   )
 
-  erased_sf <- suppressMessages(st_erase(input_sf, county_water))
+  erased_sf <- st_erase(input_sf, county_water)
 
-  return(erased_sf)
+  if (st_is_all_valid(erased_sf)) {
+    return(erased_sf)
+  }
+
+  sf::st_make_valid(erased_sf)
 }
 
 #' Erase x geometry intersecting with y using [sf::st_difference()]
 #' @noRd
+#' @importFrom sf st_make_valid st_crs st_transform st_difference st_union
 st_erase <- function(x, y, ...) {
-  if (!all(sf::st_is_valid(x))) {
+  if (!st_is_all_valid(x)) {
     x <- sf::st_make_valid(x)
   }
 
-  if (!all(sf::st_is_valid(y))) {
+  if (!st_is_all_valid(y)) {
     y <- sf::st_make_valid(y)
   }
 
   x_crs <- sf::st_crs(x)
 
-  if (sf::st_crs(y) != sf::st_crs(x)) {
+  if (sf::st_crs(y) != x_crs) {
     y <- sf::st_transform(y, crs = x_crs)
   }
 
   suppressWarnings(sf::st_difference(x, sf::st_union(y), ...))
+}
+
+#' @noRd
+#' @importFrom sf st_is_valid
+st_is_all_valid <- function(x, ...) {
+  all(sf::st_is_valid(x, ...))
 }
 
 #' Is object a `sf` object?
@@ -865,22 +909,44 @@ is_sf <- function(x) {
 #' Documentation Template for Functions that Utilize `load_tiger`
 #'
 #' @md
-#' @details This documentation is inherited by `tigris` functions that wrap `load_tiger`.
+#' @details This documentation is inherited by `tigris` functions that wrap
+#'   `load_tiger`.
 #' Include the following in function documentation:
 #' `@inheritParams load_tiger_doc_template`
 #' `@inheritSection load_tiger_doc_template Additional Arguments`
 #'
-#' @param ... arguments to be passed to internal function `load_tiger`, which is not exported. See Additional Arguments.
+#' @param ... arguments to be passed to internal function `load_tiger`, which is
+#'   not exported. See Additional Arguments.
 #' @param year the data year; defaults to 2022
 #'
 #' @section Additional Arguments:
 #' Additional arguments that can be passed in `...` are:
-#'  * `class` Desired class of return object: `"sf"` (the default) or `"sp"`.  sp classes should be considered deprecated as of tigris version 2.0, but legacy support is still available.
-#'  * `progress_bar` If set to `FALSE`, do not display download progress bar (helpful for R Markdown documents). Defaults to `TRUE`.
-#'  * `keep_zipped_shapefile` If set to `TRUE`, do not delete zipped shapefile (stored in temporary directory or `TIGRIS_CACHE_DIR`
-#'     depending on the configuration of global option `"tigris_use_cache"`). Defaults to `FALSE`.
-#'  * `refresh` Whether to re-download cached shapefiles (`TRUE` or `FALSE`) . The default is either `FALSE` or the value of global
-#'     option `"tigris_refresh"` if it is set. Specifying this argument will override the behavior set in `"tigris_refresh"` global option.
-#'  * `filter_by` Geometry used to filter the output returned by the function.  Can be an sf object, an object of class `bbox`, or a length-4 vector of format `c(xmin, ymin, xmax, ymax)` that can be converted to a bbox. Geometries that intersect the input to `filter_by` will be returned.
+#'
+#'  * `class` Desired class of return object: `"sf"` (the default) or `"sp"`. sp
+#'  classes should be considered deprecated as of tigris version 2.0, but legacy
+#'  support is still available.
+#'
+#'  * `progress_bar` If set to `FALSE`, do not display download progress bar
+#'  (helpful for R Markdown documents). Defaults to `TRUE`.
+#'
+#'  * `keep_zipped_shapefile` If set to `TRUE`, do not delete zipped shapefile
+#'  (stored in temporary directory or `TIGRIS_CACHE_DIR` depending on the
+#'  configuration of global option `"tigris_use_cache"`). Defaults to `FALSE`.
+#'
+#'  * `refresh` Whether to re-download cached shapefiles (`TRUE` or `FALSE`). The
+#'  default is either `FALSE` or the value of global option `"tigris_refresh"`
+#'  if it is set. Specifying this argument will override the behavior set in
+#'  `"tigris_refresh"` global option.
+#'
+#'   * `filter_by` Geometry used to filter the output returned by the function.
+#'   Can be an sf OR sfc object, an object of class `bbox`, or a length-4 vector
+#'   of format `c(xmin, ymin, xmax, ymax)` that can be converted to a bbox.
+#'   Geometries that intersect the input to `filter_by` will be returned.
+#'
+#'   * `crs` Output coordinate reference system. All TIGER/Shapefiles use a EPSG
+#'   4269 coordinate reference system.
+#'
+#'   * `query` A SQL query passed to [sf::st_read()].
+#'
 #' @name load_tiger_doc_template
 NULL
