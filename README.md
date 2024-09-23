@@ -40,16 +40,13 @@ devtools::install_github('walkerke/tigris')
 ## Usage
 
 tigris functions return [simple features
-objects](https://r-spatial.github.io/sf/) with a default year of 2021.
+objects](https://r-spatial.github.io/sf/) with a default year of 2022.
 To get started, load the library:
 
 ``` r
 library(tigris)
 #> To enable caching of data, set `options(tigris_use_cache = TRUE)`
 #> in your R script or .Rprofile.
-```
-
-``` r
 library(ggplot2)
 
 options(tigris_use_cache = TRUE)
@@ -62,9 +59,6 @@ mapping and spatial analysis projects:
 ``` r
 manhattan_roads <- roads("NY", "New York", progress_bar = FALSE)
 #> Retrieving data for the year 2022
-```
-
-``` r
 
 ggplot(manhattan_roads) + 
   geom_sf(linewidth = 0.25) + 
@@ -73,8 +67,10 @@ ggplot(manhattan_roads) +
 
 <img src="man/figures/README-unnamed-chunk-3-1.png" width="100%" />
 
-tigris only returns feature geometries for US Census data which default
-to the coordinate reference system NAD 1983 (EPSG: 4269).
+tigris returns feature geometries for US Census data which default to
+the coordinate reference system NAD 1983 (EPSG: 4269). This output
+coordinate reference system can be changed by passing a `crs` parameter
+to any function.
 
 For US Census demographic data (optionally pre-joined to tigris
 geometries), try the [tidycensus

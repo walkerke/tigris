@@ -43,7 +43,7 @@ devtools::install_github('walkerke/tigris')
 
 ## Usage
 
-tigris functions return [simple features objects](https://r-spatial.github.io/sf/) with a default year of 2021. To get started, load the library:
+tigris functions return [simple features objects](https://r-spatial.github.io/sf/) with a default year of 2022. To get started, load the library:
 
 ```{r}
 library(tigris)
@@ -62,7 +62,7 @@ ggplot(manhattan_roads) +
   theme_void()
 ```
 
-tigris only returns feature geometries for US Census data which default to the coordinate reference system NAD 1983 (EPSG: 4269).
+tigris returns feature geometries for US Census data which default to the coordinate reference system NAD 1983 (EPSG: 4269). This output coordinate reference system can be changed by passing a `crs` parameter to any function.
 
 For US Census demographic data (optionally pre-joined to tigris geometries), try the [tidycensus package](https://walker-data.com/tidycensus/). For help deciding on an appropriate coordinate reference system for your project, take a look at the [crsuggest package](https://github.com/walkerke/crsuggest).
 
@@ -84,7 +84,7 @@ Please note: cartographic boundary files in **tigris** are not available for 201
 | `tracts()`                              | TIGER/Line; cartographic (1:500k)              | 1990, 2000, 2010-2022 |
 | `block_groups()`                        | TIGER/Line; cartographic (1:500k)              | 1990, 2000, 2010-2022 |
 | `blocks()`                              | TIGER/Line                                     | 2000, 2010-2022       |
-| `places()`                              | TIGER/Line; cartographic (1:500k)              | 2000, 2010-2022             |
+| `places()`                              | TIGER/Line; cartographic (1:500k)              | 2000, 2010-2022       |
 | `pumas()`                               | TIGER/Line; cartographic (1:500k)              | 2012-2022             |
 | `school_districts()`                    | TIGER/Line; cartographic                       | 2011-2022             |
 | `zctas()`                               | TIGER/Line; cartographic (1:500k)              | 2000, 2010, 2012-2022 |
@@ -104,10 +104,10 @@ Please note: cartographic boundary files in **tigris** are not available for 201
 | `primary_secondary_roads()`             | TIGER/Line                                     | 2010-2022             |
 | `roads()`                               | TIGER/Line                                     | 2010-2022             |
 | `rails()`                               | TIGER/Line                                     | 2010-2022             |
-| `native_areas()`                        | TIGER/Line; cartographic (1:500k)              | 2000, 2010-2022             |
-| `alaska_native_regional_corporations()` | TIGER/Line; cartographic (1:500k)              | 2000, 2010-2022             |
+| `native_areas()`                        | TIGER/Line; cartographic (1:500k)              | 2000, 2010-2022       |
+| `alaska_native_regional_corporations()` | TIGER/Line; cartographic (1:500k)              | 2000, 2010-2022       |
 | `tribal_block_groups()`                 | TIGER/Line                                     | 2010-2022             |
 | `tribal_census_tracts()`                | TIGER/Line                                     | 2010-2022             |
-| `tribal_subdivisions_national()`        | TIGER/Line                                     | 2000, 2010-2022             |
+| `tribal_subdivisions_national()`        | TIGER/Line                                     | 2000, 2010-2022       |
 | `landmarks()`                           | TIGER/Line                                     | 2010-2022             |
 | `military()`                            | TIGER/Line                                     | 2010-2022             |
