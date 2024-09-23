@@ -565,7 +565,7 @@ prep_input_sfc <- function(input,
     input <- sf::st_as_sfc(input)
   }
 
-  if (!all(sf::st_is_valid(input))) {
+  if (!st_is_all_valid(input)) {
     input <- sf::st_make_valid(input)
   }
 
@@ -660,6 +660,7 @@ check_tigris_year <- function(year,
     limit_year <- max_year
   }
 
+  # TODO: Figure out a more elegant way to handle this need
   trace <- trace_back()
   fname <- call_name(quote(trace[["call"]][[1]]))
   fname <- paste0("`", fname, "`")
