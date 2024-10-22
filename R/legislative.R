@@ -59,6 +59,8 @@ congressional_districts <- function(state = NULL, cb = FALSE, resolution = '500k
     congress <- "111"
   } else if (year %in% 2022:2023) {
     congress <- "118"
+  } else if (year == 2024) {
+    congress <- "119"
   }
 
   if (year < 2010) {
@@ -85,8 +87,8 @@ congressional_districts <- function(state = NULL, cb = FALSE, resolution = '500k
     if (year == 2013) url <- gsub("shp/", "", url)
 
   } else {
-    # Have to handle 2022 and 2023 differently as national CD file is not available
-    if (year %in% 2022:2023) {
+    # Have to handle 2022 through 2024 differently as national CD file is not available
+    if (year %in% 2022:2024) {
       if (is.null(state)) {
         state_codes <- unique(tigris::fips_codes$state_code)
         state_codes <- state_codes[state_codes != "74"]
