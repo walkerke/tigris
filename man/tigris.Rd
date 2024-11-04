@@ -2,6 +2,7 @@
 % Please edit documentation in R/tigris-package.R
 \docType{package}
 \name{tigris}
+\alias{tigris-package}
 \alias{tigris}
 \title{Download and use U.S. Census TIGER shapefiles in R}
 \description{
@@ -27,6 +28,14 @@ that legacy sp objects are no longer formally supported in tigris.
 \note{
 Four \code{options} control behavior of various \code{tigris} functions.
 See \code{Details} for more information.
+}
+\seealso{
+Useful links:
+\itemize{
+  \item \url{https://github.com/walkerke/tigris}
+  \item Report bugs at \url{https://github.com/walkerke/tigris/issues}
+}
+
 }
 \author{
 Kyle Walker (@kyle_e_walker)

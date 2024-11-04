@@ -5,7 +5,7 @@
 #'
 #' Congressional districts for the 108th through 112th sessions were established by the states based on the result of the 2000 Census. Congressional districts for the 113th through 116th sessions were established by the states based on the result of the 2010 Census. Boundaries are effective until January of odd number years (for example, January 2015, January 2017, etc.), unless a state initiative or court ordered redistricting requires a change. All states established new congressional districts in 2011-2012, with the exception of the seven single member states (Alaska, Delaware, Montana, North Dakota, South Dakota, Vermont, and Wyoming).
 #'
-#' The current default in tigris reflects boundaries for the 118th Congress, which is available for years 2022 and 2023.  Older congressional district boundaries back to 2011 can be obtained by supplying the appropriate year.
+#' The current default in tigris reflects boundaries for the 118th Congress, which is available for years 2022 and 2023.  Older congressional district boundaries back to 2011 can be obtained by supplying the appropriate year. For the 119th Congress, use `year = 2024`.
 #'
 #' @param state The two-digit FIPS code (string) of the state you want, or a
 #'        vector of codes if you want multiple states. Can also be state name
