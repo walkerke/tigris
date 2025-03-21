@@ -18,7 +18,14 @@ validate_state(
 single digits FIPS code or longer county FIPS code is passed, the values
 are padded with "0" to subset to allow use as a state value.}
 
-\item{name}{description}
+\item{allow_null}{If \code{TRUE} (default), allow \code{NULL} input values by invisibly
+returning \code{NULL}.}
+
+\item{require_state}{If \code{FALSE} (default), warn instead of error on invalid
+input values.}
+
+\item{multiple}{If \code{FALSE} (default), require input to match a single state
+or county. If \code{TRUE}, allow multiple values.}
 }
 \value{
 \itemize{

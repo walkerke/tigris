@@ -20,6 +20,12 @@ single digits FIPS code or longer county FIPS code is passed, the values
 are padded with "0" to subset to allow use as a state value.}
 
 \item{county}{County name, abbreviation, or FIPS code. Not case sensitive.}
+
+\item{allow_null}{If \code{TRUE} (default), allow \code{NULL} input values by invisibly
+returning \code{NULL}.}
+
+\item{multiple}{If \code{FALSE} (default), require input to match a single state
+or county. If \code{TRUE}, allow multiple values.}
 }
 \value{
 \itemize{

@@ -22,7 +22,7 @@ e.g. \code{options(tigris_refresh=TRUE)}
 
 Use option \code{tigris_year} to change the year for which you'd like to download
 data. e.g. \code{options(tigris_year = 2017)}.  The default year for the package
-is 2020.
+is 2023.
 
 Use option \code{tigris_class} to specify the class of spatial object you'd like
 returned. The default is \code{"sf"} for simple features objects.  If you'd like a
