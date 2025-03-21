@@ -127,15 +127,15 @@
     Code
       filter_state(tigris_states, "Wyoming")
     Output
-      Simple feature collection with 1 feature and 14 fields
+      Simple feature collection with 1 feature and 15 fields
       Geometry type: MULTIPOLYGON
       Dimension:     XY
       Bounding box:  xmin: -111.0546 ymin: 40.99477 xmax: -104.0522 ymax: 45.00582
       Geodetic CRS:  NAD83
-         REGION DIVISION STATEFP  STATENS GEOID STUSPS    NAME LSAD MTFCC FUNCSTAT
-      31      4        8      56 01779807    56     WY Wyoming   00 G4000        A
-                ALAND     AWATER    INTPTLAT     INTPTLON
-      31 251458711911 1867504105 +42.9896591 -107.5443922
+         REGION DIVISION STATEFP  STATENS GEOID     GEOIDFQ STUSPS    NAME LSAD MTFCC
+      31      4        8      56 01779807    56 0400000US56     WY Wyoming   00 G4000
+         FUNCSTAT        ALAND     AWATER    INTPTLAT     INTPTLON
+      31        A 251458162746 1868053273 +42.9896591 -107.5443922
                                geometry
       31 MULTIPOLYGON (((-106.3212 4...
 

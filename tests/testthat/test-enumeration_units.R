@@ -27,8 +27,14 @@ test_that("enumeration unit functions work", {
   expect_snapshot(tracts(state = state, county = county, progress_bar = FALSE))
 
   expect_s3_class(tracts(state = state, county = county, cb = TRUE), "sf")
-  expect_s3_class(tracts(state = state, county = county, year = 1990, cb = TRUE), "sf")
-  expect_s3_class(tracts(state = state, county = county, year = 2013, cb = TRUE), "sf")
+  expect_s3_class(
+    tracts(state = state, county = county, year = 1990, cb = TRUE),
+    "sf"
+  )
+  expect_s3_class(
+    tracts(state = state, county = county, year = 2013, cb = TRUE),
+    "sf"
+  )
   expect_s3_class(tracts(state = state, county = county, year = 2010), "sf")
 
   expect_snapshot(block_groups(state = state, county = county))
@@ -44,8 +50,14 @@ test_that("enumeration unit functions work", {
 
   expect_snapshot(zctas(state = state, year = 2010, progress_bar = FALSE))
 
-  expect_s3_class(zctas(year = 2000, cb = TRUE), "sf")
-  expect_s3_class(zctas(state = state, year = 2000, cb = TRUE), "sf")
+  expect_warning(
+    zctas(year = 2000, cb = TRUE),
+    "CB ZCTAs for 2000 include separate polygons for discontiguous parts."
+  )
+  expect_warning(
+    zctas(state = state, year = 2000, cb = TRUE),
+    "CB ZCTAs for 2000 include separate polygons for discontiguous parts."
+  )
   expect_s3_class(zctas(year = 2010, cb = TRUE), "sf")
 
   expect_snapshot(county_subdivisions(state = state, county = county))
@@ -60,5 +72,4 @@ test_that("enumeration unit functions error", {
 
   expect_error(zctas(state = state, year = 2021, cb = TRUE))
   expect_error(zctas(state = state, year = 2010, cb = TRUE))
-
 })

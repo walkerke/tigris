@@ -1,10 +1,17 @@
 test_that("congressional_districts warns and errors", {
   # FIXME: This is not working
-  expect_warning(congressional_districts(state = "WYO", year = 2010))
+  expect_warning(
+    congressional_districts(state = "WYO", year = 2010),
+    "Ignoring invalid input state."
+  )
 
   expect_error(congressional_districts(year = 2009))
   expect_error(congressional_districts(year = 2012, cb = TRUE))
-  expect_error(congressional_districts(year = 2013, cb = TRUE, resolution = "2m"))
+  expect_error(congressional_districts(
+    year = 2013,
+    cb = TRUE,
+    resolution = "2m"
+  ))
 })
 
 
@@ -18,14 +25,73 @@ test_that("congressional_districts works", {
   res <- "20m"
   state <- "WY"
 
-  expect_s3_class(congressional_districts(year = 2022, resolution = "20m", cb = TRUE), "sf")
-  expect_s3_class(congressional_districts(state = state, year = 2022, resolution = res, cb = cb), "sf")
-  expect_s3_class(congressional_districts(state = state, year = 2018, resolution = res, cb = cb), "sf")
-  expect_s3_class(congressional_districts(state = state, year = 2016, resolution = res, cb = cb), "sf")
-  expect_s3_class(congressional_districts(state = state, year = 2014, resolution = res, cb = cb), "sf")
-  expect_s3_class(congressional_districts(state = state, year = 2013, resolution = res, cb = cb), "sf")
-  expect_s3_class(congressional_districts(state = state, year = 2011, resolution = res, cb = FALSE), "sf")
-  expect_s3_class(congressional_districts(state = state, year = 2010, resolution = res, cb = FALSE), "sf")
+  expect_s3_class(
+    congressional_districts(year = 2022, resolution = "20m", cb = TRUE),
+    "sf"
+  )
+  expect_s3_class(
+    congressional_districts(
+      state = state,
+      year = 2022,
+      resolution = res,
+      cb = cb
+    ),
+    "sf"
+  )
+  expect_s3_class(
+    congressional_districts(
+      state = state,
+      year = 2018,
+      resolution = res,
+      cb = cb
+    ),
+    "sf"
+  )
+  expect_s3_class(
+    congressional_districts(
+      state = state,
+      year = 2016,
+      resolution = res,
+      cb = cb
+    ),
+    "sf"
+  )
+  expect_s3_class(
+    congressional_districts(
+      state = state,
+      year = 2014,
+      resolution = res,
+      cb = cb
+    ),
+    "sf"
+  )
+  expect_s3_class(
+    congressional_districts(
+      state = state,
+      year = 2013,
+      resolution = res,
+      cb = cb
+    ),
+    "sf"
+  )
+  expect_s3_class(
+    congressional_districts(
+      state = state,
+      year = 2011,
+      resolution = res,
+      cb = FALSE
+    ),
+    "sf"
+  )
+  expect_s3_class(
+    congressional_districts(
+      state = state,
+      year = 2010,
+      resolution = res,
+      cb = FALSE
+    ),
+    "sf"
+  )
 })
 
 
@@ -55,28 +121,35 @@ test_that("state_legislative_districts works", {
   )
   expect_s3_class(
     state_legislative_districts(
-      state = state, house = "lower",
-      cb = TRUE, year = 2010
+      state = state,
+      house = "lower",
+      cb = TRUE,
+      year = 2010
     ),
     "sf"
   )
   expect_s3_class(
     state_legislative_districts(
-      state = state, house = "upper",
-      cb = TRUE, year = 2010
+      state = state,
+      house = "upper",
+      cb = TRUE,
+      year = 2010
     ),
     "sf"
   )
   expect_s3_class(
     state_legislative_districts(
-      state = state, house = "upper",
-      cb = TRUE, year = 2013
+      state = state,
+      house = "upper",
+      cb = TRUE,
+      year = 2013
     ),
     "sf"
   )
   expect_s3_class(
     state_legislative_districts(
-      state = state, house = "upper",
+      state = state,
+      house = "upper",
       year = 2010
     ),
     "sf"
