@@ -1,9 +1,41 @@
-check_tigris_arg <- function(arg,
-                             require_arg = FALSE,
-                             allow_null = TRUE,
-                             multiple = FALSE,
-                             error_arg = caller_arg(arg),
-                             error_call = caller_env()) {
+utils::globalVariables(
+  c(
+    "AREA",
+    "AREALAND",
+    "AREATOT",
+    "AREAWAT",
+    "BG",
+    "BLKGROUP",
+    "CO",
+    "CO99_D00_",
+    "CO99_D00_I",
+    "CO99_D90_",
+    "CO99_D90_I",
+    "COUNTY",
+    "COUNTYFP",
+    "LSAD",
+    "LSAD_TRANS",
+    "NAME",
+    "PERIMETER",
+    "ST",
+    "STATE",
+    "STATEFP",
+    "TRACT",
+    "TRACTBASE",
+    "TRACTSUF",
+    "TRACT_NAME",
+    "crs"
+  )
+)
+
+check_tigris_arg <- function(
+  arg,
+  require_arg = FALSE,
+  allow_null = TRUE,
+  multiple = FALSE,
+  error_arg = caller_arg(arg),
+  error_call = caller_env()
+) {
   if (is.null(arg)) {
     if (allow_null && !require_arg) {
       return(invisible(NULL))
@@ -153,7 +185,12 @@ match_state_fips <- function(state,
 #' @param state State name, abbreviation, or FIPS code. Not case sensitive. If a
 #'   single digits FIPS code or longer county FIPS code is passed, the values
 #'   are padded with "0" to subset to allow use as a state value.
-#' @param name description
+#' @param allow_null If `TRUE` (default), allow `NULL` input values by invisibly
+#' returning `NULL`.
+#' @param require_state If `FALSE` (default), warn instead of error on invalid
+#' input values.
+#' @param multiple If `FALSE` (default), require input to match a single state
+#' or county. If `TRUE`, allow multiple values.
 #' @returns
 #' - `NULL` if input is `NULL` and `allow_null = TRUE` and `require_state = FALSE`
 #' - valid state FIPS code if input is even pseudo-valid (i.e. single digit but w/in range)
@@ -602,13 +639,15 @@ year_suf <- function(year) {
 #'   downloading data.
 #' @inheritParams source
 #' @noRd
-set_tigris_year <- function(year = NULL,
-                            default = 2022,
-                            min_year = 2011,
-                            max_year = 2023,
-                            quiet = FALSE,
-                            message = NULL,
-                            call = caller_env()) {
+set_tigris_year <- function(
+  year = NULL,
+  default = 2023,
+  min_year = 2011,
+  max_year = 2024,
+  quiet = FALSE,
+  message = NULL,
+  call = caller_env()
+) {
   if (is.null(year)) {
     year <- getOption("tigris_year", default)
 
@@ -630,11 +669,13 @@ set_tigris_year <- function(year = NULL,
 
 #' Check if year is valid within range and does not match error year
 #' @noRd
-check_tigris_year <- function(year,
-                              min_year = 2011,
-                              max_year = 2023,
-                              message = NULL,
-                              call = caller_env()) {
+check_tigris_year <- function(
+  year,
+  min_year = 2011,
+  max_year = 2024,
+  message = NULL,
+  call = caller_env()
+) {
   year <- as.integer(year)
 
   if (length(year) != 1 || nchar(year) != 4) {
