@@ -15,7 +15,7 @@
 #'
 #' Use option `tigris_year` to change the year for which you'd like to download
 #' data. e.g. `options(tigris_year = 2017)`.  The default year for the package
-#' is 2020.
+#' is 2023.
 #'
 #' Use option `tigris_class` to specify the class of spatial object you'd like
 #' returned. The default is `"sf"` for simple features objects.  If you'd like a
@@ -52,5 +52,3 @@ NULL
 #' @export
 #' @rdname tigris-exports
 NULL
-
-

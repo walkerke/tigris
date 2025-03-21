@@ -1,8 +1,8 @@
 Type: Package
 Package: tigris
 Title: Load Census TIGER/Line Shapefiles
-Version: 2.1.1
-Date: 2024-03-26
+Version: 2.1.2
+Date: 2024-11-04
 Authors@R: c(
     person("Kyle", "Walker", , "kyle@walker-data.com", role = c("aut", "cre")),
     person("Bob", "Rudis", , "bob@rudis.net", role = "ctb"),
@@ -39,4 +39,4 @@ Config/testthat/edition: 3
 Encoding: UTF-8
 LazyData: TRUE
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.3.1
+RoxygenNote: 7.3.2
