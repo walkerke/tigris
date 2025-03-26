@@ -47,7 +47,7 @@ check_tigris_arg <- function(
   # Error if length is greater than 1
   if (!multiple && length(arg) > 1) {
     abort(
-      paste0("`", error_arg, "` must be length 1 if `multiple = FALSE`"),
+      paste0("`", error_arg, "` must be length 1, not length ", length(arg)),
       error_call = error_call
     )
   }
