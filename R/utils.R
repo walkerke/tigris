@@ -41,13 +41,13 @@ check_tigris_arg <- function(
       return(invisible(NULL))
     }
 
-    abort(paste0("`", error_arg, "` can't be `NULL`"), call = error_call)
+    cli_abort("{.arg {error_arg}} can't be `NULL`", call = error_call)
   }
 
   # Error if length is greater than 1
   if (!multiple && length(arg) > 1) {
-    abort(
-      paste0("`", error_arg, "` must be length 1, not length ", length(arg)),
+    cli_abort(
+      "{.arg {error_arg}} must be length 1, not length {length(arg)}",
       error_call = error_call
     )
   }
@@ -146,10 +146,10 @@ match_state_fips <- function(state,
     }
 
     if (any(long_state)) {
-      inform_vec(
-        "Subsetting first two digits from supplied `state` to make valid FIPS codes:",
-        state[long_state]
+      cli_inform(
+        "Subsetting first two digits from supplied {.arg {error_arg}} to make valid FIPS codes: {state[long_state]}"
       )
+
       state[long_state] <- substr(state[long_state], 1, 2)
     }
   }
@@ -249,20 +249,25 @@ validate_state <- function(state,
   }
 
   if (!any(state_is_fips)) {
-    warn("`state` contains no valid FIPS codes or state name/abbreviations")
+
+    if (require_state) {
+      cli_abort(
+        "{.arg state} must contain a valid FIPS codes or state name/abbreviations.",
+        call = error_call
+      )
+    }
+
+    cli_warn(
+      "{.arg state} contains no valid FIPS codes or state name/abbreviations and must be ignored.",
+      call = error_call
+    )
+
     return(NULL)
   }
 
-  message <- paste0(
-    "`state` contains invalid FIPS codes or state name/abbreviations",
-    format_vec(
-      before = ": ",
-      state[!state_is_fips],
-      after = ""
-    )
-  )
+  message <- "{.arg state} contains invalid FIPS codes or state name/abbreviations: {state[!state_is_fips]}"
 
-  warn(message)
+  cli_warn(message, call = error_call)
 
   state[state_is_fips]
 }
@@ -367,10 +372,7 @@ match_county_name <- function(county,
 
     message <- c(
       message,
-      paste0(
-        "`county` input can't be matched to any valid value: ",
-        format_vec(missing_county)
-      )
+      "{.arg county} input can't be matched to any valid value: {missing_county}"
     )
   }
 
@@ -380,20 +382,17 @@ match_county_name <- function(county,
 
     message <- c(
       message,
-      paste0(
-        "`county` input is ambigous and matches multiple values: ",
-        format_vec(uncertain_county)
-      )
+      "{.arg county} input is ambigous and matches multiple values: {uncertain_county}"
     )
   }
 
   county_matches <- as.character(county_matches)
 
   if (require_county) {
-    abort(message, call = error_call)
+    cli_abort(message, call = error_call)
   }
 
-  warn(message)
+  cli_warn(message, call = error_call)
 
   county_matches
 }
@@ -475,28 +474,26 @@ validate_county <- function(state,
   na_county_fips <- is.na(county_fips)
 
   if (.msg) {
+    message_counties <- paste0(
+      "{.val ",
+      county_fips[!na_county_fips],
+      "} for {.val ",
+      county[!na_county_fips],
+      "}"
+    )
+
     message <- c(
-      "i" = paste0(
-        "Using FIPS code ",
-        format_vec(
-          paste0(
-            "'", county_fips[!na_county_fips], "' for '", county[!na_county_fips], "'"
-          )
-        )
-      )
+      "*" = "Using FIPS code{?s} {message_counties}"
     )
 
     if (any(na_county_fips)) {
       message <- c(
         message,
-        "!" = paste0(
-          "Dropping invalid `county` values: ",
-          paste0("'", format_vec(county[na_county_fips]), "'")
-        )
+        "!" = "Dropping invalid {.arg county} value{?s}: {county[na_county_fips]}"
       )
     }
 
-    inform(message)
+    cli_inform(message)
   }
 
   if (all(na_county_fips)) {
@@ -504,45 +501,6 @@ validate_county <- function(state,
   }
 
   county_fips[!na_county_fips]
-}
-
-#' Combine multiple words into a single string
-#'
-#' @seealso [knitr::combine_words()]
-#' @noRd
-format_vec <- function(vec, and = "and ", before = "", after = ".") {
-  l <- length(vec)
-
-  if (l == 2) {
-    out <- paste0(before, vec[[1]], " ", and, vec[[2]], after)
-    return(out)
-  }
-
-  out <- paste0(vec, ", ")
-
-
-  out[l - 1] <- paste0(out[l - 1], and)
-
-  out[l] <- gsub(", ", after, out[l])
-
-  paste0(before, paste0(out, collapse = ""))
-}
-
-#' Create an inform message with a formatted vector
-#' @noRd
-inform_vec <- function(message = NULL,
-                       x = NULL,
-                       and = "and ",
-                       before = ": ",
-                       after = "",
-                       ...) {
-  if (is.null(x)) {
-    x <- after
-  } else {
-    x <- format_vec(x, before = before, and = and, after = after)
-  }
-
-  inform(message = paste0(message, x), ...)
 }
 
 # Function from SO to do proper capitalization
@@ -588,9 +546,9 @@ prep_input_sfc <- function(input,
   }
 
   if (!inherits(input, c("sf", "sfc", "bbox"))) {
-    abort(
+    cli_abort(
       c(
-        paste0("Invalid input `", arg, "`"),
+        "Invalid input {.arg {arg}}",
         "i" = "Supply an sf, sfc, bbox, or a length-4 vector
           that can be converted to a bbox."
       ),
@@ -607,10 +565,10 @@ prep_input_sfc <- function(input,
   }
 
   if (length(input) > 1) {
-    inform(
+    cli_inform(
       c(
-        "!" = paste0("`", arg, "` contains multiple geometries and may not work as expected."),
-        "i" = paste0("Unioning `", arg, "` geometries with `sf::st_union`.")
+        "!" = "{.arg {arg}} contains multiple geometries and may not work as expected.",
+        "i" = "Unioning .arg {arg}} geometries with {.fn sf::st_union}."
       )
     )
 
@@ -652,7 +610,7 @@ set_tigris_year <- function(
     year <- getOption("tigris_year", default)
 
     if (!quiet) {
-      inform(sprintf("Retrieving data for the year %s", year))
+      cli_inform("Retrieving data for the year {year}")
     }
   }
 
@@ -679,8 +637,8 @@ check_tigris_year <- function(
   year <- as.integer(year)
 
   if (length(year) != 1 || nchar(year) != 4) {
-    abort(
-      "`year` must be a an integer or string with a single year.",
+    cli_abort(
+      "{.arg year} must be a an integer or string with a single year.",
       call = call
     )
   }
@@ -690,14 +648,14 @@ check_tigris_year <- function(
   }
 
   if (!is.null(message)) {
-    abort(message, call = call)
+    cli_abort(message, call = call)
   }
 
-  msg <- "%s is not currently available for any year before %s."
+  msg <- "{fname} is not currently available for any year before {limit_year}."
   limit_year <- min_year
 
   if (year > max_year) {
-    msg <- "%s is not currently available for any year after %s."
+    msg <- "{fname} is not currently available for any year after {limit_year}."
     limit_year <- max_year
   }
 
@@ -710,12 +668,10 @@ check_tigris_year <- function(
     fname <- "Requested data"
   }
 
-  msg <- sprintf(msg, fname, limit_year)
-
-  abort(
+  cli_abort(
     c(
       msg,
-      "*" = "To request this feature, file an issue at https://github.com/walkerke/tigris/issues"
+      "*" = "To request this feature, file an issue at {.url https://github.com/walkerke/tigris/issues}"
     ),
     call = call
   )
@@ -732,12 +688,13 @@ check_not_year <- function(year,
     return(year)
   }
 
-  msg <- message %||% sprintf(
-    "`year` can't be %s",
-    format_vec(error_year, and = "or ")
+  cli_abort(
+    c(
+      message %||% "{.arg year} can't be {.or {error_year}}.",
+      ...
+    ),
+    call = call
   )
-
-  abort(c(msg, ...), call = call)
 }
 
 #' Check if resolution is valid
@@ -781,12 +738,12 @@ remove_shp <- function(x) {
 #'
 #' @noRd
 check_cb_year <- function(year = 1990, error_year = 1990, call = caller_env()) {
- check_not_year(
-   year,
-   error_year = error_year,
-   message = sprintf("Please specify `cb = TRUE` to get %s data.", error_year),
-   call = call
- )
+  check_not_year(
+    year,
+    error_year = error_year,
+    message = "Please specify `cb = TRUE` to get {error_year} data.",
+    call = call
+  )
 }
 
 #' Static version of `stringr::str_pad` based on `stringstatic::str_pad()`
