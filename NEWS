@@ -15,7 +15,7 @@ New support for downloading multiple existing or new datasets:
 
 Improved input validation both for specific functions and in general:
 
-* All functions use consistent validation for `year`, `state`, and `county` parameters. If state or county is required, functions error (instead of warning) for `NULL` or invalid values.
+* All functions use consistent validation for `year`, `state`, and `county` parameters. If state or county is required, functions error (instead of warn) for `NULL` or invalid values.
 
 * Error when `year = 2022` for `combined_statistical_areas()` and `core_based_statistical_areas()`. (#184)
 
@@ -23,21 +23,33 @@ Improved input validation both for specific functions and in general:
 
 * Warn users when `filter_by` contains multiple geometries and only part of the filter can be used.
 
+* Allow `sfc` inputs for `erase_water()`
+
+Other new features:
+
+* Add a `crs` argument to `load_tiger()` to allow users to return data in specified coordinate reference system.
+
+* Expose `query` argument for `load_tiger()` to allow user-specified queries when reading datasets.
+
+* Set 2020 as default `year` for `zctas()` (latest available year for ZCTA data).
+
 ### Bug fixes
 
 * `erase_water()` will not fail when `input_sf` doesn't intersect with any water areas. (#172, #182)
 
 ### Internal changes
 
-* Remove `{stringr}` and `{uuid}` from Imports and add `{rlang}`
+* Remove `{stringr}` and `{uuid}` from Imports and add `{rlang}` and `{cli}`
 
 * Add `{withr}` to Suggests (for tests only).
 
-* Switch to use `rlang::abort()`, `rlang::warn()` and `rlang::inform()` for all errors, warnings, and messages.
+* Switch to use `cli::cli_abort()`, `cli::cli_warn()` and `cli::cli_inform()` for all errors, warnings, and messages.
 
 * Add `multiple` argument to `validate_state()` and `validate_county()` to allow validation of multiple states or counties in a single call. Export both validation functions as internal functions.
 
 * Refactor and add helper functions (`set_tigris_year()`, `check_tigris_year()`, and `url_tiger()`) to reduce duplication and make code more maintainable.
+
+* Add tests with `{testthat}` and expand coverage to 50+%.
 
 tigris 2.0
 -------------------------------------------------------
