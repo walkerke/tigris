@@ -504,6 +504,8 @@ geo_join <- function(spatial_data, data_frame, by_sp, by_df, by = NULL, how = "l
 lookup_code <- function(state, county = NULL) {
   state <- validate_state(state, allow_null = FALSE, .msg = FALSE)
 
+  fips_codes <- tigris::fips_codes
+
   if (!is.null(county)) {
 
     vals <- fips_codes[fips_codes$state_code == state &
@@ -555,11 +557,13 @@ list_counties <- function(state) {
 
   state <- validate_state(state, allow_null = FALSE, .msg = FALSE)
 
-  vals <- fips_codes[fips_codes$state_code == state, c("county", "county_code")]
+  vals <- tigris::fips_codes[
+    tigris::fips_codes$state_code == state,
+    c("county", "county_code")
+  ]
   vals$county <- gsub("\ County$", "", vals$county)
   rownames(vals) <- NULL
   return(vals)
-
 }
 
 #' @noRd

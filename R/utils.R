@@ -291,7 +291,9 @@ county_values <- function(state,
     return(NULL)
   }
 
-  state_counties <- fips_codes[fips_codes[["state_code"]] == state, ]
+  state_counties <- tigris::fips_codes[
+    tigris::fips_codes[["state_code"]] == state,
+  ]
   set_names(state_counties[["county_code"]], state_counties[["county"]])
 }
 

@@ -29,18 +29,6 @@ fips_state_table <- structure(list(abb = c("ak", "al", "ar", "as", "az", "ca", "
 )), .Names = c("abb", "fips", "name"), row.names = c(NA, -56L
 ), class = "data.frame")
 
-
-.onLoad <- function(libname, pkgname) {
-  # options(tigris_refresh=FALSE)
-  # options(tigris_use_cache=FALSE)
-  # options(tigris_year = 2015)
-  # options(tigris_class = "sp")
-  run_on_load()
-  data("fips_codes", package = pkgname, envir = parent.env(environment()))
-}
-
-on_load(local_use_cli())
-
 .onAttach <- function(libname, pkgname) {
   packageStartupMessage(
     paste0(

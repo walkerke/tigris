@@ -75,7 +75,7 @@ congressional_districts <- function(state = NULL, cb = FALSE, resolution = "500k
     # Have to handle 2022 through 2024 differently as national CD file is not available
     if (year %in% 2022:2024) {
       if (is.null(state)) {
-        state_codes <- unique(fips_codes$state_code)
+        state_codes <- unique(tigris::fips_codes$state_code)
         state_codes <- state_codes[state_codes != "74"]
         cds <- lapply(state_codes, function(x) {
           suppressMessages(congressional_districts(state = x, year = year))
