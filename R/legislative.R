@@ -35,7 +35,7 @@ congressional_districts <- function(state = NULL, cb = FALSE, resolution = "500k
   year <- set_tigris_year(year, min_year = 2010)
 
   if (year < 2013 && cb) {
-    abort(
+    cli_abort(
       c(
         "`cb = TRUE` for congressional districts is unavailable prior to 2013.",
         "i" = "Regular TIGER/Line files are available for 2010 through 2012 with `cb = FALSE`"
@@ -106,8 +106,6 @@ congressional_districts <- function(state = NULL, cb = FALSE, resolution = "500k
     return(cds[cds[["STATEFP"]] %in% valid_state, ])
   }
 
-  warn("Ignoring invalid input state.")
-
   cds
 }
 
@@ -151,9 +149,9 @@ state_legislative_districts <- function(state = NULL, house = "upper",
   if (is.null(state)) {
     if (year > 2018 && cb) {
       state <- "us"
-      inform("Retrieving state legislative districts for the entire United States")
+      cli_inform("Retrieving state legislative districts for the entire United States")
     } else {
-      abort("A state must be specified for this year/dataset combination.")
+      cli_abort("{.arg state} must be specified for this year/dataset combination.")
     }
   } else {
     state <- validate_state(state, allow_null = FALSE, require_state = TRUE)
@@ -243,15 +241,15 @@ voting_districts <- function(state = NULL, county = NULL, cb = FALSE, year = 202
   year <- set_tigris_year(year, min_year = 2012, max_year = 2020,  default = 2020)
 
   if (year != 2020 && cb) {
-    abort("Cartographic boundary voting districts files are only available for 2020.")
+    cli_abort("Cartographic boundary voting districts files are only available for 2020.")
   }
 
   if (is.null(state)) {
     if (year > 2018 && cb) {
       state <- "us"
-      inform("Retrieving voting districts for the entire United States")
+      cli_inform("Retrieving voting districts for the entire United States")
     } else {
-      abort("A state must be specified for this year/dataset combination.")
+      cli_abort("{.arg state} must be specified for this year/dataset combination.")
     }
   } else {
     state <- validate_state(state, require_state = TRUE)

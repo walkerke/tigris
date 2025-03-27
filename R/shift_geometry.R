@@ -88,7 +88,7 @@ shift_geometry <- function(input_sf,
 
   # Check to see if the input is an sf object, otherwise exit
   if (!is_sf(input_sf)) {
-    abort("The input dataset must be an sf object.")
+    cli_abort("The input dataset must be an sf object.")
   }
 
   position <- arg_match(position)
@@ -122,7 +122,7 @@ shift_geometry <- function(input_sf,
   pr_check <- suppressMessages(sf::st_intersects(input_sf, pr_bbox, sparse = FALSE)[,1])
 
   if (!any(ak_check) && !any(hi_check) && !any(pr_check)) {
-    warn(
+    cli_warn(
       c("i" = "None of your features are in Alaska, Hawaii, or Puerto Rico, so no geometries will be shifted.",
         "v" = 'Transforming your object\'s CRS to "ESRI:102003"')
     )

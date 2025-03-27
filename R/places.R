@@ -28,15 +28,15 @@ places <- function(state = NULL, cb = FALSE, year = NULL, ...) {
   year <- set_tigris_year(year, min_year = 2000)
 
   if (year > 2000 && year < 2010) {
-    abort("`year` must be 2000, 2010, or any year after 2010.")
+    cli_abort("{.arg year} must be 2000, 2010, or any year after 2010.")
   }
 
   if (is.null(state)) {
     if (year > 2018 && cb) {
       state <- "us"
-      inform("Retrieving Census-designated places for the entire United States")
+      cli_inform("Retrieving Census-designated places for the entire United States")
     } else {
-      abort("A state must be specified for this year/dataset combination.")
+      cli_abort("{.arg state} must be specified for this year/dataset combination.")
     }
   } else {
     state <- validate_state(state, allow_null = FALSE, require_state = TRUE)

@@ -45,9 +45,9 @@ pumas <- function(state = NULL, cb = FALSE, year = NULL, ...) {
   if (is.null(state)) {
     if (year %in% 2019:2020 && cb) {
       state <- "us"
-      inform("Retrieving PUMAs for the entire United States")
+      cli_inform("Retrieving PUMAs for the entire United States")
     } else {
-      abort("A state must be specified for this year/dataset combination.")
+      cli_abort("{.arg state} must be specified for this year/dataset combination.")
     }
   } else {
     state <- validate_state(state, allow_null = FALSE)
@@ -62,14 +62,14 @@ pumas <- function(state = NULL, cb = FALSE, year = NULL, ...) {
   if (cb) {
 
     if (year > 2020) {
-      abort(
+      cli_abort(
         c("Cartographic boundary PUMAs are not yet available for years after 2020.",
           "i" = "Use the argument `year = 2019` for 2010 PUMA boundaries or `year = 2020` for 2020 PUMA boundaries instead to request your data.")
       )
     }
 
     if (year == 2020) {
-      inform(c("i" = "The 2020 CB PUMAs use the new 2020 PUMA boundary definitions."))
+      cli_inform(c("i" = "The 2020 CB PUMAs use the new 2020 PUMA boundary definitions."))
       url <- url_tiger("GENZ%s/shp/cb_%s_%s_puma20_500k", year, year, state)
 
     } else {

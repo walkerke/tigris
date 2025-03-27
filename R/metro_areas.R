@@ -84,7 +84,7 @@ urban_areas <- function(cb = FALSE, year = NULL, criteria = NULL, ...) {
     year <- set_tigris_year(year, default = 2020, max_year = 2020)
 
     if (!is.null(criteria)) {
-      abort(
+      cli_abort(
         "The `criteria` argument is not supported
         for cartographic boundary files"
       )
@@ -109,7 +109,7 @@ urban_areas <- function(cb = FALSE, year = NULL, criteria = NULL, ...) {
     } else if (!is.null(criteria) && criteria == 2020) {
 
       if (year != 2020) {
-        abort("`year` must be 2020 to use 2020 criteria.")
+        cli_abort("{.arg year} must be 2020 to use 2020 criteria.")
       }
 
       url <- url_tiger("TIGER%s/UAC/tl_%s_us_uac20", year, year)
