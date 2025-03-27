@@ -32,9 +32,9 @@ The input sf object with transformed geometry
 \description{
 This function will shift and optionally rescale a US dataset for thematic mapping of Alaska,
 Hawaii, and Puerto Rico with respect to the continental United States.  Features in the continental
-United States will have their CRS transformed to USA Contiguous Albers Equal Area Conic ('ESRI:102003').
+United States will have their CRS transformed to USA Contiguous Albers Equal Area Conic ("ESRI:102003").
 Alaska, Hawaii, and Puerto Rico features are transformed to appropriate coordinate systems for those areas,
-then shifted and optionally re-scaled before being assigned the 'ESRI:102003' CRS.  Options for users
+then shifted and optionally re-scaled before being assigned the "ESRI:102003" CRS.  Options for users
 include \code{preserve_area} which allows for preservation of the area of AK/HI/PR relative to the
 continental US if desired, and two possible arrangements which are specified with \code{position = "below"}
 or \code{position = "outside"}

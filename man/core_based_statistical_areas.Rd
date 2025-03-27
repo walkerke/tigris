@@ -7,36 +7,54 @@
 core_based_statistical_areas(cb = FALSE, resolution = "500k", year = NULL, ...)
 }
 \arguments{
-\item{cb}{If cb is set to TRUE, download a generalized (1:500k)
-cartographic boundary file.  Defaults to FALSE (the most detailed
+\item{cb}{If cb is set to \code{TRUE}, download a generalized (1:500k)
+cartographic boundary file.  Defaults to \code{FALSE} (the most detailed
 TIGER/Line file).}
 
-\item{resolution}{The resolution of the cartographic boundary file (if cb == TRUE).
-Defaults to '500k'; options include '5m' (1:5 million) and '20m' (1:20 million).}
+\item{resolution}{The resolution of the cartographic boundary file (if \code{cb = TRUE}). Defaults to "500k"; options include "5m" (1:5 million) and "20m"
+(1:20 million).}
 
-\item{year}{the data year; defaults to 2022}
+\item{year}{year of data to return. As of Jan. 2024,
+\code{core_based_statistical_areas} has a maximum year of 2021, a minimum of
+2010, and defaults to 2021 if no option is set.}
 
-\item{...}{arguments to be passed to internal function \code{load_tiger}, which is not exported. See Additional Arguments.}
+\item{...}{arguments to be passed to internal function \code{load_tiger}, which is
+not exported. See Additional Arguments.}
 }
 \description{
-Core-based statistical areas include both metropolitan areas and micropolitan areas.  The US Census
-Bureau defines these areas as follows: "A metro area contains a core urban area of 50,000 or more population, and a
-micro area contains an urban core of at least 10,000 (but less than 50,000) population. Each metro or micro area
-consists of one or more counties and includes the counties containing the core urban area, as well as any adjacent
-counties that have a high degree of social and economic integration (as measured by commuting to work) with the urban
-core."  Please see the link provided for more information
+Core-based statistical areas include both metropolitan areas and micropolitan
+areas. The US Census Bureau defines these areas as follows: "A metro area
+contains a core urban area of 50,000 or more population, and a micro area
+contains an urban core of at least 10,000 (but less than 50,000) population.
+Each metro or micro area consists of one or more counties and includes the
+counties containing the core urban area, as well as any adjacent counties
+that have a high degree of social and economic integration (as measured by
+commuting to work) with the urban core." Please see the link provided for
+more information
 }
 \section{Additional Arguments}{
 
 Additional arguments that can be passed in \code{...} are:
 \itemize{
-\item \code{class} Desired class of return object: \code{"sf"} (the default) or \code{"sp"}.  sp classes should be considered deprecated as of tigris version 2.0, but legacy support is still available.
-\item \code{progress_bar} If set to \code{FALSE}, do not display download progress bar (helpful for R Markdown documents). Defaults to \code{TRUE}.
-\item \code{keep_zipped_shapefile} If set to \code{TRUE}, do not delete zipped shapefile (stored in temporary directory or \code{TIGRIS_CACHE_DIR}
-depending on the configuration of global option \code{"tigris_use_cache"}). Defaults to \code{FALSE}.
-\item \code{refresh} Whether to re-download cached shapefiles (\code{TRUE} or \code{FALSE}) . The default is either \code{FALSE} or the value of global
-option \code{"tigris_refresh"} if it is set. Specifying this argument will override the behavior set in \code{"tigris_refresh"} global option.
-\item \code{filter_by} Geometry used to filter the output returned by the function.  Can be an sf object, an object of class \code{bbox}, or a length-4 vector of format \code{c(xmin, ymin, xmax, ymax)} that can be converted to a bbox. Geometries that intersect the input to \code{filter_by} will be returned.
+\item \code{class} Desired class of return object: \code{"sf"} (the default) or \code{"sp"}. sp
+classes should be considered deprecated as of tigris version 2.0, but legacy
+support is still available.
+\item \code{progress_bar} If set to \code{FALSE}, do not display download progress bar
+(helpful for R Markdown documents). Defaults to \code{TRUE}.
+\item \code{keep_zipped_shapefile} If set to \code{TRUE}, do not delete zipped shapefile
+(stored in temporary directory or \code{TIGRIS_CACHE_DIR} depending on the
+configuration of global option \code{"tigris_use_cache"}). Defaults to \code{FALSE}.
+\item \code{refresh} Whether to re-download cached shapefiles (\code{TRUE} or \code{FALSE}). The
+default is either \code{FALSE} or the value of global option \code{"tigris_refresh"}
+if it is set. Specifying this argument will override the behavior set in
+\code{"tigris_refresh"} global option.
+\item \code{filter_by} Geometry used to filter the output returned by the function.
+Can be an sf OR sfc object, an object of class \code{bbox}, or a length-4 vector
+of format \code{c(xmin, ymin, xmax, ymax)} that can be converted to a bbox.
+Geometries that intersect the input to \code{filter_by} will be returned.
+\item \code{crs} Output coordinate reference system. All TIGER/Shapefiles use a EPSG
+4269 coordinate reference system.
+\item \code{query} A SQL query passed to \code{\link[sf:st_read]{sf::st_read()}}.
 }
 }
 

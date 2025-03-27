@@ -15,38 +15,39 @@ tracts(
 }
 \arguments{
 \item{state}{The two-digit FIPS code (string) of the state you want. Can also
-be state name or state abbreviation. When \code{NULL} and combined with
-\code{cb = TRUE}, a national dataset of Census tracts will be returned for
-years 2019 and later.}
+be state name or state abbreviation. When \code{NULL} and combined with \code{cb = TRUE}, a national dataset of Census tracts will be returned for years 2019
+and later.}
 
 \item{county}{The three-digit FIPS code (string) of the county you'd like to
-subset for, or a vector of FIPS codes if you desire multiple counties.
-Can also be a county name or vector of names.}
+subset for, or a vector of FIPS codes if you desire multiple counties. Can
+also be a county name or vector of names.}
 
-\item{cb}{If cb is set to TRUE, download a generalized (1:500k)
-tracts file.  Defaults to FALSE (the most detailed TIGER/Line file)}
+\item{cb}{If cb is set to TRUE, download a generalized (1:500k) tracts file.
+Defaults to FALSE (the most detailed TIGER/Line file)}
 
-\item{resolution}{The resolution of the cartographic boundary file (if using cb = TRUE).
-Defaults to '500k'; the other option is '5m' (1:5 million).  Resolution of '5m' is #'        only available for the national Census tract file for years 2022 and later.}
+\item{resolution}{The resolution of the cartographic boundary file (if using
+cb = TRUE). Defaults to "500k"; the other option is "5m" (1:5 million).
+Resolution of "5m" is only available for the national Census tract file for
+years 2022 and later.}
 
 \item{year}{the data year; defaults to 2022}
 
-\item{...}{arguments to be passed to internal function \code{load_tiger}, which is not exported. See Additional Arguments.}
+\item{...}{arguments to be passed to internal function \code{load_tiger}, which is
+not exported. See Additional Arguments.}
 }
 \description{
 Description from the US Census Bureau (see link for source):
-Census Tracts are small, relatively permanent statistical subdivisions of
-a county or equivalent entity that are updated by local participants prior
-to each decennial census as part of the Census Bureau's Participant
-Statistical Areas Program. The Census Bureau delineates census tracts in
-situations where no local participant existed or where state, local, or
-tribal governments declined to participate. The primary purpose of census
-tracts is to provide a stable set of geographic units for the presentation
-of statistical data.
+Census Tracts are small, relatively permanent statistical subdivisions of a
+county or equivalent entity that are updated by local participants prior to
+each decennial census as part of the Census Bureau's Participant Statistical
+Areas Program. The Census Bureau delineates census tracts in situations where
+no local participant existed or where state, local, or tribal governments
+declined to participate. The primary purpose of census tracts is to provide a
+stable set of geographic units for the presentation of statistical data.
 }
 \details{
-Census tracts generally have a population size between 1,200 and 8,000 people,
-with an optimum size of 4,000 people. A census tract usually covers a
+Census tracts generally have a population size between 1,200 and 8,000
+people, with an optimum size of 4,000 people. A census tract usually covers a
 contiguous area; however, the spatial size of census tracts varies widely
 depending on the density of settlement.  Census tract boundaries are
 delineated with the intention of being maintained over a long time so that
@@ -66,13 +67,25 @@ geographic hierarchy.
 
 Additional arguments that can be passed in \code{...} are:
 \itemize{
-\item \code{class} Desired class of return object: \code{"sf"} (the default) or \code{"sp"}.  sp classes should be considered deprecated as of tigris version 2.0, but legacy support is still available.
-\item \code{progress_bar} If set to \code{FALSE}, do not display download progress bar (helpful for R Markdown documents). Defaults to \code{TRUE}.
-\item \code{keep_zipped_shapefile} If set to \code{TRUE}, do not delete zipped shapefile (stored in temporary directory or \code{TIGRIS_CACHE_DIR}
-depending on the configuration of global option \code{"tigris_use_cache"}). Defaults to \code{FALSE}.
-\item \code{refresh} Whether to re-download cached shapefiles (\code{TRUE} or \code{FALSE}) . The default is either \code{FALSE} or the value of global
-option \code{"tigris_refresh"} if it is set. Specifying this argument will override the behavior set in \code{"tigris_refresh"} global option.
-\item \code{filter_by} Geometry used to filter the output returned by the function.  Can be an sf object, an object of class \code{bbox}, or a length-4 vector of format \code{c(xmin, ymin, xmax, ymax)} that can be converted to a bbox. Geometries that intersect the input to \code{filter_by} will be returned.
+\item \code{class} Desired class of return object: \code{"sf"} (the default) or \code{"sp"}. sp
+classes should be considered deprecated as of tigris version 2.0, but legacy
+support is still available.
+\item \code{progress_bar} If set to \code{FALSE}, do not display download progress bar
+(helpful for R Markdown documents). Defaults to \code{TRUE}.
+\item \code{keep_zipped_shapefile} If set to \code{TRUE}, do not delete zipped shapefile
+(stored in temporary directory or \code{TIGRIS_CACHE_DIR} depending on the
+configuration of global option \code{"tigris_use_cache"}). Defaults to \code{FALSE}.
+\item \code{refresh} Whether to re-download cached shapefiles (\code{TRUE} or \code{FALSE}). The
+default is either \code{FALSE} or the value of global option \code{"tigris_refresh"}
+if it is set. Specifying this argument will override the behavior set in
+\code{"tigris_refresh"} global option.
+\item \code{filter_by} Geometry used to filter the output returned by the function.
+Can be an sf OR sfc object, an object of class \code{bbox}, or a length-4 vector
+of format \code{c(xmin, ymin, xmax, ymax)} that can be converted to a bbox.
+Geometries that intersect the input to \code{filter_by} will be returned.
+\item \code{crs} Output coordinate reference system. All TIGER/Shapefiles use a EPSG
+4269 coordinate reference system.
+\item \code{query} A SQL query passed to \code{\link[sf:st_read]{sf::st_read()}}.
 }
 }
 

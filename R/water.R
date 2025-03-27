@@ -13,7 +13,7 @@
 #' @inheritParams load_tiger_doc_template
 #' @inheritSection load_tiger_doc_template Additional Arguments
 #' @family water functions
-#' @seealso \url{https://www2.census.gov/geo/pdfs/maps-data/data/tiger/tgrshp2020/TGRSHP2020_TechDoc.pdf}
+#' @seealso <https://www2.census.gov/geo/pdfs/maps-data/data/tiger/tgrshp2020/TGRSHP2020_TechDoc.pdf>
 #' @export
 #' @examples \dontrun{
 #' library(tigris)
@@ -25,24 +25,7 @@
 #' }
 area_water <- function(state, county, year = NULL, ...) {
 
-  if (is.null(year)) {
-
-    year <- getOption("tigris_year", 2022)
-
-    message(sprintf("Retrieving data for the year %s", year))
-
-  }
-
-  if (year < 2011) {
-
-    fname <- as.character(match.call())[[1]]
-
-    msg <- sprintf("%s is not currently available for years prior to 2011.  To request this feature,
-                   file an issue at https://github.com/walkerke/tigris.", fname)
-
-    stop(msg, call. = FALSE)
-
-  }
+  year <- set_tigris_year(year, min_year = 2010)
 
   if (length(county) > 1) {
     w <- lapply(county, function(x) {
@@ -53,20 +36,14 @@ area_water <- function(state, county, year = NULL, ...) {
     return(w)
   }
 
-  state <- validate_state(state)
+  state <- validate_state(state, require_state = TRUE)
 
-  county <- validate_county(state, county)
+  county <- validate_county(state, county, require_county = TRUE)
 
-  if (is.null(state)) stop("Invalid state", call.=FALSE)
+  url <- url_tiger("TIGER%s/AREAWATER/tl_%s_%s%s_areawater",
+                   year, year, state, county)
 
-  if (is.null(county) | length(county) > 1) stop("Invalid county", call. = FALSE)
-
-  cyear <- as.character(year)
-
-  url <- sprintf("https://www2.census.gov/geo/tiger/TIGER%s/AREAWATER/tl_%s_%s%s_areawater.zip",
-                 cyear, cyear, state, county)
-
-  return(load_tiger(url, tigris_type="area_water", ...))
+  return(load_tiger(url, tigris_type = "area_water", ...))
 
 }
 
@@ -87,7 +64,7 @@ area_water <- function(state, county, year = NULL, ...) {
 #' @inheritParams load_tiger_doc_template
 #' @inheritSection load_tiger_doc_template Additional Arguments
 #' @family water functions
-#' @seealso \url{https://www2.census.gov/geo/pdfs/maps-data/data/tiger/tgrshp2020/TGRSHP2020_TechDoc.pdf}
+#' @seealso <https://www2.census.gov/geo/pdfs/maps-data/data/tiger/tgrshp2020/TGRSHP2020_TechDoc.pdf>
 #' @export
 #' @examples \dontrun{
 #' library(tigris)
@@ -99,24 +76,7 @@ area_water <- function(state, county, year = NULL, ...) {
 #' }
 linear_water <- function(state, county, year = NULL, ...) {
 
-  if (is.null(year)) {
-
-    year <- getOption("tigris_year", 2022)
-
-    message(sprintf("Retrieving data for the year %s", year))
-
-  }
-
-  if (year < 2011) {
-
-    fname <- as.character(match.call())[[1]]
-
-    msg <- sprintf("%s is not currently available for years prior to 2011.  To request this feature,
-                   file an issue at https://github.com/walkerke/tigris.", fname)
-
-    stop(msg, call. = FALSE)
-
-  }
+  year <- set_tigris_year(year, min_year = 2010)
 
   if (length(county) > 1) {
     w <- lapply(county, function(x) {
@@ -127,20 +87,14 @@ linear_water <- function(state, county, year = NULL, ...) {
     return(w)
   }
 
-  state <- validate_state(state)
+  state <- validate_state(state, require_state = TRUE)
 
-  county <- validate_county(state, county)
+  county <- validate_county(state, county, require_county = TRUE)
 
-  if (is.null(state)) stop("Invalid state", call.=FALSE)
+  url <- url_tiger("TIGER%s/LINEARWATER/tl_%s_%s%s_linearwater",
+                   year, year, state, county)
 
-  if (is.null(county)) stop("Invalid county", call. = FALSE)
-
-  cyear <- as.character(year)
-
-  url <- sprintf("https://www2.census.gov/geo/tiger/TIGER%s/LINEARWATER/tl_%s_%s%s_linearwater.zip",
-                 cyear, cyear, state, county)
-
-  return(load_tiger(url, tigris_type="linear_water", ...))
+  return(load_tiger(url, tigris_type = "linear_water", ...))
 
 }
 
@@ -152,26 +106,14 @@ linear_water <- function(state, county, year = NULL, ...) {
 #' @family water functions
 coastline <- function(year = NULL, ...) {
 
-  if (is.null(year)) {
-
-    year <- getOption("tigris_year", 2020)
-
-    message(sprintf("Retrieving data for the year %s", year))
-
-  }
-
-  cyear <- as.character(year)
+  year <- set_tigris_year(year)
 
   if (year > 2016) {
-    url <- sprintf("https://www2.census.gov/geo/tiger/TIGER%s/COASTLINE/tl_%s_us_coastline.zip",
-                   cyear, cyear)
+    url <- url_tiger("TIGER%s/COASTLINE/tl_%s_us_coastline", year, year)
   } else {
-    url <- sprintf("https://www2.census.gov/geo/tiger/TIGER%s/COAST/tl_%s_us_coastline.zip",
-                   cyear, cyear)
+    url <- url_tiger("TIGER%s/COAST/tl_%s_us_coastline", year, year)
   }
 
-
-
-  return(load_tiger(url, tigris_type="coastline", ...))
+  return(load_tiger(url, tigris_type = "coastline", ...))
 
 }

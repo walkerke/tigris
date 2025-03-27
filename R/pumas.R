@@ -23,7 +23,7 @@
 #' @inheritSection load_tiger_doc_template Additional Arguments
 #' @export
 #' @family general area functions
-#' @seealso \url{https://www.census.gov/programs-surveys/geography/guidance/geo-areas/pumas.html}
+#' @seealso <https://www.census.gov/programs-surveys/geography/guidance/geo-areas/pumas.html>
 #' @examples \dontrun{
 #' library(tigris)
 #'
@@ -40,40 +40,18 @@
 #' }
 pumas <- function(state = NULL, cb = FALSE, year = NULL, ...) {
 
-  if (is.null(year)) {
-
-    year <- getOption("tigris_year", 2022)
-
-    message(sprintf("Retrieving data for the year %s", year))
-
-  }
-
-  if (year < 2011) {
-
-    fname <- as.character(match.call())[[1]]
-
-    msg <- sprintf("%s is not currently available for years prior to 2011.  To request this feature,
-                   file an issue at https://github.com/walkerke/tigris.", fname)
-
-    stop(msg, call. = FALSE)
-
-  }
+  year <- set_tigris_year(year)
 
   if (is.null(state)) {
     if (year %in% 2019:2020 && cb) {
       state <- "us"
-      message("Retrieving PUMAs for the entire United States")
+      cli_inform("Retrieving PUMAs for the entire United States")
     } else {
-      stop("A state must be specified for this year/dataset combination.",
-           call. = FALSE)
+      cli_abort("{.arg state} must be specified for this year/dataset combination.")
     }
   } else {
-    state <- validate_state(state)
-
-    if (is.null(state)) stop("Invalid state", call.=FALSE)
+    state <- validate_state(state, allow_null = FALSE)
   }
-
-  cyear <- as.character(year)
 
   if (year > 2021) {
     suf <- "20"
@@ -84,27 +62,25 @@ pumas <- function(state = NULL, cb = FALSE, year = NULL, ...) {
   if (cb) {
 
     if (year > 2020) {
-      stop("Cartographic boundary PUMAs are not yet available for years after 2020. Use the argument `year = 2019` for 2010 PUMA boundaries or `year = 2020` for 2020 PUMA boundaries instead to request your data.", call. = FALSE)
+      cli_abort(
+        c("Cartographic boundary PUMAs are not yet available for years after 2020.",
+          "i" = "Use the argument `year = 2019` for 2010 PUMA boundaries or `year = 2020` for 2020 PUMA boundaries instead to request your data.")
+      )
     }
 
     if (year == 2020) {
-      message("The 2020 CB PUMAs use the new 2020 PUMA boundary definitions.")
-      url <- sprintf("https://www2.census.gov/geo/tiger/GENZ%s/shp/cb_%s_%s_puma20_500k.zip",
-                     cyear, cyear, state)
+      cli_inform(c("i" = "The 2020 CB PUMAs use the new 2020 PUMA boundary definitions."))
+      url <- url_tiger("GENZ%s/shp/cb_%s_%s_puma20_500k", year, year, state)
+
     } else {
-      url <- sprintf("https://www2.census.gov/geo/tiger/GENZ%s/shp/cb_%s_%s_puma10_500k.zip",
-                     cyear, cyear, state)
+      url <- url_tiger("GENZ%s/shp/cb_%s_%s_puma10_500k", year, year, state)
 
-      if (year == 2013) url <- gsub("shp/", "", url)
+      if (year == 2013) url <- remove_shp(url)
     }
-
-
-
 
   } else {
 
-    url <- sprintf("https://www2.census.gov/geo/tiger/TIGER%s/PUMA/tl_%s_%s_puma%s.zip",
-                  cyear, cyear, state, suf)
+    url <- url_tiger("TIGER%s/PUMA/tl_%s_%s_puma%s", year, year, state, suf)
   }
 
   pm <- load_tiger(url, tigris_type = "puma", ...)
@@ -114,6 +90,3 @@ pumas <- function(state = NULL, cb = FALSE, year = NULL, ...) {
   return(pm)
 
 }
-
-
-

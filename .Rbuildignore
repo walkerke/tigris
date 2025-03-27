@@ -8,3 +8,4 @@
 ^img$
 
 ^\.github$
+^README\.Rmd$

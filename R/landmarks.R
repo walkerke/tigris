@@ -14,32 +14,14 @@
 #' shapefiles contain few values in the ANSICODE field.
 #' @inheritParams load_tiger_doc_template
 #' @inheritSection load_tiger_doc_template Additional Arguments
-#' @seealso \url{https://www2.census.gov/geo/pdfs/maps-data/data/tiger/tgrshp2020/TGRSHP2020_TechDoc_Ch3.pdf}
+#' @seealso <https://www2.census.gov/geo/pdfs/maps-data/data/tiger/tgrshp2020/TGRSHP2020_TechDoc_Ch3.pdf>
 #' @export
 
 military <- function(year = NULL, ...) {
 
-  if (is.null(year)) {
+  year <- set_tigris_year(year, min_year = 2010)
 
-    year <- getOption("tigris_year", 2022)
-
-    message(sprintf("Retrieving data for the year %s", year))
-
-  }
-
-  if (year < 2011) {
-
-    fname <- as.character(match.call())[[1]]
-
-    msg <- sprintf("%s is not currently available for years prior to 2011.  To request this feature,
-                   file an issue at https://github.com/walkerke/tigris.", fname)
-
-    stop(msg, call. = FALSE)
-
-  }
-
-  url <- sprintf("https://www2.census.gov/geo/tiger/TIGER%s/MIL/tl_%s_us_mil.zip",
-                 as.character(year), as.character(year))
+  url <- url_tiger("TIGER%s/MIL/tl_%s_us_mil", year, year)
 
   return(load_tiger(url, tigris_type = "military", ...))
 
@@ -68,50 +50,30 @@ military <- function(year = NULL, ...) {
 #' Landmarks may be identified by a MAF/TIGER feature class code only and may not have a name. Each
 #' landmark has a unique area landmark identifier (AREAID) or point landmark identifier (POINTID) value.
 #'
-#' @seealso \url{https://www2.census.gov/geo/pdfs/maps-data/data/tiger/tgrshp2020/TGRSHP2020_TechDoc_Ch3.pdf}
+#' @seealso <https://www2.census.gov/geo/pdfs/maps-data/data/tiger/tgrshp2020/TGRSHP2020_TechDoc_Ch3.pdf>
 #'
 #' @param state The state for which you'd like to download the landmarks
-#' @param type Whether you would like to download point landmarks (\code{"point"}) or area landmarks (\code{"area"}). #'                Defaults to \code{"point"}.
+#' @param type Whether you would like to download point landmarks (`"point"`) or
+#'   area landmarks (`"area"`). Defaults to `"point"`.
 #' @inheritParams load_tiger_doc_template
 #' @inheritSection load_tiger_doc_template Additional Arguments
 #' @export
 landmarks <- function(state, type = "point", year = NULL, ...) {
 
-  if (is.null(year)) {
+  year <- set_tigris_year(year, min_year = 2010)
 
-    year <- getOption("tigris_year", 2022)
+  state <- validate_state(state, require_state = TRUE)
 
-    message(sprintf("Retrieving data for the year %s", year))
-
-  }
-
-  if (year < 2011) {
-
-    fname <- as.character(match.call())[[1]]
-
-    msg <- sprintf("%s is not currently available for years prior to 2011.  To request this feature,
-                   file an issue at https://github.com/walkerke/tigris.", fname)
-
-    stop(msg, call. = FALSE)
-
-  }
-
-  state <- validate_state(state)
-
-  cyear <- as.character(year)
+  type <- arg_match0(type, c("area", "point"))
 
   if (type == "area") {
-    url <- sprintf("https://www2.census.gov/geo/tiger/TIGER%s/AREALM/tl_%s_%s_arealm.zip",
-                   cyear, cyear, state)
+    url <- url_tiger("TIGER%s/AREALM/tl_%s_%s_arealm", year, year, state)
     return(load_tiger(url, tigris_type = "area_landmark", ...))
 
   } else if (type == "point") {
-    url <- sprintf("https://www2.census.gov/geo/tiger/TIGER%s/POINTLM/tl_%s_%s_pointlm.zip",
-                  cyear, cyear, state)
+    url <- url_tiger("TIGER%s/POINTLM/tl_%s_%s_pointlm", year, year, state)
     return(load_tiger(url, tigris_type = "point_landmark", ...))
 
-  } else {
-    stop('The argument supplied to type must be either "point" or "area"', call. = FALSE)
   }
 
 }

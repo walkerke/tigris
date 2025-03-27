@@ -11,28 +11,47 @@ load_tiger(
   class = getOption("tigris_class", "sf"),
   progress_bar = TRUE,
   keep_zipped_shapefile = FALSE,
-  filter_by = NULL
+  filter_by = NULL,
+  query = NA,
+  crs = NULL,
+  call = caller_env()
 )
 }
 \arguments{
-\item{url}{URL for zipped shapefile in TIGER database (constructed in calling function).}
+\item{url}{URL for zipped shapefile in TIGER database (constructed in calling
+function).}
 
-\item{refresh}{Whether to re-download shapefiles if cached. Defaults to value of the global
-option "tigris_refresh" if that option is, and FALSE if not. This will override the behavior
-set in "tigris_refresh" option if a value (TRUE or FALSE) is provided.}
+\item{refresh}{Whether to re-download shapefiles if cached. Defaults to value
+of the global option "tigris_refresh" if that option is, and FALSE if not.
+This will override the behavior set in "tigris_refresh" option if a value
+(TRUE or FALSE) is provided.}
 
 \item{tigris_type}{Added as an attribute to return object (used internally).}
 
-\item{class}{Class of return object. Must be one of "sf" (the default) or "sp".}
+\item{class}{Class of return object. Must be one of "sf" (the default) or
+"sp".}
 
 \item{progress_bar}{If set to FALSE, do not display download progress bar
 (helpful for R Markdown documents). Defaults to TRUE.}
 
 \item{keep_zipped_shapefile}{If set to TRUE, do not delete zipped shapefile
-(stored in temporary directory or TIGRIS_CACHE_DIR depending on the configuration of
-global option "tigris_use_cache"). Defaults to FALSE.}
+(stored in temporary directory or TIGRIS_CACHE_DIR depending on the
+configuration of global option "tigris_use_cache"). Defaults to FALSE.}
 
-\item{filter_by}{Geometry used to filter the output returned by the function.  Can be an sf object, an object of class \code{bbox}, or a length-4 vector of format \code{c(xmin, ymin, xmax, ymax)} that can be converted to a bbox. Geometries that intersect the input to \code{filter_by} will be returned.}
+\item{filter_by}{Geometry used to filter the output returned by the function.
+Can be an sf object, sfc object, an object of class \code{bbox}, or a length-4
+vector of format \code{c(xmin, ymin, xmax, ymax)} that can be converted to a
+bbox. Geometries that intersect the input to \code{filter_by} will be returned.}
+
+\item{query}{SQL query passed to \code{\link[sf:st_read]{sf::st_read()}}. query can be used to filter
+results by state or other attributes.}
+
+\item{crs}{Output coordinate reference system. Defaults to \code{NULL}.}
+
+\item{call}{The execution environment of a currently
+running function, e.g. \code{caller_env()}. The function will be
+mentioned in error messages as the source of the error. See the
+\code{call} argument of \code{\link[rlang:abort]{abort()}} for more information.}
 }
 \value{
 sf or sp data frame

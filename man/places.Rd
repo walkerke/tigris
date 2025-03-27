@@ -18,7 +18,8 @@ TIGER/Line file).}
 
 \item{year}{the data year; defaults to 2022}
 
-\item{...}{arguments to be passed to internal function \code{load_tiger}, which is not exported. See Additional Arguments.}
+\item{...}{arguments to be passed to internal function \code{load_tiger}, which is
+not exported. See Additional Arguments.}
 }
 \description{
 An incorporated place provides governmental functions for a concentration of people. Incorporated places may extend across county and county subdivision boundaries, but never across state boundaries. An incorporated place usually is a city, town, village, or borough, but can have other legal descriptions. CDPs are the statistical counterparts of incorporated places. CDPs are settled concentrations of population that are identifiable by name but not legally incorporated under the laws of the state in which the CDPs are located. For more information, read appropriate section on "Places" for the correct vintage (year) of your data in the TIGER/Line Shapefiles and TIGER/Line Files Technical Documentation available as of this writing here: \url{https://www.census.gov/programs-surveys/geography/technical-documentation/complete-technical-documentation/tiger-geo-line.html}.
@@ -27,13 +28,25 @@ An incorporated place provides governmental functions for a concentration of peo
 
 Additional arguments that can be passed in \code{...} are:
 \itemize{
-\item \code{class} Desired class of return object: \code{"sf"} (the default) or \code{"sp"}.  sp classes should be considered deprecated as of tigris version 2.0, but legacy support is still available.
-\item \code{progress_bar} If set to \code{FALSE}, do not display download progress bar (helpful for R Markdown documents). Defaults to \code{TRUE}.
-\item \code{keep_zipped_shapefile} If set to \code{TRUE}, do not delete zipped shapefile (stored in temporary directory or \code{TIGRIS_CACHE_DIR}
-depending on the configuration of global option \code{"tigris_use_cache"}). Defaults to \code{FALSE}.
-\item \code{refresh} Whether to re-download cached shapefiles (\code{TRUE} or \code{FALSE}) . The default is either \code{FALSE} or the value of global
-option \code{"tigris_refresh"} if it is set. Specifying this argument will override the behavior set in \code{"tigris_refresh"} global option.
-\item \code{filter_by} Geometry used to filter the output returned by the function.  Can be an sf object, an object of class \code{bbox}, or a length-4 vector of format \code{c(xmin, ymin, xmax, ymax)} that can be converted to a bbox. Geometries that intersect the input to \code{filter_by} will be returned.
+\item \code{class} Desired class of return object: \code{"sf"} (the default) or \code{"sp"}. sp
+classes should be considered deprecated as of tigris version 2.0, but legacy
+support is still available.
+\item \code{progress_bar} If set to \code{FALSE}, do not display download progress bar
+(helpful for R Markdown documents). Defaults to \code{TRUE}.
+\item \code{keep_zipped_shapefile} If set to \code{TRUE}, do not delete zipped shapefile
+(stored in temporary directory or \code{TIGRIS_CACHE_DIR} depending on the
+configuration of global option \code{"tigris_use_cache"}). Defaults to \code{FALSE}.
+\item \code{refresh} Whether to re-download cached shapefiles (\code{TRUE} or \code{FALSE}). The
+default is either \code{FALSE} or the value of global option \code{"tigris_refresh"}
+if it is set. Specifying this argument will override the behavior set in
+\code{"tigris_refresh"} global option.
+\item \code{filter_by} Geometry used to filter the output returned by the function.
+Can be an sf OR sfc object, an object of class \code{bbox}, or a length-4 vector
+of format \code{c(xmin, ymin, xmax, ymax)} that can be converted to a bbox.
+Geometries that intersect the input to \code{filter_by} will be returned.
+\item \code{crs} Output coordinate reference system. All TIGER/Shapefiles use a EPSG
+4269 coordinate reference system.
+\item \code{query} A SQL query passed to \code{\link[sf:st_read]{sf::st_read()}}.
 }
 }
 

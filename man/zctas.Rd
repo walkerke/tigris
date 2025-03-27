@@ -24,31 +24,44 @@ with 75 or 76.  Defaults to NULL, which will return all ZCTAs in the US.}
 \item{state}{the state for which you are requesting data; only available for 2000 (TIGER/Line
 and CB shapefiles) and 2010 (TIGER/Line shapefiles only)}
 
-\item{...}{arguments to be passed to internal function \code{load_tiger}, which is not exported. See Additional Arguments.}
+\item{...}{arguments to be passed to internal function \code{load_tiger}, which is
+not exported. See Additional Arguments.}
 }
 \description{
 ZIP Code Tabulation Areas (ZCTAs) are generalized areal representations of
 United States Postal Service (USPS) ZIP Code service areas.  Please see the link provided for
 information on how the Census Bureau creates ZCTAs, and for important information on the
-differences between ZCTAs and ZIP Codes.
+differences between ZCTAs and ZIP Codes. \code{year} defaults to 2020 for \code{zctas()} as the most recent year available.
 }
 \section{Additional Arguments}{
 
 Additional arguments that can be passed in \code{...} are:
 \itemize{
-\item \code{class} Desired class of return object: \code{"sf"} (the default) or \code{"sp"}.  sp classes should be considered deprecated as of tigris version 2.0, but legacy support is still available.
-\item \code{progress_bar} If set to \code{FALSE}, do not display download progress bar (helpful for R Markdown documents). Defaults to \code{TRUE}.
-\item \code{keep_zipped_shapefile} If set to \code{TRUE}, do not delete zipped shapefile (stored in temporary directory or \code{TIGRIS_CACHE_DIR}
-depending on the configuration of global option \code{"tigris_use_cache"}). Defaults to \code{FALSE}.
-\item \code{refresh} Whether to re-download cached shapefiles (\code{TRUE} or \code{FALSE}) . The default is either \code{FALSE} or the value of global
-option \code{"tigris_refresh"} if it is set. Specifying this argument will override the behavior set in \code{"tigris_refresh"} global option.
-\item \code{filter_by} Geometry used to filter the output returned by the function.  Can be an sf object, an object of class \code{bbox}, or a length-4 vector of format \code{c(xmin, ymin, xmax, ymax)} that can be converted to a bbox. Geometries that intersect the input to \code{filter_by} will be returned.
+\item \code{class} Desired class of return object: \code{"sf"} (the default) or \code{"sp"}. sp
+classes should be considered deprecated as of tigris version 2.0, but legacy
+support is still available.
+\item \code{progress_bar} If set to \code{FALSE}, do not display download progress bar
+(helpful for R Markdown documents). Defaults to \code{TRUE}.
+\item \code{keep_zipped_shapefile} If set to \code{TRUE}, do not delete zipped shapefile
+(stored in temporary directory or \code{TIGRIS_CACHE_DIR} depending on the
+configuration of global option \code{"tigris_use_cache"}). Defaults to \code{FALSE}.
+\item \code{refresh} Whether to re-download cached shapefiles (\code{TRUE} or \code{FALSE}). The
+default is either \code{FALSE} or the value of global option \code{"tigris_refresh"}
+if it is set. Specifying this argument will override the behavior set in
+\code{"tigris_refresh"} global option.
+\item \code{filter_by} Geometry used to filter the output returned by the function.
+Can be an sf OR sfc object, an object of class \code{bbox}, or a length-4 vector
+of format \code{c(xmin, ymin, xmax, ymax)} that can be converted to a bbox.
+Geometries that intersect the input to \code{filter_by} will be returned.
+\item \code{crs} Output coordinate reference system. All TIGER/Shapefiles use a EPSG
+4269 coordinate reference system.
+\item \code{query} A SQL query passed to \code{\link[sf:st_read]{sf::st_read()}}.
 }
 }
 
 \examples{
 \dontrun{
-# Example: get ZCTAs that intersect the Memphis, TN urbanized area
+# Example: get 2020 ZCTAs that intersect the Memphis, TN urbanized area
 
 library(tigris)
 zcta1 <- zctas(cb = TRUE, starts_with = c("37", "38", "72"))

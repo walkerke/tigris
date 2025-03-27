@@ -11,43 +11,59 @@ blocks(state, county = NULL, year = NULL, ...)
 be state name or state abbreviation.}
 
 \item{county}{The three-digit FIPS code (string) of the county you'd like to
-subset for, or a vector of FIPS codes if you desire multiple counties.
-Can also be a county name or vector of names.}
+subset for, or a vector of FIPS codes if you desire multiple counties. Can
+also be a county name or vector of names.}
 
 \item{year}{the data year; defaults to 2022}
 
-\item{...}{arguments to be passed to internal function \code{load_tiger}, which is not exported. See Additional Arguments.}
+\item{...}{arguments to be passed to internal function \code{load_tiger}, which is
+not exported. See Additional Arguments.}
 }
 \description{
-Description from the US Census Bureau (see link for source): Census blocks are statistical areas
-bounded on all sides by visible features, such as streets, roads,
-streams, and railroad tracks, and by non-visible boundaries such as city, town, township, and county
-limits, and short line-of-sight extensions of streets and roads. Generally, census blocks are small in area;
-for example, a block in a city. Census blocks in suburban and rural areas may be large, irregular and
-bounded by a variety of features, such as roads, streams, and/or transmission line rights-of-way. In
-remote areas census blocks may encompass hundreds of square miles. Census blocks cover all territory
-in the United States, Puerto Rico, and the Island areas. Blocks do not cross the boundaries of any entity
-for which the Census Bureau tabulates data.
+Description from the US Census Bureau (see link for source): Census blocks
+are statistical areas bounded on all sides by visible features, such as
+streets, roads, streams, and railroad tracks, and by non-visible boundaries
+such as city, town, township, and county limits, and short line-of-sight
+extensions of streets and roads. Generally, census blocks are small in area;
+for example, a block in a city. Census blocks in suburban and rural areas may
+be large, irregular and bounded by a variety of features, such as roads,
+streams, and/or transmission line rights-of-way. In remote areas census
+blocks may encompass hundreds of square miles. Census blocks cover all
+territory in the United States, Puerto Rico, and the Island areas. Blocks do
+not cross the boundaries of any entity for which the Census Bureau tabulates
+data.
 }
 \details{
 This function will download an entire block shapefile for a selected state
 into R, and optionally subset by county. \strong{A warning:} Census block
-shapefiles are often very large, especially for large states - for example, the
-block file for Texas is 462MB zipped!  If you have a slow or unreliable internet
-connection, or insufficient memory, this may prove burdensome given that you
-have to first download by state and then subset.
+shapefiles are often very large, especially for large states - for example,
+the block file for Texas is 462MB zipped!  If you have a slow or unreliable
+internet connection, or insufficient memory, this may prove burdensome given
+that you have to first download by state and then subset.
 }
 \section{Additional Arguments}{
 
 Additional arguments that can be passed in \code{...} are:
 \itemize{
-\item \code{class} Desired class of return object: \code{"sf"} (the default) or \code{"sp"}.  sp classes should be considered deprecated as of tigris version 2.0, but legacy support is still available.
-\item \code{progress_bar} If set to \code{FALSE}, do not display download progress bar (helpful for R Markdown documents). Defaults to \code{TRUE}.
-\item \code{keep_zipped_shapefile} If set to \code{TRUE}, do not delete zipped shapefile (stored in temporary directory or \code{TIGRIS_CACHE_DIR}
-depending on the configuration of global option \code{"tigris_use_cache"}). Defaults to \code{FALSE}.
-\item \code{refresh} Whether to re-download cached shapefiles (\code{TRUE} or \code{FALSE}) . The default is either \code{FALSE} or the value of global
-option \code{"tigris_refresh"} if it is set. Specifying this argument will override the behavior set in \code{"tigris_refresh"} global option.
-\item \code{filter_by} Geometry used to filter the output returned by the function.  Can be an sf object, an object of class \code{bbox}, or a length-4 vector of format \code{c(xmin, ymin, xmax, ymax)} that can be converted to a bbox. Geometries that intersect the input to \code{filter_by} will be returned.
+\item \code{class} Desired class of return object: \code{"sf"} (the default) or \code{"sp"}. sp
+classes should be considered deprecated as of tigris version 2.0, but legacy
+support is still available.
+\item \code{progress_bar} If set to \code{FALSE}, do not display download progress bar
+(helpful for R Markdown documents). Defaults to \code{TRUE}.
+\item \code{keep_zipped_shapefile} If set to \code{TRUE}, do not delete zipped shapefile
+(stored in temporary directory or \code{TIGRIS_CACHE_DIR} depending on the
+configuration of global option \code{"tigris_use_cache"}). Defaults to \code{FALSE}.
+\item \code{refresh} Whether to re-download cached shapefiles (\code{TRUE} or \code{FALSE}). The
+default is either \code{FALSE} or the value of global option \code{"tigris_refresh"}
+if it is set. Specifying this argument will override the behavior set in
+\code{"tigris_refresh"} global option.
+\item \code{filter_by} Geometry used to filter the output returned by the function.
+Can be an sf OR sfc object, an object of class \code{bbox}, or a length-4 vector
+of format \code{c(xmin, ymin, xmax, ymax)} that can be converted to a bbox.
+Geometries that intersect the input to \code{filter_by} will be returned.
+\item \code{crs} Output coordinate reference system. All TIGER/Shapefiles use a EPSG
+4269 coordinate reference system.
+\item \code{query} A SQL query passed to \code{\link[sf:st_read]{sf::st_read()}}.
 }
 }
 

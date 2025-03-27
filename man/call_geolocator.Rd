@@ -18,9 +18,6 @@ call_geolocator(street, city, state, zip = NA)
 \value{
 A character string representing the Census block of the supplied
 address.
-
-importFrom utils URLencode
-importFrom httr GET stop_for_status
 }
 \description{
 Call geolocator for one address

@@ -4,10 +4,16 @@
 \alias{rbind_tigris}
 \title{Row-bind \code{tigris} Spatial objects}
 \usage{
-rbind_tigris(...)
+rbind_tigris(..., call = caller_env())
 }
 \arguments{
-\item{...}{individual (optionally names) \code{tigris} Spatial objects or a list of them}
+\item{...}{individual (optionally names) \code{tigris} Spatial objects or a list
+of them}
+
+\item{call}{The execution environment of a currently
+running function, e.g. \code{caller_env()}. The function will be
+mentioned in error messages as the source of the error. See the
+\code{call} argument of \code{\link[rlang:abort]{abort()}} for more information.}
 }
 \value{
 one combined Spatial object
