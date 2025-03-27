@@ -8,13 +8,14 @@ erase_water(
   input_sf,
   area_threshold = 0.75,
   year = NULL,
+  ...,
   arg = caller_arg(input_sf),
   call = caller_env()
 )
 }
 \arguments{
 \item{input_sf}{An input sf object, ideally obtained with the tigris package
-or through tidycensus.}
+or through tidycensus, or a sfc object.}
 
 \item{area_threshold}{The percentile rank cutoff of water areas to use in the
 erase operation, ranked by size. Defaults to 0.75, representing the water
@@ -22,8 +23,10 @@ areas in the 75th percentile and up (the largest 25 percent of areas).
 This value may need to be modified by the user to achieve optimal results
 for a given location.}
 
-\item{year}{The year to use for the water layer; defaults to 2022 unless the
+\item{year}{The year to use for the water layer; defaults to 2023 unless the
 \code{tigris_year} option is otherwise set.}
+
+\item{...}{Additional arguments passed to \code{area_water()}}
 
 \item{arg}{An argument name as a string. This argument
 will be mentioned in error messages as the input that is at the

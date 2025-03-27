@@ -36,7 +36,7 @@ tigris_cache_dir <- function(path) {
   var <- paste0("TIGRIS_CACHE_DIR=", "'", path, "'")
 
   write(var, renv, sep = "\n", append = TRUE)
-  inform(
+  cli_inform(
     c(
       "i" = sprintf("Your new tigris cache directory is %s.", path),
       "*" = "To use now, restart R or run `readRenviron('~/.Renviron')`"
@@ -103,7 +103,6 @@ load_tiger <- function(url,
       shp_loc  <- file.path(cache_dir, sprintf("%s.shp", shape))
 
       if (refresh || !file.exists(shp_loc)) {
-
         tiger_download(
           url = url,
           path = file_loc,
@@ -130,8 +129,7 @@ load_tiger <- function(url,
           i <- 1
 
           while (i < 4) {
-
-            inform(
+            cli_inform(
               sprintf(
                 "Previous download failed. Re-download attempt %s of 3...",
                 as.character(i)
@@ -157,7 +155,7 @@ load_tiger <- function(url,
           }
 
           if (i == 4) {
-            abort(
+            cli_abort(
               c(
                 "Download failed",
                 "*" = "Check your internet connection or the status of
@@ -254,7 +252,7 @@ tiger_read <- function(dsn,
   obj <- rename_fips_cols(obj)
 
   if (class == "sp") {
-    warn(
+    cli_warn(
       c(
         "!" = "Spatial* (sp) classes are no longer formally supported in tigris as of version 2.0.",
         "i" = "We strongly recommend updating your workflow to use sf objects (the default in tigris) instead."
@@ -319,14 +317,14 @@ get_tigris_cache_dir <- function() {
 #' @importFrom httr HEAD http_error
 check_tigris_url <- function(url, call = caller_env()) {
   if (!is_string(url)) {
-    abort("`url` must be a string", call = call)
+    cli_abort("{.arg url} must be a string", call = call)
   }
 
   resp <- httr::HEAD(url)
 
   if (httr::http_error(resp)) {
-    abort(
-      paste0("`url` can't be found: ", url),
+    cli_abort(
+      "{.arg url} can't be found: {.url {url}}",
       call = call
     )
   }
@@ -423,23 +421,18 @@ geo_join <- function(spatial_data, data_frame, by_sp, by_df, by = NULL, how = "l
       spatial_data <- spatial_data[!is.na(matches), ]
 
       return(spatial_data)
-
     } else if (how == "left") {
-
       return(spatial_data)
-
     }
 
 
   # For sf objects
   } else if ("sf" %in% class(spatial_data)) {
-
     join_vars <- c(by_df)
 
     names(join_vars) <- by_sp
 
     if (how == "inner") {
-
       joined <- spatial_data %>%
         inner_join(data_frame, by = join_vars) %>%
         sf::st_as_sf()
@@ -447,9 +440,7 @@ geo_join <- function(spatial_data, data_frame, by_sp, by_df, by = NULL, how = "l
       attr(joined, "tigris") <- tigris_type(spatial_data)
 
       return(joined)
-
     } else if (how == "left") {
-
       # Account for potential duplicate rows in data frame
       df_unique <- data_frame %>%
         group_by_(by_df) %>%
@@ -471,11 +462,8 @@ geo_join <- function(spatial_data, data_frame, by_sp, by_df, by = NULL, how = "l
       attr(joined, "tigris") <- tigris_type(spatial_data)
 
       return(joined)
-
     }
-
   }
-
 }
 
 
@@ -514,7 +502,6 @@ geo_join <- function(spatial_data, data_frame, by_sp, by_df, by = NULL, how = "l
 #' ## [1] "The code for Maine is '23' and the code for York County is '031'."
 #' }
 lookup_code <- function(state, county = NULL) {
-
   state <- validate_state(state, allow_null = FALSE, .msg = FALSE)
 
   if (!is.null(county)) {
@@ -527,6 +514,7 @@ lookup_code <- function(state, county = NULL) {
                   vals$county, " is '", vals$county_code, "'."))
 
   } else {
+    vals <- head(fips_codes[fips_codes$state_code == state, ], 1)
 
     vals <- head(fips_codes[fips_codes$state_code == state,], 1)
 
@@ -590,7 +578,7 @@ check_not_Spatial <- function(x) {
     return(invisible(NULL))
   }
 
-  abort(
+  cli_abort(
     c(
       "Spatial* classes are no longer supported in tigris as of version 2.0.",
       "i" = "You will need to install an earlier version of tigris with `remotes::install_version()`."
@@ -609,7 +597,7 @@ list_check_all_crs <- function(x, call = caller_env()) {
   )
 
   if (length(unique(crs)) > 1) {
-    abort(
+    cli_abort(
       "All elements must share a single coordinate reference system.",
       call = call
     )
@@ -664,17 +652,16 @@ rbind_tigris <- function(..., call = caller_env()) {
         "SpatialPixelsDataFrame", "SpatialPointsDataFrame",
         "SpatialPolygonsDataFrame") %in% obj_classes) &&
       "sf" %in% obj_classes) {
-
-    abort("Cannot combine sp and sf objects", call = call)
+    cli_abort("Cannot combine sp and sf objects", call = call)
   }
 
   check_not_Spatial(elements[[1]])
 
   # handling for attempts to rbind disparate school districts
-  if(all(obj_attrs %in% c("unsd", "elsd", "scsd"))) { # 3 school district types
-    warn(
-      c("Multiple school district tigris types.",
-        "*" = 'Coercing to "sdall"')
+  if (all(obj_attrs %in% c("unsd", "elsd", "scsd"))) {
+    # 3 school district types
+    cli_warn(
+      c("Multiple school district tigris types.", "*" = 'Coercing to "sdall"')
     )
 
     elements <- lapply(
@@ -727,8 +714,10 @@ rbind_tigris <- function(..., call = caller_env()) {
       return(tmp)
     }
 
-
-    abort("Objects must all be the same type of tigris object.", call = call)
+    cli_abort(
+      "Objects must all be the same type of tigris object.",
+      call = call
+    )
   }
 
 }
@@ -761,14 +750,15 @@ rbind_tigris <- function(..., call = caller_env()) {
 #' be quite slow for large input areas.
 #'
 #' @param input_sf An input sf object, ideally obtained with the tigris package
-#'   or through tidycensus.
+#'   or through tidycensus, or a sfc object.
 #' @param area_threshold The percentile rank cutoff of water areas to use in the
 #'   erase operation, ranked by size. Defaults to 0.75, representing the water
 #'   areas in the 75th percentile and up (the largest 25 percent of areas).
 #'   This value may need to be modified by the user to achieve optimal results
 #'   for a given location.
-#' @param year The year to use for the water layer; defaults to 2022 unless the
+#' @param year The year to use for the water layer; defaults to 2023 unless the
 #'   `tigris_year` option is otherwise set.
+#' @param ... Additional arguments passed to `area_water()`
 #' @inheritParams rlang::args_error_context
 #' @return An output sf object representing the polygons in `input_sf` with
 #'   water areas erased.
@@ -793,10 +783,11 @@ rbind_tigris <- function(..., call = caller_env()) {
 erase_water <- function(input_sf,
                         area_threshold = 0.75,
                         year = NULL,
+                        ...,
                         arg = caller_arg(input_sf),
                         call = caller_env()) {
-  if (!is_sf(input_sf)) {
-    abort(
+  if (!inherits_any(input_sf, c("sf", "sfc"))) {
+    cli_abort(
       "`{arg}` must be an sf object.",
       call = call
     )
@@ -817,9 +808,9 @@ erase_water <- function(input_sf,
 
   # If nothing returned, exit
   if (nrow(county_overlay) == 0) {
-    inform(
-      "`input_sf` does not appear to intersect any United States counties.",
-      "i" = "Returning unmodified `input_sf` input."
+    cli_inform(
+      "{.arg {arg}} does not appear to intersect any United States counties.",
+      "i" = "Returning unmodified {.arg {arg}} input."
     )
 
     return(input_sf)
@@ -829,7 +820,7 @@ erase_water <- function(input_sf,
   county_GEOIDs <- county_overlay[["GEOID"]]
 
   # Fetch water for those GEOIDs
-  inform("Fetching area water data for `input_sf` location...")
+  cli_inform("Fetching area water data for {.arg {arg}} location...")
   county_water <- lapply(
     county_GEOIDs,
     function(cty) {
@@ -838,7 +829,8 @@ erase_water <- function(input_sf,
         county = substr(cty, 3, 5),
         progress_bar = FALSE,
         year = year,
-        filter_by = filter_by
+        filter_by = filter_by,
+        ...
       ))
     }
   ) %>%
@@ -846,19 +838,19 @@ erase_water <- function(input_sf,
     dplyr::filter(dplyr::percent_rank(AWATER) >= area_threshold)
 
   if (nrow(county_water) == 0) {
-    inform(
+    cli_inform(
       c(
         "No overlapping water area found.",
-        "i" = "Returning unmodified `input_sf`"
+        "i" = "Returning unmodified {.arg {arg}}"
       )
     )
     return(input_sf)
   }
 
-  inform(
+  cli_inform(
     c(
-      "Erasing water area..",
-      "If this is slow, try a larger area threshold value."
+      "Erasing water area...",
+      "If this is slow, try a larger {.arg area_threshold} value."
     )
   )
 
