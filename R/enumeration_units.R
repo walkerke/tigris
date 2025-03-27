@@ -224,7 +224,7 @@ tracts <- function(state = NULL, county = NULL, cb = FALSE, resolution = "500k",
   year <- set_tigris_year(year, min_year = 1990)
 
   if ((resolution == "5m" && year < 2022) || (resolution == "5m" && !is.null(state))) {
-    abort(
+    cli_abort(
       '`resolution = "5m"` for Census tracts is only available for the
       national Census tract CB file in years 2022 and later.'
     )
@@ -233,9 +233,9 @@ tracts <- function(state = NULL, county = NULL, cb = FALSE, resolution = "500k",
   if (is.null(state)) {
     if (year > 2018 && cb) {
       state <- "us"
-      inform("Retrieving Census tracts for the entire United States")
+      cli_inform("Retrieving Census tracts for the entire United States")
     } else {
-      abort("A state must be specified for this year/dataset combination.")
+      cli_abort("{.arg state} must be specified for this year/dataset combination.")
     }
   } else {
     state <- validate_state(state, allow_null = FALSE)
@@ -402,9 +402,9 @@ school_districts <- function(state = NULL, type = "unified",
   if (is.null(state)) {
     if (year > 2018 && cb) {
       state <- "us"
-      inform("Retrieving school districts for the entire United States")
+      cli_inform("Retrieving school districts for the entire United States")
     } else {
-      abort("A state must be specified for this year/dataset combination.")
+      cli_abort("{.arg state} must be specified for this year/dataset combination.")
     }
   } else {
     state <- validate_state(state, allow_null = FALSE)
@@ -483,9 +483,9 @@ block_groups <- function(state = NULL, county = NULL, cb = FALSE, year = NULL, .
   if (is.null(state)) {
     if (year > 2018 && cb) {
       state <- "us"
-      inform("Retrieving Census block groups for the entire United States")
+      cli_inform("Retrieving Census block groups for the entire United States")
     } else {
-      abort("A state must be specified for this year/dataset combination.")
+      cli_abort("{.arg state} must be specified for this year/dataset combination.")
     }
   } else {
     state <- validate_state(state, allow_null = FALSE)
@@ -544,8 +544,8 @@ block_groups <- function(state = NULL, county = NULL, cb = FALSE, year = NULL, .
     if (!is.null(county)) {
       bgs <- bgs[bgs$COUNTYFP %in% county, ]
     } else {
-      warn(
-        "Ignoring invalid input `county`."
+      cli_warn(
+        "Ignoring invalid input {.arg county}."
       )
     }
 
@@ -608,7 +608,7 @@ block_groups <- function(state = NULL, county = NULL, cb = FALSE, year = NULL, .
 #' ZIP Code Tabulation Areas (ZCTAs) are generalized areal representations of
 #' United States Postal Service (USPS) ZIP Code service areas.  Please see the link provided for
 #' information on how the Census Bureau creates ZCTAs, and for important information on the
-#' differences between ZCTAs and ZIP Codes.
+#' differences between ZCTAs and ZIP Codes. `year` defaults to 2020 for `zctas()` as the most recent year available.
 #'
 #' @param cb If cb is set to TRUE, download a generalized (1:500k)
 #'        ZCTA file.  Defaults to FALSE (the most detailed TIGER/Line file).
@@ -628,7 +628,7 @@ block_groups <- function(state = NULL, county = NULL, cb = FALSE, year = NULL, .
 #' @seealso <https://www.census.gov/programs-surveys/geography/guidance/geo-areas/zctas.html>
 #' @export
 #' @examples \dontrun{
-#' # Example: get ZCTAs that intersect the Memphis, TN urbanized area
+#' # Example: get 2020 ZCTAs that intersect the Memphis, TN urbanized area
 #'
 #' library(tigris)
 #' zcta1 <- zctas(cb = TRUE, starts_with = c("37", "38", "72"))
@@ -646,15 +646,16 @@ zctas <- function(cb = FALSE, starts_with = NULL, year = NULL, state = NULL, ...
   year <- set_tigris_year(
     year,
     min_year = 2000,
+    default = 2020,
     message =  c(
-      "`year` must be 2000 or later.",
+      "{.arg year} must be 2000 or later.",
       "i" = "Zip Code Tabulation Areas are only available beginning with the 2000 Census."
     )
   )
 
   if (year > 2020 && cb) {
-    abort(
-      c(sprintf("The Census Bureau has not yet released the CB ZCTA file for %s.", year),
+    cli_abort(
+      c("The Census Bureau has not yet released the CB ZCTA file for {year}.",
         "i" = "Please use the argument `year = 2020` or `cb = FALSE` instead.")
     )
   }
@@ -681,7 +682,7 @@ zctas <- function(cb = FALSE, starts_with = NULL, year = NULL, state = NULL, ...
   cache <- getOption("tigris_use_cache")
 
   if (is.null(cache)) {
-    inform(
+    cli_inform(
       c("ZCTAs can take several minutes to download.",
       "i" = "To cache the data and avoid re-downloading in future R sessions, set `options(tigris_use_cache = TRUE)`")
     )
@@ -737,7 +738,7 @@ zctas <- function(cb = FALSE, starts_with = NULL, year = NULL, state = NULL, ...
 
   # Handle split ZCTAs in 2000 CB file
   if (year == 2000 && cb) {
-    warn(
+    cli_warn(
       c("CB ZCTAs for 2000 include separate polygons for discontiguous parts.",
       "i" = "Combine by summarizing over the ZCTA column; this can be a time-consuming operation.")
     )
