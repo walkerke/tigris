@@ -1,5 +1,4 @@
 test_that("congressional_districts warns and errors", {
-  # FIXME: This is not working
   expect_warning(
     congressional_districts(state = "WYO", year = 2010),
     ".no valid FIPS codes or state name/abbreviations and must be ignored"
