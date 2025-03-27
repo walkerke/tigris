@@ -35,6 +35,7 @@
 #' @import httr
 #' @import dplyr
 #' @import rlang
+#' @importFrom cli cli_abort cli_inform cli_warn
 #' @importFrom methods as
 ## usethis namespace: end
 NULL

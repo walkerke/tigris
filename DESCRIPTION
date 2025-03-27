@@ -18,6 +18,7 @@ BugReports: https://github.com/walkerke/tigris/issues
 Depends:
     R (>= 3.3.0)
 Imports:
+    cli,
     dplyr,
     httr,
     magrittr,
