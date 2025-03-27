@@ -31,7 +31,7 @@ not exported. See Additional Arguments.}
 ZIP Code Tabulation Areas (ZCTAs) are generalized areal representations of
 United States Postal Service (USPS) ZIP Code service areas.  Please see the link provided for
 information on how the Census Bureau creates ZCTAs, and for important information on the
-differences between ZCTAs and ZIP Codes.
+differences between ZCTAs and ZIP Codes. \code{year} defaults to 2020 for \code{zctas()} as the most recent year available.
 }
 \section{Additional Arguments}{
 
@@ -61,7 +61,7 @@ Geometries that intersect the input to \code{filter_by} will be returned.
 
 \examples{
 \dontrun{
-# Example: get ZCTAs that intersect the Memphis, TN urbanized area
+# Example: get 2020 ZCTAs that intersect the Memphis, TN urbanized area
 
 library(tigris)
 zcta1 <- zctas(cb = TRUE, starts_with = c("37", "38", "72"))
