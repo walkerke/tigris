@@ -24,9 +24,13 @@ Use option \code{tigris_class} to specify the class of spatial object you'd like
 The default is \code{"sf"} for simple features objects.  If you'd like a legacy object
 of class \code{Spatial*DataFrame}, use \code{options(tigris_class = "sp")}. Please note
 that legacy sp objects are no longer formally supported in tigris.
+
+Use the \code{protocol} argument in data download functions to specify whether to use FTP or HTTP
+for downloading files. The default is \code{"ftp"}, which may work better in some environments
+where HTTPS connections are restricted. For HTTPS downloads, use \code{protocol = "http"}.
 }
 \note{
-Four \code{options} control behavior of various \code{tigris} functions.
+Several \code{options} and arguments control behavior of various \code{tigris} functions.
 See \code{Details} for more information.
 }
 \seealso{

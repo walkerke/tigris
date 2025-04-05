@@ -55,6 +55,7 @@ tigris_cache_dir <- function(path) {
 #' (stored in temporary directory or TIGRIS_CACHE_DIR depending on the configuration of
 #' global option "tigris_use_cache"). Defaults to FALSE.
 #' @param filter_by Geometry used to filter the output returned by the function.  Can be an sf object, an object of class `bbox`, or a length-4 vector of format `c(xmin, ymin, xmax, ymax)` that can be converted to a bbox. Geometries that intersect the input to `filter_by` will be returned.
+#' @param protocol Character string specifying the protocol to use for downloading files. Options are "ftp" (default) or "http". If "ftp", the URL will be modified to use FTP instead of HTTPS.
 #'
 #' @return sf or sp data frame
 #'
@@ -64,12 +65,18 @@ load_tiger <- function(url,
                        class = getOption("tigris_class", "sf"),
                        progress_bar = TRUE,
                        keep_zipped_shapefile = FALSE,
-                       filter_by = NULL) {
+                       filter_by = NULL,
+                       protocol = "ftp") {
 
   use_cache <- getOption("tigris_use_cache", FALSE)
 
   # Process filter_by
   wkt_filter <- input_to_wkt(filter_by)
+  
+  # Modify URL for FTP if needed
+  if (protocol == "ftp" && grepl("^https://www2", url)) {
+    url <- gsub("^https://www2", "ftp://ftp2", url)
+  }
 
   tiger_file <- basename(url)
 
@@ -96,16 +103,21 @@ load_tiger <- function(url,
 
       if (refresh | !file.exists(shp_loc)) {
 
-        if (progress_bar) {
-          try(GET(url,
-                  write_disk(file_loc, overwrite=refresh),
-                  progress(type="down")), silent=TRUE)
+        if (grepl("^ftp://", url)) {
+          # Use download.file for FTP URLs
+          try(download.file(url, destfile = file_loc, quiet = !progress_bar, mode = "wb"), silent = TRUE)
         } else {
-          try(GET(url,
-                  write_disk(file_loc, overwrite=refresh)),
-                  silent=TRUE)
+          # Use httr::GET for HTTP URLs
+          if (progress_bar) {
+            try(GET(url,
+                    write_disk(file_loc, overwrite=refresh),
+                    progress(type="down")), silent=TRUE)
+          } else {
+            try(GET(url,
+                    write_disk(file_loc, overwrite=refresh)),
+                    silent=TRUE)
+          }
         }
-
 
       }
 
@@ -132,14 +144,20 @@ load_tiger <- function(url,
             message(sprintf("Previous download failed.  Re-download attempt %s of 3...",
                             as.character(i)))
 
-            if (progress_bar) {
-              try(GET(url,
-                      write_disk(file_loc, overwrite=TRUE),
-                      progress(type="down")), silent=TRUE)
+            if (grepl("^ftp://", url)) {
+              # Use download.file for FTP URLs
+              try(download.file(url, destfile = file_loc, quiet = !progress_bar, mode = "wb"), silent = TRUE)
             } else {
-              try(GET(url,
-                      write_disk(file_loc, overwrite=TRUE)),
-                      silent=TRUE)
+              # Use httr::GET for HTTP URLs
+              if (progress_bar) {
+                try(GET(url,
+                        write_disk(file_loc, overwrite=TRUE),
+                        progress(type="down")), silent=TRUE)
+              } else {
+                try(GET(url,
+                        write_disk(file_loc, overwrite=TRUE)),
+                        silent=TRUE)
+              }
             }
 
             t <- tryCatch(unzip_tiger(), warning = function(w) w)
@@ -155,7 +173,7 @@ load_tiger <- function(url,
           if (i == 4) {
 
             stop("Download failed; check your internet connection or the status of the Census Bureau website
-                 at http://www2.census.gov/geo/tiger/.", call. = FALSE)
+                 at https://www2.census.gov/geo/tiger/ or ftp://ftp2.census.gov/geo/tiger/.", call. = FALSE)
           }
 
         } else {
@@ -189,12 +207,18 @@ load_tiger <- function(url,
     tmp <- tempdir()
     file_loc <- file.path(tmp, tiger_file)
 
-    if (progress_bar) {
-      try(GET(url, write_disk(file_loc),
-              progress(type = "down")), silent = TRUE)
+    if (grepl("^ftp://", url)) {
+      # Use download.file for FTP URLs
+      try(download.file(url, destfile = file_loc, quiet = !progress_bar, mode = "wb"), silent = TRUE)
     } else {
-      try(GET(url, write_disk(file_loc)),
-              silent = TRUE)
+      # Use httr::GET for HTTP URLs
+      if (progress_bar) {
+        try(GET(url, write_disk(file_loc),
+                progress(type = "down")), silent = TRUE)
+      } else {
+        try(GET(url, write_disk(file_loc)),
+                silent = TRUE)
+      }
     }
 
     unzip(file_loc, exdir = tmp)
@@ -715,5 +739,6 @@ erase_water <- function(input_sf,
 #'  * `refresh` Whether to re-download cached shapefiles (`TRUE` or `FALSE`) . The default is either `FALSE` or the value of global
 #'     option `"tigris_refresh"` if it is set. Specifying this argument will override the behavior set in `"tigris_refresh"` global option.
 #'  * `filter_by` Geometry used to filter the output returned by the function.  Can be an sf object, an object of class `bbox`, or a length-4 vector of format `c(xmin, ymin, xmax, ymax)` that can be converted to a bbox. Geometries that intersect the input to `filter_by` will be returned.
+#'  * `protocol` Character string specifying the protocol to use for downloading files. Options are "ftp" (default) or "http". If "ftp", the URL will be modified to use FTP instead of HTTPS.
 #' @name load_tiger_doc_template
 NULL

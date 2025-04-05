@@ -18,7 +18,11 @@
 #' of class \code{Spatial*DataFrame}, use \code{options(tigris_class = "sp")}. Please note
 #' that legacy sp objects are no longer formally supported in tigris.
 #'
-#' @note Four \code{options} control behavior of various \code{tigris} functions.
+#' Use the \code{protocol} argument in data download functions to specify whether to use FTP or HTTP
+#' for downloading files. The default is \code{"ftp"}, which may work better in some environments
+#' where HTTPS connections are restricted. For HTTPS downloads, use \code{protocol = "http"}.
+#'
+#' @note Several \code{options} and arguments control behavior of various \code{tigris} functions.
 #'       See \code{Details} for more information.
 #' @name tigris
 #' @docType package

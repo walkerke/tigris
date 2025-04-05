@@ -2,6 +2,8 @@ tigris 2.0
 -------------------------------------------------------
 * A new filter_by argument allows users to subset datasets by a bounding box or another sf object when requesting data.
 
+* A new protocol parameter allows users to choose between "ftp" (default) and "http" for downloading files, which can help in environments where HTTPS connections are restricted.
+
 * Deprecation of formal support for sp classes and removal of associated dependencies (rgdal, rgeos, maptools)
 
 * Functions in tigris now default to a year of 2021.
