@@ -56,6 +56,7 @@ tigris_cache_dir <- function(path) {
 #' global option "tigris_use_cache"). Defaults to FALSE.
 #' @param filter_by Geometry used to filter the output returned by the function.  Can be an sf object, an object of class `bbox`, or a length-4 vector of format `c(xmin, ymin, xmax, ymax)` that can be converted to a bbox. Geometries that intersect the input to `filter_by` will be returned.
 #' @param protocol Character string specifying the protocol to use for downloading files. Options are "ftp" (default) or "http". If "ftp", the URL will be modified to use FTP instead of HTTPS.
+#' @param timeout Integer specifying the timeout in seconds for download operations. Defaults to 300 (5 minutes) to handle large files.
 #'
 #' @return sf or sp data frame
 #'
@@ -66,7 +67,8 @@ load_tiger <- function(url,
                        progress_bar = TRUE,
                        keep_zipped_shapefile = FALSE,
                        filter_by = NULL,
-                       protocol = "ftp") {
+                       protocol = "ftp",
+                       timeout = 300) {
 
   use_cache <- getOption("tigris_use_cache", FALSE)
 
@@ -104,17 +106,21 @@ load_tiger <- function(url,
       if (refresh | !file.exists(shp_loc)) {
 
         if (grepl("^ftp://", url)) {
-          # Use download.file for FTP URLs
+          # Use download.file for FTP URLs with timeout
+          options(timeout = timeout)
           try(download.file(url, destfile = file_loc, quiet = !progress_bar, mode = "wb"), silent = TRUE)
+          options(timeout = 60) # Reset to R default
         } else {
           # Use httr::GET for HTTP URLs
           if (progress_bar) {
             try(GET(url,
                     write_disk(file_loc, overwrite=refresh),
-                    progress(type="down")), silent=TRUE)
+                    progress(type="down"),
+                    timeout(timeout)), silent=TRUE)
           } else {
             try(GET(url,
-                    write_disk(file_loc, overwrite=refresh)),
+                    write_disk(file_loc, overwrite=refresh),
+                    timeout(timeout)),
                     silent=TRUE)
           }
         }
@@ -145,17 +151,21 @@ load_tiger <- function(url,
                             as.character(i)))
 
             if (grepl("^ftp://", url)) {
-              # Use download.file for FTP URLs
+              # Use download.file for FTP URLs with timeout
+              options(timeout = timeout)
               try(download.file(url, destfile = file_loc, quiet = !progress_bar, mode = "wb"), silent = TRUE)
+              options(timeout = 60) # Reset to R default
             } else {
               # Use httr::GET for HTTP URLs
               if (progress_bar) {
                 try(GET(url,
                         write_disk(file_loc, overwrite=TRUE),
-                        progress(type="down")), silent=TRUE)
+                        progress(type="down"),
+                        timeout(timeout)), silent=TRUE)
               } else {
                 try(GET(url,
-                        write_disk(file_loc, overwrite=TRUE)),
+                        write_disk(file_loc, overwrite=TRUE),
+                        timeout(timeout)),
                         silent=TRUE)
               }
             }
@@ -208,15 +218,19 @@ load_tiger <- function(url,
     file_loc <- file.path(tmp, tiger_file)
 
     if (grepl("^ftp://", url)) {
-      # Use download.file for FTP URLs
+      # Use download.file for FTP URLs with timeout
+      options(timeout = timeout)
       try(download.file(url, destfile = file_loc, quiet = !progress_bar, mode = "wb"), silent = TRUE)
+      options(timeout = 60) # Reset to R default
     } else {
       # Use httr::GET for HTTP URLs
       if (progress_bar) {
         try(GET(url, write_disk(file_loc),
-                progress(type = "down")), silent = TRUE)
+                progress(type = "down"),
+                timeout(timeout)), silent = TRUE)
       } else {
-        try(GET(url, write_disk(file_loc)),
+        try(GET(url, write_disk(file_loc),
+                timeout(timeout)),
                 silent = TRUE)
       }
     }
@@ -740,5 +754,6 @@ erase_water <- function(input_sf,
 #'     option `"tigris_refresh"` if it is set. Specifying this argument will override the behavior set in `"tigris_refresh"` global option.
 #'  * `filter_by` Geometry used to filter the output returned by the function.  Can be an sf object, an object of class `bbox`, or a length-4 vector of format `c(xmin, ymin, xmax, ymax)` that can be converted to a bbox. Geometries that intersect the input to `filter_by` will be returned.
 #'  * `protocol` Character string specifying the protocol to use for downloading files. Options are "ftp" (default) or "http". If "ftp", the URL will be modified to use FTP instead of HTTPS.
+#'  * `timeout` Integer specifying the timeout in seconds for download operations. Defaults to 300 (5 minutes) to handle large files.
 #' @name load_tiger_doc_template
 NULL

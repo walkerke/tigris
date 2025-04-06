@@ -28,6 +28,10 @@ that legacy sp objects are no longer formally supported in tigris.
 Use the \code{protocol} argument in data download functions to specify whether to use FTP or HTTP
 for downloading files. The default is \code{"ftp"}, which may work better in some environments
 where HTTPS connections are restricted. For HTTPS downloads, use \code{protocol = "http"}.
+
+Use the \code{timeout} parameter to control the timeout for downloading large files. The default is
+300 seconds (5 minutes), which should be sufficient for most files. If you're downloading particularly
+large files or have a slow connection, you may need to increase this value.
 }
 \note{
 Several \code{options} and arguments control behavior of various \code{tigris} functions.

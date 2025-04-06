@@ -12,7 +12,8 @@ load_tiger(
   progress_bar = TRUE,
   keep_zipped_shapefile = FALSE,
   filter_by = NULL,
-  protocol = "ftp"
+  protocol = "ftp",
+  timeout = 300
 )
 }
 \arguments{
@@ -36,6 +37,8 @@ global option "tigris_use_cache"). Defaults to FALSE.}
 \item{filter_by}{Geometry used to filter the output returned by the function.  Can be an sf object, an object of class \code{bbox}, or a length-4 vector of format \code{c(xmin, ymin, xmax, ymax)} that can be converted to a bbox. Geometries that intersect the input to \code{filter_by} will be returned.}
 
 \item{protocol}{Character string specifying the protocol to use for downloading files. Options are "ftp" (default) or "http". If "ftp", the URL will be modified to use FTP instead of HTTPS.}
+
+\item{timeout}{Integer specifying the timeout in seconds for download operations. Defaults to 300 (5 minutes) to handle large files.}
 }
 \value{
 sf or sp data frame
