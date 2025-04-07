@@ -2,7 +2,7 @@
 
 <img src=tools/readme/tigris_sticker.png width="250">
 
-[![R build status](https://github.com/walkerke/tigris/workflows/R-CMD-check/badge.svg)](https://github.com/walkerke/tigris/actions) ![CRAN Badge](http://www.r-pkg.org/badges/version/tigris)  ![CRAN Downloads](http://cranlogs.r-pkg.org/badges/tigris)
+[[![R-CMD-check](https://github.com/walkerke/tigris/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/walkerke/tigris/actions/workflows/R-CMD-check.yaml) ![CRAN Badge](http://www.r-pkg.org/badges/version/tigris)  ![CRAN Downloads](http://cranlogs.r-pkg.org/badges/tigris)
 
 __Is the package not working (April 2025)?__
 
