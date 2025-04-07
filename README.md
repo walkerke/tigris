@@ -6,7 +6,7 @@
 
 __Is the package not working (April 2025)?__
 
-Install the patch release with `pak::pak("walkerke/tigris@ftp-patch")`
+Install the patch release from here with `pak::pak("walkerke/tigris")`
 
 __tigris__ is an R package that allows users to directly download and use TIGER/Line shapefiles (<https://www.census.gov/geographies/mapping-files/time-series/geo/tiger-line-file.html>) from the US Census Bureau.  
 
