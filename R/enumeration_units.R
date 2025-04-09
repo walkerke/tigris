@@ -34,6 +34,11 @@
 #'        counties file.  Defaults to FALSE (the most detailed TIGER file).
 #' @param resolution The resolution of the cartographic boundary file (if cb == TRUE).
 #'        Defaults to '500k'; options include '5m' (1:5 million) and '20m' (1:20 million).
+#' @param use_api If TRUE, use the Census Bureau's TigerWeb REST API to retrieve data instead of 
+#'        downloading shapefiles. Default is to use the value set in options(tigris_use_api = FALSE).
+#'        The API will use the closest available year to the one requested. Using the API can be faster, 
+#'        especially for small areas or when you have a slow internet connection. Requires the arcgislayers 
+#'        package to be installed.
 #' @inheritParams load_tiger_doc_template
 #' @inheritSection load_tiger_doc_template Additional Arguments
 #'
@@ -51,71 +56,146 @@
 #'                    fill="white", size=0.25)
 #' gg
 #' }
-counties <- function(state = NULL, cb = FALSE, resolution = '500k', year = NULL, ...) {
+counties <- function(state = NULL, cb = FALSE, resolution = '500k', year = NULL, 
+                  use_api = getOption("tigris_use_api", FALSE), ...) {
 
   if (!(resolution %in% c('500k', '5m', '20m'))) {
     stop("Invalid value for resolution. Valid values are '500k', '5m', and '20m'.", call. = FALSE)
   }
 
   if (is.null(year)) {
-
     year <- getOption("tigris_year", 2022)
-
     message(sprintf("Retrieving data for the year %s", year))
-
   }
 
-    cyear <- as.character(year)
+  # Use the TigerWeb API if requested
+  if (use_api) {
+    # Determine the appropriate year to use for the API
+    # Map user's requested year to available API years
+    available_years <- c(2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024)
+    
+    # Find the closest available year (preference to older if exact match not available)
+    api_year <- available_years[max(which(available_years <= year))]
+    
+    # If year is before earliest available year, use earliest available
+    if (is.na(api_year) || length(api_year) == 0) {
+      api_year <- min(available_years)
+      message(sprintf("Year %s is not available in the TigerWeb API. Using year %s instead.", 
+                     year, api_year))
+    }
+    
+    if (cb) {
+      # Determine which resolution layer to use
+      if (resolution == "500k") {
+        resolution_code <- "500k"
+      } else if (resolution == "5m") {
+        resolution_code <- "5m"  
+      } else if (resolution == "20m") {
+        resolution_code <- "20m"
+      }
+      
+      # The Generalized_ACS series is the cartographic boundary equivalent
+      # Handle 2020 which uses a different naming convention
+      if (api_year == 2020) {
+        service_name <- "Generalized_TAB2020"
+      } else {
+        service_name <- sprintf("Generalized_ACS%s", api_year)
+      }
+      
+      # Layer IDs for counties vary by resolution:
+      # 500k is usually layer 0, 5m is layer 1, 20m is layer 2
+      layer_map <- list(
+        "500k" = 0,
+        "5m" = 1,
+        "20m" = 2
+      )
+      
+      layer_id <- layer_map[[resolution_code]]
+      
+      # Service URL for Generalized counties
+      api_url <- sprintf("https://tigerweb.geo.census.gov/arcgis/rest/services/%s/State_County/MapServer/%d", 
+                         service_name, layer_id)
+      
+      # Build WHERE clause
+      where_clause <- NULL
+      if (!is.null(state)) {
+        state_codes <- unlist(sapply(state, validate_state, USE.NAMES=FALSE))
+        state_list <- paste(sprintf("'%s'", state_codes), collapse = ", ")
+        where_clause <- sprintf("STATE IN (%s)", state_list)
+      }
+      
+      message(sprintf("Using TigerWeb API with generalized boundaries for year %s", api_year))
+      
+      ctys <- load_tiger_api(
+        url = api_url,
+        where = where_clause,
+        tigris_type = "county",
+        ...
+      )
+      
+    } else {
+      # Using detailed TIGER/Line equivalent from TIGERweb
+      service_name <- "TIGERweb"
+      
+      # Layer for detailed counties is usually 1 in State_County
+      layer_id <- 1
+      
+      # Service URL for detailed TIGER/Line counties
+      api_url <- sprintf("https://tigerweb.geo.census.gov/arcgis/rest/services/%s/State_County/MapServer/%d", 
+                         service_name, layer_id)
+      
+      # Build WHERE clause
+      where_clause <- NULL
+      if (!is.null(state)) {
+        state_codes <- unlist(sapply(state, validate_state, USE.NAMES=FALSE))
+        state_list <- paste(sprintf("'%s'", state_codes), collapse = ", ")
+        where_clause <- sprintf("STATEFP IN (%s)", state_list)
+      }
+      
+      message(sprintf("Using TigerWeb API with detailed boundaries for year %s", api_year))
+      
+      ctys <- load_tiger_api(
+        url = api_url,
+        where = where_clause,
+        tigris_type = "county",
+        ...
+      )
+    }
+    
+    attr(ctys, 'tigris') <- 'county'
+    return(ctys)
+  }
+
+  cyear <- as.character(year)
 
   if (cb == TRUE) {
-
     if (year %in% c(1990, 2000)) {
-
       suf <- substr(as.character(year), 3, 4)
-
       url <- sprintf("https://www2.census.gov/geo/tiger/PREVGENZ/co/co%sshp/co99_d%s_shp.zip",
                      suf, suf)
-
     } else if (year == 2010) {
-
       url <- sprintf("https://www2.census.gov/geo/tiger/GENZ2010/gz_2010_us_050_00_%s.zip",
                      resolution)
-
     } else {
-
       if (year > 2013) {
-
         url <- sprintf("https://www2.census.gov/geo/tiger/GENZ%s/shp/cb_%s_us_county_%s.zip",
                        cyear, cyear, resolution)
-
       } else {
-
         url <- sprintf("https://www2.census.gov/geo/tiger/GENZ%s/cb_%s_us_county_%s.zip",
                        cyear, cyear, resolution)
-
       }
-
-
     }
-
   } else {
-
     if (year == 1990) stop("Please specify `cb = TRUE` to get 1990 data.", call. = FALSE)
 
     if (year %in% c(2000, 2010)) {
-
       suf <- substr(cyear, 3, 4)
-
       url <- sprintf("https://www2.census.gov/geo/tiger/TIGER2010/COUNTY/%s/tl_2010_us_county%s.zip",
                      cyear, suf)
-
     } else {
-
       url <- sprintf("https://www2.census.gov/geo/tiger/TIGER%s/COUNTY/tl_%s_us_county.zip",
                      cyear, cyear)
-
     }
-
   }
 
   ctys <- load_tiger(url, tigris_type="county", ...)
@@ -123,9 +203,7 @@ counties <- function(state = NULL, cb = FALSE, resolution = '500k', year = NULL,
   state <- unlist(sapply(state, validate_state, USE.NAMES=FALSE))
 
   if (!is.null(state)) {
-
     ctys <- ctys[ctys$STATEFP %in% state,]
-
   }
 
   # Dissolve polygons for 1990 and 2000 CB
@@ -174,9 +252,7 @@ counties <- function(state = NULL, cb = FALSE, resolution = '500k', year = NULL,
   }
 
   attr(ctys, 'tigris') <- 'county'
-
   return(ctys)
-
 }
 
 #' Download a Census tracts shapefile into R, and optionally subset by county
@@ -219,6 +295,11 @@ counties <- function(state = NULL, cb = FALSE, resolution = '500k', year = NULL,
 #'        tracts file.  Defaults to FALSE (the most detailed TIGER/Line file)
 #' @param resolution The resolution of the cartographic boundary file (if using cb = TRUE).
 #'        Defaults to '500k'; the other option is '5m' (1:5 million).  Resolution of '5m' is #'        only available for the national Census tract file for years 2022 and later.
+#' @param use_api If TRUE, use the Census Bureau's TigerWeb REST API to retrieve data instead of 
+#'        downloading shapefiles. Default is FALSE. The API will use the closest available year
+#'        to the one requested (2015-2024 are supported). Using the API can be faster, especially
+#'        for small areas or when you have a slow internet connection. Requires the arcgislayers 
+#'        package to be installed.
 #' @inheritParams load_tiger_doc_template
 #' @inheritSection load_tiger_doc_template Additional Arguments
 #' @family general area functions
@@ -228,14 +309,29 @@ counties <- function(state = NULL, cb = FALSE, resolution = '500k', year = NULL,
 #' library(tigris)
 #' library(leaflet)
 #'
+#' # Traditional method with shapefiles
 #' tarrant <- tracts("TX", "Tarrant", cb = TRUE)
 #'
-#' leaflet(tarrant) %>%
+#' # Using the TigerWeb API with generalized boundaries (requires arcgislayers package)
+#' tarrant_api_cb <- tracts("TX", "Tarrant", cb = TRUE, use_api = TRUE)
+#'
+#' # Using the TigerWeb API with detailed boundaries
+#' tarrant_api_detailed <- tracts("TX", "Tarrant", cb = FALSE, use_api = TRUE)
+#'
+#' # Using the TigerWeb API with a specific year
+#' tarrant_api_2019 <- tracts("TX", "Tarrant", cb = TRUE, year = 2019, use_api = TRUE)
+#'
+#' # Compare the results in leaflet
+#' leaflet() %>%
 #'   addTiles() %>%
-#'   addPolygons(popup = ~NAME)
+#'   addPolygons(data = tarrant, color = "blue", weight = 1, fillOpacity = 0,
+#'               group = "Shapefile") %>%
+#'   addPolygons(data = tarrant_api_cb, color = "red", weight = 1, fillOpacity = 0,
+#'               group = "API Generalized") %>%
+#'   addLayersControl(overlayGroups = c("Shapefile", "API Generalized"))
 #' }
 tracts <- function(state = NULL, county = NULL, cb = FALSE, resolution = "500k",
-                   year = NULL, ...) {
+                   year = NULL, use_api = getOption("tigris_use_api", FALSE), ...) {
 
   if (is.null(year)) {
 
@@ -262,7 +358,125 @@ tracts <- function(state = NULL, county = NULL, cb = FALSE, resolution = "500k",
 
     if (is.null(state)) stop("Invalid state", call.=FALSE)
   }
-
+  
+  # Use the TigerWeb API if requested
+  if (use_api) {
+    # Determine the appropriate year to use for the API
+    # Map user's requested year to available API years
+    available_years <- c(2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024)
+    
+    # Find the closest available year (preference to older if exact match not available)
+    api_year <- available_years[max(which(available_years <= year))]
+    
+    # If year is before earliest available year, use earliest available
+    if (is.na(api_year) || length(api_year) == 0) {
+      api_year <- min(available_years)
+      message(sprintf("Year %s is not available in the TigerWeb API. Using year %s instead.", 
+                     year, api_year))
+    }
+    
+    if (cb) {
+      # The Generalized_ACS series is the cartographic boundary equivalent
+      # Different layer ID depending on the resolution
+      layer_id <- ifelse(resolution == "500k", 4, 2)  # 4 for 500k, 2 for 5m
+      
+      # Handle 2020 which uses a different naming convention
+      if (api_year == 2020) {
+        service_name <- "Generalized_TAB2020"
+      } else {
+        service_name <- sprintf("Generalized_ACS%s", api_year)
+      }
+      
+      # Service URL for Generalized tracts
+      api_url <- sprintf("https://tigerweb.geo.census.gov/arcgis/rest/services/%s/Tracts_Blocks/MapServer/%d", 
+                         service_name, layer_id)
+      
+      # Build WHERE clause
+      where_clause <- NULL
+      if (state != "us") {
+        where_clause <- sprintf("STATE = '%s'", state)
+        
+        if (!is.null(county)) {
+          county_codes <- sapply(county, function(x) { validate_county(state, x) })
+          county_list <- paste(sprintf("'%s'", county_codes), collapse = ", ")
+          where_clause <- sprintf("%s AND COUNTY IN (%s)", where_clause, county_list)
+        }
+      }
+      
+      message(sprintf("Using TigerWeb API with generalized boundaries for year %s", api_year))
+      
+      trcts <- load_tiger_api(
+        url = api_url,
+        where = where_clause,
+        tigris_type = "tract",
+        ...
+      )
+      
+    } else {
+      # Using detailed TIGER/Line equivalent from TIGERweb
+      
+      # First, determine which layer to use based on year
+      # For years 2020 and later, use Census 2020 base layers (layer IDs are different)
+      # For years prior, use the corresponding ACS year layers
+      
+      # Service is always TIGERweb for detailed tracts
+      service_name <- "TIGERweb"
+      
+      # Determine the correct layer ID based on the year
+      # The structure is consistent across versions but the layer IDs may change
+      if (api_year == 2024) {
+        layer_id <- 4  # ACS 2024 Census Tracts
+        state_field <- "STATE"
+        county_field <- "COUNTY"
+      } else if (api_year == 2023) {
+        layer_id <- 7  # ACS 2023 Census Tracts
+        state_field <- "STATE"
+        county_field <- "COUNTY"
+      } else if (api_year >= 2020) {
+        layer_id <- 10  # Census 2020 Census Tracts
+        state_field <- "STATE"
+        county_field <- "COUNTY"
+      } else {
+        # For older years, default to the base layer (ID 0)
+        # which contains the most current detailed tracts
+        layer_id <- 0
+        state_field <- "STATE"
+        county_field <- "COUNTY"
+        message(sprintf("Specific TIGERweb layer for year %s not available. Using base layer.", api_year))
+      }
+      
+      # Service URL for detailed TIGER/Line tracts
+      api_url <- sprintf("https://tigerweb.geo.census.gov/arcgis/rest/services/%s/Tracts_Blocks/MapServer/%d", 
+                         service_name, layer_id)
+      
+      # Build WHERE clause
+      where_clause <- NULL
+      if (state != "us") {
+        # state_field and county_field are set above when determining the layer
+        where_clause <- sprintf("%s = '%s'", state_field, state)
+        
+        if (!is.null(county)) {
+          county_codes <- sapply(county, function(x) { validate_county(state, x) })
+          county_list <- paste(sprintf("'%s'", county_codes), collapse = ", ")
+          where_clause <- sprintf("%s AND %s IN (%s)", where_clause, county_field, county_list)
+        }
+      }
+      
+      message(sprintf("Using TigerWeb API with detailed boundaries for year %s", api_year))
+      
+      trcts <- load_tiger_api(
+        url = api_url,
+        where = where_clause,
+        tigris_type = "tract",
+        ...
+      )
+    }
+    
+    attr(trcts, "tigris") <- "tract"
+    return(trcts)
+  }
+  
+  # Traditional download method if not using API
   if (cb == TRUE) {
 
     if (year %in% c(1990, 2000)) {
@@ -402,6 +616,11 @@ tracts <- function(state = NULL, county = NULL, cb = FALSE, resolution = "500k",
 #'        Please note: elementary and secondary school districts do not exist in all states
 #' @param cb if TRUE, download a generalized (1:500k)
 #'        school districts file.  Defaults to FALSE (the most detailed TIGER/Line file)
+#' @param use_api If TRUE, use the Census Bureau's TigerWeb REST API to retrieve data instead of 
+#'        downloading shapefiles. Default is to use the value set in options(tigris_use_api = FALSE).
+#'        The API will use the closest available year to the one requested. Using the API can be faster, 
+#'        especially for small areas or when you have a slow internet connection. Requires the arcgislayers 
+#'        package to be installed.
 #' @inheritParams load_tiger_doc_template
 #' @inheritSection load_tiger_doc_template Additional Arguments
 #' @family general area functions
@@ -420,7 +639,7 @@ tracts <- function(state = NULL, county = NULL, cb = FALSE, resolution = "500k",
 #'               weight = 0.5)
 #' }
 school_districts <- function(state = NULL, type = 'unified',
-                             cb = FALSE, year = NULL, ...) {
+                             cb = FALSE, year = NULL, use_api = getOption("tigris_use_api", FALSE), ...) {
 
   if (is.null(year)) {
 
@@ -516,6 +735,11 @@ school_districts <- function(state = NULL, type = 'unified',
 #'        Can also be a county name or vector of names.
 #' @param cb If cb is set to TRUE, download a generalized (1:500k)
 #'        file.  Defaults to FALSE (the most detailed TIGER/Line file)
+#' @param use_api If TRUE, use the Census Bureau's TigerWeb REST API to retrieve data instead of 
+#'        downloading shapefiles. Default is to use the value set in options(tigris_use_api = FALSE).
+#'        The API will use the closest available year to the one requested. Using the API can be faster, 
+#'        especially for small areas or when you have a slow internet connection. Requires the arcgislayers 
+#'        package to be installed.
 #' @inheritParams load_tiger_doc_template
 #' @inheritSection load_tiger_doc_template Additional Arguments
 #' @family general area functions
@@ -528,17 +752,12 @@ school_districts <- function(state = NULL, type = 'unified',
 #'
 #' plot(benton_bgs$geometry)
 #' }
-block_groups <- function(state = NULL, county = NULL, cb = FALSE, year = NULL, ...) {
+block_groups <- function(state = NULL, county = NULL, cb = FALSE, year = NULL, use_api = getOption("tigris_use_api", FALSE), ...) {
 
   if (is.null(year)) {
-
     year = getOption("tigris_year", 2022)
-
     message(sprintf("Retrieving data for the year %s", year))
-
   }
-
-    cyear <- as.character(year)
 
   if (is.null(state)) {
     if (year > 2018 && cb == TRUE) {
@@ -550,70 +769,152 @@ block_groups <- function(state = NULL, county = NULL, cb = FALSE, year = NULL, .
     }
   } else {
     state <- validate_state(state)
-
     if (is.null(state)) stop("Invalid state", call.=FALSE)
   }
 
+  # Use the TigerWeb API if requested
+  if (use_api) {
+    # Determine the appropriate year to use for the API
+    # Map user's requested year to available API years
+    available_years <- c(2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024)
+    
+    # Find the closest available year (preference to older if exact match not available)
+    api_year <- available_years[max(which(available_years <= year))]
+    
+    # If year is before earliest available year, use earliest available
+    if (is.na(api_year) || length(api_year) == 0) {
+      api_year <- min(available_years)
+      message(sprintf("Year %s is not available in the TigerWeb API. Using year %s instead.", 
+                     year, api_year))
+    }
+    
+    if (cb) {
+      # The Generalized_ACS series is the cartographic boundary equivalent
+      # Handle 2020 which uses a different naming convention
+      if (api_year == 2020) {
+        service_name <- "Generalized_TAB2020"
+      } else {
+        service_name <- sprintf("Generalized_ACS%s", api_year)
+      }
+      
+      # Service URL for Generalized block groups - typically layer 5
+      api_url <- sprintf("https://tigerweb.geo.census.gov/arcgis/rest/services/%s/Tracts_Blocks/MapServer/5", 
+                         service_name)
+      
+      # Build WHERE clause
+      where_clause <- NULL
+      if (state != "us") {
+        where_clause <- sprintf("STATE = '%s'", state)
+        
+        if (!is.null(county)) {
+          county_codes <- sapply(county, function(x) { validate_county(state, x) })
+          county_list <- paste(sprintf("'%s'", county_codes), collapse = ", ")
+          where_clause <- sprintf("%s AND COUNTY IN (%s)", where_clause, county_list)
+        }
+      }
+      
+      message(sprintf("Using TigerWeb API with generalized boundaries for year %s", api_year))
+      
+      bgs <- load_tiger_api(
+        url = api_url,
+        where = where_clause,
+        tigris_type = "block_group",
+        ...
+      )
+      
+    } else {
+      # Using detailed TIGER/Line equivalent from TIGERweb
+      # Service is always TIGERweb for detailed block groups
+      service_name <- "TIGERweb"
+      
+      # Determine the correct layer ID based on the year
+      if (api_year == 2024) {
+        layer_id <- 5  # ACS 2024 Block Groups
+        state_field <- "STATE"
+        county_field <- "COUNTY"
+      } else if (api_year == 2023) {
+        layer_id <- 8  # ACS 2023 Block Groups
+        state_field <- "STATE"
+        county_field <- "COUNTY"
+      } else if (api_year >= 2020) {
+        layer_id <- 11  # Census 2020 Block Groups
+        state_field <- "STATE"
+        county_field <- "COUNTY"
+      } else {
+        # For older years, default to the base layer (ID 1)
+        layer_id <- 1
+        state_field <- "STATE"
+        county_field <- "COUNTY"
+        message(sprintf("Specific TIGERweb layer for year %s not available. Using base layer.", api_year))
+      }
+      
+      # Service URL for detailed TIGER/Line block groups
+      api_url <- sprintf("https://tigerweb.geo.census.gov/arcgis/rest/services/%s/Tracts_Blocks/MapServer/%d", 
+                         service_name, layer_id)
+      
+      # Build WHERE clause
+      where_clause <- NULL
+      if (state != "us") {
+        where_clause <- sprintf("%s = '%s'", state_field, state)
+        
+        if (!is.null(county)) {
+          county_codes <- sapply(county, function(x) { validate_county(state, x) })
+          county_list <- paste(sprintf("'%s'", county_codes), collapse = ", ")
+          where_clause <- sprintf("%s AND %s IN (%s)", where_clause, county_field, county_list)
+        }
+      }
+      
+      message(sprintf("Using TigerWeb API with detailed boundaries for year %s", api_year))
+      
+      bgs <- load_tiger_api(
+        url = api_url,
+        where = where_clause,
+        tigris_type = "block_group",
+        ...
+      )
+    }
+    
+    attr(bgs, "tigris") <- "block_group"
+    return(bgs)
+  }
+
+  cyear <- as.character(year)
+
   if (cb == TRUE) {
-
     if (year %in% c(1990, 2000)) {
-
       suf <- substr(as.character(year), 3, 4)
-
       url <- sprintf("https://www2.census.gov/geo/tiger/PREVGENZ/bg/bg%sshp/bg%s_d%s_shp.zip",
                      suf, state, suf)
-
     } else if (year == 2010) {
-
       url <- sprintf("https://www2.census.gov/geo/tiger/GENZ2010/gz_2010_%s_150_00_500k.zip",
                      state)
-
     } else {
-
       if (year > 2013) {
-
         url <- sprintf("https://www2.census.gov/geo/tiger/GENZ%s/shp/cb_%s_%s_bg_500k.zip",
                        cyear, cyear, state)
-
       } else {
-
         url <- sprintf("https://www2.census.gov/geo/tiger/GENZ%s/cb_%s_%s_bg_500k.zip",
                        cyear, cyear, state)
-
       }
-
-
     }
-
   } else {
-
     if (year == 1990) stop("Please specify `cb = TRUE` to get 1990 data.", call. = FALSE)
 
     if (year %in% c(2000, 2010)) {
-
       suf <- substr(cyear, 3, 4)
-
       url <- sprintf("https://www2.census.gov/geo/tiger/TIGER2010/BG/%s/tl_2010_%s_bg%s.zip",
                      cyear, state, suf)
-
     } else {
-
       url <- sprintf("https://www2.census.gov/geo/tiger/TIGER%s/BG/tl_%s_%s_bg.zip",
                      cyear, cyear, state)
-
     }
-
   }
-
 
   bgs <- load_tiger(url, tigris_type="block_group", ...)
 
   if (!is.null(county)) {
-
     county <- sapply(county, function(x) { validate_county(state, x) })
-
     bgs <- bgs[bgs$COUNTYFP %in% county, ]
-
   }
 
   # Dissolve polygons for 1990 and 2000 CB
@@ -663,9 +964,7 @@ block_groups <- function(state = NULL, county = NULL, cb = FALSE, year = NULL, .
   }
 
   attr(bgs, "tigris") <- "block_group"
-
   return(bgs)
-
 }
 
 #' Download a Zip Code Tabulation Area (ZCTA) shapefile into R
@@ -687,6 +986,11 @@ block_groups <- function(state = NULL, county = NULL, cb = FALSE, year = NULL, .
 #'        with 75 or 76.  Defaults to NULL, which will return all ZCTAs in the US.
 #' @param state the state for which you are requesting data; only available for 2000 (TIGER/Line
 #'              and CB shapefiles) and 2010 (TIGER/Line shapefiles only)
+#' @param use_api If TRUE, use the Census Bureau's TigerWeb REST API to retrieve data instead of 
+#'        downloading shapefiles. Default is to use the value set in options(tigris_use_api = FALSE).
+#'        The API will use the closest available year to the one requested. Using the API can be faster, 
+#'        especially for small areas or when you have a slow internet connection. Requires the arcgislayers 
+#'        package to be installed.
 #' @inheritParams load_tiger_doc_template
 #' @inheritSection load_tiger_doc_template Additional Arguments
 #' @family general area functions
@@ -707,14 +1011,11 @@ block_groups <- function(state = NULL, county = NULL, cb = FALSE, year = NULL, .
 #' plot(mem_zcta$geometry)
 #'
 #' }
-zctas <- function(cb = FALSE, starts_with = NULL, year = NULL, state = NULL, ...) {
+zctas <- function(cb = FALSE, starts_with = NULL, year = NULL, state = NULL, use_api = getOption("tigris_use_api", FALSE), ...) {
 
   if (is.null(year)) {
-
     year = getOption("tigris_year", 2022)
-
     message(sprintf("Retrieving data for the year %s", year))
-
   }
 
   if (year > 2020 && cb) {
@@ -736,6 +1037,91 @@ zctas <- function(cb = FALSE, starts_with = NULL, year = NULL, state = NULL, ...
 
   if (!is.null(state)) state <- validate_state(state)
 
+  # Use the TigerWeb API if requested
+  if (use_api) {
+    # Determine the appropriate year to use for the API
+    # Map user's requested year to available API years
+    available_years <- c(2020, 2021, 2022, 2023, 2024)
+    
+    # Find the closest available year (preference to older if exact match not available)
+    api_year <- available_years[max(which(available_years <= year))]
+    
+    # If year is before earliest available year, use earliest available
+    if (is.na(api_year) || length(api_year) == 0) {
+      api_year <- min(available_years)
+      message(sprintf("ZCTAs for year %s are not available in the TigerWeb API. Using year %s instead.", 
+                     year, api_year))
+    }
+    
+    # ZCTAs are available both as detailed and generalized
+    if (cb) {
+      # For generalized, use the ZCTAs service
+      service_name <- "TIGERweb"
+      layer_id <- 0  # ZCTAs 2020 layer
+      
+      # Service URL for generalized ZCTAs
+      api_url <- sprintf("https://tigerweb.geo.census.gov/arcgis/rest/services/%s/PUMA_TAD_TAZ_UGA_ZCTA/MapServer/%d", 
+                         service_name, layer_id)
+      
+      # Build WHERE clause for filtering by ZIP code prefix if needed
+      where_clause <- NULL
+      if (!is.null(starts_with)) {
+        if (length(starts_with) > 1) {
+          zip_patterns <- paste(sapply(starts_with, function(x) {
+            sprintf("ZCTA5CE20 LIKE '%s%%'", x)
+          }), collapse = " OR ")
+          where_clause <- sprintf("(%s)", zip_patterns)
+        } else {
+          where_clause <- sprintf("ZCTA5CE20 LIKE '%s%%'", starts_with)
+        }
+      }
+      
+      message(sprintf("Using TigerWeb API for ZCTAs with generalized boundaries for year %s", api_year))
+      
+      zcta <- load_tiger_api(
+        url = api_url,
+        where = where_clause,
+        tigris_type = "zcta",
+        ...
+      )
+      
+    } else {
+      # For detailed, need the ZCTA layer from TIGER
+      service_name <- "TIGERweb"
+      layer_id <- 0  # ZCTAs 2020 layer
+      
+      # Service URL for detailed ZCTAs
+      api_url <- sprintf("https://tigerweb.geo.census.gov/arcgis/rest/services/%s/PUMA_TAD_TAZ_UGA_ZCTA/MapServer/%d", 
+                         service_name, layer_id)
+      
+      # Build WHERE clause for filtering by ZIP code prefix if needed
+      where_clause <- NULL
+      if (!is.null(starts_with)) {
+        if (length(starts_with) > 1) {
+          zip_patterns <- paste(sapply(starts_with, function(x) {
+            sprintf("ZCTA5CE20 LIKE '%s%%'", x)
+          }), collapse = " OR ")
+          where_clause <- sprintf("(%s)", zip_patterns)
+        } else {
+          where_clause <- sprintf("ZCTA5CE20 LIKE '%s%%'", starts_with)
+        }
+      }
+      
+      message(sprintf("Using TigerWeb API for ZCTAs with detailed boundaries for year %s", api_year))
+      
+      zcta <- load_tiger_api(
+        url = api_url,
+        where = where_clause,
+        tigris_type = "zcta",
+        ...
+      )
+    }
+    
+    attr(zcta, "tigris") <- "zcta"
+    return(zcta)
+  }
+  
+  # Traditional download method
   cache <- getOption("tigris_use_cache")
 
   if (is.null(cache)) {
@@ -745,7 +1131,6 @@ zctas <- function(cb = FALSE, starts_with = NULL, year = NULL, state = NULL, ...
   cyear <- as.character(year)
 
   if (cb) {
-
     if (year == 2000) {
       if (is.null(state)) {
         url <- "https://www2.census.gov/geo/tiger/PREVGENZ/zt/z500shp/zt99_d00_shp.zip"
@@ -753,9 +1138,7 @@ zctas <- function(cb = FALSE, starts_with = NULL, year = NULL, state = NULL, ...
         url <- sprintf("https://www2.census.gov/geo/tiger/PREVGENZ/zt/z500shp/zt%s_d00_shp.zip",
                        state)
       }
-
     } else if (year == 2010) {
-
       url <- "https://www2.census.gov/geo/tiger/GENZ2010/gz_2010_us_860_00_500k.zip"
     } else if (year >= 2020) {
       url <- sprintf("https://www2.census.gov/geo/tiger/GENZ%s/shp/cb_%s_us_zcta520_500k.zip",
@@ -763,24 +1146,18 @@ zctas <- function(cb = FALSE, starts_with = NULL, year = NULL, state = NULL, ...
     } else if (year < 2020) {
       url <- sprintf("https://www2.census.gov/geo/tiger/GENZ%s/shp/cb_%s_us_zcta510_500k.zip",
                      cyear, cyear)
-
       if (year == 2013) url <- gsub("shp/", "", url)
     } else {
       url <- sprintf("https://www2.census.gov/geo/tiger/GENZ%s/shp/cb_%s_us_zcta520_500k.zip",
                      cyear, cyear)
     }
-
   } else {
-
     if (year >= 2020) {
       url <- sprintf("https://www2.census.gov/geo/tiger/TIGER%s/ZCTA520/tl_%s_us_zcta520.zip",
                      cyear, cyear)
     } else {
-
       if (year %in% c(2000, 2010)) {
-
         suf <- substr(cyear, 3, 4)
-
         if (is.null(state)) {
           url <- sprintf("https://www2.census.gov/geo/tiger/TIGER2010/ZCTA5/%s/tl_2010_us_zcta5%s.zip",
                          cyear, suf)
@@ -792,9 +1169,7 @@ zctas <- function(cb = FALSE, starts_with = NULL, year = NULL, state = NULL, ...
         url <- sprintf("https://www2.census.gov/geo/tiger/TIGER%s/ZCTA5/tl_%s_us_zcta510.zip",
                        cyear, cyear)
       }
-
     }
-
   }
 
   zcta <- load_tiger(url, tigris_type="zcta", ...)
@@ -816,9 +1191,7 @@ zctas <- function(cb = FALSE, starts_with = NULL, year = NULL, state = NULL, ...
   }
 
   attr(zcta, "tigris") <- "zcta"
-
   return(zcta)
-
 }
 
 
@@ -846,6 +1219,11 @@ zctas <- function(cb = FALSE, starts_with = NULL, year = NULL, state = NULL, ...
 #' @param county The three-digit FIPS code (string) of the county you'd like to
 #'        subset for, or a vector of FIPS codes if you desire multiple counties.
 #'        Can also be a county name or vector of names.
+#' @param use_api If TRUE, use the Census Bureau's TigerWeb REST API to retrieve data instead of 
+#'        downloading shapefiles. Default is to use the value set in options(tigris_use_api = FALSE).
+#'        The API will use the closest available year to the one requested. Using the API can be faster, 
+#'        especially for small areas or when you have a slow internet connection. Requires the arcgislayers 
+#'        package to be installed.
 #' @inheritParams load_tiger_doc_template
 #' @inheritSection load_tiger_doc_template Additional Arguments
 #' @family general area functions
@@ -865,20 +1243,16 @@ zctas <- function(cb = FALSE, starts_with = NULL, year = NULL, state = NULL, ...
 #'   addPolygons()
 #'
 #' }
-blocks <- function(state, county = NULL, year = NULL, ...) {
+blocks <- function(state, county = NULL, year = NULL, use_api = getOption("tigris_use_api", FALSE), ...) {
 
   if (is.null(year)) {
-
     year <- getOption("tigris_year", 2022)
-
     message(sprintf("Retrieving data for the year %s", year))
-
-
   }
 
-  if (length(county) > 1 && year < 2011) {
+  if (length(county) > 1 && year < 2011 && !use_api) {
     p <- lapply(county, function(x) {
-      blocks(state = state, county = x, year = year, ...)
+      blocks(state = state, county = x, year = year, use_api = use_api, ...)
     }) %>%
       rbind_tigris()
 
@@ -886,54 +1260,91 @@ blocks <- function(state, county = NULL, year = NULL, ...) {
   }
 
   if (year < 2000) {
-
     fname <- as.character(match.call())[[1]]
-
     msg <- "Block data are not available for 1990."
-
     stop(msg, call. = FALSE)
-
   }
 
   state <- validate_state(state)
-
   if (is.null(state)) stop("Invalid state", call.=FALSE)
+
+  # Use the TigerWeb API if requested
+  if (use_api) {
+    # Determine the appropriate year to use for the API
+    # Map user's requested year to available API years
+    available_years <- c(2020) # Only 2020 Census blocks are available in TigerWeb
+    
+    # Find the closest available year (preference to older if exact match not available)
+    api_year <- available_years[max(which(available_years <= year))]
+    
+    # If year is before earliest available year, use earliest available
+    if (is.na(api_year) || length(api_year) == 0) {
+      api_year <- min(available_years)
+      message(sprintf("Census Blocks for year %s are not available in the TigerWeb API. Using 2020 Census blocks instead.", 
+                     year))
+    }
+    
+    # Census blocks are only available in detailed TIGER/Line format (no generalized/CB version)
+    # Service is always TIGERweb for Census blocks
+    service_name <- "TIGERweb"
+    
+    # Layer ID for 2020 Census blocks is 12 
+    layer_id <- 12  # Census 2020 blocks layer
+    
+    # Service URL for detailed TIGER/Line Census blocks
+    api_url <- sprintf("https://tigerweb.geo.census.gov/arcgis/rest/services/%s/Tracts_Blocks/MapServer/%d", 
+                       service_name, layer_id)
+    
+    # For 2020 Census blocks, fields are named STATE and COUNTY
+    state_field <- "STATE" 
+    county_field <- "COUNTY"
+    
+    # Build WHERE clause
+    where_clause <- sprintf("%s = '%s'", state_field, state)
+    
+    if (!is.null(county)) {
+      county_codes <- sapply(county, function(x) { validate_county(state, x) })
+      county_list <- paste(sprintf("'%s'", county_codes), collapse = ", ")
+      where_clause <- sprintf("%s AND %s IN (%s)", where_clause, county_field, county_list)
+    }
+    
+    message(sprintf("Using TigerWeb API for Census blocks from year %s", api_year))
+    
+    blks <- load_tiger_api(
+      url = api_url,
+      where = where_clause,
+      tigris_type = "block",
+      ...
+    )
+    
+    attr(blks, "tigris") <- "block"
+    return(blks)
+  }
 
   cyear <- as.character(year)
 
   if (year >= 2014) {
-
     if (year >= 2020) {
-
       # New block logic for 2020
       url <- sprintf("https://www2.census.gov/geo/tiger/TIGER%s/TABBLOCK20/tl_%s_%s_tabblock20.zip",
                      cyear, cyear, state)
-
     } else {
-
       url <- sprintf("https://www2.census.gov/geo/tiger/TIGER%s/TABBLOCK/tl_%s_%s_tabblock10.zip",
                      cyear, cyear, state)
-
     }
-
   } else if (year %in% 2011:2013) {
     url <- sprintf("https://www2.census.gov/geo/tiger/TIGER%s/TABBLOCK/tl_%s_%s_tabblock.zip",
                    cyear, cyear, state)
   } else if (year %in% c(2000, 2010)) {
     suf <- substr(cyear, 3, 4)
-
     if (!is.null(county)) {
-
       county <- validate_county(state, county)
-
       url <- sprintf("https://www2.census.gov/geo/tiger/TIGER2010/TABBLOCK/%s/tl_2010_%s%s_tabblock%s.zip",
                      cyear, state, county, suf)
     } else {
-
       url <- sprintf("https://www2.census.gov/geo/tiger/TIGER2010/TABBLOCK/%s/tl_2010_%s_tabblock%s.zip",
                      cyear, state, suf)
     }
-
   } else {
     stop()
   }
@@ -941,25 +1352,17 @@ blocks <- function(state, county = NULL, year = NULL, ...) {
   blks <- load_tiger(url, tigris_type="block", ...)
 
   if (!is.null(county) && year > 2010) {
-
     if (year >= 2020) {
       county <- sapply(county, function(x) { validate_county(state, x) })
-
       blks <- blks[blks$COUNTYFP20 %in% county, ]
     } else {
-
       county <- sapply(county, function(x) { validate_county(state, x) })
-
       blks <- blks[blks$COUNTYFP10 %in% county, ]
-
     }
-
   }
 
   attr(blks, "tigris") <- "block"
-
   return(blks)
-
 }
 
 #' Download a county subdivision shapefile into R
@@ -978,6 +1381,11 @@ blocks <- function(state, county = NULL, year = NULL, ...) {
 #'        Can also be a county name or vector of names.
 #' @param cb If cb is set to TRUE, download a generalized (1:500k)
 #'        file.  Defaults to FALSE (the most detailed TIGER/Line file)
+#' @param use_api If TRUE, use the Census Bureau's TigerWeb REST API to retrieve data instead of 
+#'        downloading shapefiles. Default is to use the value set in options(tigris_use_api = FALSE).
+#'        The API will use the closest available year to the one requested. Using the API can be faster, 
+#'        especially for small areas or when you have a slow internet connection. Requires the arcgislayers 
+#'        package to be installed.
 #' @inheritParams load_tiger_doc_template
 #' @inheritSection load_tiger_doc_template Additional Arguments
 #' @family general area functions
@@ -992,71 +1400,125 @@ blocks <- function(state, county = NULL, year = NULL, ...) {
 #' plot(or$geometry)
 #'
 #' }
-county_subdivisions <- function(state, county = NULL, cb = FALSE, year = NULL, ...) {
+county_subdivisions <- function(state, county = NULL, cb = FALSE, year = NULL, use_api = getOption("tigris_use_api", FALSE), ...) {
 
   if (is.null(year)) {
-
     year <- getOption("tigris_year", 2022)
-
     message(sprintf("Retrieving data for the year %s", year))
-
-
   }
 
   if (year < 2010) {
-
     fname <- as.character(match.call())[[1]]
-
     msg <- sprintf("%s is not currently available for years prior to 2010.", fname)
-
     stop(msg, call. = FALSE)
-
   }
 
   state <- validate_state(state)
-
   if (is.null(state)) stop("Invalid state", call.=FALSE)
+
+  # Use the TigerWeb API if requested
+  if (use_api) {
+    # Determine the appropriate year to use for the API
+    # Map user's requested year to available API years
+    available_years <- c(2020, 2021, 2022, 2023, 2024)
+    
+    # Find the closest available year (preference to older if exact match not available)
+    api_year <- available_years[max(which(available_years <= year))]
+    
+    # If year is before earliest available year, use earliest available
+    if (is.na(api_year) || length(api_year) == 0) {
+      api_year <- min(available_years)
+      message(sprintf("County subdivisions for year %s are not available in the TigerWeb API. Using year %s instead.", 
+                     year, api_year))
+    }
+    
+    if (cb) {
+      # For generalized county subdivisions, use Places_County_Subdivisions service
+      service_name <- "TIGERweb"
+      layer_id <- 6  # County Subdivisions layer
+      
+      # Service URL for generalized county subdivisions
+      api_url <- sprintf("https://tigerweb.geo.census.gov/arcgis/rest/services/%s/Places_County_Sub/MapServer/%d", 
+                         service_name, layer_id)
+      
+      # Build WHERE clause
+      where_clause <- sprintf("STATEFP = '%s'", state)
+      
+      if (!is.null(county)) {
+        county_codes <- sapply(county, function(x) { validate_county(state, x) })
+        county_list <- paste(sprintf("'%s'", county_codes), collapse = ", ")
+        where_clause <- sprintf("%s AND COUNTYFP IN (%s)", where_clause, county_list)
+      }
+      
+      message(sprintf("Using TigerWeb API with generalized boundaries for year %s", api_year))
+      
+      cs <- load_tiger_api(
+        url = api_url,
+        where = where_clause,
+        tigris_type = "county_subdivision",
+        ...
+      )
+      
+    } else {
+      # For detailed county subdivisions, use same layer as generalized - TIGERweb doesn't differentiate
+      service_name <- "TIGERweb"
+      layer_id <- 6  # County Subdivisions layer
+      
+      # Service URL for detailed county subdivisions
+      api_url <- sprintf("https://tigerweb.geo.census.gov/arcgis/rest/services/%s/Places_County_Sub/MapServer/%d", 
+                         service_name, layer_id)
+      
+      # Build WHERE clause
+      where_clause <- sprintf("STATEFP = '%s'", state)
+      
+      if (!is.null(county)) {
+        county_codes <- sapply(county, function(x) { validate_county(state, x) })
+        county_list <- paste(sprintf("'%s'", county_codes), collapse = ", ")
+        where_clause <- sprintf("%s AND COUNTYFP IN (%s)", where_clause, county_list)
+      }
+      
+      message(sprintf("Using TigerWeb API with detailed boundaries for year %s", api_year))
+      
+      cs <- load_tiger_api(
+        url = api_url,
+        where = where_clause,
+        tigris_type = "county_subdivision",
+        ...
+      )
+    }
+    
+    attr(cs, "tigris") <- "county_subdivision"
+    return(cs)
+  }
 
   cyear <- as.character(year)
 
   if (cb == TRUE) {
-
     if (year == 2010) {
       url <- sprintf("https://www2.census.gov/geo/tiger/GENZ2010/gz_2010_%s_060_00_500k.zip",
                      state)
     } else {
-
       url <- sprintf("https://www2.census.gov/geo/tiger/GENZ%s/shp/cb_%s_%s_cousub_500k.zip",
                      cyear, cyear, state)
 
       if (year == 2013) url <- gsub("shp/", "", url)
-
     }
-
   } else {
-
     if (year == 2010) {
       url <- sprintf("https://www2.census.gov/geo/tiger/TIGER2010/COUSUB/2010/tl_2010_%s_cousub10.zip", state)
     } else {
       url <- sprintf("https://www2.census.gov/geo/tiger/TIGER%s/COUSUB/tl_%s_%s_cousub.zip",
                      cyear, cyear, state)
     }
-
-
   }
 
   cs <- load_tiger(url, tigris_type="county_subdivision", ...)
 
   if (!is.null(county)) {
-
     county <- sapply(county, function(x) { validate_county(state, x) })
-
     cs <- cs[cs$COUNTYFP %in% county, ]
-
   }
 
   attr(cs, "tigris") <- "county_subdivision"
-
   return(cs)
-
 }

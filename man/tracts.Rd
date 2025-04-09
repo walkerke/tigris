@@ -10,6 +10,7 @@ tracts(
   cb = FALSE,
   resolution = "500k",
   year = NULL,
+  use_api = getOption("tigris_use_api", FALSE),
   ...
 )
 }
@@ -30,6 +31,12 @@ tracts file.  Defaults to FALSE (the most detailed TIGER/Line file)}
 Defaults to '500k'; the other option is '5m' (1:5 million).  Resolution of '5m' is #'        only available for the national Census tract file for years 2022 and later.}
 
 \item{year}{the data year; defaults to 2022}
+
+\item{use_api}{If TRUE, use the Census Bureau's TigerWeb REST API to retrieve data instead of
+downloading shapefiles. Default is FALSE. The API will use the closest available year
+to the one requested (2015-2024 are supported). Using the API can be faster, especially
+for small areas or when you have a slow internet connection. Requires the arcgislayers
+package to be installed.}
 
 \item{...}{arguments to be passed to internal function \code{load_tiger}, which is not exported. See Additional Arguments.}
 }
@@ -83,11 +90,26 @@ option \code{"tigris_refresh"} if it is set. Specifying this argument will overr
 library(tigris)
 library(leaflet)
 
+# Traditional method with shapefiles
 tarrant <- tracts("TX", "Tarrant", cb = TRUE)
 
-leaflet(tarrant) \%>\%
+# Using the TigerWeb API with generalized boundaries (requires arcgislayers package)
+tarrant_api_cb <- tracts("TX", "Tarrant", cb = TRUE, use_api = TRUE)
+
+# Using the TigerWeb API with detailed boundaries
+tarrant_api_detailed <- tracts("TX", "Tarrant", cb = FALSE, use_api = TRUE)
+
+# Using the TigerWeb API with a specific year
+tarrant_api_2019 <- tracts("TX", "Tarrant", cb = TRUE, year = 2019, use_api = TRUE)
+
+# Compare the results in leaflet
+leaflet() \%>\%
   addTiles() \%>\%
-  addPolygons(popup = ~NAME)
+  addPolygons(data = tarrant, color = "blue", weight = 1, fillOpacity = 0,
+              group = "Shapefile") \%>\%
+  addPolygons(data = tarrant_api_cb, color = "red", weight = 1, fillOpacity = 0,
+              group = "API Generalized") \%>\%
+  addLayersControl(overlayGroups = c("Shapefile", "API Generalized"))
 }
 }
 \seealso{

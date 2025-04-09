@@ -4,7 +4,13 @@
 \alias{blocks}
 \title{Download a Census block shapefile into R}
 \usage{
-blocks(state, county = NULL, year = NULL, ...)
+blocks(
+  state,
+  county = NULL,
+  year = NULL,
+  use_api = getOption("tigris_use_api", FALSE),
+  ...
+)
 }
 \arguments{
 \item{state}{The two-digit FIPS code (string) of the state you want. Can also
@@ -15,6 +21,12 @@ subset for, or a vector of FIPS codes if you desire multiple counties.
 Can also be a county name or vector of names.}
 
 \item{year}{the data year; defaults to 2022}
+
+\item{use_api}{If TRUE, use the Census Bureau's TigerWeb REST API to retrieve data instead of
+downloading shapefiles. Default is to use the value set in options(tigris_use_api = FALSE).
+The API will use the closest available year to the one requested. Using the API can be faster,
+especially for small areas or when you have a slow internet connection. Requires the arcgislayers
+package to be installed.}
 
 \item{...}{arguments to be passed to internal function \code{load_tiger}, which is not exported. See Additional Arguments.}
 }

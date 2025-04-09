@@ -4,7 +4,14 @@
 \alias{counties}
 \title{Download a US Counties shapefile into R, and optionally subset by state}
 \usage{
-counties(state = NULL, cb = FALSE, resolution = "500k", year = NULL, ...)
+counties(
+  state = NULL,
+  cb = FALSE,
+  resolution = "500k",
+  year = NULL,
+  use_api = getOption("tigris_use_api", FALSE),
+  ...
+)
 }
 \arguments{
 \item{state}{The two-digit FIPS code (string) of the state you want, or a
@@ -18,6 +25,12 @@ counties file.  Defaults to FALSE (the most detailed TIGER file).}
 Defaults to '500k'; options include '5m' (1:5 million) and '20m' (1:20 million).}
 
 \item{year}{the data year; defaults to 2022}
+
+\item{use_api}{If TRUE, use the Census Bureau's TigerWeb REST API to retrieve data instead of
+downloading shapefiles. Default is to use the value set in options(tigris_use_api = FALSE).
+The API will use the closest available year to the one requested. Using the API can be faster,
+especially for small areas or when you have a slow internet connection. Requires the arcgislayers
+package to be installed.}
 
 \item{...}{arguments to be passed to internal function \code{load_tiger}, which is not exported. See Additional Arguments.}
 }

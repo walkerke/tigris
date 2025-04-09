@@ -4,7 +4,14 @@
 \alias{zctas}
 \title{Download a Zip Code Tabulation Area (ZCTA) shapefile into R}
 \usage{
-zctas(cb = FALSE, starts_with = NULL, year = NULL, state = NULL, ...)
+zctas(
+  cb = FALSE,
+  starts_with = NULL,
+  year = NULL,
+  state = NULL,
+  use_api = getOption("tigris_use_api", FALSE),
+  ...
+)
 }
 \arguments{
 \item{cb}{If cb is set to TRUE, download a generalized (1:500k)
@@ -23,6 +30,12 @@ with 75 or 76.  Defaults to NULL, which will return all ZCTAs in the US.}
 
 \item{state}{the state for which you are requesting data; only available for 2000 (TIGER/Line
 and CB shapefiles) and 2010 (TIGER/Line shapefiles only)}
+
+\item{use_api}{If TRUE, use the Census Bureau's TigerWeb REST API to retrieve data instead of
+downloading shapefiles. Default is to use the value set in options(tigris_use_api = FALSE).
+The API will use the closest available year to the one requested. Using the API can be faster,
+especially for small areas or when you have a slow internet connection. Requires the arcgislayers
+package to be installed.}
 
 \item{...}{arguments to be passed to internal function \code{load_tiger}, which is not exported. See Additional Arguments.}
 }

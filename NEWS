@@ -1,3 +1,13 @@
+tigris 2.2.0
+-------------------------------------------------------
+* Added support for fetching data from the Census Bureau's TigerWeb REST API through a new use_api parameter available in tigris functions.
+
+* Implemented a new load_tiger_api() function that utilizes the arcgislayers package to query the TigerWeb API.
+
+* Initial API support has been added to the tracts() function with more functions to follow.
+
+* Using the API can be faster than downloading shapefiles, especially for small areas or when you have a slow internet connection.
+
 tigris 2.0
 -------------------------------------------------------
 * A new filter_by argument allows users to subset datasets by a bounding box or another sf object when requesting data.

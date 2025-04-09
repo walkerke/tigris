@@ -24,7 +24,8 @@ Suggests:
     leaflet,
     knitr, 
     tidycensus,
-    sp
+    sp,
+    arcgislayers
 Imports:
     stringr,
     magrittr,
