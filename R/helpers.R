@@ -18,26 +18,34 @@
 #' Sys.getenv('TIGRIS_CACHE_DIR')
 #' }
 tigris_cache_dir <- function(path) {
-  home <- Sys.getenv("HOME")
-  renv <- file.path(home, ".Renviron")
-  if (!file.exists(renv)) {
-    file.create(renv)
-  }
+    home <- Sys.getenv("HOME")
+    renv <- file.path(home, ".Renviron")
+    if (!file.exists(renv)) {
+        file.create(renv)
+    }
 
-  check <- readLines(renv)
+    check <- readLines(renv)
 
-  if (isTRUE(any(grepl("TIGRIS_CACHE_DIR", check)))) {
-    oldenv <- read.table(renv, stringsAsFactors = FALSE)
-    newenv <- oldenv[!grepl("TIGRIS_CACHE_DIR", oldenv$V1), ]
-    write.table(newenv, renv, quote = FALSE, sep = "\n",
-                col.names = FALSE, row.names = FALSE)
-  }
+    if (isTRUE(any(grepl("TIGRIS_CACHE_DIR", check)))) {
+        oldenv <- read.table(renv, stringsAsFactors = FALSE)
+        newenv <- oldenv[!grepl("TIGRIS_CACHE_DIR", oldenv$V1), ]
+        write.table(
+            newenv,
+            renv,
+            quote = FALSE,
+            sep = "\n",
+            col.names = FALSE,
+            row.names = FALSE
+        )
+    }
 
-  var <- paste0("TIGRIS_CACHE_DIR=", "'", path, "'")
+    var <- paste0("TIGRIS_CACHE_DIR=", "'", path, "'")
 
-  write(var, renv, sep = "\n", append = TRUE)
-  message(sprintf("Your new tigris cache directory is %s. \nTo use now, restart R or run `readRenviron('~/.Renviron')`", path))
-
+    write(var, renv, sep = "\n", append = TRUE)
+    message(sprintf(
+        "Your new tigris cache directory is %s. \nTo use now, restart R or run `readRenviron('~/.Renviron')`",
+        path
+    ))
 }
 
 
@@ -55,231 +63,278 @@ tigris_cache_dir <- function(path) {
 #' (stored in temporary directory or TIGRIS_CACHE_DIR depending on the configuration of
 #' global option "tigris_use_cache"). Defaults to FALSE.
 #' @param filter_by Geometry used to filter the output returned by the function.  Can be an sf object, an object of class `bbox`, or a length-4 vector of format `c(xmin, ymin, xmax, ymax)` that can be converted to a bbox. Geometries that intersect the input to `filter_by` will be returned.
-#' @param protocol Character string specifying the protocol to use for downloading files. Options are "ftp" (default) or "http". If "ftp", the URL will be modified to use FTP instead of HTTPS.
+#' @param protocol Character string specifying the protocol to use for downloading files. Options are "ftp" or "http" (default). If "ftp", the URL will be modified to use FTP instead of HTTPS.
 #' @param timeout Integer specifying the timeout in seconds for download operations. Defaults to 300 (5 minutes) to handle large files.
 #'
 #' @return sf or sp data frame
 #'
-load_tiger <- function(url,
-                       refresh=getOption("tigris_refresh", FALSE),
-                       tigris_type=NULL,
-                       class = getOption("tigris_class", "sf"),
-                       progress_bar = TRUE,
-                       keep_zipped_shapefile = FALSE,
-                       filter_by = NULL,
-                       protocol = "ftp",
-                       timeout = 300) {
+load_tiger <- function(
+    url,
+    refresh = getOption("tigris_refresh", FALSE),
+    tigris_type = NULL,
+    class = getOption("tigris_class", "sf"),
+    progress_bar = TRUE,
+    keep_zipped_shapefile = FALSE,
+    filter_by = NULL,
+    protocol = "http",
+    timeout = 300
+) {
+    use_cache <- getOption("tigris_use_cache", FALSE)
 
-  use_cache <- getOption("tigris_use_cache", FALSE)
+    # Process filter_by
+    wkt_filter <- input_to_wkt(filter_by)
 
-  # Process filter_by
-  wkt_filter <- input_to_wkt(filter_by)
-  
-  # Modify URL for FTP if needed
-  if (protocol == "ftp" && grepl("^https://www2", url)) {
-    url <- gsub("^https://www2", "ftp://ftp2", url)
-  }
+    # Modify URL for FTP if needed
+    if (protocol == "ftp" && grepl("^https://www2", url)) {
+        url <- gsub("^https://www2", "ftp://ftp2", url)
+    }
 
-  tiger_file <- basename(url)
+    tiger_file <- basename(url)
 
-  obj <- NULL
+    obj <- NULL
 
-  if (use_cache) {
-    if (Sys.getenv("TIGRIS_CACHE_DIR") != "") {
-      cache_dir <- Sys.getenv("TIGRIS_CACHE_DIR")
-      cache_dir <- path.expand(cache_dir)
+    if (use_cache) {
+        if (Sys.getenv("TIGRIS_CACHE_DIR") != "") {
+            cache_dir <- Sys.getenv("TIGRIS_CACHE_DIR")
+            cache_dir <- path.expand(cache_dir)
+        } else {
+            cache_dir <- user_cache_dir("tigris")
+        }
+        if (!file.exists(cache_dir)) {
+            dir.create(cache_dir, recursive = TRUE)
+        }
+
+        if (file.exists(cache_dir)) {
+            shape <- gsub(".zip", "", tiger_file)
+            shape <- gsub("_shp", "", shape) # for historic tracts
+
+            file_loc <- file.path(cache_dir, tiger_file)
+            shp_loc <- file.path(cache_dir, sprintf("%s.shp", shape))
+
+            if (refresh | !file.exists(shp_loc)) {
+                if (grepl("^ftp://", url)) {
+                    # Use download.file for FTP URLs with timeout
+                    options(timeout = timeout)
+                    try(
+                        download.file(
+                            url,
+                            destfile = file_loc,
+                            quiet = !progress_bar,
+                            mode = "wb"
+                        ),
+                        silent = TRUE
+                    )
+                    options(timeout = 60) # Reset to R default
+                } else {
+                    # Use httr::GET for HTTP URLs
+                    if (progress_bar) {
+                        try(
+                            GET(
+                                url,
+                                write_disk(file_loc, overwrite = refresh),
+                                progress(type = "down"),
+                                timeout(timeout)
+                            ),
+                            silent = TRUE
+                        )
+                    } else {
+                        try(
+                            GET(
+                                url,
+                                write_disk(file_loc, overwrite = refresh),
+                                timeout(timeout)
+                            ),
+                            silent = TRUE
+                        )
+                    }
+                }
+            }
+
+            if (refresh | !file.exists(shp_loc)) {
+                unzip_tiger <- function() {
+                    unzip(file_loc, exdir = cache_dir, overwrite = TRUE)
+                }
+                remove_zip_tiger <- function() {
+                    if (file.exists(file_loc) && file.exists(shp_loc)) {
+                        invisible(file.remove(file_loc))
+                    }
+                }
+
+                # Logic for handling download errors and re-downloading
+                t <- tryCatch(unzip_tiger(), warning = function(w) w)
+
+                if ("warning" %in% class(t)) {
+                    i <- 1
+
+                    while (i < 4) {
+                        message(sprintf(
+                            "Previous download failed.  Re-download attempt %s of 3...",
+                            as.character(i)
+                        ))
+
+                        if (grepl("^ftp://", url)) {
+                            # Use download.file for FTP URLs with timeout
+                            options(timeout = timeout)
+                            try(
+                                download.file(
+                                    url,
+                                    destfile = file_loc,
+                                    quiet = !progress_bar,
+                                    mode = "wb"
+                                ),
+                                silent = TRUE
+                            )
+                            options(timeout = 60) # Reset to R default
+                        } else {
+                            # Use httr::GET for HTTP URLs
+                            if (progress_bar) {
+                                try(
+                                    GET(
+                                        url,
+                                        write_disk(file_loc, overwrite = TRUE),
+                                        progress(type = "down"),
+                                        timeout(timeout)
+                                    ),
+                                    silent = TRUE
+                                )
+                            } else {
+                                try(
+                                    GET(
+                                        url,
+                                        write_disk(file_loc, overwrite = TRUE),
+                                        timeout(timeout)
+                                    ),
+                                    silent = TRUE
+                                )
+                            }
+                        }
+
+                        t <- tryCatch(unzip_tiger(), warning = function(w) w)
+
+                        if ("warning" %in% class(t)) {
+                            i <- i + 1
+                        } else {
+                            break
+                        }
+                    }
+
+                    if (i == 4) {
+                        stop(
+                            "Download failed; check your internet connection or the status of the Census Bureau website
+                 at https://www2.census.gov/geo/tiger/ or ftp://ftp2.census.gov/geo/tiger/.",
+                            call. = FALSE
+                        )
+                    }
+                } else {
+                    unzip_tiger()
+
+                    if (!keep_zipped_shapefile) {
+                        remove_zip_tiger()
+                    }
+                }
+            }
+
+            obj <- st_read(
+                dsn = cache_dir,
+                layer = shape,
+                quiet = TRUE,
+                stringsAsFactors = FALSE,
+                wkt_filter = wkt_filter
+            )
+
+            if (is.na(st_crs(obj)$proj4string)) {
+                st_crs(obj) <- "+proj=longlat +datum=NAD83 +no_defs"
+            }
+        }
     } else {
-      cache_dir <- user_cache_dir("tigris")
-    }
-    if (!file.exists(cache_dir)) {
-      dir.create(cache_dir, recursive=TRUE)
-    }
-
-    if (file.exists(cache_dir)) {
-
-      shape <- gsub(".zip", "", tiger_file)
-      shape <- gsub("_shp", "", shape) # for historic tracts
-
-      file_loc <- file.path(cache_dir, tiger_file)
-      shp_loc  <- file.path(cache_dir, sprintf("%s.shp", shape))
-
-      if (refresh | !file.exists(shp_loc)) {
+        tmp <- tempdir()
+        file_loc <- file.path(tmp, tiger_file)
 
         if (grepl("^ftp://", url)) {
-          # Use download.file for FTP URLs with timeout
-          options(timeout = timeout)
-          try(download.file(url, destfile = file_loc, quiet = !progress_bar, mode = "wb"), silent = TRUE)
-          options(timeout = 60) # Reset to R default
+            # Use download.file for FTP URLs with timeout
+            options(timeout = timeout)
+            try(
+                download.file(
+                    url,
+                    destfile = file_loc,
+                    quiet = !progress_bar,
+                    mode = "wb"
+                ),
+                silent = TRUE
+            )
+            options(timeout = 60) # Reset to R default
         } else {
-          # Use httr::GET for HTTP URLs
-          if (progress_bar) {
-            try(GET(url,
-                    write_disk(file_loc, overwrite=refresh),
-                    progress(type="down"),
-                    timeout(timeout)), silent=TRUE)
-          } else {
-            try(GET(url,
-                    write_disk(file_loc, overwrite=refresh),
-                    timeout(timeout)),
-                    silent=TRUE)
-          }
-        }
-
-      }
-
-      if (refresh | !file.exists(shp_loc)) {
-
-        unzip_tiger <- function() {
-          unzip(file_loc, exdir = cache_dir, overwrite=TRUE)
-        }
-        remove_zip_tiger <- function() {
-          if (file.exists(file_loc) && file.exists(shp_loc)) {
-            invisible(file.remove(file_loc))
-          }
-        }
-
-        # Logic for handling download errors and re-downloading
-        t <- tryCatch(unzip_tiger(), warning = function(w) w)
-
-        if ("warning" %in% class(t)) {
-
-          i <- 1
-
-          while (i < 4) {
-
-            message(sprintf("Previous download failed.  Re-download attempt %s of 3...",
-                            as.character(i)))
-
-            if (grepl("^ftp://", url)) {
-              # Use download.file for FTP URLs with timeout
-              options(timeout = timeout)
-              try(download.file(url, destfile = file_loc, quiet = !progress_bar, mode = "wb"), silent = TRUE)
-              options(timeout = 60) # Reset to R default
+            # Use httr::GET for HTTP URLs
+            if (progress_bar) {
+                try(
+                    GET(
+                        url,
+                        write_disk(file_loc),
+                        progress(type = "down"),
+                        timeout(timeout)
+                    ),
+                    silent = TRUE
+                )
             } else {
-              # Use httr::GET for HTTP URLs
-              if (progress_bar) {
-                try(GET(url,
-                        write_disk(file_loc, overwrite=TRUE),
-                        progress(type="down"),
-                        timeout(timeout)), silent=TRUE)
-              } else {
-                try(GET(url,
-                        write_disk(file_loc, overwrite=TRUE),
-                        timeout(timeout)),
-                        silent=TRUE)
-              }
+                try(
+                    GET(url, write_disk(file_loc), timeout(timeout)),
+                    silent = TRUE
+                )
             }
-
-            t <- tryCatch(unzip_tiger(), warning = function(w) w)
-
-            if ("warning" %in% class(t)) {
-              i <- i + 1
-            } else {
-              break
-            }
-
-          }
-
-          if (i == 4) {
-
-            stop("Download failed; check your internet connection or the status of the Census Bureau website
-                 at https://www2.census.gov/geo/tiger/ or ftp://ftp2.census.gov/geo/tiger/.", call. = FALSE)
-          }
-
-        } else {
-
-          unzip_tiger()
-
-          if (!keep_zipped_shapefile) {
-
-            remove_zip_tiger()
-
-          }
-
         }
 
-      }
+        unzip(file_loc, exdir = tmp)
+        shape <- gsub(".zip", "", tiger_file)
+        shape <- gsub("_shp", "", shape) # for historic tracts
 
-      obj <- st_read(dsn = cache_dir, layer = shape,
-                     quiet = TRUE, stringsAsFactors = FALSE,
-                     wkt_filter = wkt_filter)
+        obj <- st_read(
+            dsn = tmp,
+            layer = shape,
+            quiet = TRUE,
+            stringsAsFactors = FALSE,
+            wkt_filter = wkt_filter
+        )
 
-      if (is.na(st_crs(obj)$proj4string)) {
-
-        st_crs(obj) <- "+proj=longlat +datum=NAD83 +no_defs"
-
-      }
-
+        if (is.na(st_crs(obj)$proj4string)) {
+            st_crs(obj) <- "+proj=longlat +datum=NAD83 +no_defs"
+        }
     }
 
-  } else {
+    attr(obj, "tigris") <- "tigris"
 
-    tmp <- tempdir()
-    file_loc <- file.path(tmp, tiger_file)
+    # this will help identify the object "sub type"
+    if (!is.null(tigris_type)) attr(obj, "tigris") <- tigris_type
 
-    if (grepl("^ftp://", url)) {
-      # Use download.file for FTP URLs with timeout
-      options(timeout = timeout)
-      try(download.file(url, destfile = file_loc, quiet = !progress_bar, mode = "wb"), silent = TRUE)
-      options(timeout = 60) # Reset to R default
+    # Take care of COUNTYFP, STATEFP issues for historic data
+    if ("COUNTYFP00" %in% names(obj)) {
+        obj$COUNTYFP <- obj$COUNTYFP00
+        obj$STATEFP <- obj$STATEFP00
+    }
+    if ("COUNTYFP10" %in% names(obj)) {
+        obj$COUNTYFP <- obj$COUNTYFP10
+        obj$STATEFP <- obj$STATEFP10
+    }
+    if ("COUNTY" %in% names(obj)) {
+        obj$COUNTYFP <- obj$COUNTY
+        obj$STATEFP <- obj$STATE
+    }
+    if ("CO" %in% names(obj)) {
+        obj$COUNTYFP <- obj$CO
+        obj$STATEFP <- obj$ST
+    }
+
+    if (class == "sp") {
+        warning(
+            stringr::str_wrap(
+                "Spatial* (sp) classes are no longer formally supported in tigris as of version 2.0. We strongly recommend updating your workflow to use sf objects (the default in tigris) instead.",
+                50
+            ),
+            call. = FALSE
+        )
+        return(sf::as_Spatial(obj))
     } else {
-      # Use httr::GET for HTTP URLs
-      if (progress_bar) {
-        try(GET(url, write_disk(file_loc),
-                progress(type = "down"),
-                timeout(timeout)), silent = TRUE)
-      } else {
-        try(GET(url, write_disk(file_loc),
-                timeout(timeout)),
-                silent = TRUE)
-      }
+        return(obj)
     }
-
-    unzip(file_loc, exdir = tmp)
-    shape <- gsub(".zip", "", tiger_file)
-    shape <- gsub("_shp", "", shape) # for historic tracts
-
-    obj <- st_read(dsn = tmp, layer = shape,
-                   quiet = TRUE, stringsAsFactors = FALSE,
-                   wkt_filter = wkt_filter)
-
-    if (is.na(st_crs(obj)$proj4string)) {
-
-      st_crs(obj) <- "+proj=longlat +datum=NAD83 +no_defs"
-
-    }
-
-  }
-
-  attr(obj, "tigris") <- "tigris"
-
-  # this will help identify the object "sub type"
-  if (!is.null(tigris_type)) attr(obj, "tigris") <- tigris_type
-
-  # Take care of COUNTYFP, STATEFP issues for historic data
-  if ("COUNTYFP00" %in% names(obj)) {
-    obj$COUNTYFP <- obj$COUNTYFP00
-    obj$STATEFP <- obj$STATEFP00
-  }
-  if ("COUNTYFP10" %in% names(obj)) {
-    obj$COUNTYFP <- obj$COUNTYFP10
-    obj$STATEFP <- obj$STATEFP10
-  }
-  if ("COUNTY" %in% names(obj)) {
-    obj$COUNTYFP <- obj$COUNTY
-    obj$STATEFP <- obj$STATE
-  }
-  if ("CO" %in% names(obj)) {
-    obj$COUNTYFP <- obj$CO
-    obj$STATEFP <- obj$ST
-  }
-
-  if (class == "sp") {
-    warning(stringr::str_wrap("Spatial* (sp) classes are no longer formally supported in tigris as of version 2.0. We strongly recommend updating your workflow to use sf objects (the default in tigris) instead.", 50), call. = FALSE)
-    return(sf::as_Spatial(obj))
-  } else {
-    return(obj)
-  }
 }
 
 #' Easily merge a data frame to a spatial data frame
@@ -319,94 +374,99 @@ load_tiger <- function(url,
 #' ## [1] 169
 #'
 #' }
-geo_join <- function(spatial_data, data_frame, by_sp, by_df, by = NULL, how = 'left') {
+geo_join <- function(
+    spatial_data,
+    data_frame,
+    by_sp,
+    by_df,
+    by = NULL,
+    how = 'left'
+) {
+    .Deprecated(
+        "dplyr::left_join()",
+        package = "tigris",
+        msg = "We recommend using the dplyr::*_join() family of functions instead."
+    )
 
-  .Deprecated("dplyr::left_join()",
-              package = "tigris",
-              msg = "We recommend using the dplyr::*_join() family of functions instead.")
-
-  if (!is.null(by)) {
-    by_sp <- by
-    by_df <- by
-  }
-
-  # For sp objects
-  if (class(spatial_data)[1] %in% c("SpatialGridDataFrame", "SpatialLinesDataFrame",
-                                "SpatialPixelsDataFrame", "SpatialPointsDataFrame",
-                                "SpatialPolygonsDataFrame")) {
-
-    spatial_data@data <- data.frame(spatial_data@data,
-                                    data_frame[match(spatial_data@data[[by_sp]],
-                                                     data_frame[[by_df]]), ])
-
-    if (how == 'inner') {
-
-      matches <- match(spatial_data@data[[by_sp]], data_frame[[by_df]])
-
-      spatial_data <- spatial_data[!is.na(matches), ]
-
-      return(spatial_data)
-
-    } else if (how == 'left') {
-
-      return(spatial_data)
-
-    } else {
-
-      stop("The available options for `how` are 'left' and 'inner'.", call. = FALSE)
-
+    if (!is.null(by)) {
+        by_sp <- by
+        by_df <- by
     }
 
+    # For sp objects
+    if (
+        class(spatial_data)[1] %in%
+            c(
+                "SpatialGridDataFrame",
+                "SpatialLinesDataFrame",
+                "SpatialPixelsDataFrame",
+                "SpatialPointsDataFrame",
+                "SpatialPolygonsDataFrame"
+            )
+    ) {
+        spatial_data@data <- data.frame(
+            spatial_data@data,
+            data_frame[match(spatial_data@data[[by_sp]], data_frame[[by_df]]), ]
+        )
 
-  # For sf objects
-  } else if ("sf" %in% class(spatial_data)) {
+        if (how == 'inner') {
+            matches <- match(spatial_data@data[[by_sp]], data_frame[[by_df]])
 
-    join_vars <- c(by_df)
+            spatial_data <- spatial_data[!is.na(matches), ]
 
-    names(join_vars) <- by_sp
+            return(spatial_data)
+        } else if (how == 'left') {
+            return(spatial_data)
+        } else {
+            stop(
+                "The available options for `how` are 'left' and 'inner'.",
+                call. = FALSE
+            )
+        }
 
-    if (how == "inner") {
+        # For sf objects
+    } else if ("sf" %in% class(spatial_data)) {
+        join_vars <- c(by_df)
 
-      joined <- spatial_data %>%
-        inner_join(data_frame, by = join_vars) %>%
-        st_as_sf()
+        names(join_vars) <- by_sp
 
-      attr(joined, "tigris") <- tigris_type(spatial_data)
+        if (how == "inner") {
+            joined <- spatial_data %>%
+                inner_join(data_frame, by = join_vars) %>%
+                st_as_sf()
 
-      return(joined)
+            attr(joined, "tigris") <- tigris_type(spatial_data)
 
-    } else if (how == "left") {
+            return(joined)
+        } else if (how == "left") {
+            # Account for potential duplicate rows in data frame
+            df_unique <- data_frame %>%
+                group_by_(by_df) %>%
+                mutate(rank = row_number()) %>%
+                filter(rank == 1)
 
-      # Account for potential duplicate rows in data frame
-      df_unique <- data_frame %>%
-        group_by_(by_df) %>%
-        mutate(rank = row_number()) %>%
-        filter(rank == 1)
+            joined <- spatial_data %>%
+                left_join(df_unique, by = join_vars) %>%
+                st_as_sf()
 
-      joined <- spatial_data %>%
-        left_join(df_unique, by = join_vars) %>%
-        st_as_sf()
+            if (!is.na(st_crs(spatial_data)$epsg)) {
+                crs <- st_crs(spatial_data)$epsg
+            } else {
+                crs <- st_crs(spatial_data)$proj4string
+            }
 
-      if (!is.na(st_crs(spatial_data)$epsg)) {
-        crs <- st_crs(spatial_data)$epsg
-      } else {
-        crs <- st_crs(spatial_data)$proj4string
-      }
+            st_crs(joined) <- crs # re-assign the CRS
 
-      st_crs(joined) <- crs # re-assign the CRS
+            attr(joined, "tigris") <- tigris_type(spatial_data)
 
-      attr(joined, "tigris") <- tigris_type(spatial_data)
-
-      return(joined)
-
-    } else {
-
-      stop("The available options for `how` are 'left' and 'inner'.", call. = FALSE)
-
+            return(joined)
+        } else {
+            stop(
+                "The available options for `how` are 'left' and 'inner'.",
+                call. = FALSE
+            )
+        }
     }
-
-  }
-
 }
 
 
@@ -445,28 +505,43 @@ geo_join <- function(spatial_data, data_frame, by_sp, by_df, by = NULL, how = 'l
 #' ## [1] "The code for Maine is '23' and the code for York County is '031'."
 #' }
 lookup_code <- function(state, county = NULL) {
+    state <- validate_state(state, .msg = FALSE)
 
-  state <- validate_state(state, .msg=FALSE)
+    if (is.null(state)) stop("Invalid state", call. = FALSE)
 
-  if (is.null(state)) stop("Invalid state", call.=FALSE)
+    if (!is.null(county)) {
+        vals <- fips_codes[
+            fips_codes$state_code == state &
+                grepl(
+                    sprintf("^%s", county),
+                    fips_codes$county,
+                    ignore.case = TRUE
+                ),
+        ]
 
-  if (!is.null(county)) {
+        return(paste0(
+            "The code for ",
+            vals$state_name,
+            " is '",
+            vals$state_code,
+            "'",
+            " and the code for ",
+            vals$county,
+            " is '",
+            vals$county_code,
+            "'."
+        ))
+    } else {
+        vals <- head(fips_codes[fips_codes$state_code == state, ], 1)
 
-    vals <- fips_codes[fips_codes$state_code == state &
-                         grepl(sprintf("^%s", county), fips_codes$county, ignore.case=TRUE),]
-
-    return(paste0("The code for ", vals$state_name,
-                  " is '", vals$state_code, "'", " and the code for ",
-                  vals$county, " is '", vals$county_code, "'."))
-
-  } else {
-
-    vals <- head(fips_codes[fips_codes$state_code == state,], 1)
-
-    return(paste0("The code for ", vals$state_name, " is '", vals$state_code, "'."))
-
-  }
-
+        return(paste0(
+            "The code for ",
+            vals$state_name,
+            " is '",
+            vals$state_code,
+            "'."
+        ))
+    }
 }
 
 #' Returns \code{TRUE} if \code{obj} has a \code{tigris} attribute
@@ -476,7 +551,9 @@ lookup_code <- function(state, county = NULL) {
 #' @param obj R object to test
 #' @return \code{TRUE} if \code{obj} was made by this package
 #' @export
-is_tigris <- function(obj) { !is.null(attr(obj, "tigris")) }
+is_tigris <- function(obj) {
+    !is.null(attr(obj, "tigris"))
+}
 
 #' Get the type of \code{tigris} object \code{obj} is
 #'
@@ -485,8 +562,8 @@ is_tigris <- function(obj) { !is.null(attr(obj, "tigris")) }
 #'         or \code{NA} if \code{obj} is not a code \code{tigris} object
 #' @export
 tigris_type <- function(obj) {
-  if (is_tigris(obj)) return(attr(obj, "tigris"))
-  return(NA)
+    if (is_tigris(obj)) return(attr(obj, "tigris"))
+    return(NA)
 }
 
 #' Return a data frame of county names & FIPS codes for a given state
@@ -497,16 +574,17 @@ tigris_type <- function(obj) {
 #' @return data frame of county name and FIPS code or NULL if invalid state
 #' @export
 list_counties <- function(state) {
+    state <- validate_state(state, .msg = FALSE)
 
-  state <- validate_state(state, .msg=FALSE)
+    if (is.null(state)) stop("Invalid state", call. = FALSE)
 
-  if (is.null(state)) stop("Invalid state", call.=FALSE)
-
-  vals <- fips_codes[fips_codes$state_code == state, c("county", "county_code")]
-  vals$county <- gsub("\ County$", "", vals$county)
-  rownames(vals) <- NULL
-  return(vals)
-
+    vals <- fips_codes[
+        fips_codes$state_code == state,
+        c("county", "county_code")
+    ]
+    vals$county <- gsub("\ County$", "", vals$county)
+    rownames(vals) <- NULL
+    return(vals)
 }
 
 #' Row-bind \code{tigris} Spatial objects
@@ -527,103 +605,123 @@ list_counties <- function(state) {
 #' }
 
 rbind_tigris <- function(...) {
+    elements <- list(...)
 
-  elements <- list(...)
+    if (
+        (length(elements) == 1) &
+            inherits(elements, "list")
+    ) {
+        elements <- unlist(elements, recursive = FALSE) # Necessary given structure of sf objects
+    }
 
-  if ((length(elements) == 1) &
-      inherits(elements, "list")) {
-    elements <- unlist(elements, recursive = FALSE) # Necessary given structure of sf objects
-  }
-
-  obj_classes <- unique(sapply(elements, class))
-  obj_attrs <- sapply(elements, attr, "tigris")
-  obj_attrs_u <- unique(obj_attrs)
-
-  if (any(c("SpatialGridDataFrame", "SpatialLinesDataFrame",
-        "SpatialPixelsDataFrame", "SpatialPointsDataFrame",
-        "SpatialPolygonsDataFrame") %in% obj_classes) &
-      "sf" %in% obj_classes) {
-
-    stop("Cannot combine sp and sf objects", call. = FALSE)
-
-  }
-
-  #handling for attempts to rbind disparate school districts
-
-  if(all(obj_attrs %in% c("unsd", "elsd", "scsd"))){ # 3 school district types
-
-    warning("Multiple school district tigris types. Coercing to \'sdall\'.", call. = FALSE)
-
-    elements <- lapply(seq_along(elements), function(x){
-                  names(elements[[x]])[2] <- "SDLEA" # Used in some spots elsewhere in TIGER
-                  attr(elements[[x]], "tigris") <- "sdall" # New type
-                  elements[[x]]
-    })
-
+    obj_classes <- unique(sapply(elements, class))
     obj_attrs <- sapply(elements, attr, "tigris")
     obj_attrs_u <- unique(obj_attrs)
 
-  }
-
-  # all same type
-  # all valid Spatial* type
-  # none are from outside tigris
-  # all same tigris "type"
-
-  if (obj_classes[1] %in% c("SpatialGridDataFrame", "SpatialLinesDataFrame",
-                         "SpatialPixelsDataFrame", "SpatialPointsDataFrame",
-                         "SpatialPolygonsDataFrame")) {
-
-    stop("Spatial* classes are no longer supported in tigris as of version 2.0. You will need to install an earlier version of tigris with `remotes::install_version()`.")
-
-  } else if ("sf" %in% obj_classes) {
-
-    crs <- unique(sapply(elements, function(x) {
-      return(st_crs(x)$epsg)
-    }))
-
-    if (length(crs) > 1) {
-      stop("All objects must share a single coordinate reference system.")
+    if (
+        any(
+            c(
+                "SpatialGridDataFrame",
+                "SpatialLinesDataFrame",
+                "SpatialPixelsDataFrame",
+                "SpatialPointsDataFrame",
+                "SpatialPolygonsDataFrame"
+            ) %in%
+                obj_classes
+        ) &
+            "sf" %in% obj_classes
+    ) {
+        stop("Cannot combine sp and sf objects", call. = FALSE)
     }
 
-    if (!any(sapply(obj_attrs, is.null)) &
-        length(obj_attrs_u)==1) {
+    #handling for attempts to rbind disparate school districts
 
-      geometries <- unlist(lapply(elements, function(x) {
-        geoms <- st_geometry_type(x)
-        unique(geoms)
-      }))
+    if (all(obj_attrs %in% c("unsd", "elsd", "scsd"))) {
+        # 3 school district types
 
-      # Cast polygon to multipolygon to allow for rbind-ing
-      # This will need to be checked for linear objects as well
-      if ("POLYGON" %in% geometries & "MULTIPOLYGON" %in% geometries) {
-        elements <- lapply(elements, function(x) {
-          st_cast(x, "MULTIPOLYGON")
+        warning(
+            "Multiple school district tigris types. Coercing to \'sdall\'.",
+            call. = FALSE
+        )
+
+        elements <- lapply(seq_along(elements), function(x) {
+            names(elements[[x]])[2] <- "SDLEA" # Used in some spots elsewhere in TIGER
+            attr(elements[[x]], "tigris") <- "sdall" # New type
+            elements[[x]]
         })
-      }
 
-      if ("LINESTRING" %in% geometries & "MULTILINESTRING" %in% geometries) {
-        elements <- lapply(elements, function(x) {
-          st_cast(x, "MULTILINESTRING")
-        })
-      }
-
-      tmp <- Reduce(rbind, elements) # bind_rows not working atm
-
-      # Re-assign the original CRS if missing
-      if (is.na(st_crs(tmp)$proj4string)) {
-        st_crs(tmp) <- crs
-      }
-
-      attr(tmp, "tigris") <- obj_attrs_u
-      return(tmp)
-
-    } else {
-      stop("Objects must all be the same type of tigris object.", call.=FALSE)
+        obj_attrs <- sapply(elements, attr, "tigris")
+        obj_attrs_u <- unique(obj_attrs)
     }
 
-  }
+    # all same type
+    # all valid Spatial* type
+    # none are from outside tigris
+    # all same tigris "type"
 
+    if (
+        obj_classes[1] %in%
+            c(
+                "SpatialGridDataFrame",
+                "SpatialLinesDataFrame",
+                "SpatialPixelsDataFrame",
+                "SpatialPointsDataFrame",
+                "SpatialPolygonsDataFrame"
+            )
+    ) {
+        stop(
+            "Spatial* classes are no longer supported in tigris as of version 2.0. You will need to install an earlier version of tigris with `remotes::install_version()`."
+        )
+    } else if ("sf" %in% obj_classes) {
+        crs <- unique(sapply(elements, function(x) {
+            return(st_crs(x)$epsg)
+        }))
+
+        if (length(crs) > 1) {
+            stop("All objects must share a single coordinate reference system.")
+        }
+
+        if (
+            !any(sapply(obj_attrs, is.null)) &
+                length(obj_attrs_u) == 1
+        ) {
+            geometries <- unlist(lapply(elements, function(x) {
+                geoms <- st_geometry_type(x)
+                unique(geoms)
+            }))
+
+            # Cast polygon to multipolygon to allow for rbind-ing
+            # This will need to be checked for linear objects as well
+            if ("POLYGON" %in% geometries & "MULTIPOLYGON" %in% geometries) {
+                elements <- lapply(elements, function(x) {
+                    st_cast(x, "MULTIPOLYGON")
+                })
+            }
+
+            if (
+                "LINESTRING" %in% geometries & "MULTILINESTRING" %in% geometries
+            ) {
+                elements <- lapply(elements, function(x) {
+                    st_cast(x, "MULTILINESTRING")
+                })
+            }
+
+            tmp <- Reduce(rbind, elements) # bind_rows not working atm
+
+            # Re-assign the original CRS if missing
+            if (is.na(st_crs(tmp)$proj4string)) {
+                st_crs(tmp) <- crs
+            }
+
+            attr(tmp, "tigris") <- obj_attrs_u
+            return(tmp)
+        } else {
+            stop(
+                "Objects must all be the same type of tigris object.",
+                call. = FALSE
+            )
+        }
+    }
 }
 
 #' Erase water area from an input polygon dataset
@@ -672,64 +770,69 @@ rbind_tigris <- function(...) {
 #' plot(king_erased$geometry)
 #'
 #' }
-erase_water <- function(input_sf,
-                        area_threshold = 0.75,
-                        year = NULL) {
+erase_water <- function(input_sf, area_threshold = 0.75, year = NULL) {
+    # if (is.null(attr(input_sf, "tigris"))) {
+    #   warning("Your input object does not appear to have been obtained with the tigris package.\nThis is likely to introduce sliver polygons or irregular geometries.\nPlease proceed with caution.")
+    # }
 
-  # if (is.null(attr(input_sf, "tigris"))) {
-  #   warning("Your input object does not appear to have been obtained with the tigris package.\nThis is likely to introduce sliver polygons or irregular geometries.\nPlease proceed with caution.")
-  # }
+    if (!"sf" %in% class(input_sf)) {
+        stop("The input dataset is not an sf object.", call. = FALSE)
+    }
 
-  if (!"sf" %in% class(input_sf)) {
-    stop("The input dataset is not an sf object.", call. = FALSE)
-  }
+    if (is.null(year)) {
+        year <- getOption("tigris_year", 2022)
+    }
 
-  if (is.null(year)) {
-    year <- getOption("tigris_year", 2022)
-  }
+    # Define st_erase function internally
+    st_erase <- function(x, y) {
+        suppressWarnings(sf::st_difference(x, sf::st_union(y)))
+    }
 
-  # Define st_erase function internally
-  st_erase <- function(x, y) {
-    suppressWarnings(sf::st_difference(x, sf::st_union(y)))
-  }
+    # Grab a dataset of counties quietly
+    us_counties <- tigris::counties(
+        cb = TRUE,
+        resolution = "500k",
+        progress_bar = FALSE,
+        year = year
+    )
 
-  # Grab a dataset of counties quietly
-  us_counties <- tigris::counties(cb = TRUE, resolution = "500k", progress_bar = FALSE,
-                                  year = year)
+    # Identify the counties that overlap the input sf object
+    county_overlay <- us_counties %>%
+        sf::st_transform(sf::st_crs(input_sf)) %>%
+        sf::st_filter(input_sf)
 
-  # Identify the counties that overlap the input sf object
-  county_overlay <- us_counties %>%
-    sf::st_transform(sf::st_crs(input_sf)) %>%
-    sf::st_filter(input_sf)
+    # If nothing returned, exit
+    if (nrow(county_overlay) == 0) {
+        stop(
+            "Your dataset does not appear to be in the United States; this function is not appropriate for your data.",
+            call. = FALSE
+        )
+    }
 
-  # If nothing returned, exit
-  if (nrow(county_overlay) == 0) {
-    stop("Your dataset does not appear to be in the United States; this function is not appropriate for your data.", call. = FALSE)
-  }
+    # Get a list of GEOIDs
+    county_GEOIDs <- county_overlay$GEOID
 
-  # Get a list of GEOIDs
-  county_GEOIDs <- county_overlay$GEOID
+    # Fetch water for those GEOIDs
+    message("Fetching area water data for your dataset's location...")
+    my_water <- lapply(county_GEOIDs, function(cty) {
+        suppressMessages(tigris::area_water(
+            state = stringr::str_sub(cty, 1, 2),
+            county = stringr::str_sub(cty, 3, 5),
+            progress_bar = FALSE,
+            year = year
+        ))
+    }) %>%
+        dplyr::bind_rows() %>%
+        sf::st_transform(sf::st_crs(input_sf)) %>%
+        sf::st_filter(input_sf) %>% # New step to only erase intersecting water areas
+        dplyr::filter(dplyr::percent_rank(AWATER) >= area_threshold)
 
-  # Fetch water for those GEOIDs
-  message("Fetching area water data for your dataset's location...")
-  my_water <- lapply(county_GEOIDs, function(cty) {
-    suppressMessages(tigris::area_water(
-      state = stringr::str_sub(cty, 1, 2),
-      county = stringr::str_sub(cty, 3, 5),
-      progress_bar = FALSE,
-      year = year
-    ))
-  }) %>%
-    dplyr::bind_rows() %>%
-    sf::st_transform(sf::st_crs(input_sf)) %>%
-    sf::st_filter(input_sf) %>% # New step to only erase intersecting water areas
-    dplyr::filter(dplyr::percent_rank(AWATER) >= area_threshold)
+    message(
+        "Erasing water area...\nIf this is slow, try a larger area threshold value."
+    )
+    erased_sf <- suppressMessages(st_erase(input_sf, my_water))
 
-  message("Erasing water area...\nIf this is slow, try a larger area threshold value.")
-  erased_sf <- suppressMessages(st_erase(input_sf, my_water))
-
-  return(erased_sf)
-
+    return(erased_sf)
 }
 
 
