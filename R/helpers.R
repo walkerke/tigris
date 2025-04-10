@@ -74,7 +74,7 @@ load_tiger <- function(url,
 
   # Process filter_by
   wkt_filter <- input_to_wkt(filter_by)
-  
+
   # Modify URL for FTP if needed
   if (protocol == "ftp" && grepl("^https://www2", url)) {
     url <- gsub("^https://www2", "ftp://ftp2", url)
@@ -507,17 +507,17 @@ tigris_type <- function(obj) {
 #' @param filter_by Geometry used to filter the output returned by the function. Can be an sf object, an object of class `bbox`, or a length-4 vector of format `c(xmin, ymin, xmax, ymax)` that can be converted to a bbox. Geometries that intersect the input to `filter_by` will be returned.
 #' @param fields Character vector of field names to return. Default is to return all fields.
 #' @param predicate Spatial predicate to use with filter_by. Default "intersects". Possible options are "intersects", "contains", "crosses", "overlaps", "touches", and "within".
-#' @param page_size The maximum number of features to return per request. Useful when requests return a 500 error code.
+#' @param page_size The maximum number of features to return per "request"; defaults to 100. For larger datasets, it may be helpful to increase this value.
 #'
 #' @return sf or sp data frame
-#' 
+#'
 #' @examples \dontrun{
 #' # Example direct use of load_tiger_api for Cook County, IL census tracts
 #' cook_tracts <- load_tiger_api(
 #'   url = "https://tigerweb.geo.census.gov/arcgis/rest/services/Generalized_ACS2023/Tracts_Blocks/MapServer/4",
 #'   where = "STATE = '17' AND COUNTY = '031'"
 #' )
-#' 
+#'
 #' # Typically used through other tigris functions
 #' cook_tracts_via_function <- tracts("IL", "Cook", use_api = TRUE)
 #' }
@@ -529,16 +529,16 @@ load_tiger_api <- function(url,
                            filter_by = NULL,
                            fields = NULL,
                            predicate = "intersects",
-                           page_size = NULL) {
-  
+                           page_size = 100) {
+
   # Check if arcgislayers is installed, if not, stop and explain
   if (!requireNamespace("arcgislayers", quietly = TRUE)) {
     stop("The package 'arcgislayers' is required to use the TigerWeb API. Please install it with install.packages('arcgislayers').", call. = FALSE)
   }
-  
+
   # Fetch data from the ArcGIS REST API using arcgislayers
   message("Retrieving data from TigerWeb API...")
-  
+
   # First, open the connection to the feature layer
   layer <- tryCatch(
     arcgislayers::arc_open(url),
@@ -546,7 +546,7 @@ load_tiger_api <- function(url,
       stop(sprintf("Failed to connect to TigerWeb API at %s: %s", url, e$message), call. = FALSE)
     }
   )
-  
+
   # Build the query parameters
   select_args <- list(
     x = layer,
@@ -554,31 +554,31 @@ load_tiger_api <- function(url,
     predicate = predicate,
     page_size = page_size
   )
-  
+
   # Add fields if provided
   if (!is.null(fields)) {
     select_args$fields <- fields
   }
-  
+
   # Add spatial filter if provided
   if (!is.null(filter_by)) {
     # Convert filter_by to sf if it's not already
     if (inherits(filter_by, "bbox")) {
       filter_geom <- sf::st_as_sfc(filter_by)
     } else if (is.numeric(filter_by) && length(filter_by) == 4) {
-      filter_geom <- sf::st_as_sfc(sf::st_bbox(c(xmin = filter_by[1], 
-                                              ymin = filter_by[2], 
-                                              xmax = filter_by[3], 
+      filter_geom <- sf::st_as_sfc(sf::st_bbox(c(xmin = filter_by[1],
+                                              ymin = filter_by[2],
+                                              xmax = filter_by[3],
                                               ymax = filter_by[4])))
     } else if (inherits(filter_by, c("sf", "sfc", "sfg"))) {
-      filter_geom <- filter_by
+        filter_geom <- st_geometry(filter_by)
     } else {
       stop("'filter_by' must be an sf object, bbox object, or numeric vector of length 4", call. = FALSE)
     }
-    
+
     select_args$filter_geom <- filter_geom
   }
-  
+
   # Execute the query
   result <- tryCatch(
     do.call(arcgislayers::arc_select, select_args),
@@ -586,16 +586,19 @@ load_tiger_api <- function(url,
       stop(sprintf("Error querying TigerWeb API: %s", e$message), call. = FALSE)
     }
   )
-  
+
   # If no results, return an empty sf object with appropriate structure
   if (nrow(result) == 0) {
     warning("No features returned from the API query", call. = FALSE)
   }
-  
+
+  # Transform the CRS to 4269 for consistency
+  result <- st_transform(result, 4269)
+
   # Set the tigris attribute
   attr(result, "tigris") <- "tigris"
   if (!is.null(tigris_type)) attr(result, "tigris") <- tigris_type
-  
+
   # Convert to sp if requested (for backward compatibility)
   if (class == "sp") {
     warning(stringr::str_wrap("Spatial* (sp) classes are no longer formally supported in tigris as of version 2.0. We strongly recommend updating your workflow to use sf objects (the default in tigris) instead.", 50), call. = FALSE)

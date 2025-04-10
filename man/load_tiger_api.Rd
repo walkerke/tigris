@@ -12,7 +12,7 @@ load_tiger_api(
   filter_by = NULL,
   fields = NULL,
   predicate = "intersects",
-  page_size = NULL
+  page_size = 100
 )
 }
 \arguments{
@@ -30,7 +30,7 @@ load_tiger_api(
 
 \item{predicate}{Spatial predicate to use with filter_by. Default "intersects". Possible options are "intersects", "contains", "crosses", "overlaps", "touches", and "within".}
 
-\item{page_size}{The maximum number of features to return per request. Useful when requests return a 500 error code.}
+\item{page_size}{The maximum number of features to return per "request"; defaults to 100. For larger datasets, it may be helpful to increase this value.}
 }
 \value{
 sf or sp data frame

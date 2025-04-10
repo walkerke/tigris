@@ -7,6 +7,10 @@
 #' Census shapefile downloads. This is \code{FALSE} by default. e.g.
 #' \code{options(tigris_use_cache=TRUE)}
 #'
+#' Use option \code{tigris_use_api} to tell \code{tigris} to use the TigerWeb API for
+#' downloading datasets. This is \code{FALSE} by default. e.g.
+#' \code{options(tigris_use_api=TRUE)}
+#'
 #' Use option \code{tigris_refresh} to force a refresh of cached \code{tigris}
 #' Shapefiles. e.g. \code{options(tigris_refresh=TRUE)}
 #'
@@ -54,5 +58,3 @@ NULL
 #' @export
 #' @rdname tigris-exports
 NULL
-
-
