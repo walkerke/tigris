@@ -764,11 +764,10 @@ rbind_tigris <- function(...) {
 #'
 #' # CRS: NAD 1983 / Washington North (State Plane)
 #' king_erased <- king_tracts %>%
-#'   st_transform(32148) %>%
-#'   erase_water(area_threshold = 0.9)
+#'     st_transform(32148) %>%
+#'     erase_water(area_threshold = 0.9)
 #'
 #' plot(king_erased$geometry)
-#'
 #' }
 erase_water <- function(input_sf, area_threshold = 0.75, year = NULL) {
     # if (is.null(attr(input_sf, "tigris"))) {
@@ -856,7 +855,7 @@ erase_water <- function(input_sf, area_threshold = 0.75, year = NULL) {
 #'  * `refresh` Whether to re-download cached shapefiles (`TRUE` or `FALSE`) . The default is either `FALSE` or the value of global
 #'     option `"tigris_refresh"` if it is set. Specifying this argument will override the behavior set in `"tigris_refresh"` global option.
 #'  * `filter_by` Geometry used to filter the output returned by the function.  Can be an sf object, an object of class `bbox`, or a length-4 vector of format `c(xmin, ymin, xmax, ymax)` that can be converted to a bbox. Geometries that intersect the input to `filter_by` will be returned.
-#'  * `protocol` Character string specifying the protocol to use for downloading files. Options are "ftp" (default) or "http". If "ftp", the URL will be modified to use FTP instead of HTTPS.
-#'  * `timeout` Integer specifying the timeout in seconds for download operations. Defaults to 300 (5 minutes) to handle large files.
+#'  * `protocol` Character string specifying the protocol to use for downloading files. Options are "ftp" or "http" (default). If "ftp", the URL will be modified to use FTP instead of HTTPS.
+#'  * `timeout` Integer specifying the timeout in seconds for download operations if protocol is "ftp". Defaults to 1800 (30 minutes) to handle large files.
 #' @name load_tiger_doc_template
 NULL
