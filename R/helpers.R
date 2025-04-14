@@ -76,8 +76,8 @@ load_tiger <- function(
     progress_bar = TRUE,
     keep_zipped_shapefile = FALSE,
     filter_by = NULL,
-    protocol = "http",
-    timeout = 300
+    protocol = getOption("tigris_protocol", "http"),
+    timeout = 1800
 ) {
     use_cache <- getOption("tigris_use_cache", FALSE)
 

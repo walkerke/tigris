@@ -1,16 +1,16 @@
 Package: tigris
 Type: Package
 Title: Load Census TIGER/Line Shapefiles
-Version: 2.2.0
-Date: 2025-04-10
+Version: 2.2.0.9000
+Date: 2025-04-14
 Authors@R: c(
       person(given="Kyle", family="Walker", email="kyle@walker-data.com", role=c("aut", "cre")),
       person(given="Bob", family="Rudis", email="bob@rudis.net", role="ctb")
     )
 URL: https://github.com/walkerke/tigris
 BugReports: https://github.com/walkerke/tigris/issues
-Description: Download TIGER/Line shapefiles from the United States Census Bureau 
-    (<https://www.census.gov/geographies/mapping-files/time-series/geo/tiger-line-file.html>) 
+Description: Download TIGER/Line shapefiles from the United States Census Bureau
+    (<https://www.census.gov/geographies/mapping-files/time-series/geo/tiger-line-file.html>)
     and load into R as 'sf' objects.
 License: MIT + file LICENSE
 LazyData: TRUE
@@ -22,7 +22,7 @@ Suggests:
     ggplot2,
     ggthemes,
     leaflet,
-    knitr, 
+    knitr,
     tidycensus,
     sp
 Imports:
@@ -31,9 +31,9 @@ Imports:
     utils,
     rappdirs,
     httr,
-    uuid, 
-    sf, 
-    dplyr, 
+    uuid,
+    sf,
+    dplyr,
     methods
 RoxygenNote: 7.3.2
 Roxygen: list(markdown = TRUE)

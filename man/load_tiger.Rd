@@ -12,8 +12,8 @@ load_tiger(
   progress_bar = TRUE,
   keep_zipped_shapefile = FALSE,
   filter_by = NULL,
-  protocol = "http",
-  timeout = 300
+  protocol = getOption("tigris_protocol", "http"),
+  timeout = 1800
 )
 }
 \arguments{
