@@ -16,7 +16,7 @@ be state name or state abbreviation. When \code{NULL} and combined with
 cartographic boundary file.  Defaults to FALSE (the most detailed
 TIGER/Line file).}
 
-\item{year}{the data year; defaults to 2022}
+\item{year}{the data year; defaults to 2024}
 
 \item{...}{arguments to be passed to internal function \code{load_tiger}, which is not exported. See Additional Arguments.}
 }

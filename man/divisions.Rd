@@ -10,7 +10,7 @@ divisions(resolution = "500k", year = NULL, ...)
 \item{resolution}{The resolution of the cartographic boundary file.
 Defaults to '500k'; options include '5m' (1:5 million) and '20m' (1:20 million).}
 
-\item{year}{the data year; defaults to 2022}
+\item{year}{the data year; defaults to 2024}
 
 \item{...}{arguments to be passed to internal function \code{load_tiger}, which is not exported. See Additional Arguments.}
 }

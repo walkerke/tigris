@@ -22,7 +22,7 @@ Or, get the development version from GitHub:
 devtools::install_github('walkerke/tigris')
 ```
 
-__tigris__ functions return [simple features objects](https://r-spatial.github.io/sf/) with a default year of 2022, though later years are available (tigris maintains consistency with the most recent 5-year American Community Survey).  To get started, choose a function from the table below and use it with a state and/or county if required. You'll get back an sf object for use in your mapping and spatial analysis projects: 
+__tigris__ functions return [simple features objects](https://r-spatial.github.io/sf/) with a default year of 2024.  To get started, choose a function from the table below and use it with a state and/or county if required. You'll get back an sf object for use in your mapping and spatial analysis projects: 
 
 ```r
 library(tigris)
@@ -49,9 +49,9 @@ Please note: cartographic boundary files in __tigris__ are not available for 201
 
 | Function | Datasets available | Years available |
 |------------------------------------------|------------------------------------------------|------------------------------|
-| `nation()` | cartographic (1:5m; 1:20m) | 2013-2023 |
-| `divisions()` | cartographic (1:500k; 1:5m; 1:20m) | 2013-2023 |
-| `regions()` | cartographic (1:500k; 1:5m; 1:20m) | 2013-2023 |
+| `nation()` | cartographic (1:5m; 1:20m) | 2013-2024 |
+| `divisions()` | cartographic (1:500k; 1:5m; 1:20m) | 2013-2024 |
+| `regions()` | cartographic (1:500k; 1:5m; 1:20m) | 2013-2024 |
 | `states()` | TIGER/Line; cartographic (1:500k; 1:5m; 1:20m) | 1990, 2000, 2010-2024 |
 | `counties()` | TIGER/Line; cartographic (1:500k; 1:5m; 1:20m) | 1990, 2000, 2010-2024 |
 | `tracts()` | TIGER/Line; cartographic (1:500k) | 1990, 2000, 2010-2024 |
@@ -70,7 +70,7 @@ Please note: cartographic boundary files in __tigris__ are not available for 201
 | `core_based_statistical_areas()` | TIGER/Line; cartographic (1:500k; 1:5m; 1:20m) | 2011-2021, 2023-2024 (not available for 2022) |
 | `combined_statistical_areas()` | TIGER/Line; cartographic (1:500k; 1:5m; 1:20m) | 2011-2024 |
 | `metro_divisions()` | TIGER/Line | 2011-2024 |
-| `new_england()` | TIGER/Line; cartographic (1:500k) | 2011-2022 (no longer used by Census) |
+| `new_england()` | TIGER/Line; cartographic (1:500k) | 2011-2021 (no longer used by Census) |
 | `county_subdivisions()` | TIGER/Line; cartographic (1:500k) | 2010-2024 |
 | `urban_areas()` | TIGER/Line; cartographic (1:500k) | 2012-2024 |
 | `primary_roads()` | TIGER/Line | 2011-2024 |

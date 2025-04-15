@@ -6,7 +6,7 @@
 \arguments{
 \item{...}{arguments to be passed to internal function \code{load_tiger}, which is not exported. See Additional Arguments.}
 
-\item{year}{the data year; defaults to 2022}
+\item{year}{the data year; defaults to 2024}
 }
 \description{
 Documentation Template for Functions that Utilize \code{load_tiger}

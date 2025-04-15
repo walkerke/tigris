@@ -86,7 +86,7 @@ load_tiger <- function(
 
     # Store original URL before protocol modification
     original_url <- url
-    
+
     # Modify URL for FTP if needed
     if (protocol == "ftp" && grepl("^https://www2", url)) {
         url <- gsub("^https://www2", "ftp://ftp2", url)
@@ -216,12 +216,12 @@ load_tiger <- function(
 
                         if ("warning" %in% class(t)) {
                             i <- i + 1
-                            
+
                             # If using HTTP protocol and about to make final retry, try FTP as fallback
                             if (i == 3 && protocol == "http") {
                                 message("HTTP download failed, trying FTP as fallback...")
                                 ftp_url <- gsub("^https://www2", "ftp://ftp2", original_url)
-                                
+
                                 # Try FTP download
                                 options(timeout = timeout)
                                 try(
@@ -234,7 +234,7 @@ load_tiger <- function(
                                     silent = TRUE
                                 )
                                 options(timeout = 60) # Reset to R default
-                                
+
                                 # Check if FTP download succeeded
                                 t <- tryCatch(unzip_tiger(), warning = function(w) w)
                                 if (!("warning" %in% class(t))) {
@@ -311,7 +311,7 @@ load_tiger <- function(
                 )
             }
         }
-        
+
         # Try to unzip the file
         unzip_result <- tryCatch(
             {
@@ -321,12 +321,12 @@ load_tiger <- function(
             warning = function(w) FALSE,  # Failed
             error = function(e) FALSE     # Failed
         )
-        
+
         # If HTTP download failed, try FTP as fallback
         if (!unzip_result && protocol == "http") {
             message("HTTP download failed, trying FTP as fallback...")
             ftp_url <- gsub("^https://www2", "ftp://ftp2", original_url)
-            
+
             # Try FTP download
             options(timeout = timeout)
             try(
@@ -339,7 +339,7 @@ load_tiger <- function(
                 silent = TRUE
             )
             options(timeout = 60) # Reset to R default
-            
+
             # Try to unzip again
             unzip_result <- tryCatch(
                 {
@@ -349,7 +349,7 @@ load_tiger <- function(
                 warning = function(w) FALSE,  # Failed
                 error = function(e) FALSE     # Failed
             )
-            
+
             if (!unzip_result) {
                 stop(
                     "Download failed with both HTTP and FTP; check your internet connection or the status of the Census Bureau website
@@ -859,7 +859,7 @@ erase_water <- function(input_sf, area_threshold = 0.75, year = NULL) {
     }
 
     if (is.null(year)) {
-        year <- getOption("tigris_year", 2022)
+        year <- getOption("tigris_year", 2024)
     }
 
     # Define st_erase function internally
@@ -924,7 +924,7 @@ erase_water <- function(input_sf, area_threshold = 0.75, year = NULL) {
 #' `@inheritSection load_tiger_doc_template Additional Arguments`
 #'
 #' @param ... arguments to be passed to internal function `load_tiger`, which is not exported. See Additional Arguments.
-#' @param year the data year; defaults to 2022
+#' @param year the data year; defaults to 2024
 #'
 #' @section Additional Arguments:
 #' Additional arguments that can be passed in `...` are:

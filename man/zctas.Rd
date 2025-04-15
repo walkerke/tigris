@@ -19,7 +19,7 @@ ZCTAs you want to return.  For example, supplying the argument
 \code{starts_with = c("75", "76")} will return only those ZCTAs that begin
 with 75 or 76.  Defaults to NULL, which will return all ZCTAs in the US.}
 
-\item{year}{the data year; defaults to 2022}
+\item{year}{the data year; defaults to 2024}
 
 \item{state}{the state for which you are requesting data; only available for 2000 (TIGER/Line
 and CB shapefiles) and 2010 (TIGER/Line shapefiles only)}
