@@ -28,42 +28,41 @@
 #' gg
 #' }
 native_areas <- function(cb = FALSE, year = NULL, ...) {
+    if (is.null(year)) {
+        year <- getOption("tigris_year", 2024)
 
-  if (is.null(year)) {
+        message(sprintf("Retrieving data for the year %s", year))
+    }
 
-    year <- getOption("tigris_year", 2022)
+    if (year < 2011) {
+        fname <- as.character(match.call())[[1]]
 
-    message(sprintf("Retrieving data for the year %s", year))
+        msg <- sprintf(
+            "%s is not currently available for years prior to 2011.  To request this feature,
+                   file an issue at https://github.com/walkerke/tigris.",
+            fname
+        )
 
-  }
+        stop(msg, call. = FALSE)
+    }
 
-  if (year < 2011) {
+    cyear <- as.character(year)
 
-    fname <- as.character(match.call())[[1]]
+    if (cb == TRUE) {
+        url <- sprintf(
+            "https://www2.census.gov/geo/tiger/GENZ%s/shp/cb_%s_us_aiannh_500k.zip",
+            cyear,
+            cyear
+        )
+    } else {
+        url <- sprintf(
+            "https://www2.census.gov/geo/tiger/TIGER%s/AIANNH/tl_%s_us_aiannh.zip",
+            cyear,
+            cyear
+        )
+    }
 
-    msg <- sprintf("%s is not currently available for years prior to 2011.  To request this feature,
-                   file an issue at https://github.com/walkerke/tigris.", fname)
-
-    stop(msg, call. = FALSE)
-
-  }
-
-  cyear <- as.character(year)
-
-  if (cb == TRUE) {
-
-    url <- sprintf("https://www2.census.gov/geo/tiger/GENZ%s/shp/cb_%s_us_aiannh_500k.zip",
-                   cyear, cyear)
-
-  } else {
-
-    url <- sprintf("https://www2.census.gov/geo/tiger/TIGER%s/AIANNH/tl_%s_us_aiannh.zip",
-                   cyear, cyear)
-
-  }
-
-  return(load_tiger(url, tigris_type = "native areas", ...))
-
+    return(load_tiger(url, tigris_type = "native areas", ...))
 }
 
 #' Download an American Indian Tribal Subdivision National shapefile into R.
@@ -92,43 +91,47 @@ native_areas <- function(cb = FALSE, year = NULL, ...) {
 #'               weight = 0.5)
 #' }
 tribal_subdivisions_national <- function(cb = FALSE, year = NULL, ...) {
+    if (is.null(year)) {
+        year <- getOption("tigris_year", 2024)
 
-  if (is.null(year)) {
-
-    year <- getOption("tigris_year", 2022)
-
-    message(sprintf("Retrieving data for the year %s", year))
-
-  }
-
-  if (year < 2011) {
-
-    fname <- as.character(match.call())[[1]]
-
-    msg <- sprintf("%s is not currently available for years prior to 2011.  To request this feature,
-                   file an issue at https://github.com/walkerke/tigris.", fname)
-
-    stop(msg, call. = FALSE)
-
-  }
-
-  if (cb) {
-    url <- sprintf("https://www2.census.gov/geo/tiger/GENZ%s/shp/cb_%s_us_aitsn_500k.zip",
-                   year, year)
-  } else {
-    if (year < 2015) {
-      url <- sprintf("https://www2.census.gov/geo/tiger/TIGER%s/AITS/tl_%s_us_aitsn.zip",
-                     year, year)
-    } else {
-      url <- sprintf("https://www2.census.gov/geo/tiger/TIGER%s/AITSN/tl_%s_us_aitsn.zip",
-                     year, year)
+        message(sprintf("Retrieving data for the year %s", year))
     }
-  }
 
+    if (year < 2011) {
+        fname <- as.character(match.call())[[1]]
 
+        msg <- sprintf(
+            "%s is not currently available for years prior to 2011.  To request this feature,
+                   file an issue at https://github.com/walkerke/tigris.",
+            fname
+        )
 
-  return(load_tiger(url, tigris_type = "tribal subdivisions", ...))
+        stop(msg, call. = FALSE)
+    }
 
+    if (cb) {
+        url <- sprintf(
+            "https://www2.census.gov/geo/tiger/GENZ%s/shp/cb_%s_us_aitsn_500k.zip",
+            year,
+            year
+        )
+    } else {
+        if (year < 2015) {
+            url <- sprintf(
+                "https://www2.census.gov/geo/tiger/TIGER%s/AITS/tl_%s_us_aitsn.zip",
+                year,
+                year
+            )
+        } else {
+            url <- sprintf(
+                "https://www2.census.gov/geo/tiger/TIGER%s/AITSN/tl_%s_us_aitsn.zip",
+                year,
+                year
+            )
+        }
+    }
+
+    return(load_tiger(url, tigris_type = "tribal subdivisions", ...))
 }
 
 #' Download an Alaska Native Regional Corporation shapefile into R.
@@ -147,42 +150,41 @@ tribal_subdivisions_national <- function(cb = FALSE, year = NULL, ...) {
 #' @seealso \url{https://www2.census.gov/geo/pdfs/reference/GARM/Ch5GARM.pdf}
 #' @export
 alaska_native_regional_corporations <- function(cb = FALSE, year = NULL, ...) {
+    if (is.null(year)) {
+        year <- getOption("tigris_year", 2024)
 
-  if (is.null(year)) {
+        message(sprintf("Retrieving data for the year %s", year))
+    }
 
-    year <- getOption("tigris_year", 2022)
+    if (year < 2011) {
+        fname <- as.character(match.call())[[1]]
 
-    message(sprintf("Retrieving data for the year %s", year))
+        msg <- sprintf(
+            "%s is not currently available for years prior to 2011.  To request this feature,
+                   file an issue at https://github.com/walkerke/tigris.",
+            fname
+        )
 
-  }
+        stop(msg, call. = FALSE)
+    }
 
-  if (year < 2011) {
+    cyear <- as.character(year)
 
-    fname <- as.character(match.call())[[1]]
+    if (cb == TRUE) {
+        url <- sprintf(
+            "https://www2.census.gov/geo/tiger/GENZ%s/shp/cb_%s_02_anrc_500k.zip",
+            cyear,
+            cyear
+        )
+    } else {
+        url <- sprintf(
+            "https://www2.census.gov/geo/tiger/TIGER%s/ANRC/tl_%s_02_anrc.zip",
+            cyear,
+            cyear
+        )
+    }
 
-    msg <- sprintf("%s is not currently available for years prior to 2011.  To request this feature,
-                   file an issue at https://github.com/walkerke/tigris.", fname)
-
-    stop(msg, call. = FALSE)
-
-  }
-
-  cyear <- as.character(year)
-
-  if (cb == TRUE) {
-
-    url <- sprintf("https://www2.census.gov/geo/tiger/GENZ%s/shp/cb_%s_02_anrc_500k.zip",
-                   cyear, cyear)
-
-  } else {
-
-    url <- sprintf("https://www2.census.gov/geo/tiger/TIGER%s/ANRC/tl_%s_02_anrc.zip",
-                   cyear, cyear)
-
-  }
-
-  return(load_tiger(url, tigris_type = "ANRCs", ...))
-
+    return(load_tiger(url, tigris_type = "ANRCs", ...))
 }
 
 #' Download a Tribal block groups shapefile into R.
@@ -221,37 +223,37 @@ alaska_native_regional_corporations <- function(cb = FALSE, year = NULL, ...) {
 #'               weight = 0.5)
 #' }
 tribal_block_groups <- function(cb = FALSE, year = NULL, ...) {
+    if (is.null(year)) {
+        year <- getOption("tigris_year", 2024)
 
-  if (is.null(year)) {
+        message(sprintf("Retrieving data for the year %s", year))
+    }
 
-    year <- getOption("tigris_year", 2022)
+    if (year < 2011) {
+        fname <- as.character(match.call())[[1]]
 
-    message(sprintf("Retrieving data for the year %s", year))
+        msg <- sprintf(
+            "%s is not currently available for years prior to 2011.  To request this feature,
+                   file an issue at https://github.com/walkerke/tigris.",
+            fname
+        )
 
-  }
+        stop(msg, call. = FALSE)
+    }
 
-  if (year < 2011) {
+    if (cb) {
+        url <- sprintf(
+            "https://www2.census.gov/geo/tiger/GENZ%s/shp/cb_%s_us_tbg_500k.zip"
+        )
+    } else {
+        url <- sprintf(
+            "https://www2.census.gov/geo/tiger/TIGER%s/TBG/tl_%s_us_tbg.zip",
+            year,
+            year
+        )
+    }
 
-    fname <- as.character(match.call())[[1]]
-
-    msg <- sprintf("%s is not currently available for years prior to 2011.  To request this feature,
-                   file an issue at https://github.com/walkerke/tigris.", fname)
-
-    stop(msg, call. = FALSE)
-
-  }
-
-  if (cb) {
-    url <- sprintf("https://www2.census.gov/geo/tiger/GENZ%s/shp/cb_%s_us_tbg_500k.zip")
-  } else {
-    url <- sprintf("https://www2.census.gov/geo/tiger/TIGER%s/TBG/tl_%s_us_tbg.zip",
-                   year, year)
-  }
-
-
-
-  return(load_tiger(url, tigris_type = "tribal block groups", ...))
-
+    return(load_tiger(url, tigris_type = "tribal block groups", ...))
 }
 
 #' Download a Tribal Census tract shapefile into R.
@@ -285,36 +287,37 @@ tribal_block_groups <- function(cb = FALSE, year = NULL, ...) {
 #'               weight = 0.5)
 #' }
 tribal_census_tracts <- function(cb = FALSE, year = NULL, ...) {
+    if (is.null(year)) {
+        year <- getOption("tigris_year", 2024)
 
-  if (is.null(year)) {
+        message(sprintf("Retrieving data for the year %s", year))
+    }
 
-    year <- getOption("tigris_year", 2022)
+    if (year < 2011) {
+        fname <- as.character(match.call())[[1]]
 
-    message(sprintf("Retrieving data for the year %s", year))
+        msg <- sprintf(
+            "%s is not currently available for years prior to 2011.  To request this feature,
+                   file an issue at https://github.com/walkerke/tigris.",
+            fname
+        )
 
-  }
+        stop(msg, call. = FALSE)
+    }
 
-  if (year < 2011) {
+    if (cb) {
+        url <- sprintf(
+            "https://www2.census.gov/geo/tiger/GENZ%s/shp/cb_%s_us_ttract_500k.zip",
+            year,
+            year
+        )
+    } else {
+        url <- sprintf(
+            "https://www2.census.gov/geo/tiger/TIGER%s/TTRACT/tl_%s_us_ttract.zip",
+            year,
+            year
+        )
+    }
 
-    fname <- as.character(match.call())[[1]]
-
-    msg <- sprintf("%s is not currently available for years prior to 2011.  To request this feature,
-                   file an issue at https://github.com/walkerke/tigris.", fname)
-
-    stop(msg, call. = FALSE)
-
-  }
-
-  if (cb) {
-    url <- sprintf("https://www2.census.gov/geo/tiger/GENZ%s/shp/cb_%s_us_ttract_500k.zip",
-                   year, year)
-  } else {
-    url <- sprintf("https://www2.census.gov/geo/tiger/TIGER%s/TTRACT/tl_%s_us_ttract.zip",
-                   year, year)
-  }
-
-
-
-  return(load_tiger(url, tigris_type = "tribal tracts", ...))
-
+    return(load_tiger(url, tigris_type = "tribal tracts", ...))
 }

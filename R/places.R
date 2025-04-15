@@ -15,61 +15,70 @@
 #' @seealso \url{https://www2.census.gov/geo/pdfs/reference/GARM/Ch9GARM.pdf}
 #' @export
 places <- function(state = NULL, cb = FALSE, year = NULL, ...) {
+    if (length(state) > 1) {
+        p <- lapply(state, function(x) {
+            places(state = x, cb = cb, year = year, ...)
+        }) %>%
+            rbind_tigris()
 
-  if (length(state) > 1) {
-    p <- lapply(state, function(x) {
-      places(state = x, cb = cb, year = year, ...)
-    }) %>%
-      rbind_tigris()
-
-    return(p)
-  }
-
-  if (is.null(year)) {
-
-    year <- getOption("tigris_year", 2022)
-
-    message(sprintf("Retrieving data for the year %s", year))
-
-  }
-
-  if (year < 2011) {
-
-    fname <- as.character(match.call())[[1]]
-
-    msg <- sprintf("%s is not currently available for years prior to 2011.  To request this feature,
-                   file an issue at https://github.com/walkerke/tigris.", fname)
-
-    stop(msg, call. = FALSE)
-
-  }
-
-  if (is.null(state)) {
-    if (year > 2018 && cb == TRUE) {
-      state <- "us"
-      message("Retrieving Census-designated places for the entire United States")
-    } else {
-      stop("A state must be specified for this year/dataset combination.",
-           call. = FALSE)
+        return(p)
     }
-  } else {
-    state <- validate_state(state)
 
-    if (is.null(state)) stop("Invalid state", call.=FALSE)
-  }
+    if (is.null(year)) {
+        year <- getOption("tigris_year", 2024)
 
-  cyear <- as.character(year)
+        message(sprintf("Retrieving data for the year %s", year))
+    }
 
-  if (cb == TRUE) {
-    url <- sprintf("https://www2.census.gov/geo/tiger/GENZ%s/shp/cb_%s_%s_place_500k.zip",
-                   cyear, cyear, state)
-  } else {
-    url <- sprintf("https://www2.census.gov/geo/tiger/TIGER%s/PLACE/tl_%s_%s_place.zip",
-                   cyear, cyear, state)
-  }
+    if (year < 2011) {
+        fname <- as.character(match.call())[[1]]
 
-  return(load_tiger(url, tigris_type="place", ...))
+        msg <- sprintf(
+            "%s is not currently available for years prior to 2011.  To request this feature,
+                   file an issue at https://github.com/walkerke/tigris.",
+            fname
+        )
 
+        stop(msg, call. = FALSE)
+    }
+
+    if (is.null(state)) {
+        if (year > 2018 && cb == TRUE) {
+            state <- "us"
+            message(
+                "Retrieving Census-designated places for the entire United States"
+            )
+        } else {
+            stop(
+                "A state must be specified for this year/dataset combination.",
+                call. = FALSE
+            )
+        }
+    } else {
+        state <- validate_state(state)
+
+        if (is.null(state)) stop("Invalid state", call. = FALSE)
+    }
+
+    cyear <- as.character(year)
+
+    if (cb == TRUE) {
+        url <- sprintf(
+            "https://www2.census.gov/geo/tiger/GENZ%s/shp/cb_%s_%s_place_500k.zip",
+            cyear,
+            cyear,
+            state
+        )
+    } else {
+        url <- sprintf(
+            "https://www2.census.gov/geo/tiger/TIGER%s/PLACE/tl_%s_%s_place.zip",
+            cyear,
+            cyear,
+            state
+        )
+    }
+
+    return(load_tiger(url, tigris_type = "place", ...))
 }
 
 #' Filter a \code{places} Spatial object for only those places matching the
@@ -83,11 +92,11 @@ places <- function(state = NULL, cb = FALSE, year = NULL, ...) {
 #' places("Maine") %>% filter_place("berwick")
 #' }
 filter_place <- function(places, place) {
-  if (is_tigris(places) & tigris_type(places) == "place") {
-    tmp <- places[tolower(places$NAME) %in% tolower(place),]
-    attr(tmp, "tigris") <- "place"
-    return(tmp)
-  }
+    if (is_tigris(places) & tigris_type(places) == "place") {
+        tmp <- places[tolower(places$NAME) %in% tolower(place), ]
+        attr(tmp, "tigris") <- "place"
+        return(tmp)
+    }
 }
 
 #' Find places matching a term in a \code{places} object
@@ -102,9 +111,9 @@ filter_place <- function(places, place) {
 #' places("Maine") %>% grep_place("south")
 #' }
 grep_place <- function(places, term) {
-  if (is_tigris(places) & tigris_type(places) == "place") {
-    grep(term, list_places(places), value=TRUE, ignore.case=TRUE)
-  }
+    if (is_tigris(places) & tigris_type(places) == "place") {
+        grep(term, list_places(places), value = TRUE, ignore.case = TRUE)
+    }
 }
 
 #' Return a list of all the places in a \code{places} object
@@ -115,9 +124,9 @@ grep_place <- function(places, term) {
 #' @examples \dontrun{
 #' places("Maine") %>% list_places()
 #' }
-list_places <- function(places, sorted=TRUE) {
-  if (is_tigris(places) & tigris_type(places) == "place") {
-    if (sorted) return(sort(places$NAME))
-    return(places$NAME)
-  }
+list_places <- function(places, sorted = TRUE) {
+    if (is_tigris(places) & tigris_type(places) == "place") {
+        if (sorted) return(sort(places$NAME))
+        return(places$NAME)
+    }
 }

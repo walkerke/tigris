@@ -41,46 +41,48 @@
 #' gg
 #' }
 roads <- function(state, county, year = NULL, ...) {
+    if (is.null(year)) {
+        year <- getOption("tigris_year", 2024)
+    }
 
-  if (is.null(year)) {
+    if (year < 2011) {
+        fname <- as.character(match.call())[[1]]
 
-    year <- getOption("tigris_year", 2022)
+        msg <- sprintf(
+            "%s is not currently available for years prior to 2011.  To request this feature,
+                   file an issue at https://github.com/walkerke/tigris.",
+            fname
+        )
 
-  }
+        stop(msg, call. = FALSE)
+    }
 
-  if (year < 2011) {
+    if (length(county) > 1) {
+        r <- lapply(county, function(x) {
+            roads(state = state, county = x, year = year, ...)
+        }) %>%
+            rbind_tigris()
 
-    fname <- as.character(match.call())[[1]]
+        return(r)
+    }
 
-    msg <- sprintf("%s is not currently available for years prior to 2011.  To request this feature,
-                   file an issue at https://github.com/walkerke/tigris.", fname)
+    state <- validate_state(state)
 
-    stop(msg, call. = FALSE)
+    county <- validate_county(state, county)
 
-  }
+    if (is.null(state)) stop("Invalid state", call. = FALSE)
 
-  if (length(county) > 1) {
-    r <- lapply(county, function(x) {
-      roads(state = state, county = x, year = year, ...)
-    }) %>%
-      rbind_tigris()
+    if (is.null(county)) stop("Invalid county", call. = FALSE)
 
-    return(r)
-  }
+    url <- sprintf(
+        "https://www2.census.gov/geo/tiger/TIGER%s/ROADS/tl_%s_%s%s_roads.zip",
+        as.character(year),
+        as.character(year),
+        state,
+        county
+    )
 
-  state <- validate_state(state)
-
-  county <- validate_county(state, county)
-
-  if (is.null(state)) stop("Invalid state", call.=FALSE)
-
-  if (is.null(county)) stop("Invalid county", call. = FALSE)
-
-  url <- sprintf("https://www2.census.gov/geo/tiger/TIGER%s/ROADS/tl_%s_%s%s_roads.zip",
-                 as.character(year), as.character(year), state, county)
-
-  return(load_tiger(url, tigris_type="road", ...))
-
+    return(load_tiger(url, tigris_type = "road", ...))
 }
 
 #' Download a national primary roads shapefile into R
@@ -106,31 +108,31 @@ roads <- function(state, county, year = NULL, ...) {
 #'
 #' }
 primary_roads <- function(year = NULL, ...) {
+    if (is.null(year)) {
+        year <- getOption("tigris_year", 2024)
 
-  if (is.null(year)) {
+        message(sprintf("Retrieving data for the year %s", year))
+    }
 
-    year <- getOption("tigris_year", 2022)
+    if (year < 2011) {
+        fname <- as.character(match.call())[[1]]
 
-    message(sprintf("Retrieving data for the year %s", year))
+        msg <- sprintf(
+            "%s is not currently available for years prior to 2011.  To request this feature,
+                   file an issue at https://github.com/walkerke/tigris.",
+            fname
+        )
 
-  }
+        stop(msg, call. = FALSE)
+    }
 
-  if (year < 2011) {
+    url <- sprintf(
+        "https://www2.census.gov/geo/tiger/TIGER%s/PRIMARYROADS/tl_%s_us_primaryroads.zip",
+        as.character(year),
+        as.character(year)
+    )
 
-    fname <- as.character(match.call())[[1]]
-
-    msg <- sprintf("%s is not currently available for years prior to 2011.  To request this feature,
-                   file an issue at https://github.com/walkerke/tigris.", fname)
-
-    stop(msg, call. = FALSE)
-
-  }
-
-  url <- sprintf("https://www2.census.gov/geo/tiger/TIGER%s/PRIMARYROADS/tl_%s_us_primaryroads.zip",
-                 as.character(year), as.character(year))
-
-  return(load_tiger(url, tigris_type="primary_roads", ...))
-
+    return(load_tiger(url, tigris_type = "primary_roads", ...))
 }
 
 #' Download a primary & secondary roads shapefile into R
@@ -162,35 +164,36 @@ primary_roads <- function(year = NULL, ...) {
 #'
 #' }
 primary_secondary_roads <- function(state, year = NULL, ...) {
+    if (is.null(year)) {
+        year <- getOption("tigris_year", 2024)
 
-  if (is.null(year)) {
+        message(sprintf("Retrieving data for the year %s", year))
+    }
 
-    year <- getOption("tigris_year", 2022)
+    if (year < 2011) {
+        fname <- as.character(match.call())[[1]]
 
-    message(sprintf("Retrieving data for the year %s", year))
+        msg <- sprintf(
+            "%s is not currently available for years prior to 2011.  To request this feature,
+                   file an issue at https://github.com/walkerke/tigris.",
+            fname
+        )
 
-  }
+        stop(msg, call. = FALSE)
+    }
 
-  if (year < 2011) {
+    state <- validate_state(state)
 
-    fname <- as.character(match.call())[[1]]
+    if (is.null(state)) stop("Invalid state", call. = FALSE)
 
-    msg <- sprintf("%s is not currently available for years prior to 2011.  To request this feature,
-                   file an issue at https://github.com/walkerke/tigris.", fname)
+    url <- sprintf(
+        "https://www2.census.gov/geo/tiger/TIGER%s/PRISECROADS/tl_%s_%s_prisecroads.zip",
+        as.character(year),
+        as.character(year),
+        state
+    )
 
-    stop(msg, call. = FALSE)
-
-  }
-
-  state <- validate_state(state)
-
-  if (is.null(state)) stop("Invalid state", call.=FALSE)
-
-  url <- sprintf("https://www2.census.gov/geo/tiger/TIGER%s/PRISECROADS/tl_%s_%s_prisecroads.zip",
-                as.character(year), as.character(year), state)
-
-  return(load_tiger(url, tigris_type="prim_sec_roads", ...))
-
+    return(load_tiger(url, tigris_type = "prim_sec_roads", ...))
 }
 
 #' Download a national rails shapefile into R
@@ -212,31 +215,31 @@ primary_secondary_roads <- function(state, year = NULL, ...) {
 #'
 #' }
 rails <- function(year = NULL, ...) {
+    if (is.null(year)) {
+        year <- getOption("tigris_year", 2024)
 
-  if (is.null(year)) {
+        message(sprintf("Retrieving data for the year %s", year))
+    }
 
-    year <- getOption("tigris_year", 2022)
+    if (year < 2011) {
+        fname <- as.character(match.call())[[1]]
 
-    message(sprintf("Retrieving data for the year %s", year))
+        msg <- sprintf(
+            "%s is not currently available for years prior to 2011.  To request this feature,
+                   file an issue at https://github.com/walkerke/tigris.",
+            fname
+        )
 
-  }
+        stop(msg, call. = FALSE)
+    }
 
-  if (year < 2011) {
+    url <- sprintf(
+        "https://www2.census.gov/geo/tiger/TIGER%s/RAILS/tl_%s_us_rails.zip",
+        as.character(year),
+        as.character(year)
+    )
 
-    fname <- as.character(match.call())[[1]]
-
-    msg <- sprintf("%s is not currently available for years prior to 2011.  To request this feature,
-                   file an issue at https://github.com/walkerke/tigris.", fname)
-
-    stop(msg, call. = FALSE)
-
-  }
-
-  url <- sprintf("https://www2.census.gov/geo/tiger/TIGER%s/RAILS/tl_%s_us_rails.zip",
-                 as.character(year), as.character(year))
-
-  return(load_tiger(url, tigris_type="rails", ...))
-
+    return(load_tiger(url, tigris_type = "rails", ...))
 }
 
 
@@ -253,37 +256,39 @@ rails <- function(year = NULL, ...) {
 #' @seealso \url{https://www2.census.gov/geo/pdfs/maps-data/data/tiger/tgrshp2020/TGRSHP2020_TechDoc.pdf}
 #' @export
 address_ranges <- function(state, county, year = NULL, ...) {
+    if (is.null(year)) {
+        year <- getOption("tigris_year", 2024)
 
-  if (is.null(year)) {
+        message(sprintf("Retrieving data for the year %s", year))
+    }
 
-    year <- getOption("tigris_year", 2022)
+    if (year < 2011) {
+        fname <- as.character(match.call())[[1]]
 
-    message(sprintf("Retrieving data for the year %s", year))
+        msg <- sprintf(
+            "%s is not currently available for years prior to 2011.  To request this feature,
+                   file an issue at https://github.com/walkerke/tigris.",
+            fname
+        )
 
-  }
+        stop(msg, call. = FALSE)
+    }
 
-  if (year < 2011) {
+    state <- validate_state(state)
 
-    fname <- as.character(match.call())[[1]]
+    county <- validate_county(state, county)
 
-    msg <- sprintf("%s is not currently available for years prior to 2011.  To request this feature,
-                   file an issue at https://github.com/walkerke/tigris.", fname)
+    if (is.null(state)) stop("Invalid state", call. = FALSE)
 
-    stop(msg, call. = FALSE)
+    if (is.null(county)) stop("Invalid county", call. = FALSE)
 
-  }
+    url <- sprintf(
+        "https://www2.census.gov/geo/tiger/TIGER%s/ADDRFEAT/tl_%s_%s%s_addrfeat.zip",
+        as.character(year),
+        as.character(year),
+        state,
+        county
+    )
 
-  state <- validate_state(state)
-
-  county <- validate_county(state, county)
-
-  if (is.null(state)) stop("Invalid state", call.=FALSE)
-
-  if (is.null(county)) stop("Invalid county", call. = FALSE)
-
-  url <- sprintf("https://www2.census.gov/geo/tiger/TIGER%s/ADDRFEAT/tl_%s_%s%s_addrfeat.zip",
-                 as.character(year), as.character(year), state, county)
-
-  return(load_tiger(url, tigris_type="address_range", ...))
-
+    return(load_tiger(url, tigris_type = "address_range", ...))
 }
