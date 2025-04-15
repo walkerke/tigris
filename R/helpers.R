@@ -84,6 +84,9 @@ load_tiger <- function(
     # Process filter_by
     wkt_filter <- input_to_wkt(filter_by)
 
+    # Store original URL before protocol modification
+    original_url <- url
+    
     # Modify URL for FTP if needed
     if (protocol == "ftp" && grepl("^https://www2", url)) {
         url <- gsub("^https://www2", "ftp://ftp2", url)
@@ -213,6 +216,31 @@ load_tiger <- function(
 
                         if ("warning" %in% class(t)) {
                             i <- i + 1
+                            
+                            # If using HTTP protocol and about to make final retry, try FTP as fallback
+                            if (i == 3 && protocol == "http") {
+                                message("HTTP download failed, trying FTP as fallback...")
+                                ftp_url <- gsub("^https://www2", "ftp://ftp2", original_url)
+                                
+                                # Try FTP download
+                                options(timeout = timeout)
+                                try(
+                                    download.file(
+                                        ftp_url,
+                                        destfile = file_loc,
+                                        quiet = !progress_bar,
+                                        mode = "wb"
+                                    ),
+                                    silent = TRUE
+                                )
+                                options(timeout = 60) # Reset to R default
+                                
+                                # Check if FTP download succeeded
+                                t <- tryCatch(unzip_tiger(), warning = function(w) w)
+                                if (!("warning" %in% class(t))) {
+                                    break  # FTP worked, exit the retry loop
+                                }
+                            }
                         } else {
                             break
                         }
@@ -220,7 +248,7 @@ load_tiger <- function(
 
                     if (i == 4) {
                         stop(
-                            "Download failed; check your internet connection or the status of the Census Bureau website
+                            "Download failed with both HTTP and FTP; check your internet connection or the status of the Census Bureau website
                  at https://www2.census.gov/geo/tiger/ or ftp://ftp2.census.gov/geo/tiger/.",
                             call. = FALSE
                         )
@@ -250,6 +278,7 @@ load_tiger <- function(
         tmp <- tempdir()
         file_loc <- file.path(tmp, tiger_file)
 
+        # Try initial download with specified protocol
         if (grepl("^ftp://", url)) {
             # Use download.file for FTP URLs with timeout
             options(timeout = timeout)
@@ -282,8 +311,59 @@ load_tiger <- function(
                 )
             }
         }
-
-        unzip(file_loc, exdir = tmp)
+        
+        # Try to unzip the file
+        unzip_result <- tryCatch(
+            {
+                unzip(file_loc, exdir = tmp)
+                TRUE  # Success
+            },
+            warning = function(w) FALSE,  # Failed
+            error = function(e) FALSE     # Failed
+        )
+        
+        # If HTTP download failed, try FTP as fallback
+        if (!unzip_result && protocol == "http") {
+            message("HTTP download failed, trying FTP as fallback...")
+            ftp_url <- gsub("^https://www2", "ftp://ftp2", original_url)
+            
+            # Try FTP download
+            options(timeout = timeout)
+            try(
+                download.file(
+                    ftp_url,
+                    destfile = file_loc,
+                    quiet = !progress_bar,
+                    mode = "wb"
+                ),
+                silent = TRUE
+            )
+            options(timeout = 60) # Reset to R default
+            
+            # Try to unzip again
+            unzip_result <- tryCatch(
+                {
+                    unzip(file_loc, exdir = tmp)
+                    TRUE  # Success
+                },
+                warning = function(w) FALSE,  # Failed
+                error = function(e) FALSE     # Failed
+            )
+            
+            if (!unzip_result) {
+                stop(
+                    "Download failed with both HTTP and FTP; check your internet connection or the status of the Census Bureau website
+                 at https://www2.census.gov/geo/tiger/ or ftp://ftp2.census.gov/geo/tiger/.",
+                    call. = FALSE
+                )
+            }
+        } else if (!unzip_result) {
+            stop(
+                "Download failed; check your internet connection or the status of the Census Bureau website
+             at https://www2.census.gov/geo/tiger/ or ftp://ftp2.census.gov/geo/tiger/.",
+                call. = FALSE
+            )
+        }
         shape <- gsub(".zip", "", tiger_file)
         shape <- gsub("_shp", "", shape) # for historic tracts
 
