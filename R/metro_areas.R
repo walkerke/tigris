@@ -18,60 +18,75 @@
 #' @family metro area functions
 #' @seealso \url{https://www.census.gov/programs-surveys/metro-micro.html}
 #' @export
-core_based_statistical_areas <- function(cb = FALSE, resolution = '500k', year = NULL, ...) {
+core_based_statistical_areas <- function(
+    cb = FALSE,
+    resolution = '500k',
+    year = NULL,
+    ...
+) {
+    if (is.null(year)) {
+        year <- getOption("tigris_year", 2024)
 
-  if (is.null(year)) {
-
-    year <- getOption("tigris_year", 2022)
-
-    message(sprintf("Retrieving data for the year %s", year))
-
-  }
-
-  if (year < 2010) {
-
-    fname <- as.character(match.call())[[1]]
-
-    msg <- sprintf("%s is not currently available for years prior to 2010.  To request this feature,
-                   file an issue at https://github.com/walkerke/tigris.", fname)
-
-    stop(msg, call. = FALSE)
-
-  }
-
-  if (!(resolution %in% c('500k', '5m', '20m'))) {
-    stop("Invalid value for resolution. Valid values are '500k', '5m', and '20m'.", call. = FALSE)
-  }
-
-  cyear <- as.character(year)
-
-  if (cb == TRUE) {
-    if (year == 2010) {
-      if (resolution == "5m") stop("Available resolutions are '500k' and '20m'", call. = FALSE)
-      url <- sprintf("https://www2.census.gov/geo/tiger/GENZ2010/gz_2010_us_310_m1_%s.zip",
-                     resolution)
-
-    } else {
-      url <- sprintf("https://www2.census.gov/geo/tiger/GENZ%s/shp/cb_%s_us_cbsa_%s.zip",
-                     cyear, cyear, resolution)
-
-      if (year == 2013) url <- gsub("shp/", "", url)
+        message(sprintf("Retrieving data for the year %s", year))
     }
 
+    if (year < 2010) {
+        fname <- as.character(match.call())[[1]]
 
-  } else {
+        msg <- sprintf(
+            "%s is not currently available for years prior to 2010.  To request this feature,
+                   file an issue at https://github.com/walkerke/tigris.",
+            fname
+        )
 
-    if (year == 2010) {
-      url <- sprintf("https://www2.census.gov/geo/tiger/TIGER2010/CBSA/2010/tl_2010_us_cbsa10.zip")
-    } else {
-      url <- sprintf("https://www2.census.gov/geo/tiger/TIGER%s/CBSA/tl_%s_us_cbsa.zip",
-                     cyear, cyear)
+        stop(msg, call. = FALSE)
     }
 
-  }
+    if (!(resolution %in% c('500k', '5m', '20m'))) {
+        stop(
+            "Invalid value for resolution. Valid values are '500k', '5m', and '20m'.",
+            call. = FALSE
+        )
+    }
 
-  return(load_tiger(url, tigris_type="cbsa", ...))
+    cyear <- as.character(year)
 
+    if (cb == TRUE) {
+        if (year == 2010) {
+            if (resolution == "5m")
+                stop(
+                    "Available resolutions are '500k' and '20m'",
+                    call. = FALSE
+                )
+            url <- sprintf(
+                "https://www2.census.gov/geo/tiger/GENZ2010/gz_2010_us_310_m1_%s.zip",
+                resolution
+            )
+        } else {
+            url <- sprintf(
+                "https://www2.census.gov/geo/tiger/GENZ%s/shp/cb_%s_us_cbsa_%s.zip",
+                cyear,
+                cyear,
+                resolution
+            )
+
+            if (year == 2013) url <- gsub("shp/", "", url)
+        }
+    } else {
+        if (year == 2010) {
+            url <- sprintf(
+                "https://www2.census.gov/geo/tiger/TIGER2010/CBSA/2010/tl_2010_us_cbsa10.zip"
+            )
+        } else {
+            url <- sprintf(
+                "https://www2.census.gov/geo/tiger/TIGER%s/CBSA/tl_%s_us_cbsa.zip",
+                cyear,
+                cyear
+            )
+        }
+    }
+
+    return(load_tiger(url, tigris_type = "cbsa", ...))
 }
 
 #' Download an urban areas shapefile into R
@@ -90,62 +105,71 @@ core_based_statistical_areas <- function(cb = FALSE, resolution = '500k', year =
 #' @seealso \url{https://www.census.gov/programs-surveys/geography/guidance/geo-areas/urban-rural.html}
 #' @export
 urban_areas <- function(cb = FALSE, year = NULL, criteria = NULL, ...) {
+    if (is.null(year)) {
+        year <- getOption("tigris_year", 2024)
 
-  if (is.null(year)) {
-
-    year <- getOption("tigris_year", 2022)
-
-    message(sprintf("Retrieving data for the year %s", year))
-
-  }
-
-  if (year < 2011) {
-
-    fname <- as.character(match.call())[[1]]
-
-    msg <- sprintf("%s is not currently available for years prior to 2011.  To request this feature,
-                   file an issue at https://github.com/walkerke/tigris.", fname)
-
-    stop(msg, call. = FALSE)
-
-  }
-
-  cyear <- as.character(year)
-
-
-  if (cb) {
-    if (!is.null(criteria)) {
-      stop("The `criteria` argument is not supported for cartographic boundary files", call. = FALSE)
+        message(sprintf("Retrieving data for the year %s", year))
     }
 
-    url <- sprintf("https://www2.census.gov/geo/tiger/GENZ%s/shp/cb_%s_us_ua10_500k.zip",
-                   cyear, cyear)
+    if (year < 2011) {
+        fname <- as.character(match.call())[[1]]
 
-    if (year == 2013) url <- gsub("shp/", "", url)
+        msg <- sprintf(
+            "%s is not currently available for years prior to 2011.  To request this feature,
+                   file an issue at https://github.com/walkerke/tigris.",
+            fname
+        )
 
-  } else {
+        stop(msg, call. = FALSE)
+    }
 
-    if (year >= 2023) {
-      url <- sprintf("https://www2.census.gov/geo/tiger/TIGER%s/UAC/tl_%s_us_uac20.zip",
-                     cyear, cyear)
-    } else if (!is.null(criteria) && criteria == "2020") {
-      if (year != 2020) {
-        stop("2020 criteria is only supported when `year` is set to 2020 at the moment.", call. = FALSE)
-      }
+    cyear <- as.character(year)
 
-      url <- sprintf("https://www2.census.gov/geo/tiger/TIGER%s/UAC/tl_%s_us_uac20.zip",
-                     cyear, cyear)
+    if (cb) {
+        if (!is.null(criteria)) {
+            stop(
+                "The `criteria` argument is not supported for cartographic boundary files",
+                call. = FALSE
+            )
+        }
 
+        url <- sprintf(
+            "https://www2.census.gov/geo/tiger/GENZ%s/shp/cb_%s_us_ua10_500k.zip",
+            cyear,
+            cyear
+        )
+
+        if (year == 2013) url <- gsub("shp/", "", url)
     } else {
-      url <- sprintf("https://www2.census.gov/geo/tiger/TIGER%s/UAC/tl_%s_us_uac10.zip",
-                     cyear, cyear)
+        if (year >= 2023) {
+            url <- sprintf(
+                "https://www2.census.gov/geo/tiger/TIGER%s/UAC/tl_%s_us_uac20.zip",
+                cyear,
+                cyear
+            )
+        } else if (!is.null(criteria) && criteria == "2020") {
+            if (year != 2020) {
+                stop(
+                    "2020 criteria is only supported when `year` is set to 2020 at the moment.",
+                    call. = FALSE
+                )
+            }
+
+            url <- sprintf(
+                "https://www2.census.gov/geo/tiger/TIGER%s/UAC/tl_%s_us_uac20.zip",
+                cyear,
+                cyear
+            )
+        } else {
+            url <- sprintf(
+                "https://www2.census.gov/geo/tiger/TIGER%s/UAC/tl_%s_us_uac10.zip",
+                cyear,
+                cyear
+            )
+        }
     }
 
-
-  }
-
-  return(load_tiger(url, tigris_type="urban", ...))
-
+    return(load_tiger(url, tigris_type = "urban", ...))
 }
 
 #' Download a combined statistical areas shapefile into R
@@ -164,46 +188,61 @@ urban_areas <- function(cb = FALSE, year = NULL, criteria = NULL, ...) {
 #' @family metro area functions
 #' @seealso \url{https://www2.census.gov/geo/pdfs/maps-data/data/tiger/tgrshp2020/TGRSHP2020_TechDoc.pdf}
 #' @export
-combined_statistical_areas <- function(cb = FALSE, resolution = '500k', year = NULL, ...) {
+combined_statistical_areas <- function(
+    cb = FALSE,
+    resolution = '500k',
+    year = NULL,
+    ...
+) {
+    if (is.null(year)) {
+        year <- getOption("tigris_year", 2024)
 
-  if (is.null(year)) {
+        message(sprintf("Retrieving data for the year %s", year))
+    }
 
-    year <- getOption("tigris_year", 2022)
+    if (year == 2022) {
+        stop("CBSAs were not defined for 2022; choose a different year.")
+    }
 
-    message(sprintf("Retrieving data for the year %s", year))
+    if (year < 2011) {
+        fname <- as.character(match.call())[[1]]
 
-  }
+        msg <- sprintf(
+            "%s is not currently available for years prior to 2011.  To request this feature,
+                   file an issue at https://github.com/walkerke/tigris.",
+            fname
+        )
 
-  if (year < 2011) {
+        stop(msg, call. = FALSE)
+    }
 
-    fname <- as.character(match.call())[[1]]
+    if (!(resolution %in% c('500k', '5m', '20m'))) {
+        stop(
+            "Invalid value for resolution. Valid values are '500k', '5m', and '20m'.",
+            call. = FALSE
+        )
+    }
 
-    msg <- sprintf("%s is not currently available for years prior to 2011.  To request this feature,
-                   file an issue at https://github.com/walkerke/tigris.", fname)
+    cyear <- as.character(year)
 
-    stop(msg, call. = FALSE)
+    if (cb == TRUE) {
+        url <- sprintf(
+            "https://www2.census.gov/geo/tiger/GENZ%s/shp/cb_%s_us_csa_%s.zip",
+            cyear,
+            cyear,
+            resolution
+        )
 
-  }
+        if (year == 2013) url <- gsub("shp/", "", url)
+    } else {
+        url <- sprintf(
+            "https://www2.census.gov/geo/tiger/TIGER%s/CSA/tl_%s_us_csa.zip",
+            cyear,
+            cyear
+        )
+    }
 
-  if (!(resolution %in% c('500k', '5m', '20m'))) {
-    stop("Invalid value for resolution. Valid values are '500k', '5m', and '20m'.", call. = FALSE)
-  }
-
-  cyear <- as.character(year)
-
-  if (cb == TRUE) {
-    url <- sprintf("https://www2.census.gov/geo/tiger/GENZ%s/shp/cb_%s_us_csa_%s.zip",
-                   cyear, cyear, resolution)
-
-    if (year == 2013) url <- gsub("shp/", "", url)
-
-  } else {
-    url <- sprintf("https://www2.census.gov/geo/tiger/TIGER%s/CSA/tl_%s_us_csa.zip",
-                   cyear, cyear)
-  }
-
-  return(load_tiger(url, tigris_type="csa", ...))
-
+    return(load_tiger(url, tigris_type = "csa", ...))
 }
 
 #' Download a metropolitan divisions shapefile into R.
@@ -217,33 +256,33 @@ combined_statistical_areas <- function(cb = FALSE, resolution = '500k', year = N
 #' @seealso \url{https://www2.census.gov/geo/pdfs/maps-data/data/tiger/tgrshp2020/TGRSHP2020_TechDoc.pdf}
 #' @export
 metro_divisions <- function(year = NULL, ...) {
+    if (is.null(year)) {
+        year <- getOption("tigris_year", 2024)
 
-  if (is.null(year)) {
+        message(sprintf("Retrieving data for the year %s", year))
+    }
 
-    year <- getOption("tigris_year", 2022)
+    if (year < 2011) {
+        fname <- as.character(match.call())[[1]]
 
-    message(sprintf("Retrieving data for the year %s", year))
+        msg <- sprintf(
+            "%s is not currently available for years prior to 2011.  To request this feature,
+                   file an issue at https://github.com/walkerke/tigris.",
+            fname
+        )
 
-  }
+        stop(msg, call. = FALSE)
+    }
 
-  if (year < 2011) {
+    cyear <- as.character(year)
 
-    fname <- as.character(match.call())[[1]]
+    url <- sprintf(
+        "https://www2.census.gov/geo/tiger/TIGER%s/METDIV/tl_%s_us_metdiv.zip",
+        cyear,
+        cyear
+    )
 
-    msg <- sprintf("%s is not currently available for years prior to 2011.  To request this feature,
-                   file an issue at https://github.com/walkerke/tigris.", fname)
-
-    stop(msg, call. = FALSE)
-
-  }
-
-  cyear <- as.character(year)
-
-  url <- sprintf("https://www2.census.gov/geo/tiger/TIGER%s/METDIV/tl_%s_us_metdiv.zip",
-                 cyear, cyear)
-
-  return(load_tiger(url, tigris_type="metro", ...))
-
+    return(load_tiger(url, tigris_type = "metro", ...))
 }
 
 #' Download a New England City and Town Area shapefile into R
@@ -278,63 +317,66 @@ metro_divisions <- function(year = NULL, ...) {
 #'
 #' }
 new_england <- function(type = 'necta', cb = FALSE, year = NULL, ...) {
+    if (is.null(year)) {
+        year <- getOption("tigris_year", 2024)
 
-  if (is.null(year)) {
-
-    year <- getOption("tigris_year", 2022)
-
-    message(sprintf("Retrieving data for the year %s", year))
-
-  }
-
-  if (year < 2011) {
-
-    fname <- as.character(match.call())[[1]]
-
-    msg <- sprintf("%s is not currently available for years prior to 2011.  To request this feature,
-                   file an issue at https://github.com/walkerke/tigris.", fname)
-
-    stop(msg, call. = FALSE)
-
-  }
-
-  cyear <- as.character(year)
-
-  if (type == 'necta') {
-
-    if (cb == TRUE) {
-
-      url <- sprintf("https://www2.census.gov/geo/tiger/GENZ%s/shp/cb_%s_us_necta_500k.zip",
-                     cyear, cyear)
-
-    } else {
-
-      url <- sprintf("https://www2.census.gov/geo/tiger/TIGER%s/NECTA/tl_%s_us_necta.zip",
-                     cyear, cyear)
-
+        message(sprintf("Retrieving data for the year %s", year))
     }
 
-    return(load_tiger(url, tigris_type = "necta", ...))
+    if (year > 2021) {
+        stop("New England areas are no longer defined for years after 2021.")
+    }
 
-  } else if (type == 'combined') {
+    if (year < 2011) {
+        fname <- as.character(match.call())[[1]]
 
-    url <- sprintf("https://www2.census.gov/geo/tiger/TIGER%s/CNECTA/tl_%s_us_cnecta.zip",
-                   cyear, cyear)
+        msg <- sprintf(
+            "%s is not currently available for years prior to 2011.  To request this feature,
+                   file an issue at https://github.com/walkerke/tigris.",
+            fname
+        )
 
-    return(load_tiger(url, tigris_type = "cnecta", ...))
+        stop(msg, call. = FALSE)
+    }
 
-  } else if (type == 'divisions') {
+    cyear <- as.character(year)
 
-    url <- sprintf("https://www2.census.gov/geo/tiger/TIGER%s/NECTADIV/tl_%s_us_nectadiv.zip",
-                   cyear, cyear)
+    if (type == 'necta') {
+        if (cb == TRUE) {
+            url <- sprintf(
+                "https://www2.census.gov/geo/tiger/GENZ%s/shp/cb_%s_us_necta_500k.zip",
+                cyear,
+                cyear
+            )
+        } else {
+            url <- sprintf(
+                "https://www2.census.gov/geo/tiger/TIGER%s/NECTA/tl_%s_us_necta.zip",
+                cyear,
+                cyear
+            )
+        }
 
-    return(load_tiger(url, tigris_type = "nectadiv", ...))
+        return(load_tiger(url, tigris_type = "necta", ...))
+    } else if (type == 'combined') {
+        url <- sprintf(
+            "https://www2.census.gov/geo/tiger/TIGER%s/CNECTA/tl_%s_us_cnecta.zip",
+            cyear,
+            cyear
+        )
 
-  } else {
+        return(load_tiger(url, tigris_type = "cnecta", ...))
+    } else if (type == 'divisions') {
+        url <- sprintf(
+            "https://www2.census.gov/geo/tiger/TIGER%s/NECTADIV/tl_%s_us_nectadiv.zip",
+            cyear,
+            cyear
+        )
 
-    stop("Invalid NECTA type; valid values include 'necta' (the default), 'combined', and 'divisions'.", call. = FALSE)
-
-  }
-
-
+        return(load_tiger(url, tigris_type = "nectadiv", ...))
+    } else {
+        stop(
+            "Invalid NECTA type; valid values include 'necta' (the default), 'combined', and 'divisions'.",
+            call. = FALSE
+        )
+    }
 }

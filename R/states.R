@@ -29,109 +29,114 @@
 #'   setView(-98.5795, 39.8282, zoom=3)
 #' }
 states <- function(cb = FALSE, resolution = '500k', year = NULL, ...) {
+    if (!(resolution %in% c('500k', '5m', '20m'))) {
+        stop(
+            "Invalid value for resolution. Valid values are '500k', '5m', and '20m'.",
+            call. = FALSE
+        )
+    }
 
-  if (!(resolution %in% c('500k', '5m', '20m'))) {
-    stop("Invalid value for resolution. Valid values are '500k', '5m', and '20m'.", call. = FALSE)
-  }
+    if (is.null(year)) {
+        year = getOption("tigris_year", 2024)
 
-  if (is.null(year)) {
+        message(sprintf("Retrieving data for the year %s", year))
+    }
 
-    year = getOption("tigris_year", 2021)
+    cyear <- as.character(year)
 
-    message(sprintf("Retrieving data for the year %s", year))
+    if (cb == TRUE) {
+        if (year %in% c(1990, 2000)) {
+            suf <- substr(as.character(year), 3, 4)
 
-  }
-
-  cyear <- as.character(year)
-
-
-  if (cb == TRUE) {
-
-    if (year %in% c(1990, 2000)) {
-
-      suf <- substr(as.character(year), 3, 4)
-
-      url <- sprintf("https://www2.census.gov/geo/tiger/PREVGENZ/st/st%sshp/st99_d%s_shp.zip",
-                     suf, suf)
-
-    } else if (year == 2010) {
-
-      url <- sprintf("https://www2.census.gov/geo/tiger/GENZ2010/gz_2010_us_040_00_%s.zip",
-                     resolution)
-
+            url <- sprintf(
+                "https://www2.census.gov/geo/tiger/PREVGENZ/st/st%sshp/st99_d%s_shp.zip",
+                suf,
+                suf
+            )
+        } else if (year == 2010) {
+            url <- sprintf(
+                "https://www2.census.gov/geo/tiger/GENZ2010/gz_2010_us_040_00_%s.zip",
+                resolution
+            )
+        } else {
+            if (year > 2013) {
+                url <- sprintf(
+                    "https://www2.census.gov/geo/tiger/GENZ%s/shp/cb_%s_us_state_%s.zip",
+                    cyear,
+                    cyear,
+                    resolution
+                )
+            } else {
+                url <- sprintf(
+                    "https://www2.census.gov/geo/tiger/GENZ%s/shp/cb_%s_us_state_%s.zip",
+                    cyear,
+                    cyear,
+                    resolution
+                )
+            }
+        }
     } else {
+        if (year == 1990)
+            stop("Please specify `cb = TRUE` to get 1990 data.", call. = FALSE)
 
-      if (year > 2013) {
+        if (year %in% c(2000, 2010)) {
+            suf <- substr(cyear, 3, 4)
 
-        url <- sprintf("https://www2.census.gov/geo/tiger/GENZ%s/shp/cb_%s_us_state_%s.zip",
-                       cyear, cyear, resolution)
-
-      } else {
-
-        url <- sprintf("https://www2.census.gov/geo/tiger/GENZ%s/shp/cb_%s_us_state_%s.zip",
-                       cyear, cyear, resolution)
-      }
-
+            url <- sprintf(
+                "https://www2.census.gov/geo/tiger/TIGER2010/STATE/%s/tl_2010_us_state%s.zip",
+                cyear,
+                suf
+            )
+        } else {
+            url <- sprintf(
+                "https://www2.census.gov/geo/tiger/TIGER%s/STATE/tl_%s_us_state.zip",
+                cyear,
+                cyear
+            )
+        }
     }
 
-  } else {
+    st <- load_tiger(url, tigris_type = "state", ...)
 
-    if (year == 1990) stop("Please specify `cb = TRUE` to get 1990 data.", call. = FALSE)
-
-    if (year %in% c(2000, 2010)) {
-
-      suf <- substr(cyear, 3, 4)
-
-      url <- sprintf("https://www2.census.gov/geo/tiger/TIGER2010/STATE/%s/tl_2010_us_state%s.zip",
-                     cyear, suf)
-
-    } else {
-
-      url <- sprintf("https://www2.census.gov/geo/tiger/TIGER%s/STATE/tl_%s_us_state.zip",
-                     cyear, cyear)
-
+    # Dissolve polygons for 1990 and 2000 CB
+    if (cb && year %in% c(1990, 2000)) {
+        sclass <- class(st)
+        if (!any(sclass == "sf")) {
+            st <- st_as_sf(st)
+        }
+        if (year == 1990) {
+            st <- st %>%
+                group_by(.data$ST) %>%
+                summarize(
+                    AREA = sum(.data$AREA),
+                    PERIMETER = sum(.data$PERIMETER),
+                    ST99_D90_ = first(.data$ST99_D90_),
+                    ST99_D90_I = first(.data$ST99_D90_I),
+                    NAME = first(.data$NAME)
+                ) %>%
+                st_cast("MULTIPOLYGON")
+        } else if (year == 2000) {
+            st <- st %>%
+                group_by(.data$STATE) %>%
+                summarize(
+                    AREA = sum(.data$AREA),
+                    PERIMETER = sum(.data$PERIMETER),
+                    ST99_D00_ = first(.data$ST99_D00_),
+                    ST99_D00_I = first(.data$ST99_D00_I),
+                    NAME = first(.data$NAME),
+                    LSAD = first(.data$LSAD),
+                    REGION = first(.data$REGION),
+                    DIVISION = first(.data$DIVISION),
+                    LSAD_TRANS = first(.data$LSAD_TRANS)
+                ) %>%
+                st_cast("MULTIPOLYGON")
+        }
+        if (any(sclass == "SpatialPolygonsDataFrame")) {
+            st <- as(st, "Spatial")
+        }
     }
 
-  }
-
-  st <- load_tiger(url, tigris_type="state", ...)
-
-  # Dissolve polygons for 1990 and 2000 CB
-  if (cb && year %in% c(1990, 2000)) {
-    sclass <- class(st)
-    if (!any(sclass == "sf")) {
-      st <- st_as_sf(st)
-    }
-    if (year == 1990) {
-      st <- st %>%
-        group_by(.data$ST) %>%
-        summarize(AREA = sum(.data$AREA),
-                  PERIMETER = sum(.data$PERIMETER),
-                  ST99_D90_ = first(.data$ST99_D90_),
-                  ST99_D90_I = first(.data$ST99_D90_I),
-                  NAME = first(.data$NAME)) %>%
-        st_cast("MULTIPOLYGON")
-    } else if (year == 2000) {
-      st <- st %>%
-        group_by(.data$STATE) %>%
-        summarize(AREA = sum(.data$AREA),
-                  PERIMETER = sum(.data$PERIMETER),
-                  ST99_D00_ = first(.data$ST99_D00_),
-                  ST99_D00_I = first(.data$ST99_D00_I),
-                  NAME = first(.data$NAME),
-                  LSAD = first(.data$LSAD),
-                  REGION = first(.data$REGION),
-                  DIVISION = first(.data$DIVISION),
-                  LSAD_TRANS = first(.data$LSAD_TRANS)) %>%
-        st_cast("MULTIPOLYGON")
-    }
-    if (any(sclass == "SpatialPolygonsDataFrame")) {
-      st <- as(st, "Spatial")
-    }
-  }
-
-  return(st)
-
+    return(st)
 }
 #' Filter a \code{states} Spatial object for only those states matching the
 #' contents of the \code{state} vector.
@@ -144,11 +149,11 @@ states <- function(cb = FALSE, resolution = '500k', year = NULL, ...) {
 #' states() %>% filter_state("south")
 #' }
 filter_state <- function(states, state) {
-  if (is_tigris(states) & tigris_type(states) == "state") {
-    tmp <- states[tolower(states$NAME) %in% tolower(state),]
-    attr(tmp, "tigris") <- "state"
-    return(tmp)
-  }
+    if (is_tigris(states) & tigris_type(states) == "state") {
+        tmp <- states[tolower(states$NAME) %in% tolower(state), ]
+        attr(tmp, "tigris") <- "state"
+        return(tmp)
+    }
 }
 
 #' Find states matching a term in a \code{state} object
@@ -163,9 +168,9 @@ filter_state <- function(states, state) {
 #' states() %>% grep_state("north")
 #' }
 grep_state <- function(states, term) {
-  if (is_tigris(states) & tigris_type(states) == "state") {
-    grep(term, list_states(states), value=TRUE, ignore.case=TRUE)
-  }
+    if (is_tigris(states) & tigris_type(states) == "state") {
+        grep(term, list_states(states), value = TRUE, ignore.case = TRUE)
+    }
 }
 
 #' Return a list of all the states in a \code{state} object
@@ -176,9 +181,9 @@ grep_state <- function(states, term) {
 #' @examples \dontrun{
 #' states() %>% list_states()
 #' }
-list_states <- function(states, sorted=TRUE) {
-  if (is_tigris(states) & tigris_type(states) == "state") {
-    if (sorted) return(sort(states@data$NAME))
-    return(states@data$NAME)
-  }
+list_states <- function(states, sorted = TRUE) {
+    if (is_tigris(states) & tigris_type(states) == "state") {
+        if (sorted) return(sort(states@data$NAME))
+        return(states@data$NAME)
+    }
 }
