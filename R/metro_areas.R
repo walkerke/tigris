@@ -142,11 +142,19 @@ urban_areas <- function(cb = FALSE, year = NULL, criteria = NULL, ...) {
         if (year == 2013) url <- gsub("shp/", "", url)
     } else {
         if (year >= 2023) {
-            url <- sprintf(
-                "https://www2.census.gov/geo/tiger/TIGER%s/UAC/tl_%s_us_uac20.zip",
-                cyear,
-                cyear
-            )
+            if (year == 2023) {
+                url <- sprintf(
+                    "https://www2.census.gov/geo/tiger/TIGER%s/UAC/tl_%s_us_uac20.zip",
+                    cyear,
+                    cyear
+                )
+            } else {
+                url <- sprintf(
+                    "https://www2.census.gov/geo/tiger/TIGER%s/UAC20/tl_%s_us_uac20.zip",
+                    cyear,
+                    cyear
+                )
+            }
         } else if (!is.null(criteria) && criteria == "2020") {
             if (year != 2020) {
                 stop(
