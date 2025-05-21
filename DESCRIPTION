@@ -34,6 +34,8 @@ Imports:
     uuid,
     sf,
     dplyr,
-    methods
+    methods,
+    cli,
+    rlang
 RoxygenNote: 7.3.2
 Roxygen: list(markdown = TRUE)

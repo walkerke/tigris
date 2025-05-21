@@ -1,3 +1,11 @@
+tigris development
+-------------------------------------------------------
+* Add `{rlang}` and `{cli}` packages to Imports.
+
+* Warn users when `filter_by` contains multiple geometries and only part of the filter can be used.
+
+* Export `validate_state()` and `validate_county()` functions with added  `multiple` argument to allow validation of multiple states or counties in a single call.
+
 tigris 2.2.1
 -------------------------------------------------------
 * Functions now default to a year of 2024.
