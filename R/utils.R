@@ -331,7 +331,7 @@ match_county_name <- function(
 
   county_matches <- lapply(
     sprintf("^%s", county),
-    \(p) {
+    function(p) {
       values[grepl(p, names(values), ignore.case = TRUE)]
     }
   )
@@ -339,7 +339,7 @@ match_county_name <- function(
   missing_matches <- vapply(county_matches, is_empty, logical(1))
   uncertain_matches <- vapply(
     county_matches,
-    \(x) {
+    function(x) {
       length(x) > 1
     },
     logical(1)
