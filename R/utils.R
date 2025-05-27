@@ -529,6 +529,7 @@ pad_str <- function(
 input_to_wkt <- function(
   input,
   crs = 4269,
+  geos_method = "valid_structure",
   arg = caller_arg(input),
   call = caller_env()
 ) {
@@ -539,6 +540,7 @@ input_to_wkt <- function(
   input_sfc <- prep_input_sfc(
     input = input,
     crs = crs,
+    geos_method = geos_method,
     arg = arg,
     call = call
   )
@@ -552,10 +554,12 @@ input_to_wkt <- function(
 prep_input_sfc <- function(
   input,
   crs = 4269,
+  geos_method = "valid_structure",
   arg = caller_arg(input),
   call = caller_env()
 ) {
   if (!inherits(input, "bbox") && is.numeric(input) && (length(input) == 4)) {
+    # TODO: Check if input is already named
     names(input) <- c("xmin", "ymin", "xmax", "ymax")
     input <- sf::st_bbox(input, crs = crs)
   }
@@ -575,8 +579,8 @@ prep_input_sfc <- function(
     input <- sf::st_as_sfc(input)
   }
 
-  if (!all(sf::st_is_valid(x, ...))) {
-    input <- sf::st_make_valid(input)
+  if (!all(sf::st_is_valid(x))) {
+    input <- sf::st_make_valid(input, geos_method = geos_method)
   }
 
   if (length(input) > 1) {
@@ -588,7 +592,7 @@ prep_input_sfc <- function(
     )
 
     input <- sf::st_union(input)
-    input <- sf::st_make_valid(input)
+    input <- sf::st_make_valid(input, geos_method = geos_method)
   }
 
   # Make NAD83 for coordinate alignment
