@@ -579,7 +579,7 @@ prep_input_sfc <- function(
     input <- sf::st_as_sfc(input)
   }
 
-  if (!all(sf::st_is_valid(x))) {
+  if (!all(sf::st_is_valid(input))) {
     input <- sf::st_make_valid(input, geos_method = geos_method)
   }
 
