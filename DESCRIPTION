@@ -18,7 +18,7 @@ Encoding: UTF-8
 Depends:
     R (>= 3.3.0)
 Suggests:
-    testthat,
+    testthat (>= 3.0.0),
     ggplot2,
     ggthemes,
     leaflet,
@@ -36,6 +36,8 @@ Imports:
     dplyr,
     methods,
     cli,
-    rlang
+    rlang,
+    withr
+Config/testthat/edition: 3
 RoxygenNote: 7.3.2
 Roxygen: list(markdown = TRUE)
