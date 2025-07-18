@@ -28,8 +28,8 @@
 #'
 #' @note Several \code{options} and arguments control behavior of various \code{tigris} functions.
 #'       See \code{Details} for more information.
-#' @name tigris
-#' @docType package
+#' @name tigris-package
+#' @aliases tigris
 #' @author Kyle Walker (@@kyle_e_walker)
 #' @importFrom stringr str_trim str_pad
 #' @import utils
@@ -42,6 +42,9 @@
 #' @import rlang
 #' @importFrom methods as
 NULL
+
+#' @keywords internal
+"_PACKAGE"
 
 #' tigris exported operators
 #'

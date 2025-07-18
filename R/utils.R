@@ -168,6 +168,9 @@ match_state_fips <- function(
 #' input values.
 #' @param multiple If `FALSE` (default), require input to match a single state
 #' or county. If `TRUE`, allow multiple values.
+#' @param .msg If `TRUE` (default), show informative messages about FIPS code
+#' usage. Uses `is_interactive()` by default.
+#' @param error_call The execution environment of a currently running function.
 #' @returns
 #' - `NULL` if input is `NULL` and `allow_null = TRUE` and `require_state = FALSE`
 #' - valid state FIPS code if input is even pseudo-valid (i.e. single digit but w/in range)
@@ -390,7 +393,8 @@ match_county_name <- function(
 #'
 #' @inheritParams validate_state
 #' @param county County name, abbreviation, or FIPS code. Not case sensitive.
-#'
+#' @param require_county If `FALSE` (default), warn instead of error on invalid
+#' input values.
 #' @returns
 #' - `NULL` if input is `NULL` and `allow_null = TRUE` and `require_county = FALSE`
 #' - valid county FIPS code if input is even pseudo-valid (i.e. single digit but w/in range)

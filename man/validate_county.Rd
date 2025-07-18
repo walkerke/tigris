@@ -24,8 +24,16 @@ are padded with "0" to subset to allow use as a state value.}
 \item{allow_null}{If \code{TRUE} (default), allow \code{NULL} input values by invisibly
 returning \code{NULL}.}
 
+\item{require_county}{If \code{FALSE} (default), warn instead of error on invalid
+input values.}
+
 \item{multiple}{If \code{FALSE} (default), require input to match a single state
 or county. If \code{TRUE}, allow multiple values.}
+
+\item{.msg}{If \code{TRUE} (default), show informative messages about FIPS code
+usage. Uses \code{is_interactive()} by default.}
+
+\item{error_call}{The execution environment of a currently running function.}
 }
 \value{
 \itemize{
