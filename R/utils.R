@@ -173,7 +173,6 @@ match_state_fips <- function(
 #' - valid state FIPS code if input is even pseudo-valid (i.e. single digit but w/in range)
 #' - `NULL` if input is not a valid FIPS code and `require_state = FALSE`
 #' - errors if input is not a valid FIPS code and `require_state = TRUE` or if `state` matched multiple values
-#' @keywords internal
 #' @export
 validate_state <- function(
   state,
@@ -397,7 +396,6 @@ match_county_name <- function(
 #' - valid county FIPS code if input is even pseudo-valid (i.e. single digit but w/in range)
 #' - `NULL` if input is not a valid FIPS code and `require_county = FALSE`
 #' - errors if input is not a valid FIPS code and `require_county = TRUE` or if `county` matched multiple values and `multiple = FALSE`
-#' @keywords internal
 #' @export
 validate_county <- function(
   state,

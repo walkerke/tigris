@@ -41,4 +41,3 @@ or abbreviation. If some or all input values are invalid, error if
 \code{require_state = TRUE}, return \code{NULL} if all inputs are invalid, or warn and
 return valid input values.
 }
-\keyword{internal}
