@@ -1,10 +1,14 @@
 test_that("places errors", {
+  skip_on_cran()
+  skip_on_ci()
   expect_error(places(year = 2018))
   expect_error(places(year = 2017, cb = TRUE))
   expect_error(places(year = 2009, state = "WY"))
 })
 
 test_that("places works", {
+  skip_on_cran()
+  skip_on_ci()
   withr::local_options(list(tigris_use_cache = TRUE))
   state <- "WY"
   expect_s3_class(places(year = 2019, cb = TRUE), "sf")

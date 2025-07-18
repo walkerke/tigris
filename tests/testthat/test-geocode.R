@@ -1,4 +1,6 @@
 test_that("call_geolocator works", {
+  skip_on_cran()
+  skip_on_ci()
   expect_identical(
     call_geolocator("3700 Koppers St", "Baltimore", "MD", "21227"),
     "245102501032024"

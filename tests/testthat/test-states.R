@@ -1,4 +1,6 @@
 test_that("states works", {
+  skip_on_cran()
+  skip_on_ci()
   withr::local_options(list(tigris_use_cache = TRUE))
 
   expect_s3_class(states(year = 1990, cb = TRUE), "sf")

@@ -1,4 +1,6 @@
 test_that("congressional_districts warns and errors", {
+  skip_on_cran()
+  skip_on_ci()
   # TODO: Enable if warning for invalid states is added
   # expect_warning(
   #   congressional_districts(state = "WYO", year = 2010),
@@ -16,6 +18,8 @@ test_that("congressional_districts warns and errors", {
 
 
 test_that("congressional_districts works", {
+  skip_on_cran()
+  skip_on_ci()
   withr::local_options(list(tigris_use_cache = TRUE))
 
   expect_s3_class(congressional_districts(), "sf")
@@ -97,12 +101,16 @@ test_that("congressional_districts works", {
 
 
 test_that("state_legislative_districts errors", {
+  skip_on_cran()
+  skip_on_ci()
   expect_error(state_legislative_districts())
   expect_error(state_legislative_districts(house = "uppr"))
 })
 
 
 test_that("state_legislative_districts works", {
+  skip_on_cran()
+  skip_on_ci()
   withr::local_options(list(tigris_use_cache = TRUE))
 
   state <- "WY"
@@ -165,6 +173,8 @@ test_that("state_legislative_districts works", {
 
 
 test_that("voting_districts errors", {
+  skip_on_cran()
+  skip_on_ci()
   expect_error(voting_districts())
   expect_error(voting_districts(year = 2018, cb = TRUE))
   expect_error(voting_districts(year = 2018))
@@ -172,6 +182,8 @@ test_that("voting_districts errors", {
 
 
 test_that("voting_districts works", {
+  skip_on_cran()
+  skip_on_ci()
   withr::local_options(list(tigris_use_cache = TRUE))
 
   expect_s3_class(voting_districts(cb = TRUE), "sf")

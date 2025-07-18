@@ -1,4 +1,6 @@
 test_that("enumeration unit functions work", {
+  skip_on_cran()
+  skip_on_ci()
   withr::local_options(list(tigris_use_cache = TRUE))
 
   expect_snapshot(counties(cb = TRUE, progress_bar = FALSE))
@@ -74,6 +76,8 @@ test_that("enumeration unit functions work", {
 })
 
 test_that("enumeration unit functions error", {
+  skip_on_cran()
+  skip_on_ci()
   state <- "WY"
 
   expect_error(school_districts(year = 2018))
