@@ -225,6 +225,23 @@ validate_state <- function(
 
   state_is_fips <- is_stfips(state_fips)
 
+  if (.msg && any(state_is_fips)) {
+    # Show informative messages about successful state matches
+    valid_state_fips <- state_fips[state_is_fips]
+    valid_state_names <- state[state_is_fips]
+    
+    message_parts <- paste0(
+      valid_state_fips,
+      " for ",
+      valid_state_names,
+      collapse = ", "
+    )
+    
+    cli_inform(c(
+      "*" = "Using FIPS code{?s} {message_parts}"
+    ))
+  }
+
   if (all(state_is_fips)) {
     return(state_fips)
   }
@@ -256,13 +273,20 @@ county_values <- function(
   multiple = FALSE,
   error_call = caller_env()
 ) {
-  state <- validate_state(
-    state,
-    require_state = require_state,
-    ...,
-    multiple = multiple,
-    error_call = error_call
-  )
+  # Remove .msg from ... to avoid conflicts
+  dots <- list(...)
+  dots[[".msg"]] <- NULL
+  
+  state <- do.call(validate_state, c(
+    list(
+      state = state,
+      require_state = require_state,
+      multiple = multiple,
+      .msg = FALSE,
+      error_call = error_call
+    ),
+    dots
+  ))
 
   if (!require_state && is.null(state)) {
     return(NULL)
@@ -364,22 +388,31 @@ match_county_name <- function(
   }
 
   if (any(uncertain_matches)) {
-    uncertain_county <- county[uncertain_matches]
-    county_matches[uncertain_matches] <- NA_character_
-
-    message <- c(
-      message,
-      "{.arg county} input is ambigous and matches multiple values: {uncertain_county}"
-    )
+    # For ambiguous matches, use the first match and warn about alternatives
+    for (i in which(uncertain_matches)) {
+      matches <- county_matches[[i]]
+      county_matches[[i]] <- matches[1]  # Use first match
+      
+      # Build warning message with all matches
+      all_matches <- paste(names(matches), collapse = ", ")
+      uncertain_county <- county[i]
+      
+      message <- c(
+        message,
+        paste0("Using first match for '", uncertain_county, "'. Multiple matches found: ", all_matches)
+      )
+    }
   }
 
   county_matches <- as.character(county_matches)
 
-  if (require_county) {
+  if (require_county && any(missing_matches)) {
     cli_abort(message, call = error_call)
   }
 
-  cli_warn(message, call = error_call)
+  if (!is.null(message) && length(message) > 0) {
+    cli_warn(message, call = error_call)
+  }
 
   county_matches
 }
@@ -462,27 +495,27 @@ validate_county <- function(
   # Flag missing county values
   na_county_fips <- is.na(county_fips)
 
-  if (.msg) {
-    message_counties <- paste0(
-      "{.val ",
-      county_fips[!na_county_fips],
-      "} for {.val ",
-      county[!na_county_fips],
-      "}"
+  if (.msg && any(!na_county_fips)) {
+    # Show informative messages about successful county matches
+    valid_county_fips <- county_fips[!na_county_fips]
+    valid_county_names <- county[!na_county_fips]
+    
+    message_parts <- paste0(
+      valid_county_fips,
+      " for ",
+      valid_county_names,
+      collapse = ", "
     )
+    
+    cli_inform(c(
+      "*" = "Using FIPS code{?s} {message_parts}"
+    ))
+  }
 
-    message <- c(
-      "*" = "Using FIPS code{?s} {message_counties}"
-    )
-
-    if (any(na_county_fips)) {
-      message <- c(
-        message,
-        "!" = "Dropping invalid {.arg county} value{?s}: {county[na_county_fips]}"
-      )
-    }
-
-    cli_inform(message)
+  if (.msg && any(na_county_fips)) {
+    cli_inform(c(
+      "!" = "Dropping invalid {.arg county} value{?s}: {county[na_county_fips]}"
+    ))
   }
 
   if (all(na_county_fips)) {
