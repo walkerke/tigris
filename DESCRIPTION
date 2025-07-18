@@ -18,13 +18,14 @@ Encoding: UTF-8
 Depends:
     R (>= 3.3.0)
 Suggests:
-    testthat,
+    testthat (>= 3.0.0),
     ggplot2,
     ggthemes,
     leaflet,
     knitr,
     tidycensus,
-    sp
+    sp,
+    withr
 Imports:
     stringr,
     magrittr,
@@ -34,6 +35,9 @@ Imports:
     uuid,
     sf,
     dplyr,
-    methods
+    methods,
+    cli,
+    rlang
+Config/testthat/edition: 3
 RoxygenNote: 7.3.2
 Roxygen: list(markdown = TRUE)

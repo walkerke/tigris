@@ -82,6 +82,7 @@ load_tiger <- function(
     use_cache <- getOption("tigris_use_cache", FALSE)
 
     # Process filter_by
+    # TODO: Expose geos_method argument used by sf::st_make_valid
     wkt_filter <- input_to_wkt(filter_by)
 
     # Store original URL before protocol modification
