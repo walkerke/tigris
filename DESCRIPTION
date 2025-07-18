@@ -2,10 +2,11 @@ Package: tigris
 Type: Package
 Title: Load Census TIGER/Line Shapefiles
 Version: 2.2.1.9000
-Date: 2025-05-17
+Date: 2025-07-18
 Authors@R: c(
       person(given="Kyle", family="Walker", email="kyle@walker-data.com", role=c("aut", "cre")),
-      person(given="Bob", family="Rudis", email="bob@rudis.net", role="ctb")
+      person(given="Bob", family="Rudis", email="bob@rudis.net", role="ctb"),
+      person(given="Eli", family="Pousson", email="Eli.Pousson@baltimorecity.gov", role="ctb")
     )
 URL: https://github.com/walkerke/tigris
 BugReports: https://github.com/walkerke/tigris/issues
