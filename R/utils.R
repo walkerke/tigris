@@ -229,14 +229,14 @@ validate_state <- function(
     # Show informative messages about successful state matches
     valid_state_fips <- state_fips[state_is_fips]
     valid_state_names <- state[state_is_fips]
-    
+
     message_parts <- paste0(
       valid_state_fips,
       " for ",
       valid_state_names,
       collapse = ", "
     )
-    
+
     cli_inform(c(
       "*" = "Using FIPS code{?s} {message_parts}"
     ))
@@ -276,17 +276,20 @@ county_values <- function(
   # Remove .msg from ... to avoid conflicts
   dots <- list(...)
   dots[[".msg"]] <- NULL
-  
-  state <- do.call(validate_state, c(
-    list(
-      state = state,
-      require_state = require_state,
-      multiple = multiple,
-      .msg = FALSE,
-      error_call = error_call
-    ),
-    dots
-  ))
+
+  state <- do.call(
+    validate_state,
+    c(
+      list(
+        state = state,
+        require_state = require_state,
+        multiple = multiple,
+        .msg = FALSE,
+        error_call = error_call
+      ),
+      dots
+    )
+  )
 
   if (!require_state && is.null(state)) {
     return(NULL)
@@ -391,15 +394,20 @@ match_county_name <- function(
     # For ambiguous matches, use the first match and warn about alternatives
     for (i in which(uncertain_matches)) {
       matches <- county_matches[[i]]
-      county_matches[[i]] <- matches[1]  # Use first match
-      
+      county_matches[[i]] <- matches[1] # Use first match
+
       # Build warning message with all matches
       all_matches <- paste(names(matches), collapse = ", ")
       uncertain_county <- county[i]
-      
+
       message <- c(
         message,
-        paste0("Using first match for '", uncertain_county, "'. Multiple matches found: ", all_matches)
+        paste0(
+          "Using first match for '",
+          uncertain_county,
+          "'. Multiple matches found: ",
+          all_matches
+        )
       )
     }
   }
@@ -499,14 +507,14 @@ validate_county <- function(
     # Show informative messages about successful county matches
     valid_county_fips <- county_fips[!na_county_fips]
     valid_county_names <- county[!na_county_fips]
-    
+
     message_parts <- paste0(
       valid_county_fips,
       " for ",
       valid_county_names,
       collapse = ", "
     )
-    
+
     cli_inform(c(
       "*" = "Using FIPS code{?s} {message_parts}"
     ))
@@ -632,4 +640,11 @@ prep_input_sfc <- function(
 
   # Make NAD83 for coordinate alignment
   sf::st_transform(input, crs = crs)
+}
+
+
+#' Get suffix of a 4 character year
+#' @noRd
+year_suf <- function(year) {
+  substr(year, 3, 4)
 }
