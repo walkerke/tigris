@@ -24,23 +24,14 @@
 #'
 #' }
 area_water <- function(state, county, year = NULL, ...) {
-    if (is.null(year)) {
-        year <- getOption("tigris_year", 2024)
-
-        message(sprintf("Retrieving data for the year %s", year))
-    }
-
-    if (year < 2011) {
-        fname <- as.character(match.call())[[1]]
-
-        msg <- sprintf(
-            "%s is not currently available for years prior to 2011.  To request this feature,
-                   file an issue at https://github.com/walkerke/tigris.",
-            fname
-        )
-
-        stop(msg, call. = FALSE)
-    }
+    year <- set_tigris_year(year)
+    state <- validate_state(state, require_state = TRUE)
+    county <- validate_county(
+        state,
+        county,
+        require_county = TRUE,
+        multiple = TRUE
+    )
 
     if (length(county) > 1) {
         w <- lapply(county, function(x) {
@@ -51,26 +42,15 @@ area_water <- function(state, county, year = NULL, ...) {
         return(w)
     }
 
-    state <- validate_state(state)
-
-    county <- validate_county(state, county)
-
-    if (is.null(state)) stop("Invalid state", call. = FALSE)
-
-    if (is.null(county) | length(county) > 1)
-        stop("Invalid county", call. = FALSE)
-
-    cyear <- as.character(year)
-
     url <- sprintf(
         "https://www2.census.gov/geo/tiger/TIGER%s/AREAWATER/tl_%s_%s%s_areawater.zip",
-        cyear,
-        cyear,
+        year,
+        year,
         state,
         county
     )
 
-    return(load_tiger(url, tigris_type = "area_water", ...))
+    load_tiger(url, tigris_type = "area_water", ...)
 }
 
 #' Download an linear water shapefile into R
@@ -101,23 +81,14 @@ area_water <- function(state, county, year = NULL, ...) {
 #'
 #' }
 linear_water <- function(state, county, year = NULL, ...) {
-    if (is.null(year)) {
-        year <- getOption("tigris_year", 2024)
-
-        message(sprintf("Retrieving data for the year %s", year))
-    }
-
-    if (year < 2011) {
-        fname <- as.character(match.call())[[1]]
-
-        msg <- sprintf(
-            "%s is not currently available for years prior to 2011.  To request this feature,
-                   file an issue at https://github.com/walkerke/tigris.",
-            fname
-        )
-
-        stop(msg, call. = FALSE)
-    }
+    year <- set_tigris_year(year)
+    state <- validate_state(state, require_state = TRUE)
+    county <- validate_county(
+        state,
+        county,
+        require_county = TRUE,
+        multiple = TRUE
+    )
 
     if (length(county) > 1) {
         w <- lapply(county, function(x) {
@@ -128,25 +99,15 @@ linear_water <- function(state, county, year = NULL, ...) {
         return(w)
     }
 
-    state <- validate_state(state)
-
-    county <- validate_county(state, county)
-
-    if (is.null(state)) stop("Invalid state", call. = FALSE)
-
-    if (is.null(county)) stop("Invalid county", call. = FALSE)
-
-    cyear <- as.character(year)
-
     url <- sprintf(
         "https://www2.census.gov/geo/tiger/TIGER%s/LINEARWATER/tl_%s_%s%s_linearwater.zip",
-        cyear,
-        cyear,
+        year,
+        year,
         state,
         county
     )
 
-    return(load_tiger(url, tigris_type = "linear_water", ...))
+    load_tiger(url, tigris_type = "linear_water", ...)
 }
 
 #' Download a shapefile of the US coastline into R
@@ -156,27 +117,22 @@ linear_water <- function(state, county, year = NULL, ...) {
 #' @export
 #' @family water functions
 coastline <- function(year = NULL, ...) {
-    if (is.null(year)) {
-        year <- getOption("tigris_year", 2020)
-
-        message(sprintf("Retrieving data for the year %s", year))
-    }
-
-    cyear <- as.character(year)
+    # FIXME: 2024 data is available - why use 2020 as default?
+    year <- set_tigris_year(year, default = 2020)
 
     if (year > 2016) {
         url <- sprintf(
             "https://www2.census.gov/geo/tiger/TIGER%s/COASTLINE/tl_%s_us_coastline.zip",
-            cyear,
-            cyear
+            year,
+            year
         )
     } else {
         url <- sprintf(
             "https://www2.census.gov/geo/tiger/TIGER%s/COAST/tl_%s_us_coastline.zip",
-            cyear,
-            cyear
+            year,
+            year
         )
     }
 
-    return(load_tiger(url, tigris_type = "coastline", ...))
+    load_tiger(url, tigris_type = "coastline", ...)
 }

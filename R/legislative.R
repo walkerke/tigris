@@ -37,16 +37,11 @@ congressional_districts <- function(
     year = NULL,
     ...
 ) {
-    if (is.null(year)) {
-        year <- getOption("tigris_year", 2024)
-
-        message(sprintf("Retrieving data for the year %s", year))
-    }
+    year <- set_tigris_year(year, min_year = 2010)
 
     if (year < 2013 && cb) {
-        stop(
-            "`cb = TRUE` for congressional districts is unavailable prior to 2013. Regular TIGER/Line files are available for 2010 through 2010 with `cb = FALSE`",
-            call. = FALSE
+        cli_abort(
+            "`cb = TRUE` for congressional districts is unavailable prior to 2013. Regular TIGER/Line files are available for 2010 through 2010 with `cb = FALSE`"
         )
     }
 
@@ -68,31 +63,13 @@ congressional_districts <- function(
         congress <- "119"
     }
 
-    if (year < 2010) {
-        fname <- as.character(match.call())[[1]]
-
-        msg <- sprintf(
-            "%s is not currently available for years prior to 2010.",
-            fname
-        )
-
-        stop(msg, call. = FALSE)
-    }
-
-    if (!(resolution %in% c('500k', '5m', '20m'))) {
-        stop(
-            "Invalid value for resolution. Valid values are '500k', '5m', and '20m'.",
-            call. = FALSE
-        )
-    }
-
-    cyear <- as.character(year)
+    resolution <- match_resolution(resolution)
 
     if (cb) {
         url <- sprintf(
             "https://www2.census.gov/geo/tiger/GENZ%s/shp/cb_%s_us_cd%s_%s.zip",
-            cyear,
-            cyear,
+            year,
+            year,
             congress,
             resolution
         )
@@ -116,8 +93,8 @@ congressional_districts <- function(
             } else {
                 url <- sprintf(
                     "https://www2.census.gov/geo/tiger/TIGER%s/CD/tl_%s_%s_cd%s.zip",
-                    cyear,
-                    cyear,
+                    year,
+                    year,
                     validate_state(state),
                     congress
                 )
@@ -125,8 +102,8 @@ congressional_districts <- function(
         } else {
             url <- sprintf(
                 "https://www2.census.gov/geo/tiger/TIGER%s/CD/tl_%s_us_cd%s.zip",
-                cyear,
-                cyear,
+                year,
+                year,
                 congress
             )
         }
@@ -183,59 +160,30 @@ state_legislative_districts <- function(
     year = NULL,
     ...
 ) {
-    if (is.null(year)) {
-        year <- getOption("tigris_year", 2024)
-
-        message(sprintf("Retrieving data for the year %s", year))
-    }
-
-    if (year < 2011) {
-        fname <- as.character(match.call())[[1]]
-
-        msg <- sprintf(
-            "%s is not currently available for years prior to 2011.  To request this feature,
-                   file an issue at https://github.com/walkerke/tigris.",
-            fname
-        )
-
-        stop(msg, call. = FALSE)
-    }
+    year <- set_tigris_year(year, min_year = 2000)
 
     if (is.null(state)) {
         if (year > 2018 && cb == TRUE) {
             state <- "us"
-            message(
+            cli_inform(
                 "Retrieving state legislative districts for the entire United States"
             )
         } else {
-            stop(
-                "A state must be specified for this year/dataset combination.",
-                call. = FALSE
+            cli_abort(
+                "A state must be specified for this year/dataset combination."
             )
         }
     } else {
-        state <- validate_state(state)
-
-        if (is.null(state)) stop("Invalid state", call. = FALSE)
+        state <- validate_state(state, require_state = TRUE)
     }
 
-    if (!house %in% c("upper", "lower"))
-        stop(
-            "Must specify 'upper' or 'lower' for 'house' parameter",
-            call. = FALSE
-        )
+    house <- arg_match(house, values = c("upper", "lower"))
+    type <- "sldu"
 
-    if (house == "lower" & state == "31") {
-        # Nebraska
-
-        type <- "sldu"
-    } else if (house == "lower") {
+    # Avoid lower house type for Nebraska
+    if (house == "lower" && state != "31") {
         type <- "sldl"
-    } else {
-        type <- "sldu"
     }
-
-    cyear <- as.character(year)
 
     if (cb == TRUE) {
         if (year == 2010) {
@@ -254,8 +202,8 @@ state_legislative_districts <- function(
 
         url <- sprintf(
             "https://www2.census.gov/geo/tiger/GENZ%s/shp/cb_%s_%s_%s_500k.zip",
-            cyear,
-            cyear,
+            year,
+            year,
             state,
             type
         )
@@ -266,24 +214,24 @@ state_legislative_districts <- function(
             url <- sprintf(
                 "https://www2.census.gov/geo/tiger/TIGER2010/%s/%s/tl_2010_%s_%s%s.zip",
                 toupper(type),
-                cyear,
+                year,
                 state,
                 type,
-                substr(cyear, 3, 4)
+                year_suffix(year)
             )
         } else {
             url <- sprintf(
                 "https://www2.census.gov/geo/tiger/TIGER%s/%s/tl_%s_%s_%s.zip",
-                cyear,
+                year,
                 toupper(type),
-                cyear,
+                year,
                 state,
                 type
             )
         }
     }
 
-    return(load_tiger(url, tigris_type = "state_legislative_districts", ...))
+    load_tiger(url, tigris_type = "state_legislative_districts", ...)
 }
 
 #' Download a voting districts shapefile into R
@@ -336,26 +284,24 @@ voting_districts <- function(
     ...
 ) {
     if (year != 2020 && cb == TRUE) {
-        stop(
-            "Cartographic boundary voting districts files are only available for 2020.",
-            call. = FALSE
+        cli_abort(
+            "Cartographic boundary voting districts files are only available for 2020."
         )
     }
 
     if (is.null(state)) {
         if (year > 2018 && cb == TRUE) {
             state <- "us"
-            message("Retrieving voting districts for the entire United States")
+            cli_inform(
+                "Retrieving voting districts for the entire United States"
+            )
         } else {
-            stop(
-                "A state must be specified for this year/dataset combination.",
-                call. = FALSE
+            cli_abort(
+                "A state must be specified for this year/dataset combination."
             )
         }
     } else {
-        state <- validate_state(state)
-
-        if (is.null(state)) stop("Invalid state", call. = FALSE)
+        state <- validate_state(state, require_state = TRUE)
     }
 
     if (cb) {
@@ -369,9 +315,14 @@ voting_districts <- function(
         if (is.null(county)) {
             return(vtds)
         } else {
-            county = validate_county(state, county)
-            vtds_sub <- vtds[vtds$COUNTYFP20 == county, ]
-            return(vtds_sub)
+            county <- validate_county(
+                state,
+                county,
+                multiple = TRUE,
+                require_county = TRUE
+            )
+
+            return(vtds[vtds$COUNTYFP20 %in% county, ])
         }
     } else {
         if (year == 2012) {
@@ -382,7 +333,7 @@ voting_districts <- function(
             )
         } else {
             if (!is.null(county)) {
-                county <- validate_county(state, county)
+                county <- validate_county(state, county, require_county = TRUE)
 
                 url <- sprintf(
                     "https://www2.census.gov/geo/tiger/TIGER2020PL/LAYER/VTD/2020/tl_2020_%s%s_vtd20.zip",
@@ -397,6 +348,6 @@ voting_districts <- function(
             }
         }
 
-        return(load_tiger(url, tigris_type = 'voting_districts', ...))
+        load_tiger(url, tigris_type = 'voting_districts', ...)
     }
 }
