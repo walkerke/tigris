@@ -951,6 +951,7 @@ blocks <- function(state, county = NULL, year = NULL, ...) {
         )
     } else if (year %in% c(2000, 2010)) {
         county <- validate_county(state, county, allow_null = TRUE)
+        suf <- year_suffix(year)
 
         if (!is.null(county)) {
             url <- sprintf(
@@ -958,7 +959,7 @@ blocks <- function(state, county = NULL, year = NULL, ...) {
                 year,
                 state,
                 county,
-                year_suffix(year)
+                suf
             )
         } else {
             url <- sprintf(
