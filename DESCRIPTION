@@ -28,11 +28,9 @@ Imports:
     rlang,
     sf,
     stringr,
-    utils,
-    uuid
+    utils
 Suggests:
     ggplot2,
-    ggthemes,
     knitr,
     leaflet,
     sp,

@@ -30,14 +30,13 @@
 #' @examples \dontrun{
 #' library(tigris)
 #' library(ggplot2)
-#' library(ggthemes)
 #'
 #' roads <- roads("Maine", "031")
 #'
 #' gg <- ggplot()
 #' gg <- gg + geom_sf(data = roads,
 #'                    color="black", fill="white", size=0.25)
-#' gg <- gg + theme_map()
+#' gg <- gg + theme_void()
 #' gg
 #' }
 roads <- function(state, county, year = NULL, ...) {
