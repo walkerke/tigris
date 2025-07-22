@@ -21,5 +21,18 @@ test_that("places works", {
   expect_s3_class(state_places, "sf")
 
   expect_type(list_places(state_places), "character")
-  expect_type(list_places(state_places, sorted = TRUE), "character")
+  expect_type(list_places(state_places, sorted = FALSE), "character")
+
+  expect_type(
+    grep_place(state_places, "Laramie"),
+    "character"
+  )
+
+  expect_s3_class(
+    filter_place(
+      state_places,
+      "Laramie"
+    ),
+    "sf"
+  )
 })

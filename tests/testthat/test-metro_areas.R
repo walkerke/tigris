@@ -34,4 +34,6 @@ test_that("metro areas functions error", {
   expect_error(urban_areas(year = 2021, criteria = 2020))
 
   expect_error(combined_statistical_areas(year = 2022))
+
+  expect_error(new_england(year = 2024))
 })

@@ -35,7 +35,6 @@
 #' @import utils
 #' @import rappdirs
 #' @import httr
-#' @import uuid
 #' @import sf
 #' @import dplyr
 #' @importFrom cli cli_abort cli_warn cli_inform

@@ -30,16 +30,40 @@ fips_state_table <- structure(list(abb = c("ak", "al", "ar", "as", "az", "ca", "
 ), class = "data.frame")
 
 
-.onLoad <- function(libname, pkgname) {
-  # options(tigris_refresh=FALSE)
-  # options(tigris_use_cache=FALSE)
-  # options(tigris_year = 2015)
-  # options(tigris_class = "sp")
-  data("fips_codes", package=pkgname, envir=parent.env(environment()))
-}
-
 .onAttach <- function(libname, pkgname) {
-  packageStartupMessage("To enable caching of data, set `options(tigris_use_cache = TRUE)`\nin your R script or .Rprofile.")
+  packageStartupMessage(
+    "To enable caching of data, set `options(tigris_use_cache = TRUE)`\nin your R script or .Rprofile."
+  )
 }
 
-utils::globalVariables(c(".data", "geoid", "GEOID", "state_fips", "AWATER"))
+utils::globalVariables(c(
+  ".data",
+  "geoid",
+  "GEOID",
+  "state_fips",
+  "AWATER",
+  "AREA",
+  "AREALAND",
+  "AREATOT",
+  "AREAWAT",
+  "BG",
+  "BLKGROUP",
+  "CO",
+  "CO99_D00_",
+  "CO99_D00_I",
+  "CO99_D90_",
+  "CO99_D90_I",
+  "COUNTY",
+  "COUNTYFP",
+  "LSAD",
+  "LSAD_TRANS",
+  "NAME",
+  "PERIMETER",
+  "ST",
+  "STATE",
+  "STATEFP",
+  "TRACT",
+  "TRACTBASE",
+  "TRACTSUF",
+  "TRACT_NAME"
+))

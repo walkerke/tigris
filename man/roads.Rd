@@ -61,14 +61,13 @@ option \code{"tigris_refresh"} if it is set. Specifying this argument will overr
 \dontrun{
 library(tigris)
 library(ggplot2)
-library(ggthemes)
 
 roads <- roads("Maine", "031")
 
 gg <- ggplot()
 gg <- gg + geom_sf(data = roads,
                    color="black", fill="white", size=0.25)
-gg <- gg + theme_map()
+gg <- gg + theme_void()
 gg
 }
 }

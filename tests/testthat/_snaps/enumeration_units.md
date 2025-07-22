@@ -1,4 +1,4 @@
-# enumeration unit functions work
+# `counties()` works
 
     Code
       counties(cb = TRUE, progress_bar = FALSE)
@@ -81,7 +81,7 @@
       9  2468694578 23299110 +39.5769252 -120.5219926 MULTIPOLYGON (((-120.5559 3...
       10  510391739 21636754 +36.7272577 -085.1360977 MULTIPOLYGON (((-85.00988 3...
 
----
+# `school_districts()` works
 
     Code
       school_districts(state = state, progress_bar = FALSE)
@@ -128,7 +128,7 @@
       9  -104.9361616 MULTIPOLYGON (((-105.2807 4...
       10 -109.4725605 MULTIPOLYGON (((-110.1726 4...
 
----
+# `tracts()` works
 
     Code
       tracts(state = state, county = county, progress_bar = FALSE)
@@ -147,7 +147,7 @@
               INTPTLON                       geometry
       155 -104.4683727 POLYGON ((-104.8999 43.4996...
 
----
+# `block_groups()` work
 
     Code
       block_groups(state = state, county = county, progress_bar = FALSE)
@@ -169,7 +169,7 @@
       134 POLYGON ((-104.4524 42.7674...
       135 POLYGON ((-104.8999 43.4996...
 
----
+# `blocks()` work
 
     Code
       blocks(state = state, county = county, progress_bar = FALSE)
@@ -227,7 +227,7 @@
       64 POLYGON ((-104.8983 43.2649...
       65 POLYGON ((-104.2031 43.2401...
 
----
+# `zctas()` works
 
     Code
       zctas(state = state, year = 2010, progress_bar = FALSE)
@@ -261,7 +261,7 @@
       9  +44.5051794 -109.4355582         N MULTIPOLYGON (((-109.5092 4...
       10 +44.5730104 -106.9325212         N MULTIPOLYGON (((-106.9343 4...
 
----
+# `county_subdivisions()` works
 
     Code
       county_subdivisions(state = state, county = county, progress_bar = FALSE)
