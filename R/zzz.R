@@ -36,4 +36,34 @@ fips_state_table <- structure(list(abb = c("ak", "al", "ar", "as", "az", "ca", "
   )
 }
 
-utils::globalVariables(c(".data", "geoid", "GEOID", "state_fips", "AWATER"))
+utils::globalVariables(c(
+  ".data",
+  "geoid",
+  "GEOID",
+  "state_fips",
+  "AWATER",
+  "AREA",
+  "AREALAND",
+  "AREATOT",
+  "AREAWAT",
+  "BG",
+  "BLKGROUP",
+  "CO",
+  "CO99_D00_",
+  "CO99_D00_I",
+  "CO99_D90_",
+  "CO99_D90_I",
+  "COUNTY",
+  "COUNTYFP",
+  "LSAD",
+  "LSAD_TRANS",
+  "NAME",
+  "PERIMETER",
+  "ST",
+  "STATE",
+  "STATEFP",
+  "TRACT",
+  "TRACTBASE",
+  "TRACTSUF",
+  "TRACT_NAME"
+))
