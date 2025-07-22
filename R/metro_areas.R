@@ -240,7 +240,8 @@ metro_divisions <- function(year = NULL, ...) {
 #'
 #' }
 new_england <- function(type = 'necta', cb = FALSE, year = NULL, ...) {
-    year <- set_tigris_year(year)
+    # TODO: Consider setting default year to 2021 for new_england
+    year <- set_tigris_year(year, max_year = 2021)
     type <- arg_match(type, values = c("necta", "combined", "divisions"))
 
     if (type == 'necta') {
