@@ -20,8 +20,7 @@ test_that("native functions work", {
   # expect_s3_class(alaska_native_regional_corporations(year = 2000), "sf")
 
   expect_s3_class(tribal_block_groups(), "sf")
-  # TODO: Enable test after fixing issue w/ tribal_block_groups
-  # expect_s3_class(tribal_block_groups(cb = TRUE), "sf")
+  expect_s3_class(tribal_block_groups(cb = TRUE), "sf")
   # TODO: Enable test after adding year < 2011 support
   # expect_s3_class(tribal_block_groups(year = 2010), "sf")
 
