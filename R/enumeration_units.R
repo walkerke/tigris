@@ -729,30 +729,28 @@ zctas <- function(
     state = NULL,
     ...
 ) {
-    year <- set_tigris_year(year, min_year = 1990)
+    year <- set_tigris_year(
+        year,
+        message =  "Zip Code Tabulation Areas (ZCTAs) are only available beginning with the 2000 Census.",
+        min_year = 2000
+    )
 
     if (year > 2020 && cb) {
         cli_abort(
-            sprintf(
-                "The Census Bureau has not yet released the CB ZCTA file for %s. Please use the argument `year = 2020` or `cb = FALSE` instead.",
-                year
+            c(
+                "The Census Bureau has not yet released the CB ZCTA file for {year}.",
+                "*" = "Please set `year = 2020` or `cb = FALSE` instead."
             )
         )
     }
 
     if (!is.null(state) && year > 2010) {
-        cli_abort("ZCTAs are only available by state for 2000 and 2010.")
+        cli_abort("ZCTAs are only available by state for 2000 and 2010, not {year}.")
     }
 
-    if (!is.null(state) && year == 2010 && cb == TRUE) {
+    if (!is.null(state) && year == 2010 && cb) {
         cli_abort(
-            "ZCTAs are only available by state for 2010 when cb = FALSE."
-        )
-    }
-
-    if (year == 1990) {
-        cli_abort(
-            "Zip Code Tabulation Areas are only available beginning with the 2000 Census."
+            "ZCTAs are only available by state for 2010 when `cb = FALSE`."
         )
     }
 
@@ -762,7 +760,10 @@ zctas <- function(
 
     if (is.null(cache)) {
         cli_inform(
-            "ZCTAs can take several minutes to download.  To cache the data and avoid re-downloading in future R sessions, set `options(tigris_use_cache = TRUE)`"
+            c(
+                "!" = "ZCTAs can take several minutes to download.",
+                "*" = "Set `options(tigris_use_cache = TRUE)` to cache the data and avoid re-downloading in future R sessions."
+            )
         )
     }
 
@@ -838,8 +839,11 @@ zctas <- function(
 
     # Handle split ZCTAs in 2000 CB file
     if (year == 2000 && cb) {
-        warning(
-            "CB ZCTAs for 2000 include separate polygons for discontiguous parts.\nCombine by summarizing over the ZCTA column; this can be a time-consuming operation."
+        cli_inform(
+            c(
+               "!" = "CB ZCTAs for 2000 include separate polygons for discontiguous parts.",
+                "*" = "Combine by summarizing over the ZCTA column but note that this can be a time-consuming operation."
+            )
         )
     }
 
