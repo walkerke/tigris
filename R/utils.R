@@ -674,7 +674,7 @@ set_tigris_year <- function(
     year <- getOption("tigris_year", default)
 
     if (!quiet) {
-      cli_inform(sprintf("Retrieving data for the year %s", year))
+      cli_inform("Retrieving data for {year}")
     }
   }
 
@@ -719,15 +719,18 @@ check_tigris_year <- function(
     return(invisible(NULL))
   }
 
-  if (not_allowed) {
+  if (outside_range) {
     message <- c(
       message,
-      "{.arg year} must be between {min_year} and {max_year}."
+      "i" = "{.arg year} must be between {min_year} and {max_year}."
     )
   }
 
   if (not_allowed) {
-    year <- c(message, "{.arg year} can't be {.or {not_year}}.")
+    year <- c(
+      message,
+      "i" = "{.arg year} can't be {.or {not_year}}."
+    )
   }
 
   cli_abort(
