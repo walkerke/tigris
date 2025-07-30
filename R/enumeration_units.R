@@ -904,7 +904,13 @@ zctas <- function(
 #'
 #' }
 blocks <- function(state, county = NULL, year = NULL, ...) {
-    year <- set_tigris_year(year, min_year = 2000)
+    year <- set_tigris_year(
+        year,
+        min_year = 2000,
+        not_year = c(2001:2009)
+    )
+
+    state <- validate_state(state, require_state = TRUE)
 
     if (length(county) > 1 && year < 2011) {
         p <- lapply(county, function(x) {
@@ -914,16 +920,6 @@ blocks <- function(state, county = NULL, year = NULL, ...) {
 
         return(p)
     }
-
-    if (year < 2000) {
-        fname <- as.character(match.call())[[1]]
-
-        msg <- "Block data are not available for 1990."
-
-        cli_abort(msg)
-    }
-
-    state <- validate_state(state, require_state = TRUE)
 
     if (year >= 2014) {
         if (year >= 2020) {
@@ -969,8 +965,6 @@ blocks <- function(state, county = NULL, year = NULL, ...) {
                 suf
             )
         }
-    } else {
-        cli_abort()
     }
 
     blks <- load_tiger(url, tigris_type = "block", ...)
