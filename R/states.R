@@ -28,25 +28,15 @@
 #'               weight = 0.5) %>%
 #'   setView(-98.5795, 39.8282, zoom=3)
 #' }
-states <- function(cb = FALSE, resolution = '500k', year = NULL, ...) {
-    if (!(resolution %in% c('500k', '5m', '20m'))) {
-        stop(
-            "Invalid value for resolution. Valid values are '500k', '5m', and '20m'.",
-            call. = FALSE
-        )
-    }
+states <- function(cb = FALSE, resolution = "500k", year = NULL, ...) {
+    check_cb(cb)
+    year <- set_tigris_year(year, min_year = 1990)
 
-    if (is.null(year)) {
-        year = getOption("tigris_year", 2024)
+    if (cb) {
+        resolution <- match_resolution(resolution)
 
-        message(sprintf("Retrieving data for the year %s", year))
-    }
-
-    cyear <- as.character(year)
-
-    if (cb == TRUE) {
         if (year %in% c(1990, 2000)) {
-            suf <- substr(as.character(year), 3, 4)
+            suf <- year_suffix(year)
 
             url <- sprintf(
                 "https://www2.census.gov/geo/tiger/PREVGENZ/st/st%sshp/st99_d%s_shp.zip",
@@ -62,36 +52,37 @@ states <- function(cb = FALSE, resolution = '500k', year = NULL, ...) {
             if (year > 2013) {
                 url <- sprintf(
                     "https://www2.census.gov/geo/tiger/GENZ%s/shp/cb_%s_us_state_%s.zip",
-                    cyear,
-                    cyear,
+                    year,
+                    year,
                     resolution
                 )
             } else {
                 url <- sprintf(
                     "https://www2.census.gov/geo/tiger/GENZ%s/shp/cb_%s_us_state_%s.zip",
-                    cyear,
-                    cyear,
+                    year,
+                    year,
                     resolution
                 )
             }
         }
     } else {
-        if (year == 1990)
-            stop("Please specify `cb = TRUE` to get 1990 data.", call. = FALSE)
+        if (year == 1990) {
+            cli_abort(
+                "Please specify `cb = TRUE` to get 1990 data."
+            )
+        }
 
         if (year %in% c(2000, 2010)) {
-            suf <- substr(cyear, 3, 4)
-
             url <- sprintf(
                 "https://www2.census.gov/geo/tiger/TIGER2010/STATE/%s/tl_2010_us_state%s.zip",
-                cyear,
-                suf
+                year,
+                year_suffix(year)
             )
         } else {
             url <- sprintf(
                 "https://www2.census.gov/geo/tiger/TIGER%s/STATE/tl_%s_us_state.zip",
-                cyear,
-                cyear
+                year,
+                year
             )
         }
     }

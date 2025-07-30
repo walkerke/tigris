@@ -42,7 +42,7 @@ tigris_cache_dir <- function(path) {
     var <- paste0("TIGRIS_CACHE_DIR=", "'", path, "'")
 
     write(var, renv, sep = "\n", append = TRUE)
-    message(sprintf(
+    cli_inform(sprintf(
         "Your new tigris cache directory is %s. \nTo use now, restart R or run `readRenviron('~/.Renviron')`",
         path
     ))
@@ -171,10 +171,9 @@ load_tiger <- function(
                     i <- 1
 
                     while (i < 4) {
-                        message(sprintf(
-                            "Previous download failed.  Re-download attempt %s of 3...",
-                            as.character(i)
-                        ))
+                        cli_inform(
+                            "Previous download failed.  Re-download attempt{i}s of 3..."
+                        )
 
                         if (grepl("^ftp://", url)) {
                             # Use download.file for FTP URLs with timeout
@@ -220,8 +219,14 @@ load_tiger <- function(
 
                             # If using HTTP protocol and about to make final retry, try FTP as fallback
                             if (i == 3 && protocol == "http") {
-                                message("HTTP download failed, trying FTP as fallback...")
-                                ftp_url <- gsub("^https://www2", "ftp://ftp2", original_url)
+                                cli_inform(
+                                    "HTTP download failed, trying FTP as fallback..."
+                                )
+                                ftp_url <- gsub(
+                                    "^https://www2",
+                                    "ftp://ftp2",
+                                    original_url
+                                )
 
                                 # Try FTP download
                                 options(timeout = timeout)
@@ -237,9 +242,12 @@ load_tiger <- function(
                                 options(timeout = 60) # Reset to R default
 
                                 # Check if FTP download succeeded
-                                t <- tryCatch(unzip_tiger(), warning = function(w) w)
+                                t <- tryCatch(
+                                    unzip_tiger(),
+                                    warning = function(w) w
+                                )
                                 if (!("warning" %in% class(t))) {
-                                    break  # FTP worked, exit the retry loop
+                                    break # FTP worked, exit the retry loop
                                 }
                             }
                         } else {
@@ -248,10 +256,9 @@ load_tiger <- function(
                     }
 
                     if (i == 4) {
-                        stop(
+                        cli_abort(
                             "Download failed with both HTTP and FTP; check your internet connection or the status of the Census Bureau website
-                 at https://www2.census.gov/geo/tiger/ or ftp://ftp2.census.gov/geo/tiger/.",
-                            call. = FALSE
+                 at https://www2.census.gov/geo/tiger/ or ftp://ftp2.census.gov/geo/tiger/."
                         )
                     }
                 } else {
@@ -317,15 +324,15 @@ load_tiger <- function(
         unzip_result <- tryCatch(
             {
                 unzip(file_loc, exdir = tmp)
-                TRUE  # Success
+                TRUE # Success
             },
-            warning = function(w) FALSE,  # Failed
-            error = function(e) FALSE     # Failed
+            warning = function(w) FALSE, # Failed
+            error = function(e) FALSE # Failed
         )
 
         # If HTTP download failed, try FTP as fallback
         if (!unzip_result && protocol == "http") {
-            message("HTTP download failed, trying FTP as fallback...")
+            cli_inform("HTTP download failed, trying FTP as fallback...")
             ftp_url <- gsub("^https://www2", "ftp://ftp2", original_url)
 
             # Try FTP download
@@ -345,24 +352,22 @@ load_tiger <- function(
             unzip_result <- tryCatch(
                 {
                     unzip(file_loc, exdir = tmp)
-                    TRUE  # Success
+                    TRUE # Success
                 },
-                warning = function(w) FALSE,  # Failed
-                error = function(e) FALSE     # Failed
+                warning = function(w) FALSE, # Failed
+                error = function(e) FALSE # Failed
             )
 
             if (!unzip_result) {
-                stop(
+                cli_abort(
                     "Download failed with both HTTP and FTP; check your internet connection or the status of the Census Bureau website
-                 at https://www2.census.gov/geo/tiger/ or ftp://ftp2.census.gov/geo/tiger/.",
-                    call. = FALSE
+                 at https://www2.census.gov/geo/tiger/ or ftp://ftp2.census.gov/geo/tiger/."
                 )
             }
         } else if (!unzip_result) {
-            stop(
+            cli_abort(
                 "Download failed; check your internet connection or the status of the Census Bureau website
-             at https://www2.census.gov/geo/tiger/ or ftp://ftp2.census.gov/geo/tiger/.",
-                call. = FALSE
+             at https://www2.census.gov/geo/tiger/ or ftp://ftp2.census.gov/geo/tiger/."
             )
         }
         shape <- gsub(".zip", "", tiger_file)
@@ -384,7 +389,9 @@ load_tiger <- function(
     attr(obj, "tigris") <- "tigris"
 
     # this will help identify the object "sub type"
-    if (!is.null(tigris_type)) attr(obj, "tigris") <- tigris_type
+    if (!is.null(tigris_type)) {
+        attr(obj, "tigris") <- tigris_type
+    }
 
     # Take care of COUNTYFP, STATEFP issues for historic data
     if ("COUNTYFP00" %in% names(obj)) {
@@ -405,12 +412,9 @@ load_tiger <- function(
     }
 
     if (class == "sp") {
-        warning(
-            stringr::str_wrap(
-                "Spatial* (sp) classes are no longer formally supported in tigris as of version 2.0. We strongly recommend updating your workflow to use sf objects (the default in tigris) instead.",
-                50
-            ),
-            call. = FALSE
+        cli_warn(
+            c("Spatial* (sp) classes are no longer formally supported in tigris as of version 2.0.",
+            "We strongly recommend updating your workflow to use sf objects (the default in tigris) instead.")
         )
         return(sf::as_Spatial(obj))
     } else {
@@ -499,9 +503,8 @@ geo_join <- function(
         } else if (how == 'left') {
             return(spatial_data)
         } else {
-            stop(
-                "The available options for `how` are 'left' and 'inner'.",
-                call. = FALSE
+            cli_abort(
+                "The available options for `how` are 'left' and 'inner'."
             )
         }
 
@@ -542,9 +545,8 @@ geo_join <- function(
 
             return(joined)
         } else {
-            stop(
-                "The available options for `how` are 'left' and 'inner'.",
-                call. = FALSE
+            cli_abort(
+                "The available options for `how` are 'left' and 'inner'."
             )
         }
     }
@@ -586,9 +588,9 @@ geo_join <- function(
 #' ## [1] "The code for Maine is '23' and the code for York County is '031'."
 #' }
 lookup_code <- function(state, county = NULL) {
-    state <- validate_state(state, .msg = FALSE)
+    state <- validate_state(state, .msg = FALSE, require_state = TRUE)
 
-    if (is.null(state)) stop("Invalid state", call. = FALSE)
+    fips_codes <- tigris::fips_codes
 
     if (!is.null(county)) {
         vals <- fips_codes[
@@ -643,7 +645,9 @@ is_tigris <- function(obj) {
 #'         or \code{NA} if \code{obj} is not a code \code{tigris} object
 #' @export
 tigris_type <- function(obj) {
-    if (is_tigris(obj)) return(attr(obj, "tigris"))
+    if (is_tigris(obj)) {
+        return(attr(obj, "tigris"))
+    }
     return(NA)
 }
 
@@ -655,9 +659,9 @@ tigris_type <- function(obj) {
 #' @return data frame of county name and FIPS code or NULL if invalid state
 #' @export
 list_counties <- function(state) {
-    state <- validate_state(state, .msg = FALSE)
+    state <- validate_state(state, .msg = FALSE, require_state = TRUE)
 
-    if (is.null(state)) stop("Invalid state", call. = FALSE)
+    fips_codes <- tigris::fips_codes
 
     vals <- fips_codes[
         fips_codes$state_code == state,
@@ -712,7 +716,7 @@ rbind_tigris <- function(...) {
         ) &
             "sf" %in% obj_classes
     ) {
-        stop("Cannot combine sp and sf objects", call. = FALSE)
+        cli_abort("Cannot combine sp and sf objects")
     }
 
     #handling for attempts to rbind disparate school districts
@@ -720,9 +724,8 @@ rbind_tigris <- function(...) {
     if (all(obj_attrs %in% c("unsd", "elsd", "scsd"))) {
         # 3 school district types
 
-        warning(
-            "Multiple school district tigris types. Coercing to \'sdall\'.",
-            call. = FALSE
+        cli_warn(
+            "Multiple school district tigris types. Coercing to {.str sdall}."
         )
 
         elements <- lapply(seq_along(elements), function(x) {
@@ -750,7 +753,7 @@ rbind_tigris <- function(...) {
                 "SpatialPolygonsDataFrame"
             )
     ) {
-        stop(
+        cli_abort(
             "Spatial* classes are no longer supported in tigris as of version 2.0. You will need to install an earlier version of tigris with `remotes::install_version()`."
         )
     } else if ("sf" %in% obj_classes) {
@@ -759,7 +762,9 @@ rbind_tigris <- function(...) {
         }))
 
         if (length(crs) > 1) {
-            stop("All objects must share a single coordinate reference system.")
+            cli_abort(
+                "All objects must share a single coordinate reference system."
+            )
         }
 
         if (
@@ -797,9 +802,8 @@ rbind_tigris <- function(...) {
             attr(tmp, "tigris") <- obj_attrs_u
             return(tmp)
         } else {
-            stop(
-                "Objects must all be the same type of tigris object.",
-                call. = FALSE
+            cli_abort(
+                "Objects must all be the same type of tigris object."
             )
         }
     }
@@ -856,12 +860,10 @@ erase_water <- function(input_sf, area_threshold = 0.75, year = NULL) {
     # }
 
     if (!"sf" %in% class(input_sf)) {
-        stop("The input dataset is not an sf object.", call. = FALSE)
+        cli_abort("The input dataset is not an sf object.")
     }
 
-    if (is.null(year)) {
-        year <- getOption("tigris_year", 2024)
-    }
+    year <- set_tigris_year(year, min_year = 2010)
 
     # Define st_erase function internally
     st_erase <- function(x, y) {
@@ -883,9 +885,8 @@ erase_water <- function(input_sf, area_threshold = 0.75, year = NULL) {
 
     # If nothing returned, exit
     if (nrow(county_overlay) == 0) {
-        stop(
-            "Your dataset does not appear to be in the United States; this function is not appropriate for your data.",
-            call. = FALSE
+        cli_abort(
+            "Your dataset does not appear to be in the United States; this function is not appropriate for your data."
         )
     }
 
@@ -893,7 +894,7 @@ erase_water <- function(input_sf, area_threshold = 0.75, year = NULL) {
     county_GEOIDs <- county_overlay$GEOID
 
     # Fetch water for those GEOIDs
-    message("Fetching area water data for your dataset's location...")
+    cli_inform("Fetching area water data for your dataset's location...")
     my_water <- lapply(county_GEOIDs, function(cty) {
         suppressMessages(tigris::area_water(
             state = stringr::str_sub(cty, 1, 2),
@@ -907,7 +908,7 @@ erase_water <- function(input_sf, area_threshold = 0.75, year = NULL) {
         sf::st_filter(input_sf) %>% # New step to only erase intersecting water areas
         dplyr::filter(dplyr::percent_rank(AWATER) >= area_threshold)
 
-    message(
+    cli_inform(
         "Erasing water area...\nIf this is slow, try a larger area threshold value."
     )
     erased_sf <- suppressMessages(st_erase(input_sf, my_water))

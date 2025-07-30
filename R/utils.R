@@ -229,14 +229,14 @@ validate_state <- function(
     # Show informative messages about successful state matches
     valid_state_fips <- state_fips[state_is_fips]
     valid_state_names <- state[state_is_fips]
-    
+
     message_parts <- paste0(
       valid_state_fips,
       " for ",
       valid_state_names,
       collapse = ", "
     )
-    
+
     cli_inform(c(
       "*" = "Using FIPS code{?s} {message_parts}"
     ))
@@ -276,17 +276,20 @@ county_values <- function(
   # Remove .msg from ... to avoid conflicts
   dots <- list(...)
   dots[[".msg"]] <- NULL
-  
-  state <- do.call(validate_state, c(
-    list(
-      state = state,
-      require_state = require_state,
-      multiple = multiple,
-      .msg = FALSE,
-      error_call = error_call
-    ),
-    dots
-  ))
+
+  state <- do.call(
+    validate_state,
+    c(
+      list(
+        state = state,
+        require_state = require_state,
+        multiple = multiple,
+        .msg = FALSE,
+        error_call = error_call
+      ),
+      dots
+    )
+  )
 
   if (!require_state && is.null(state)) {
     return(NULL)
@@ -391,15 +394,20 @@ match_county_name <- function(
     # For ambiguous matches, use the first match and warn about alternatives
     for (i in which(uncertain_matches)) {
       matches <- county_matches[[i]]
-      county_matches[[i]] <- matches[1]  # Use first match
-      
+      county_matches[[i]] <- matches[1] # Use first match
+
       # Build warning message with all matches
       all_matches <- paste(names(matches), collapse = ", ")
       uncertain_county <- county[i]
-      
+
       message <- c(
         message,
-        paste0("Using first match for '", uncertain_county, "'. Multiple matches found: ", all_matches)
+        paste0(
+          "Using first match for '",
+          uncertain_county,
+          "'. Multiple matches found: ",
+          all_matches
+        )
       )
     }
   }
@@ -499,14 +507,14 @@ validate_county <- function(
     # Show informative messages about successful county matches
     valid_county_fips <- county_fips[!na_county_fips]
     valid_county_names <- county[!na_county_fips]
-    
+
     message_parts <- paste0(
       valid_county_fips,
       " for ",
       valid_county_names,
       collapse = ", "
     )
-    
+
     cli_inform(c(
       "*" = "Using FIPS code{?s} {message_parts}"
     ))
@@ -632,4 +640,129 @@ prep_input_sfc <- function(
 
   # Make NAD83 for coordinate alignment
   sf::st_transform(input, crs = crs)
+}
+
+
+#' Get suffix of a 4 character year
+#' @noRd
+year_suffix <- function(year) {
+  substr(year, 3, 4)
+}
+
+#' Set default year and validate year for tigris function
+#'
+#' [set_tigris_year()] returns year as a character string.
+#'
+#' @param year Year to use for download.
+#' @param default Default year to use if "tigris_year" option is not set.
+#' @param min_year Minimum year. Varies by geography and data source.
+#' @param quiet If `TRUE`, do not display message about the year when
+#'   downloading data.
+#' @inheritParams source
+#' @noRd
+set_tigris_year <- function(
+  year = NULL,
+  default = 2024,
+  min_year = 2011,
+  max_year = 2024,
+  not_year = NULL,
+  quiet = FALSE,
+  message = NULL,
+  call = caller_env()
+) {
+  if (is.null(year)) {
+    year <- getOption("tigris_year", default)
+
+    if (!quiet) {
+      cli_inform("Retrieving data for the year {year}")
+    }
+  }
+
+  check_tigris_year(
+    year,
+    min_year = min_year,
+    max_year = max_year,
+    not_year = not_year,
+    message = message,
+    call = call
+  )
+
+  as.integer(year)
+}
+
+
+#' Check if year is valid within range and does not match error year
+#' @noRd
+check_tigris_year <- function(
+  year,
+  min_year = 2011,
+  max_year = 2024,
+  not_year = NULL,
+  message = NULL,
+  call = caller_env()
+) {
+  year <- as.integer(year)
+
+  # Check that eyar is valid integer or integer-like string
+  if (length(year) != 1 || nchar(year) != 4) {
+    cli_abort(
+      "{.arg year} must be an integer or string with a single year.",
+      call = call
+    )
+  }
+
+  outside_range <- !dplyr::between(year, min_year, max_year)
+  # TODO: Validate not_year
+  not_allowed <- is.numeric(not_year) && (year %in% not_year)
+
+  if (!outside_range && !not_allowed) {
+    return(invisible(NULL))
+  }
+
+  if (outside_range) {
+    message <- c(
+      message,
+      "i" = "{.arg year} must be between {min_year} and {max_year}."
+    )
+  }
+
+  if (not_allowed) {
+    year <- c(
+      message,
+      "i" = "{.arg year} can't be {.or {not_year}}."
+    )
+  }
+
+  cli_abort(
+    message,
+    call = call
+  )
+}
+
+
+#' Check if resolution is valid
+#' @noRd
+match_resolution <- function(
+  resolution,
+  values = c("500k", "5m", "20m"),
+  error_call = caller_env()
+) {
+  resolution <- tolower(resolution)
+  arg_match(resolution, values = values, error_call = error_call)
+}
+
+#' Check if cb argument is valid
+#' @noRd
+check_cb <- function(
+  cb,
+  call = caller_env()
+) {
+  if (is.logical(cb) && has_length(cb, 1)) {
+    return(invisible(NULL))
+  }
+
+  cli_abort(
+    "{.arg cb} must be TRUE or FALSE, not {.obj_type_friendly {cb}}.",
+    call = call
+  )
 }

@@ -9,7 +9,6 @@ test_that("places errors", {
 test_that("places works", {
   skip_on_cran()
   skip_on_ci()
-  withr::local_options(list(tigris_use_cache = TRUE))
   state <- "WY"
   expect_s3_class(places(year = 2019, cb = TRUE), "sf")
   # TODO: Enable tests if support is added for year < 2011
@@ -21,5 +20,18 @@ test_that("places works", {
   expect_s3_class(state_places, "sf")
 
   expect_type(list_places(state_places), "character")
-  expect_type(list_places(state_places, sorted = TRUE), "character")
+  expect_type(list_places(state_places, sorted = FALSE), "character")
+
+  expect_type(
+    grep_place(state_places, "Laramie"),
+    "character"
+  )
+
+  expect_s3_class(
+    filter_place(
+      state_places,
+      "Laramie"
+    ),
+    "sf"
+  )
 })

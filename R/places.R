@@ -15,70 +15,49 @@
 #' @seealso \url{https://www2.census.gov/geo/pdfs/reference/GARM/Ch9GARM.pdf}
 #' @export
 places <- function(state = NULL, cb = FALSE, year = NULL, ...) {
+    check_cb(cb)
+    year <- set_tigris_year(year)
+    state <- validate_state(state, multiple = TRUE)
+
+    if (is.null(state)) {
+        if (year > 2018 && cb) {
+            state <- "us"
+            cli_inform(
+                "Retrieving Census-designated places for the entire United States"
+            )
+        } else {
+            cli_abort(
+                "A state must be specified for this year/dataset combination."
+            )
+        }
+    }
+
+    if (cb) {
+        url <- sprintf(
+            "https://www2.census.gov/geo/tiger/GENZ%s/shp/cb_%s_%s_place_500k.zip",
+            year,
+            year,
+            state
+        )
+    } else {
+        url <- sprintf(
+            "https://www2.census.gov/geo/tiger/TIGER%s/PLACE/tl_%s_%s_place.zip",
+            year,
+            year,
+            state
+        )
+    }
+
     if (length(state) > 1) {
-        p <- lapply(state, function(x) {
-            places(state = x, cb = cb, year = year, ...)
+        p <- lapply(url, function(x) {
+            load_tiger(x, tigris_type = "place", ...)
         }) %>%
             rbind_tigris()
 
         return(p)
     }
 
-    if (is.null(year)) {
-        year <- getOption("tigris_year", 2024)
-
-        message(sprintf("Retrieving data for the year %s", year))
-    }
-
-    if (year < 2011) {
-        fname <- as.character(match.call())[[1]]
-
-        msg <- sprintf(
-            "%s is not currently available for years prior to 2011.  To request this feature,
-                   file an issue at https://github.com/walkerke/tigris.",
-            fname
-        )
-
-        stop(msg, call. = FALSE)
-    }
-
-    if (is.null(state)) {
-        if (year > 2018 && cb == TRUE) {
-            state <- "us"
-            message(
-                "Retrieving Census-designated places for the entire United States"
-            )
-        } else {
-            stop(
-                "A state must be specified for this year/dataset combination.",
-                call. = FALSE
-            )
-        }
-    } else {
-        state <- validate_state(state)
-
-        if (is.null(state)) stop("Invalid state", call. = FALSE)
-    }
-
-    cyear <- as.character(year)
-
-    if (cb == TRUE) {
-        url <- sprintf(
-            "https://www2.census.gov/geo/tiger/GENZ%s/shp/cb_%s_%s_place_500k.zip",
-            cyear,
-            cyear,
-            state
-        )
-    } else {
-        url <- sprintf(
-            "https://www2.census.gov/geo/tiger/TIGER%s/PLACE/tl_%s_%s_place.zip",
-            cyear,
-            cyear,
-            state
-        )
-    }
-
-    return(load_tiger(url, tigris_type = "place", ...))
+    load_tiger(url, tigris_type = "place", ...)
 }
 
 #' Filter a \code{places} Spatial object for only those places matching the
@@ -126,7 +105,9 @@ grep_place <- function(places, term) {
 #' }
 list_places <- function(places, sorted = TRUE) {
     if (is_tigris(places) & tigris_type(places) == "place") {
-        if (sorted) return(sort(places$NAME))
+        if (sorted) {
+            return(sort(places$NAME))
+        }
         return(places$NAME)
     }
 }
