@@ -412,11 +412,9 @@ load_tiger <- function(
     }
 
     if (class == "sp") {
-        warning(
-            stringr::str_wrap(
-                "Spatial* (sp) classes are no longer formally supported in tigris as of version 2.0. We strongly recommend updating your workflow to use sf objects (the default in tigris) instead.",
-                50
-            )
+        cli_warn(
+            c("Spatial* (sp) classes are no longer formally supported in tigris as of version 2.0.",
+            "We strongly recommend updating your workflow to use sf objects (the default in tigris) instead.")
         )
         return(sf::as_Spatial(obj))
     } else {
@@ -726,8 +724,8 @@ rbind_tigris <- function(...) {
     if (all(obj_attrs %in% c("unsd", "elsd", "scsd"))) {
         # 3 school district types
 
-        warning(
-            "Multiple school district tigris types. Coercing to \'sdall\'."
+        cli_warn(
+            "Multiple school district tigris types. Coercing to {.str sdall}."
         )
 
         elements <- lapply(seq_along(elements), function(x) {
