@@ -7,7 +7,6 @@ test_that("landmarks errors", {
 test_that("landmarks works", {
   skip_on_cran()
   skip_on_ci()
-  withr::local_options(list(tigris_use_cache = TRUE))
 
   state <- "WY"
   area_landmarks <- landmarks(
@@ -28,6 +27,5 @@ test_that("landmarks works", {
 test_that("military works", {
   skip_on_cran()
   skip_on_ci()
-  withr::local_options(list(tigris_use_cache = TRUE))
   expect_snapshot(military(progress_bar = FALSE))
 })

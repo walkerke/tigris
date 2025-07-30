@@ -1,7 +1,6 @@
 test_that("native functions work", {
   skip_on_cran()
   skip_on_ci()
-  withr::local_options(list(tigris_use_cache = TRUE))
 
   expect_s3_class(native_areas(), "sf")
   expect_s3_class(native_areas(cb = TRUE), "sf")

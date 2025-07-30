@@ -20,7 +20,6 @@ test_that("congressional_districts warns and errors", {
 test_that("congressional_districts works", {
   skip_on_cran()
   skip_on_ci()
-  withr::local_options(list(tigris_use_cache = TRUE))
 
   expect_s3_class(congressional_districts(), "sf")
   # TODO: Check why test failed on CI
@@ -111,7 +110,6 @@ test_that("state_legislative_districts errors", {
 test_that("state_legislative_districts works", {
   skip_on_cran()
   skip_on_ci()
-  withr::local_options(list(tigris_use_cache = TRUE))
 
   state <- "WY"
 
@@ -183,7 +181,6 @@ test_that("voting_districts errors", {
 test_that("voting_districts works", {
   skip_on_cran()
   skip_on_ci()
-  withr::local_options(list(tigris_use_cache = TRUE))
 
   expect_s3_class(voting_districts(cb = TRUE), "sf")
   state <- "WY"

@@ -1,7 +1,6 @@
 test_that("`counties()` works", {
   skip_on_cran()
   skip_on_ci()
-  withr::local_options(list(tigris_use_cache = TRUE))
 
   expect_snapshot(counties(cb = TRUE, progress_bar = FALSE))
   expect_snapshot(counties(progress_bar = FALSE))
@@ -26,7 +25,6 @@ test_that("`counties()` works", {
 test_that("`school_districts()` works", {
   skip_on_cran()
   skip_on_ci()
-  withr::local_options(list(tigris_use_cache = TRUE))
   state <- "WY"
 
   expect_snapshot(school_districts(state = state, progress_bar = FALSE))
@@ -38,7 +36,6 @@ test_that("`school_districts()` works", {
 test_that("`tracts()` works", {
   skip_on_cran()
   skip_on_ci()
-  withr::local_options(list(tigris_use_cache = TRUE))
   state <- "WY"
   county <- "Niobrara"
   expect_snapshot(tracts(state = state, county = county, progress_bar = FALSE))
@@ -82,7 +79,6 @@ test_that("`tracts()` works", {
 test_that("`block_groups()` work", {
   skip_on_cran()
   skip_on_ci()
-  withr::local_options(list(tigris_use_cache = TRUE))
   state <- "WY"
   county <- "Niobrara"
 
@@ -105,7 +101,6 @@ test_that("`block_groups()` work", {
 test_that("`blocks()` work", {
   skip_on_cran()
   skip_on_ci()
-  withr::local_options(list(tigris_use_cache = TRUE))
   state <- "WY"
   county <- "Niobrara"
 
@@ -149,7 +144,6 @@ test_that("`blocks()` work", {
 test_that("`zctas()` works", {
   skip_on_cran()
   skip_on_ci()
-  withr::local_options(list(tigris_use_cache = TRUE))
   state <- "WY"
   county <- "Niobrara"
 
@@ -157,24 +151,24 @@ test_that("`zctas()` works", {
 
   expect_s3_class(zctas(year = 2010, cb = TRUE), "sf")
 
-  expect_warning(
+  expect_error(zctas(state = state, year = 2021, cb = TRUE))
+  expect_error(zctas(state = state, year = 2010, cb = TRUE))
+
+  withr::local_options(list(cli.default_handler = NULL))
+  expect_message(
     zctas(year = 2000, cb = TRUE),
     "CB ZCTAs for 2000 include separate polygons for discontiguous parts."
   )
-  expect_warning(
+  expect_message(
     zctas(state = state, year = 2000, cb = TRUE),
     "CB ZCTAs for 2000 include separate polygons for discontiguous parts."
   )
-
-  expect_error(zctas(state = state, year = 2021, cb = TRUE))
-  expect_error(zctas(state = state, year = 2010, cb = TRUE))
 })
 
 
 test_that("`county_subdivisions()` works", {
   skip_on_cran()
   skip_on_ci()
-  withr::local_options(list(tigris_use_cache = TRUE))
   state <- "WY"
   county <- "Niobrara"
 
