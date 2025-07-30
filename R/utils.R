@@ -665,6 +665,7 @@ set_tigris_year <- function(
   default = 2024,
   min_year = 2011,
   max_year = 2024,
+  not_year = NULL,
   quiet = FALSE,
   message = NULL,
   call = caller_env()
@@ -681,6 +682,7 @@ set_tigris_year <- function(
     year,
     min_year = min_year,
     max_year = max_year,
+    not_year = not_year,
     message = message,
     call = call
   )
@@ -695,11 +697,13 @@ check_tigris_year <- function(
   year,
   min_year = 2011,
   max_year = 2024,
+  not_year = NULL,
   message = NULL,
   call = caller_env()
 ) {
   year <- as.integer(year)
 
+  # Check that eyar is valid integer or integer-like string
   if (length(year) != 1 || nchar(year) != 4) {
     cli_abort(
       "{.arg year} must be an integer or string with a single year.",
@@ -707,38 +711,27 @@ check_tigris_year <- function(
     )
   }
 
-  if ((year >= min_year) && year <= max_year) {
+  outside_range <- !dplyr::between(year, min_year, max_year)
+  # TODO: Validate not_year
+  not_allowed <- is.numeric(not_year) && (year %in% not_year)
+
+  if (!outside_range && !not_allowed) {
     return(invisible(NULL))
   }
 
-  if (!is.null(message)) {
-    cli_abort(message, call = call)
+  if (not_allowed) {
+    message <- c(
+      message,
+      "{.arg year} must be between {min_year} and {max_year}."
+    )
   }
 
-  msg <- "%s is not currently available for any year before %s."
-  limit_year <- min_year
-
-  if (year > max_year) {
-    msg <- "%s is not currently available for any year after %s."
-    limit_year <- max_year
+  if (not_allowed) {
+    year <- c(message, "{.arg year} can't be {.or {not_year}}.")
   }
-
-  # TODO: Figure out a more elegant way to handle this need
-  trace <- trace_back()
-  fname <- call_name(quote(trace[["call"]][[1]]))
-  fname <- paste0("`", fname, "`")
-
-  if (fname == "`[[`") {
-    fname <- "Requested data"
-  }
-
-  msg <- sprintf(msg, fname, limit_year)
 
   cli_abort(
-    c(
-      msg,
-      "*" = "To request this feature, file an issue at {.url https://github.com/walkerke/tigris/issues}"
-    ),
+    message,
     call = call
   )
 }
