@@ -17,7 +17,7 @@
 #'    addPolygons()
 #' }
 #' @export
-regions <- function(resolution = '500k', year = NULL, ...) {
+regions <- function(resolution = "500k", year = NULL, ...) {
     year <- set_tigris_year(year)
     resolution <- match_resolution(resolution)
 
@@ -52,7 +52,7 @@ regions <- function(resolution = '500k', year = NULL, ...) {
 #'    addTiles() %>%
 #'    addPolygons()
 #' }
-divisions <- function(resolution = '500k', year = NULL, ...) {
+divisions <- function(resolution = "500k", year = NULL, ...) {
     year <- set_tigris_year(year)
     resolution <- match_resolution(resolution)
 

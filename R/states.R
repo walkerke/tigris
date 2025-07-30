@@ -28,11 +28,13 @@
 #'               weight = 0.5) %>%
 #'   setView(-98.5795, 39.8282, zoom=3)
 #' }
-states <- function(cb = FALSE, resolution = '500k', year = NULL, ...) {
-    resolution <- match_resolution(resolution)
+states <- function(cb = FALSE, resolution = "500k", year = NULL, ...) {
+    check_cb(cb)
     year <- set_tigris_year(year, min_year = 1990)
 
-    if (cb == TRUE) {
+    if (cb) {
+        resolution <- match_resolution(resolution)
+
         if (year %in% c(1990, 2000)) {
             suf <- year_suffix(year)
 

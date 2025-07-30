@@ -33,10 +33,11 @@
 congressional_districts <- function(
     state = NULL,
     cb = FALSE,
-    resolution = '500k',
+    resolution = "500k",
     year = NULL,
     ...
 ) {
+    check_cb(cb)
     year <- set_tigris_year(year, min_year = 2010)
 
     if (year < 2013 && cb) {
@@ -63,9 +64,9 @@ congressional_districts <- function(
         congress <- "119"
     }
 
-    resolution <- match_resolution(resolution)
-
     if (cb) {
+        resolution <- match_resolution(resolution)
+
         url <- sprintf(
             "https://www2.census.gov/geo/tiger/GENZ%s/shp/cb_%s_us_cd%s_%s.zip",
             year,
@@ -111,7 +112,7 @@ congressional_districts <- function(
 
     cds <- load_tiger(url, tigris_type = "congressional_districts", ...)
 
-    state <- unlist(sapply(state, validate_state, USE.NAMES = FALSE))
+    state <- validate_state(state, multiple = TRUE)
 
     if (!is.null(state)) {
         cds <- cds[cds$STATEFP %in% state, ]
@@ -160,10 +161,11 @@ state_legislative_districts <- function(
     year = NULL,
     ...
 ) {
+    check_cb(cb)
     year <- set_tigris_year(year, min_year = 2000)
 
     if (is.null(state)) {
-        if (year > 2018 && cb == TRUE) {
+        if (year > 2018 && cb) {
             state <- "us"
             cli_inform(
                 "Retrieving state legislative districts for the entire United States"
@@ -185,7 +187,7 @@ state_legislative_districts <- function(
         type <- "sldl"
     }
 
-    if (cb == TRUE) {
+    if (cb) {
         if (year == 2010) {
             if (type == "sldu") {
                 url <- sprintf(
@@ -283,14 +285,17 @@ voting_districts <- function(
     year = 2020,
     ...
 ) {
-    if (year != 2020 && cb == TRUE) {
+    check_cb(cb)
+    year <- set_tigris_year(year = year)
+
+    if (year != 2020 && cb) {
         cli_abort(
             "Cartographic boundary voting districts files are only available for 2020."
         )
     }
 
     if (is.null(state)) {
-        if (year > 2018 && cb == TRUE) {
+        if (year > 2018 && cb) {
             state <- "us"
             cli_inform(
                 "Retrieving voting districts for the entire United States"
@@ -302,6 +307,7 @@ voting_districts <- function(
         }
     } else {
         state <- validate_state(state, require_state = TRUE)
+        county <- validate_county(state, county, multiple = TRUE)
     }
 
     if (cb) {
@@ -315,13 +321,6 @@ voting_districts <- function(
         if (is.null(county)) {
             return(vtds)
         } else {
-            county <- validate_county(
-                state,
-                county,
-                multiple = TRUE,
-                require_county = TRUE
-            )
-
             return(vtds[vtds$COUNTYFP20 %in% county, ])
         }
     } else {
@@ -333,8 +332,6 @@ voting_districts <- function(
             )
         } else {
             if (!is.null(county)) {
-                county <- validate_county(state, county, require_county = TRUE)
-
                 url <- sprintf(
                     "https://www2.census.gov/geo/tiger/TIGER2020PL/LAYER/VTD/2020/tl_2020_%s%s_vtd20.zip",
                     state,

@@ -15,6 +15,10 @@
 #' @seealso \url{https://www2.census.gov/geo/pdfs/reference/GARM/Ch9GARM.pdf}
 #' @export
 places <- function(state = NULL, cb = FALSE, year = NULL, ...) {
+    check_cb(cb)
+    year <- set_tigris_year(year)
+    state <- validate_state(state, multiple = TRUE)
+
     if (length(state) > 1) {
         p <- lapply(state, function(x) {
             places(state = x, cb = cb, year = year, ...)
@@ -24,10 +28,8 @@ places <- function(state = NULL, cb = FALSE, year = NULL, ...) {
         return(p)
     }
 
-    year <- set_tigris_year(year)
-
     if (is.null(state)) {
-        if (year > 2018 && cb == TRUE) {
+        if (year > 2018 && cb) {
             state <- "us"
             cli_inform(
                 "Retrieving Census-designated places for the entire United States"
@@ -37,11 +39,9 @@ places <- function(state = NULL, cb = FALSE, year = NULL, ...) {
                 "A state must be specified for this year/dataset combination."
             )
         }
-    } else {
-        state <- validate_state(state, require_state = TRUE)
     }
 
-    if (cb == TRUE) {
+    if (cb) {
         url <- sprintf(
             "https://www2.census.gov/geo/tiger/GENZ%s/shp/cb_%s_%s_place_500k.zip",
             year,

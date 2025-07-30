@@ -171,10 +171,9 @@ load_tiger <- function(
                     i <- 1
 
                     while (i < 4) {
-                        cli_inform(sprintf(
-                            "Previous download failed.  Re-download attempt %s of 3...",
-                            as.character(i)
-                        ))
+                        cli_inform(
+                            "Previous download failed.  Re-download attempt{i}s of 3..."
+                        )
 
                         if (grepl("^ftp://", url)) {
                             # Use download.file for FTP URLs with timeout

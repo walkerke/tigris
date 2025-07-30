@@ -54,15 +54,16 @@
 counties <- function(
     state = NULL,
     cb = FALSE,
-    resolution = '500k',
+    resolution = "500k",
     year = NULL,
     ...
 ) {
-    resolution <- match_resolution(resolution)
-
+    check_cb(cb)
     year <- set_tigris_year(year, min_year = 1990)
 
-    if (cb == TRUE) {
+    if (cb) {
+        resolution <- match_resolution(resolution)
+
         if (year %in% c(1990, 2000)) {
             suf <- year_suffix(year)
 
@@ -115,7 +116,7 @@ counties <- function(
 
     ctys <- load_tiger(url, tigris_type = "county", ...)
 
-    state <- unlist(sapply(state, validate_state, USE.NAMES = FALSE))
+    state <- validate_state(state, multiple = TRUE)
 
     if (!is.null(state)) {
         ctys <- ctys[ctys$STATEFP %in% state, ]
@@ -237,11 +238,11 @@ tracts <- function(
     year = NULL,
     ...
 ) {
+    check_cb(cb)
     year <- set_tigris_year(year, min_year = 1990)
 
     if (
-        (resolution == "5m" && year < 2022) |
-            (resolution == "5m" && !is.null(state))
+        resolution == "5m" && (year < 2022 || !is.null(state))
     ) {
         cli_abort(
             "`resolution = '5m'` for Census tracts is only available for the national Census tract CB file in years 2022 and later."
@@ -249,7 +250,7 @@ tracts <- function(
     }
 
     if (is.null(state)) {
-        if (year > 2018 && cb == TRUE) {
+        if (year > 2018 && cb) {
             state <- "us"
             cli_inform("Retrieving Census tracts for the entire United States")
         } else {
@@ -261,7 +262,7 @@ tracts <- function(
         state <- validate_state(state, require_state = TRUE)
     }
 
-    if (cb == TRUE) {
+    if (cb) {
         if (year %in% c(1990, 2000)) {
             suf <- year_suffix(year)
 
@@ -278,6 +279,8 @@ tracts <- function(
             )
         } else {
             if (year > 2013) {
+                resolution <- match_resolution(resolution)
+
                 url <- sprintf(
                     "https://www2.census.gov/geo/tiger/GENZ%s/shp/cb_%s_%s_tract_%s.zip",
                     year,
@@ -321,6 +324,7 @@ tracts <- function(
     trcts <- load_tiger(url, tigris_type = "tract", ...)
 
     if (!is.null(county)) {
+        # TODO: Add check that state is not "us"
         county <- validate_county(state, county, multiple = TRUE)
 
         trcts <- trcts[trcts$COUNTYFP %in% county, ]
@@ -440,10 +444,12 @@ school_districts <- function(
     year = NULL,
     ...
 ) {
+    check_cb(cb)
     year <- set_tigris_year(year)
+    type <- arg_match(type, c("unified", "elementary", "secondary"))
 
     if (is.null(state)) {
-        if (year > 2018 && cb == TRUE) {
+        if (year > 2018 && cb) {
             state <- "us"
             cli_inform(
                 "Retrieving school districts for the entire United States"
@@ -456,8 +462,6 @@ school_districts <- function(
     } else {
         state <- validate_state(state, require_state = TRUE)
     }
-
-    type <- arg_match(type, c("unified", "elementary", "secondary"))
 
     type <- switch(
         type,
@@ -540,10 +544,11 @@ block_groups <- function(
     year = NULL,
     ...
 ) {
+    check_cb(cb)
     year <- set_tigris_year(year, min_year = 1990)
 
     if (is.null(state)) {
-        if (year > 2018 && cb == TRUE) {
+        if (year > 2018 && cb) {
             state <- "us"
             cli_inform(
                 "Retrieving Census block groups for the entire United States"
@@ -557,7 +562,7 @@ block_groups <- function(
         state <- validate_state(state, require_state = TRUE)
     }
 
-    if (cb == TRUE) {
+    if (cb) {
         if (year %in% c(1990, 2000)) {
             suf <- year_suffix(year)
 
@@ -729,6 +734,7 @@ zctas <- function(
     state = NULL,
     ...
 ) {
+    check_cb(cb)
     year <- set_tigris_year(
         year,
         message =  "Zip Code Tabulation Areas (ZCTAs) are only available beginning with the 2000 Census.",
@@ -1025,11 +1031,11 @@ county_subdivisions <- function(
     year = NULL,
     ...
 ) {
+    check_cb(cb)
     year <- set_tigris_year(year, min_year = 2010)
-
     state <- validate_state(state, require_state = TRUE)
 
-    if (cb == TRUE) {
+    if (cb) {
         if (year == 2010) {
             url <- sprintf(
                 "https://www2.census.gov/geo/tiger/GENZ2010/gz_2010_%s_060_00_500k.zip",

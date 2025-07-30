@@ -39,6 +39,7 @@
 #' plot(us_pumas$geometry)
 #' }
 pumas <- function(state = NULL, cb = FALSE, year = NULL, ...) {
+    check_cb(cb)
     year <- set_tigris_year(year)
 
     if (is.null(state)) {
@@ -63,7 +64,10 @@ pumas <- function(state = NULL, cb = FALSE, year = NULL, ...) {
     if (cb) {
         if (year > 2020) {
             cli_abort(
-                "Cartographic boundary PUMAs are not yet available for years after 2020. Use the argument `year = 2019` for 2010 PUMA boundaries or `year = 2020` for 2020 PUMA boundaries instead to request your data."
+                c(
+                    "Cartographic boundary PUMAs are not yet available for years after 2020.",
+                    "i" = "Use the argument `year = 2019` for 2010 PUMA boundaries or `year = 2020` for 2020 PUMA boundaries instead to request your data."
+                )
             )
         }
 

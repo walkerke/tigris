@@ -27,9 +27,10 @@
 #' gg
 #' }
 native_areas <- function(cb = FALSE, year = NULL, ...) {
+    check_cb(cb)
     year <- set_tigris_year(year)
 
-    if (cb == TRUE) {
+    if (cb) {
         url <- sprintf(
             "https://www2.census.gov/geo/tiger/GENZ%s/shp/cb_%s_us_aiannh_500k.zip",
             year,
@@ -72,6 +73,7 @@ native_areas <- function(cb = FALSE, year = NULL, ...) {
 #'               weight = 0.5)
 #' }
 tribal_subdivisions_national <- function(cb = FALSE, year = NULL, ...) {
+    check_cb(cb)
     year <- set_tigris_year(year)
 
     if (cb) {
@@ -115,9 +117,10 @@ tribal_subdivisions_national <- function(cb = FALSE, year = NULL, ...) {
 #' @seealso \url{https://www2.census.gov/geo/pdfs/reference/GARM/Ch5GARM.pdf}
 #' @export
 alaska_native_regional_corporations <- function(cb = FALSE, year = NULL, ...) {
+    check_cb(cb)
     year <- set_tigris_year(year)
 
-    if (cb == TRUE) {
+    if (cb) {
         url <- sprintf(
             "https://www2.census.gov/geo/tiger/GENZ%s/shp/cb_%s_02_anrc_500k.zip",
             year,
@@ -170,6 +173,7 @@ alaska_native_regional_corporations <- function(cb = FALSE, year = NULL, ...) {
 #'               weight = 0.5)
 #' }
 tribal_block_groups <- function(cb = FALSE, year = NULL, ...) {
+    check_cb(cb)
     year <- set_tigris_year(year)
 
     if (cb) {
@@ -220,6 +224,7 @@ tribal_block_groups <- function(cb = FALSE, year = NULL, ...) {
 #'               weight = 0.5)
 #' }
 tribal_census_tracts <- function(cb = FALSE, year = NULL, ...) {
+    check_cb(cb)
     year <- set_tigris_year(year)
 
     if (cb) {
