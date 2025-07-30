@@ -19,15 +19,6 @@ places <- function(state = NULL, cb = FALSE, year = NULL, ...) {
     year <- set_tigris_year(year)
     state <- validate_state(state, multiple = TRUE)
 
-    if (length(state) > 1) {
-        p <- lapply(state, function(x) {
-            places(state = x, cb = cb, year = year, ...)
-        }) %>%
-            rbind_tigris()
-
-        return(p)
-    }
-
     if (is.null(state)) {
         if (year > 2018 && cb) {
             state <- "us"
@@ -55,6 +46,15 @@ places <- function(state = NULL, cb = FALSE, year = NULL, ...) {
             year,
             state
         )
+    }
+
+    if (length(state) > 1) {
+        p <- lapply(url, function(x) {
+            load_tiger(x, tigris_type = "place", ...)
+        }) %>%
+            rbind_tigris()
+
+        return(p)
     }
 
     load_tiger(url, tigris_type = "place", ...)

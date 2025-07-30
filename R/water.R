@@ -33,15 +33,6 @@ area_water <- function(state, county, year = NULL, ...) {
         multiple = TRUE
     )
 
-    if (length(county) > 1) {
-        w <- lapply(county, function(x) {
-            area_water(state = state, county = x, year = year, ...)
-        }) %>%
-            rbind_tigris()
-
-        return(w)
-    }
-
     url <- sprintf(
         "https://www2.census.gov/geo/tiger/TIGER%s/AREAWATER/tl_%s_%s%s_areawater.zip",
         year,
@@ -49,6 +40,15 @@ area_water <- function(state, county, year = NULL, ...) {
         state,
         county
     )
+
+    if (length(county) > 1) {
+        w <- lapply(url, function(x) {
+            load_tiger(x, tigris_type = "area_water", ...)
+        }) %>%
+            rbind_tigris()
+
+        return(w)
+    }
 
     load_tiger(url, tigris_type = "area_water", ...)
 }
@@ -90,15 +90,6 @@ linear_water <- function(state, county, year = NULL, ...) {
         multiple = TRUE
     )
 
-    if (length(county) > 1) {
-        w <- lapply(county, function(x) {
-            linear_water(state = state, county = x, year = year, ...)
-        }) %>%
-            rbind_tigris()
-
-        return(w)
-    }
-
     url <- sprintf(
         "https://www2.census.gov/geo/tiger/TIGER%s/LINEARWATER/tl_%s_%s%s_linearwater.zip",
         year,
@@ -106,6 +97,15 @@ linear_water <- function(state, county, year = NULL, ...) {
         state,
         county
     )
+
+    if (length(county) > 1) {
+        w <- lapply(url, function(x) {
+            load_tiger(x, tigris_type = "linear_water", ...)
+        }) %>%
+            rbind_tigris()
+
+        return(w)
+    }
 
     load_tiger(url, tigris_type = "linear_water", ...)
 }

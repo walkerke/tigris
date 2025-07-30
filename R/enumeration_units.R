@@ -922,15 +922,6 @@ blocks <- function(state, county = NULL, year = NULL, ...) {
 
     state <- validate_state(state, require_state = TRUE)
 
-    if (length(county) > 1 && year < 2011) {
-        p <- lapply(county, function(x) {
-            blocks(state = state, county = x, year = year, ...)
-        }) %>%
-            rbind_tigris()
-
-        return(p)
-    }
-
     if (year >= 2014) {
         if (year >= 2020) {
             # New block logic for 2020
@@ -956,7 +947,7 @@ blocks <- function(state, county = NULL, year = NULL, ...) {
             state
         )
     } else if (year %in% c(2000, 2010)) {
-        county <- validate_county(state, county, allow_null = TRUE)
+        county <- validate_county(state, county, multiple = TRUE, allow_null = TRUE)
         suf <- year_suffix(year)
 
         if (!is.null(county)) {
@@ -977,7 +968,15 @@ blocks <- function(state, county = NULL, year = NULL, ...) {
         }
     }
 
-    blks <- load_tiger(url, tigris_type = "block", ...)
+
+    if (length(county) > 1 && year < 2011) {
+        blks <- lapply(url, function(x) {
+            load_tiger(x, tigris_type = "block", ...)
+        }) %>%
+            rbind_tigris()
+    } else {
+        blks <- load_tiger(url, tigris_type = "block", ...)
+    }
 
     if (!is.null(county) && year > 2010) {
         county <- validate_county(state, county, multiple = TRUE)

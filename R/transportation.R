@@ -49,15 +49,6 @@ roads <- function(state, county, year = NULL, ...) {
         require_county = TRUE
     )
 
-    if (length(county) > 1) {
-        r <- lapply(county, function(x) {
-            roads(state = state, county = x, year = year, ...)
-        }) %>%
-            rbind_tigris()
-
-        return(r)
-    }
-
     url <- sprintf(
         "https://www2.census.gov/geo/tiger/TIGER%s/ROADS/tl_%s_%s%s_roads.zip",
         year,
@@ -65,6 +56,15 @@ roads <- function(state, county, year = NULL, ...) {
         state,
         county
     )
+
+    if (length(county) > 1) {
+        r <- lapply(url, function(x) {
+            load_tiger(x, tigris_type = "road", ...)
+        }) %>%
+            rbind_tigris()
+
+        return(r)
+    }
 
     load_tiger(url, tigris_type = "road", ...)
 }
