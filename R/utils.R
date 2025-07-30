@@ -674,7 +674,7 @@ set_tigris_year <- function(
     year <- getOption("tigris_year", default)
 
     if (!quiet) {
-      cli_inform("Retrieving data for {year}")
+      cli_inform("Retrieving data for the year {year}")
     }
   }
 
@@ -749,4 +749,20 @@ match_resolution <- function(
 ) {
   resolution <- tolower(resolution)
   arg_match(resolution, values = values, error_call = error_call)
+}
+
+#' Check if cb argument is valid
+#' @noRd
+check_cb <- function(
+  cb,
+  call = caller_env()
+) {
+  if (is.logical(cb) && has_length(cb, 1)) {
+    return(invisible(NULL))
+  }
+
+  cli_abort(
+    "{.arg cb} must be TRUE or FALSE, not {.obj_type_friendly {cb}}.",
+    call = call
+  )
 }
