@@ -1,10 +1,14 @@
 tigris development
 -------------------------------------------------------
-* Add `{rlang}` and `{cli}` packages to Imports. Add `{withr}` to Suggests.
+* Add `{rlang}` and `{cli}` packages to Imports. Add `{withr}` to Suggests. Remove `{uuid}` and `{tidycensus}` from Suggests.
+
+* Switch to use `cli::cli_abort()`, `cli::cli_warn()` and `cli::cli_inform()` for all errors, warnings, and messages.
 
 * Warn users when `filter_by` contains multiple geometries and only part of the filter can be used.
 
 * Export `validate_state()` and `validate_county()` functions with added  `multiple` argument to allow validation of multiple states or counties in a single call.
+
+* Improve consistency of validation for input `year`, `cb`, and `resolution` arguments.
 
 * Expand test coverage.
 
