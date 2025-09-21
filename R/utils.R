@@ -5,6 +5,10 @@
 # returns NULL if input is not a valid FIPS code
 validate_state <- function(state, .msg=interactive()) {
 
+  if (length(state) > 1){
+    stop("Only provide a single state.")
+  }
+
   if (is.null(state)) return(NULL)
 
   state <- tolower(str_trim(state)) # forgive white space
