@@ -11,7 +11,7 @@ urban_areas(cb = FALSE, year = NULL, criteria = NULL, ...)
 cartographic boundary file.  Defaults to FALSE (the most detailed
 TIGER/Line file).}
 
-\item{year}{the data year; defaults to 2022}
+\item{year}{the data year; defaults to 2024}
 
 \item{criteria}{If set to "2020" and the year is 2020, will download the new 2020 urban areas criteria. Not available for cartographic boundary shapefiles / other years at the moment.}
 
@@ -33,8 +33,8 @@ depending on the configuration of global option \code{"tigris_use_cache"}). Defa
 \item \code{refresh} Whether to re-download cached shapefiles (\code{TRUE} or \code{FALSE}) . The default is either \code{FALSE} or the value of global
 option \code{"tigris_refresh"} if it is set. Specifying this argument will override the behavior set in \code{"tigris_refresh"} global option.
 \item \code{filter_by} Geometry used to filter the output returned by the function.  Can be an sf object, an object of class \code{bbox}, or a length-4 vector of format \code{c(xmin, ymin, xmax, ymax)} that can be converted to a bbox. Geometries that intersect the input to \code{filter_by} will be returned.
-\item \code{protocol} Character string specifying the protocol to use for downloading files. Options are "ftp" (default) or "http". If "ftp", the URL will be modified to use FTP instead of HTTPS.
-\item \code{timeout} Integer specifying the timeout in seconds for download operations. Defaults to 300 (5 minutes) to handle large files.
+\item \code{protocol} Character string specifying the protocol to use for downloading files. Options are "ftp" or "http" (default). If "ftp", the URL will be modified to use FTP instead of HTTPS.
+\item \code{timeout} Integer specifying the timeout in seconds for download operations if protocol is "ftp". Defaults to 1800 (30 minutes) to handle large files.
 }
 }
 

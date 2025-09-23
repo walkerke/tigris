@@ -19,7 +19,7 @@ ZCTAs you want to return.  For example, supplying the argument
 \code{starts_with = c("75", "76")} will return only those ZCTAs that begin
 with 75 or 76.  Defaults to NULL, which will return all ZCTAs in the US.}
 
-\item{year}{the data year; defaults to 2022}
+\item{year}{the data year; defaults to 2024}
 
 \item{state}{the state for which you are requesting data; only available for 2000 (TIGER/Line
 and CB shapefiles) and 2010 (TIGER/Line shapefiles only)}
@@ -43,8 +43,8 @@ depending on the configuration of global option \code{"tigris_use_cache"}). Defa
 \item \code{refresh} Whether to re-download cached shapefiles (\code{TRUE} or \code{FALSE}) . The default is either \code{FALSE} or the value of global
 option \code{"tigris_refresh"} if it is set. Specifying this argument will override the behavior set in \code{"tigris_refresh"} global option.
 \item \code{filter_by} Geometry used to filter the output returned by the function.  Can be an sf object, an object of class \code{bbox}, or a length-4 vector of format \code{c(xmin, ymin, xmax, ymax)} that can be converted to a bbox. Geometries that intersect the input to \code{filter_by} will be returned.
-\item \code{protocol} Character string specifying the protocol to use for downloading files. Options are "ftp" (default) or "http". If "ftp", the URL will be modified to use FTP instead of HTTPS.
-\item \code{timeout} Integer specifying the timeout in seconds for download operations. Defaults to 300 (5 minutes) to handle large files.
+\item \code{protocol} Character string specifying the protocol to use for downloading files. Options are "ftp" or "http" (default). If "ftp", the URL will be modified to use FTP instead of HTTPS.
+\item \code{timeout} Integer specifying the timeout in seconds for download operations if protocol is "ftp". Defaults to 1800 (30 minutes) to handle large files.
 }
 }
 

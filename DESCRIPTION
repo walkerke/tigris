@@ -1,16 +1,17 @@
 Package: tigris
 Type: Package
 Title: Load Census TIGER/Line Shapefiles
-Version: 2.2.0
-Date: 2025-04-05
+Version: 2.2.1.9000
+Date: 2025-07-18
 Authors@R: c(
       person(given="Kyle", family="Walker", email="kyle@walker-data.com", role=c("aut", "cre")),
-      person(given="Bob", family="Rudis", email="bob@rudis.net", role="ctb")
+      person(given="Bob", family="Rudis", email="bob@rudis.net", role="ctb"),
+      person(given="Eli", family="Pousson", email="Eli.Pousson@baltimorecity.gov", role="ctb")
     )
 URL: https://github.com/walkerke/tigris
 BugReports: https://github.com/walkerke/tigris/issues
-Description: Download TIGER/Line shapefiles from the United States Census Bureau 
-    (<https://www.census.gov/geographies/mapping-files/time-series/geo/tiger-line-file.html>) 
+Description: Download TIGER/Line shapefiles from the United States Census Bureau
+    (<https://www.census.gov/geographies/mapping-files/time-series/geo/tiger-line-file.html>)
     and load into R as 'sf' objects.
 License: MIT + file LICENSE
 LazyData: TRUE
@@ -18,22 +19,26 @@ Encoding: UTF-8
 Depends:
     R (>= 3.3.0)
 Suggests:
-    testthat,
+    testthat (>= 3.0.0),
     ggplot2,
     ggthemes,
     leaflet,
-    knitr, 
+    knitr,
     tidycensus,
-    sp
+    sp,
+    withr
 Imports:
     stringr,
     magrittr,
     utils,
     rappdirs,
     httr,
-    uuid, 
-    sf, 
-    dplyr, 
-    methods
-RoxygenNote: 7.3.3
+    uuid,
+    sf,
+    dplyr,
+    methods,
+    cli,
+    rlang
+Config/testthat/edition: 3
+RoxygenNote: 7.3.2
 Roxygen: list(markdown = TRUE)

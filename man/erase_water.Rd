@@ -50,10 +50,9 @@ king_tracts <- tracts(state = "WA", county = "King", year = 2020)
 
 # CRS: NAD 1983 / Washington North (State Plane)
 king_erased <- king_tracts \%>\%
-  st_transform(32148) \%>\%
-  erase_water(area_threshold = 0.9)
+    st_transform(32148) \%>\%
+    erase_water(area_threshold = 0.9)
 
 plot(king_erased$geometry)
-
 }
 }

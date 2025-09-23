@@ -18,39 +18,43 @@
 #' }
 #' @export
 regions <- function(resolution = '500k', year = NULL, ...) {
+    if (is.null(year)) {
+        year <- getOption("tigris_year", 2024)
 
-  if (is.null(year)) {
+        message(sprintf("Retrieving data for the year %s", year))
+    }
 
-    year <- getOption("tigris_year", 2022)
+    if (year < 2011) {
+        fname <- as.character(match.call())[[1]]
 
-    message(sprintf("Retrieving data for the year %s", year))
+        msg <- sprintf(
+            "%s is not currently available for years prior to 2011.  To request this feature,
+                   file an issue at https://github.com/walkerke/tigris.",
+            fname
+        )
 
-  }
+        stop(msg, call. = FALSE)
+    }
 
-  if (year < 2011) {
+    if (!(resolution %in% c('500k', '5m', '20m'))) {
+        stop(
+            "Invalid value for resolution. Valid values are '500k', '5m', and '20m'.",
+            call. = FALSE
+        )
+    }
 
-    fname <- as.character(match.call())[[1]]
+    cyear <- as.character(year)
 
-    msg <- sprintf("%s is not currently available for years prior to 2011.  To request this feature,
-                   file an issue at https://github.com/walkerke/tigris.", fname)
+    url <- sprintf(
+        "https://www2.census.gov/geo/tiger/GENZ%s/shp/cb_%s_us_region_%s.zip",
+        cyear,
+        cyear,
+        resolution
+    )
 
-    stop(msg, call. = FALSE)
+    rgns <- load_tiger(url, tigris_type = "region", ...)
 
-  }
-
-  if (!(resolution %in% c('500k', '5m', '20m'))) {
-    stop("Invalid value for resolution. Valid values are '500k', '5m', and '20m'.", call. = FALSE)
-  }
-
-  cyear <- as.character(year)
-
-  url <- sprintf("https://www2.census.gov/geo/tiger/GENZ%s/shp/cb_%s_us_region_%s.zip",
-                 cyear, cyear, resolution)
-
-  rgns <- load_tiger(url, tigris_type = "region", ...)
-
-  return(rgns)
-
+    return(rgns)
 }
 
 #' Download a US Census divisions cartographic boundary shapefile into R
@@ -73,39 +77,43 @@ regions <- function(resolution = '500k', year = NULL, ...) {
 #'    addPolygons()
 #' }
 divisions <- function(resolution = '500k', year = NULL, ...) {
+    if (is.null(year)) {
+        year <- getOption("tigris_year", 2024)
 
-  if (is.null(year)) {
+        message(sprintf("Retrieving data for the year %s", year))
+    }
 
-    year <- getOption("tigris_year", 2022)
+    if (year < 2011) {
+        fname <- as.character(match.call())[[1]]
 
-    message(sprintf("Retrieving data for the year %s", year))
+        msg <- sprintf(
+            "%s is not currently available for years prior to 2011.  To request this feature,
+                   file an issue at https://github.com/walkerke/tigris.",
+            fname
+        )
 
-  }
+        stop(msg, call. = FALSE)
+    }
 
-  if (year < 2011) {
+    if (!(resolution %in% c('500k', '5m', '20m'))) {
+        stop(
+            "Invalid value for resolution. Valid values are '500k', '5m', and '20m'.",
+            call. = FALSE
+        )
+    }
 
-    fname <- as.character(match.call())[[1]]
+    cyear <- as.character(year)
 
-    msg <- sprintf("%s is not currently available for years prior to 2011.  To request this feature,
-                   file an issue at https://github.com/walkerke/tigris.", fname)
+    url <- sprintf(
+        "https://www2.census.gov/geo/tiger/GENZ%s/shp/cb_%s_us_division_%s.zip",
+        cyear,
+        cyear,
+        resolution
+    )
 
-    stop(msg, call. = FALSE)
+    div <- load_tiger(url, tigris_type = "division", ...)
 
-  }
-
-  if (!(resolution %in% c('500k', '5m', '20m'))) {
-    stop("Invalid value for resolution. Valid values are '500k', '5m', and '20m'.", call. = FALSE)
-  }
-
-  cyear <- as.character(year)
-
-  url <- sprintf("https://www2.census.gov/geo/tiger/GENZ%s/shp/cb_%s_us_division_%s.zip",
-                 cyear, cyear, resolution)
-
-  div <- load_tiger(url, tigris_type = "division", ...)
-
-  return(div)
-
+    return(div)
 }
 
 #' Download a US national boundary shapefile into R
@@ -127,38 +135,41 @@ divisions <- function(resolution = '500k', year = NULL, ...) {
 #'    addPolygons()
 #' }
 nation <- function(resolution = '5m', year = NULL, ...) {
+    if (is.null(year)) {
+        year <- getOption("tigris_year", 2024)
 
-  if (is.null(year)) {
+        message(sprintf("Retrieving data for the year %s", year))
+    }
 
-    year <- getOption("tigris_year", 2022)
+    if (year < 2011) {
+        fname <- as.character(match.call())[[1]]
 
-    message(sprintf("Retrieving data for the year %s", year))
+        msg <- sprintf(
+            "%s is not currently available for years prior to 2011.  To request this feature,
+                   file an issue at https://github.com/walkerke/tigris.",
+            fname
+        )
 
-  }
+        stop(msg, call. = FALSE)
+    }
 
-  if (year < 2011) {
+    if (!(resolution %in% c('5m', '20m'))) {
+        stop(
+            "Invalid value for resolution. Valid values are '5m', and '20m'.",
+            call. = FALSE
+        )
+    }
 
-    fname <- as.character(match.call())[[1]]
+    cyear <- as.character(year)
 
-    msg <- sprintf("%s is not currently available for years prior to 2011.  To request this feature,
-                   file an issue at https://github.com/walkerke/tigris.", fname)
+    url <- sprintf(
+        "https://www2.census.gov/geo/tiger/GENZ%s/shp/cb_%s_us_nation_%s.zip",
+        cyear,
+        cyear,
+        resolution
+    )
 
-    stop(msg, call. = FALSE)
+    nat <- load_tiger(url, tigris_type = "nation", ...)
 
-  }
-
-  if (!(resolution %in% c('5m', '20m'))) {
-    stop("Invalid value for resolution. Valid values are '5m', and '20m'.", call. = FALSE)
-  }
-
-  cyear <- as.character(year)
-
-  url <- sprintf("https://www2.census.gov/geo/tiger/GENZ%s/shp/cb_%s_us_nation_%s.zip",
-                 cyear, cyear, resolution)
-
-  nat <- load_tiger(url, tigris_type = "nation", ...)
-
-  return(nat)
-
+    return(nat)
 }
-

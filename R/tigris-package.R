@@ -22,14 +22,14 @@
 #' for downloading files. The default is \code{"ftp"}, which may work better in some environments
 #' where HTTPS connections are restricted. For HTTPS downloads, use \code{protocol = "http"}.
 #'
-#' Use the \code{timeout} parameter to control the timeout for downloading large files. The default is
-#' 300 seconds (5 minutes), which should be sufficient for most files. If you're downloading particularly
+#' Use the \code{timeout} parameter to control the timeout for downloading large files when the protocol is FTP. The default is
+#' 1800 seconds (30 minutes), which should be sufficient for most files. If you're downloading particularly
 #' large files or have a slow connection, you may need to increase this value.
 #'
 #' @note Several \code{options} and arguments control behavior of various \code{tigris} functions.
 #'       See \code{Details} for more information.
-#' @name tigris
-#' @docType package
+#' @name tigris-package
+#' @aliases tigris
 #' @author Kyle Walker (@@kyle_e_walker)
 #' @importFrom stringr str_trim str_pad
 #' @import utils
@@ -38,8 +38,13 @@
 #' @import uuid
 #' @import sf
 #' @import dplyr
+#' @importFrom cli cli_abort cli_warn cli_inform
+#' @import rlang
 #' @importFrom methods as
 NULL
+
+#' @keywords internal
+"_PACKAGE"
 
 #' tigris exported operators
 #'
@@ -54,5 +59,3 @@ NULL
 #' @export
 #' @rdname tigris-exports
 NULL
-
-
