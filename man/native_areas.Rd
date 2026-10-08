@@ -41,7 +41,6 @@ option \code{"tigris_refresh"} if it is set. Specifying this argument will overr
 \dontrun{
 library(tigris)
 library(ggplot2)
-library(ggthemes)
 
 nat <- native_areas(cb = TRUE)
 
@@ -49,7 +48,7 @@ gg <- ggplot()
 gg <- gg + geom_sf(data = nat, color="black", fill="white", size=0.25)
 gg <- gg + coord_sf(xlim=c(-179.1506, -129.9795),  # alaska
                      ylim=c(51.2097, 71.4410))
-gg <- gg + theme_map()
+gg <- gg + theme_void()
 gg
 }
 }

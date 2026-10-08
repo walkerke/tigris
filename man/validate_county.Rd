@@ -44,7 +44,7 @@ usage. Uses \code{is_interactive()} by default.}
 }
 }
 \description{
-\code{\link[=validate_county]{validate_county()}} checks if an input \code{county} is a FIPS code, name or
+\code{validate_county()} checks if an input \code{county} is a FIPS code, name or
 abbreviation. If some or all input values are invalid, error if
 \code{require_county = TRUE}, return \code{NULL} if all inputs are invalid, or warn and
 return valid input values.

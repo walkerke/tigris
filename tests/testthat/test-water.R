@@ -17,7 +17,6 @@ test_that("water functions error", {
 test_that("water functions work", {
   skip_on_cran()
   skip_on_ci()
-  withr::local_options(list(tigris_use_cache = TRUE))
 
   state <- "NH"
 

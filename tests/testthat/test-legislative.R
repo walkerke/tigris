@@ -20,7 +20,6 @@ test_that("congressional_districts warns and errors", {
 test_that("congressional_districts works", {
   skip_on_cran()
   skip_on_ci()
-  withr::local_options(list(tigris_use_cache = TRUE))
 
   expect_s3_class(congressional_districts(), "sf")
   # TODO: Check why test failed on CI
@@ -111,7 +110,6 @@ test_that("state_legislative_districts errors", {
 test_that("state_legislative_districts works", {
   skip_on_cran()
   skip_on_ci()
-  withr::local_options(list(tigris_use_cache = TRUE))
 
   state <- "WY"
 
@@ -128,25 +126,18 @@ test_that("state_legislative_districts works", {
     state_legislative_districts(state = 31, house = "lower"),
     "sf"
   )
-  # TODO: Add support if support for year < 2011 is added
-  # expect_s3_class(
-  #   state_legislative_districts(
-  #     state = state,
-  #     house = "lower",
-  #     cb = TRUE,
-  #     year = 2010
-  #   ),
-  #   "sf"
-  # )
-  # expect_s3_class(
-  #   state_legislative_districts(
-  #     state = state,
-  #     house = "upper",
-  #     cb = TRUE,
-  #     year = 2010
-  #   ),
-  #   "sf"
-  # )
+  expect_s3_class(
+    state_legislative_districts(state = state, house = "upper"),
+    "sf"
+  )
+  expect_s3_class(
+    state_legislative_districts(
+      state = state,
+      house = "upper",
+      year = 2010
+    ),
+    "sf"
+  )
   expect_s3_class(
     state_legislative_districts(
       state = state,
@@ -156,19 +147,25 @@ test_that("state_legislative_districts works", {
     ),
     "sf"
   )
-  # TODO: Enable after adding support for year < 2011
+  # TODO: Check if this test is supposed to work or not
   # expect_s3_class(
   #   state_legislative_districts(
   #     state = state,
   #     house = "upper",
-  #     year = 2010
+  #     year = 2010,
+  #     cb = TRUE
   #   ),
   #   "sf"
   # )
-  expect_s3_class(
-    state_legislative_districts(state = state, house = "upper"),
-    "sf"
-  )
+  # expect_s3_class(
+  #   state_legislative_districts(
+  #     state = state,
+  #     house = "lower",
+  #     year = 2010,
+  #     cb = TRUE
+  #   ),
+  #   "sf"
+  # )
 })
 
 
@@ -184,12 +181,15 @@ test_that("voting_districts errors", {
 test_that("voting_districts works", {
   skip_on_cran()
   skip_on_ci()
-  withr::local_options(list(tigris_use_cache = TRUE))
 
   expect_s3_class(voting_districts(cb = TRUE), "sf")
   state <- "WY"
 
   expect_s3_class(voting_districts(state = state, cb = TRUE), "sf")
   expect_s3_class(voting_districts(state = state, county = "Albany"), "sf")
+  expect_s3_class(
+    voting_districts(state = state, county = "Albany", cb = TRUE),
+    "sf"
+  )
   expect_s3_class(voting_districts(state = state, year = 2012), "sf")
 })

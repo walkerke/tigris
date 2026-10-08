@@ -41,7 +41,7 @@ usage. Uses \code{is_interactive()} by default.}
 }
 }
 \description{
-\code{\link[=validate_state]{validate_state()}} checks if an input state values is a FIPS code, full name
+\code{validate_state()} checks if an input state values is a FIPS code, full name
 or abbreviation. If some or all input values are invalid, error if
 \code{require_state = TRUE}, return \code{NULL} if all inputs are invalid, or warn and
 return valid input values.

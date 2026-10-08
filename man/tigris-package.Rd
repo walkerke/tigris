@@ -55,7 +55,7 @@ Kyle Walker (@kyle_e_walker)
 Other contributors:
 \itemize{
   \item Bob Rudis \email{bob@rudis.net} [contributor]
-  \item Eli Pousson \email{Eli.Pousson@baltimorecity.gov} [contributor]
+  \item Eli Pousson \email{eli.pousson@gmail.com} (\href{https://orcid.org/0000-0001-8280-1706}{ORCID}) [contributor]
 }
 
 }

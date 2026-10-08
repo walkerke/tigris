@@ -59,8 +59,6 @@
 
     Code
       military(progress_bar = FALSE)
-    Message
-      Retrieving data for the year 2024
     Output
       Simple feature collection with 858 features and 7 fields
       Geometry type: MULTIPOLYGON
