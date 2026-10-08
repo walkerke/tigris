@@ -664,7 +664,7 @@ set_tigris_year <- function(
   year = NULL,
   default = 2024,
   min_year = 2011,
-  max_year = 2024,
+  max_year = Inf,
   not_year = NULL,
   quiet = FALSE,
   message = NULL,
@@ -696,7 +696,7 @@ set_tigris_year <- function(
 check_tigris_year <- function(
   year,
   min_year = 2011,
-  max_year = 2024,
+  max_year = Inf,
   not_year = NULL,
   message = NULL,
   call = caller_env()
@@ -722,12 +722,16 @@ check_tigris_year <- function(
   if (outside_range) {
     message <- c(
       message,
-      "i" = "{.arg year} must be between {min_year} and {max_year}."
+      "i" = if (is.finite(max_year)) {
+        "{.arg year} must be between {min_year} and {max_year}."
+      } else {
+        "{.arg year} must be {min_year} or later."
+      }
     )
   }
 
   if (not_allowed) {
-    year <- c(
+    message <- c(
       message,
       "i" = "{.arg year} can't be {.or {not_year}}."
     )

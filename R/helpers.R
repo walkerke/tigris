@@ -174,7 +174,7 @@ load_tiger <- function(
 
                     while (i < 4) {
                         cli_bullets(
-                            "Previous download failed.  Re-download attempt{i}s of 3..."
+                            "Previous download failed.  Re-download attempt {i} of 3..."
                         )
 
                         if (grepl("^ftp://", url)) {
@@ -865,7 +865,7 @@ erase_water <- function(input_sf, area_threshold = 0.75, year = NULL) {
         cli_abort("The input dataset is not an sf object.")
     }
 
-    year <- set_tigris_year(year, min_year = 2010)
+    year <- set_tigris_year(year, min_year = 2010, quiet = TRUE)
 
     # Define st_erase function internally
     st_erase <- function(x, y) {

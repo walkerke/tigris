@@ -58,7 +58,7 @@ states <- function(cb = FALSE, resolution = "500k", year = NULL, ...) {
                 )
             } else {
                 url <- sprintf(
-                    "https://www2.census.gov/geo/tiger/GENZ%s/shp/cb_%s_us_state_%s.zip",
+                    "https://www2.census.gov/geo/tiger/GENZ%s/cb_%s_us_state_%s.zip",
                     year,
                     year,
                     resolution
