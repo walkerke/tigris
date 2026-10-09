@@ -134,8 +134,14 @@ call_geolocator <- function(street, city, state, zip = NA) {
 #'
 #' @param lat A numeric value
 #' @param lon A numeric value
-#' @param benchmark time period when a snapshot of address ranges was taken
-#' @param vintage census or survey that the address range relates to
+#' @param benchmark time period when a snapshot of address ranges was taken.
+#'   Defaults to \code{"Public_AR_Current"}; see
+#'   \url{https://geocoding.geo.census.gov/geocoder/benchmarks} for available benchmarks.
+#' @param vintage census or survey that the address range relates to, e.g.
+#'   \code{"Census2020_Current"}. Defaults to \code{"Current_Current"}; available
+#'   vintages depend on the benchmark, see
+#'   \url{https://geocoding.geo.census.gov/geocoder/vintages?benchmark=Public_AR_Current}.
+#'   ACS vintages don't include blocks, so they return \code{NA}.
 #'
 #' @return A character string representing the Census block of the supplied
 #'   lat/lon.
@@ -170,34 +176,36 @@ call_geolocator_latlon <- function(lat, lon, benchmark, vintage) {
   #print(url_full)
   # Check response
   r <- httr::GET(url_full)
+  if (httr::status_code(r) == 400) {
+    cli_abort(
+      c(
+        "The Census geocoder rejected the request (HTTP 400); check that `benchmark` and `vintage` are valid.",
+        "i" = "Benchmarks: {.url https://geocoding.geo.census.gov/geocoder/benchmarks}",
+        "i" = "Vintages: {.url https://geocoding.geo.census.gov/geocoder/vintages?benchmark={benchmark}}"
+      )
+    )
+  }
   httr::stop_for_status(r)
   response <- httr::content(r)
-  if (length(response$result$geographies$`2020 Census Blocks`[[1]]$GEOID) == 0) {
+  geographies <- response[["result"]][["geographies"]]
+
+  # The block layer is "2020 Census Blocks" for Current_Current and "Census
+  # Blocks" for the Census 2010 / 2020 vintages; ACS vintages have no blocks
+  response_block <- grep("Census Blocks$", names(geographies))
+
+  block_matches <- if (length(response_block) > 0) geographies[[response_block[1]]]
+  geoid <- if (length(block_matches) > 0) block_matches[[1]]$GEOID
+
+  if (length(geoid) == 0) {
     message(paste0("Lat/lon (", lat, ", ", lon,
                    ") returned no geocodes. An NA was returned."))
     return(NA_character_)
-  } else {
-
-  #regex search for block group geography in response
-  response_block<-grep(response[["result"]][["geographies"]], pattern = ".Block.")
-
-  #check If a block group result is found or return NA
-  #If block group response is found check GEOID length and return either NA for missing data or the value
-  if(length(response_block) == 0){
-    return(NA_character_)
-  } else {
-    if (length(response[["result"]][["geographies"]][[response_block]][[1]]$GEOID) == 0) {
-      message(paste0("Lat/lon (", lat, ", ", lon,
-                     ") returned no geocodes. An NA was returned."))
-      return(NA_character_)
-    } else {
-      if (length(response[["result"]][["geographies"]][[response_block]][[1]]$GEOID) > 1) {
-        message(paste0("Lat/lon (", lat, ", ", lon,
-                       ") returned more than geocode. The first match was returned."))
-      }
-      return(response[["result"]][["geographies"]][[response_block]][[1]]$GEOID)
-    }
   }
 
+  if (length(block_matches) > 1) {
+    message(paste0("Lat/lon (", lat, ", ", lon,
+                   ") returned more than one geocode. The first match was returned."))
   }
+
+  return(geoid)
 }

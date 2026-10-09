@@ -11,9 +11,15 @@ call_geolocator_latlon(lat, lon, benchmark, vintage)
 
 \item{lon}{A numeric value}
 
-\item{benchmark}{time period when a snapshot of address ranges was taken}
+\item{benchmark}{time period when a snapshot of address ranges was taken.
+Defaults to \code{"Public_AR_Current"}; see
+\url{https://geocoding.geo.census.gov/geocoder/benchmarks} for available benchmarks.}
 
-\item{vintage}{census or survey that the address range relates to}
+\item{vintage}{census or survey that the address range relates to, e.g.
+\code{"Census2020_Current"}. Defaults to \code{"Current_Current"}; available
+vintages depend on the benchmark, see
+\url{https://geocoding.geo.census.gov/geocoder/vintages?benchmark=Public_AR_Current}.
+ACS vintages don't include blocks, so they return \code{NA}.}
 }
 \value{
 A character string representing the Census block of the supplied
