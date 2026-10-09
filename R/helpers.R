@@ -838,7 +838,7 @@ rbind_tigris <- function(...) {
 #'
 #' @param input_sf An input sf object, ideally obtained with the tigris package or through tidycensus.
 #' @param area_threshold The percentile rank cutoff of water areas to use in the erase operation, ranked by size. Defaults to 0.75, representing the water areas in the 75th percentile and up (the largest 25 percent of areas).  This value may need to be modified by the user to achieve optimal results for a given location.
-#' @param year The year to use for the water layer; defaults to 2020 unless the \code{tigris_year} option is otherwise set.
+#' @param year The year to use for the water layer (2011 or later); defaults to 2024 unless the \code{tigris_year} option is otherwise set.
 #'
 #' @return An output sf object representing the polygons in \code{input_sf} with water areas erased.
 #' @export
@@ -867,16 +867,18 @@ erase_water <- function(input_sf, area_threshold = 0.75, year = NULL) {
         cli_abort("The input dataset is not an sf object.")
     }
 
-    year <- set_tigris_year(year, min_year = 2010, quiet = TRUE)
+    # area_water() is available from 2011
+    year <- set_tigris_year(year, min_year = 2011, quiet = TRUE)
 
     # Define st_erase function internally
     st_erase <- function(x, y) {
         suppressWarnings(sf::st_difference(x, sf::st_union(y)))
     }
 
-    # Grab a dataset of counties quietly
+    # Grab a dataset of counties quietly; there are no cartographic boundary
+    # county files for 2011 and 2012
     us_counties <- tigris::counties(
-        cb = TRUE,
+        cb = year >= 2013,
         resolution = "500k",
         progress_bar = FALSE,
         year = year
@@ -911,6 +913,16 @@ erase_water <- function(input_sf, area_threshold = 0.75, year = NULL) {
         sf::st_transform(sf::st_crs(input_sf)) %>%
         sf::st_filter(input_sf) %>% # New step to only erase intersecting water areas
         dplyr::filter(dplyr::percent_rank(AWATER) >= area_threshold)
+
+    if (nrow(my_water) == 0) {
+        cli_bullets(
+            c(
+                "No overlapping water area found.",
+                "i" = "Returning unmodified input."
+            )
+        )
+        return(input_sf)
+    }
 
     cli_bullets(
         "Erasing water area...\nIf this is slow, try a larger area threshold value."

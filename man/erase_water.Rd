@@ -11,7 +11,7 @@ erase_water(input_sf, area_threshold = 0.75, year = NULL)
 
 \item{area_threshold}{The percentile rank cutoff of water areas to use in the erase operation, ranked by size. Defaults to 0.75, representing the water areas in the 75th percentile and up (the largest 25 percent of areas).  This value may need to be modified by the user to achieve optimal results for a given location.}
 
-\item{year}{The year to use for the water layer; defaults to 2020 unless the \code{tigris_year} option is otherwise set.}
+\item{year}{The year to use for the water layer (2011 or later); defaults to 2024 unless the \code{tigris_year} option is otherwise set.}
 }
 \value{
 An output sf object representing the polygons in \code{input_sf} with water areas erased.
