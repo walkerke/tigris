@@ -39,7 +39,9 @@ test_that("erase_water works", {
   skip_on_ci()
 
   dc_tracts <- tracts("DC", year = 2020)
-  expect_s3_class(erase_water(dc_tracts, year = 2020), "sf")
+  dc_erased <- erase_water(dc_tracts, year = 2020)
+  expect_s3_class(dc_erased, "sf")
+  expect_true(all(sf::st_is_valid(dc_erased)))
 
   # No overlapping water returns the input unmodified (#172)
   dc_water <- area_water("DC", "001", year = 2020)

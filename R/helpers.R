@@ -929,6 +929,12 @@ erase_water <- function(input_sf, area_threshold = 0.75, year = NULL) {
     )
     erased_sf <- suppressMessages(st_erase(input_sf, my_water))
 
+    # The erase can leave invalid geometries (e.g. duplicate vertices), which
+    # break later operations like st_area()
+    if (!isTRUE(all(sf::st_is_valid(erased_sf)))) {
+        erased_sf <- sf::st_make_valid(erased_sf)
+    }
+
     return(erased_sf)
 }
 
