@@ -4,8 +4,10 @@ test_that("pumas works", {
   expect_s3_class(pumas(year = 2020, cb = TRUE), "sf")
 
   state <- "WY"
-  # TODO: Enable test if support is added
-  # expect_s3_class(pumas(state = state), "sf")
+  expect_s3_class(pumas(state = state), "sf")
+  # 2020 PUMAs are in PUMA/ through 2023 and PUMA20/ from 2024 (#213)
+  expect_s3_class(pumas(state = state, year = 2023), "sf")
+  expect_s3_class(pumas(state = state, year = 2025), "sf")
   expect_s3_class(pumas(state = state, year = 2013), "sf")
   expect_s3_class(pumas(year = 2019, cb = TRUE, state = state), "sf")
   expect_s3_class(pumas(year = 2013, cb = TRUE, state = state), "sf")
