@@ -75,7 +75,8 @@ core_based_statistical_areas <- function(
 #'
 #' @param cb If cb is set to TRUE, download a generalized (1:500k)
 #'        cartographic boundary file.  Defaults to FALSE (the most detailed
-#'        TIGER/Line file).
+#'        TIGER/Line file). Cartographic boundary urban areas are available
+#'        through 2020.
 #' @param criteria If set to "2020" and the year is 2020, will download the new 2020 urban areas criteria. Not available for cartographic boundary shapefiles / other years at the moment.
 #' @inheritParams load_tiger_doc_template
 #' @inheritSection load_tiger_doc_template Additional Arguments
@@ -93,13 +94,29 @@ urban_areas <- function(cb = FALSE, year = NULL, criteria = NULL, ...) {
             )
         }
 
-        url <- sprintf(
-            "https://www2.census.gov/geo/tiger/GENZ%s/shp/cb_%s_us_ua10_500k.zip",
-            year,
-            year
-        )
+        if (year > 2020) {
+            cli_abort(
+                c(
+                    "Cartographic boundary urban areas are not available for years after 2020.",
+                    "i" = "Use `cb = FALSE` for urban areas in {year}, or `year = 2020` for cartographic boundary urban areas."
+                )
+            )
+        }
 
-        if (year == 2013) url <- gsub("shp/", "", url)
+        if (year == 2020) {
+            cli_bullets(
+                "The 2020 CB urban areas use the 2020 urban area criteria."
+            )
+            url <- "https://www2.census.gov/geo/tiger/GENZ2020/shp/cb_2020_us_ua20_corrected_500k.zip"
+        } else {
+            url <- sprintf(
+                "https://www2.census.gov/geo/tiger/GENZ%s/shp/cb_%s_us_ua10_500k.zip",
+                year,
+                year
+            )
+
+            if (year == 2013) url <- gsub("shp/", "", url)
+        }
     } else {
         if (year >= 2023) {
             if (year == 2023) {
@@ -122,11 +139,7 @@ urban_areas <- function(cb = FALSE, year = NULL, criteria = NULL, ...) {
                 )
             }
 
-            url <- sprintf(
-                "https://www2.census.gov/geo/tiger/TIGER%s/UAC/tl_%s_us_uac20.zip",
-                year,
-                year
-            )
+            url <- "https://www2.census.gov/geo/tiger/TIGER2020/UAC/tl_2020_us_uac20_corrected.zip"
         } else {
             url <- sprintf(
                 "https://www2.census.gov/geo/tiger/TIGER%s/UAC/tl_%s_us_uac10.zip",

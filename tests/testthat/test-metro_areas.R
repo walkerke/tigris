@@ -9,9 +9,9 @@ test_that("metro areas functions work", {
   expect_s3_class(core_based_statistical_areas(year = 2013, cb = TRUE), "sf")
 
   expect_s3_class(urban_areas(), "sf")
-  # TODO: Check if data is unavailable or if test fails for another reason
-  # expect_s3_class(urban_areas(cb = TRUE), "sf")
+  expect_s3_class(urban_areas(year = 2025), "sf")
   expect_s3_class(urban_areas(year = 2013, cb = TRUE), "sf")
+  expect_s3_class(urban_areas(year = 2020, cb = TRUE), "sf")
   expect_s3_class(urban_areas(year = 2020, criteria = 2020), "sf")
 
   expect_s3_class(combined_statistical_areas(), "sf")
@@ -31,6 +31,8 @@ test_that("metro areas functions error", {
   skip_on_ci()
   expect_error(urban_areas(year = 2020, criteria = 2020, cb = TRUE))
   expect_error(urban_areas(year = 2021, criteria = 2020))
+  # No CB urban areas after 2020 (#215)
+  expect_error(urban_areas(cb = TRUE), "not available for years after 2020")
 
   expect_error(combined_statistical_areas(year = 2022))
 

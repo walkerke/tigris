@@ -9,7 +9,8 @@ urban_areas(cb = FALSE, year = NULL, criteria = NULL, ...)
 \arguments{
 \item{cb}{If cb is set to TRUE, download a generalized (1:500k)
 cartographic boundary file.  Defaults to FALSE (the most detailed
-TIGER/Line file).}
+TIGER/Line file). Cartographic boundary urban areas are available
+through 2020.}
 
 \item{year}{the data year; defaults to 2024}
 
