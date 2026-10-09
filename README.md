@@ -80,6 +80,7 @@ Please note: cartographic boundary files in __tigris__ are not available for 201
 | `tribal_subdivisions_national()` | TIGER/Line | 2011-2024 |
 | `landmarks()` | TIGER/Line | 2011-2024 |
 | `military()` | TIGER/Line | 2011-2024 |
+| `popcenters()` | Census Reference Files | 2000, 2010, 2020 |
 
 
 
