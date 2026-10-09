@@ -27,6 +27,10 @@ core_based_statistical_areas <- function(
     check_cb(cb)
     year <- set_tigris_year(year, min_year = 2010)
 
+    if (year == 2022) {
+        cli_abort("CBSAs were not defined for 2022; choose a different year.")
+    }
+
     if (cb) {
         resolution <- match_resolution(resolution)
 
@@ -215,6 +219,10 @@ combined_statistical_areas <- function(
 #' @export
 metro_divisions <- function(year = NULL, ...) {
     year <- set_tigris_year(year)
+
+    if (year == 2022) {
+        cli_abort("CBSAs were not defined for 2022; choose a different year.")
+    }
 
     url <- sprintf(
         "https://www2.census.gov/geo/tiger/TIGER%s/METDIV/tl_%s_us_metdiv.zip",

@@ -34,7 +34,11 @@ test_that("metro areas functions error", {
   # No CB urban areas after 2020 (#215)
   expect_error(urban_areas(cb = TRUE), "not available for years after 2020")
 
+  # No CBSA, CSA, or metro division files for 2022 (#184, #188)
+  expect_error(core_based_statistical_areas(year = 2022), "not defined for 2022")
+  expect_error(core_based_statistical_areas(year = 2022, cb = TRUE), "not defined for 2022")
   expect_error(combined_statistical_areas(year = 2022))
+  expect_error(metro_divisions(year = 2022), "not defined for 2022")
 
   expect_error(new_england(year = 2024))
 })
