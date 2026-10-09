@@ -395,12 +395,14 @@ load_tiger <- function(
         attr(obj, "tigris") <- tigris_type
     }
 
-    # Take care of COUNTYFP, STATEFP issues for historic data
+    # Take care of COUNTYFP, STATEFP issues for historic data, keeping a file's
+    # own COUNTYFP / STATEFP if it has them (e.g. 2011-2013 blocks)
+    has_countyfp <- "COUNTYFP" %in% names(obj)
     if ("COUNTYFP00" %in% names(obj)) {
         obj$COUNTYFP <- obj$COUNTYFP00
         obj$STATEFP <- obj$STATEFP00
     }
-    if ("COUNTYFP10" %in% names(obj)) {
+    if ("COUNTYFP10" %in% names(obj) && !has_countyfp) {
         obj$COUNTYFP <- obj$COUNTYFP10
         obj$STATEFP <- obj$STATEFP10
     }

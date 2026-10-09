@@ -116,9 +116,13 @@ test_that("`blocks()` work", {
     "sf"
   )
 
-  expect_s3_class(
-    blocks(state = state, county = county, year = 2013),
-    "sf"
+  # 2011-2013 block files keep their own COUNTYFP / STATEFP (#206): this block
+  # was in Teton County (039) in 2010 and is in Park County (029) in 2013
+  teton_2013 <- blocks(state = state, county = "Teton", year = 2013)
+  expect_s3_class(teton_2013, "sf")
+  expect_equal(
+    teton_2013$COUNTYFP[teton_2013$GEOID == "560399676002304B"],
+    "029"
   )
   expect_s3_class(
     blocks(state = state, county = c(county, "Lincoln"), year = 2010),
