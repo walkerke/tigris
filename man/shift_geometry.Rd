@@ -50,6 +50,10 @@ Alaska, Hawaii, and Puerto Rico.  If your dataset includes features outside thes
 US territories or other countries), you may get unworkable results.  It is advisable to filter out
 those features before using \code{shift_geometry()}.
 
+Polygons that span more than one of these areas, such as the West region from \code{regions()}, are
+split into parts, shifted, and recombined.  Hawaii features are clipped to the main Hawaiian islands,
+so the uninhabited Northwestern Hawaiian Islands are dropped.
+
 Work on this function is inspired by and adapts some code from Claus Wilke's book \emph{Fundamentals of
 Data Visualization} (\url{https://clauswilke.com/dataviz/geospatial-data.html}); Bob Rudis's
 albersusa R package (\url{https://github.com/hrbrmstr/albersusa}); and the ggcart R package

@@ -19,6 +19,10 @@
 #' US territories or other countries), you may get unworkable results.  It is advisable to filter out
 #' those features before using \code{shift_geometry()}.
 #'
+#' Polygons that span more than one of these areas, such as the West region from \code{regions()}, are
+#' split into parts, shifted, and recombined.  Hawaii features are clipped to the main Hawaiian islands,
+#' so the uninhabited Northwestern Hawaiian Islands are dropped.
+#'
 #' Work on this function is inspired by and adapts some code from Claus Wilke's book \emph{Fundamentals of
 #' Data Visualization} (\url{https://clauswilke.com/dataviz/geospatial-data.html}); Bob Rudis's
 #' albersusa R package (\url{https://github.com/hrbrmstr/albersusa}); and the ggcart R package
@@ -107,6 +111,22 @@ shift_geometry <- function(
     sf::st_bbox() %>%
     sf::st_as_sfc()
 
+  # The whole Hawaiian archipelago, used to find Hawaii features.  Those features
+  # are still clipped to hi_bbox (the main islands), which drops the uninhabited
+  # Northwestern Hawaiian Islands
+  hi_extent <- sf::st_bbox(
+    c(xmin = -178.5, ymin = 18.5, xmax = -154.5, ymax = 28.6),
+    crs = sf::st_crs(4269)
+  ) %>%
+    sf::st_as_sfc() %>%
+    sf::st_segmentize(10000) %>%
+    sf::st_transform('ESRI:102003')
+
+  cont_bbox <- minimal_states %>%
+    dplyr::filter(!GEOID %in% c("02", "15", "72")) %>%
+    sf::st_bbox() %>%
+    sf::st_as_sfc()
+
   input_sf <- sf::st_transform(input_sf, sf::st_crs(minimal_states))
 
   ak_check <- suppressMessages(sf::st_intersects(
@@ -116,7 +136,7 @@ shift_geometry <- function(
   )[, 1])
   hi_check <- suppressMessages(sf::st_intersects(
     input_sf,
-    hi_bbox,
+    hi_extent,
     sparse = FALSE
   )[, 1])
   pr_check <- suppressMessages(sf::st_intersects(
@@ -139,6 +159,27 @@ shift_geometry <- function(
   if (!is.null(geoid_column)) {
     input_sf$state_fips <- stringr::str_sub(input_sf[[geoid_column]], 1, 2)
   } else {
+    # Polygons spanning more than one of the continental US, Alaska, Hawaii, and
+    # Puerto Rico (e.g. the West region from regions()) are split into parts,
+    # shifted, and recombined at the end
+    cont_check <- suppressMessages(sf::st_intersects(
+      input_sf,
+      cont_bbox,
+      sparse = FALSE
+    )[, 1])
+
+    spans_areas <- (ak_check + hi_check + pr_check + cont_check) > 1 &
+      sf::st_geometry_type(input_sf) %in% c("POLYGON", "MULTIPOLYGON")
+
+    if (any(spans_areas)) {
+      input_sf$.shift_id <- seq_len(nrow(input_sf))
+      input_sf <- dplyr::bind_rows(
+        input_sf[!spans_areas, ],
+        suppressWarnings(sf::st_cast(input_sf[spans_areas, ], "POLYGON"))
+      )
+      input_sf <- input_sf[order(input_sf$.shift_id), ]
+    }
+
     # This is where we need to infer the location of the features
     # We can do this by checking to see where the input features intersect
     # the AK/HI/PR bounding boxes
@@ -154,7 +195,7 @@ shift_geometry <- function(
             "02",
           suppressMessages(sf::st_intersects(
             input_sf,
-            hi_bbox,
+            hi_extent,
             sparse = FALSE
           )[, 1]) ~
             "15",
@@ -324,7 +365,8 @@ shift_geometry <- function(
 
     output_data <- shapes_list %>%
       dplyr::bind_rows() %>%
-      dplyr::select(-state_fips)
+      dplyr::select(-state_fips) %>%
+      recombine_shifted_parts()
 
     return(output_data)
   } else {
@@ -429,8 +471,30 @@ shift_geometry <- function(
 
     output_data <- shapes_list %>%
       dplyr::bind_rows() %>%
-      dplyr::select(-state_fips)
+      dplyr::select(-state_fips) %>%
+      recombine_shifted_parts()
 
     return(output_data)
   }
+}
+
+# Recombine the parts of features that shift_geometry() split across areas
+recombine_shifted_parts <- function(x) {
+  if (!".shift_id" %in% names(x)) {
+    return(x)
+  }
+
+  for (id in unique(x$.shift_id[duplicated(x$.shift_id)])) {
+    rows <- which(x$.shift_id %in% id)
+    sf::st_geometry(x)[rows[1]] <- sf::st_combine(sf::st_geometry(x)[rows])
+    x <- x[-rows[-1], ]
+  }
+
+  x$.shift_id <- NULL
+
+  if (all(sf::st_geometry_type(x) %in% c("POLYGON", "MULTIPOLYGON"))) {
+    x <- sf::st_cast(x, "MULTIPOLYGON")
+  }
+
+  x
 }
