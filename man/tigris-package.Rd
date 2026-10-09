@@ -52,6 +52,11 @@ Kyle Walker (@kyle_e_walker)
 
 \strong{Maintainer}: Kyle Walker \email{kyle@walker-data.com}
 
+Authors:
+\itemize{
+  \item Kyle Walker \email{kyle@walker-data.com}
+}
+
 Other contributors:
 \itemize{
   \item Bob Rudis \email{bob@rudis.net} [contributor]

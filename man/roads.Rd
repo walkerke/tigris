@@ -74,10 +74,10 @@ gg
 \seealso{
 \url{https://www2.census.gov/geo/pdfs/maps-data/data/tiger/tgrshp2020/TGRSHP2020_TechDoc.pdf}
 
-Other transportation functions: 
-\code{\link{address_ranges}()},
-\code{\link{primary_roads}()},
-\code{\link{primary_secondary_roads}()},
-\code{\link{rails}()}
+Other transportation functions:
+\code{\link[=address_ranges]{address_ranges()}},
+\code{\link[=primary_roads]{primary_roads()}},
+\code{\link[=primary_secondary_roads]{primary_secondary_roads()}},
+\code{\link[=rails]{rails()}}
 }
 \concept{transportation functions}

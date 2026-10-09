@@ -57,10 +57,10 @@ leaflet(trib) \%>\%
 \seealso{
 \url{https://www2.census.gov/geo/pdfs/reference/GARM/Ch5GARM.pdf}
 
-Other native/tribal geometries functions: 
-\code{\link{alaska_native_regional_corporations}()},
-\code{\link{native_areas}()},
-\code{\link{tribal_block_groups}()},
-\code{\link{tribal_subdivisions_national}()}
+Other native/tribal geometries functions:
+\code{\link[=alaska_native_regional_corporations]{alaska_native_regional_corporations()}},
+\code{\link[=native_areas]{native_areas()}},
+\code{\link[=tribal_block_groups]{tribal_block_groups()}},
+\code{\link[=tribal_subdivisions_national]{tribal_subdivisions_national()}}
 }
 \concept{native/tribal geometries functions}

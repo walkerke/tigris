@@ -45,10 +45,10 @@ option \code{"tigris_refresh"} if it is set. Specifying this argument will overr
 \seealso{
 \url{https://www.census.gov/programs-surveys/metro-micro.html}
 
-Other metro area functions: 
-\code{\link{combined_statistical_areas}()},
-\code{\link{metro_divisions}()},
-\code{\link{new_england}()},
-\code{\link{urban_areas}()}
+Other metro area functions:
+\code{\link[=combined_statistical_areas]{combined_statistical_areas()}},
+\code{\link[=metro_divisions]{metro_divisions()}},
+\code{\link[=new_england]{new_england()}},
+\code{\link[=urban_areas]{urban_areas()}}
 }
 \concept{metro area functions}

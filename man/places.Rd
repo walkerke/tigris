@@ -42,15 +42,15 @@ option \code{"tigris_refresh"} if it is set. Specifying this argument will overr
 \seealso{
 \url{https://www2.census.gov/geo/pdfs/reference/GARM/Ch9GARM.pdf}
 
-Other general area functions: 
-\code{\link{block_groups}()},
-\code{\link{blocks}()},
-\code{\link{counties}()},
-\code{\link{county_subdivisions}()},
-\code{\link{pumas}()},
-\code{\link{school_districts}()},
-\code{\link{states}()},
-\code{\link{tracts}()},
-\code{\link{zctas}()}
+Other general area functions:
+\code{\link[=block_groups]{block_groups()}},
+\code{\link[=blocks]{blocks()}},
+\code{\link[=counties]{counties()}},
+\code{\link[=county_subdivisions]{county_subdivisions()}},
+\code{\link[=pumas]{pumas()}},
+\code{\link[=school_districts]{school_districts()}},
+\code{\link[=states]{states()}},
+\code{\link[=tracts]{tracts()}},
+\code{\link[=zctas]{zctas()}}
 }
 \concept{general area functions}

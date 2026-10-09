@@ -53,8 +53,8 @@ plot(dallas_water$geometry)
 \seealso{
 \url{https://www2.census.gov/geo/pdfs/maps-data/data/tiger/tgrshp2020/TGRSHP2020_TechDoc.pdf}
 
-Other water functions: 
-\code{\link{coastline}()},
-\code{\link{linear_water}()}
+Other water functions:
+\code{\link[=coastline]{coastline()}},
+\code{\link[=linear_water]{linear_water()}}
 }
 \concept{water functions}

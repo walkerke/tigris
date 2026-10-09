@@ -31,8 +31,8 @@ option \code{"tigris_refresh"} if it is set. Specifying this argument will overr
 }
 
 \seealso{
-Other water functions: 
-\code{\link{area_water}()},
-\code{\link{linear_water}()}
+Other water functions:
+\code{\link[=area_water]{area_water()}},
+\code{\link[=linear_water]{linear_water()}}
 }
 \concept{water functions}

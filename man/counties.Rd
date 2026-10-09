@@ -81,15 +81,15 @@ gg
 \seealso{
 \url{https://www2.census.gov/geo/pdfs/reference/GARM/Ch4GARM.pdf}
 
-Other general area functions: 
-\code{\link{block_groups}()},
-\code{\link{blocks}()},
-\code{\link{county_subdivisions}()},
-\code{\link{places}()},
-\code{\link{pumas}()},
-\code{\link{school_districts}()},
-\code{\link{states}()},
-\code{\link{tracts}()},
-\code{\link{zctas}()}
+Other general area functions:
+\code{\link[=block_groups]{block_groups()}},
+\code{\link[=blocks]{blocks()}},
+\code{\link[=county_subdivisions]{county_subdivisions()}},
+\code{\link[=places]{places()}},
+\code{\link[=pumas]{pumas()}},
+\code{\link[=school_districts]{school_districts()}},
+\code{\link[=states]{states()}},
+\code{\link[=tracts]{tracts()}},
+\code{\link[=zctas]{zctas()}}
 }
 \concept{general area functions}

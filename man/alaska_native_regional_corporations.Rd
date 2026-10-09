@@ -40,10 +40,10 @@ option \code{"tigris_refresh"} if it is set. Specifying this argument will overr
 \seealso{
 \url{https://www2.census.gov/geo/pdfs/reference/GARM/Ch5GARM.pdf}
 
-Other native/tribal geometries functions: 
-\code{\link{native_areas}()},
-\code{\link{tribal_block_groups}()},
-\code{\link{tribal_census_tracts}()},
-\code{\link{tribal_subdivisions_national}()}
+Other native/tribal geometries functions:
+\code{\link[=native_areas]{native_areas()}},
+\code{\link[=tribal_block_groups]{tribal_block_groups()}},
+\code{\link[=tribal_census_tracts]{tribal_census_tracts()}},
+\code{\link[=tribal_subdivisions_national]{tribal_subdivisions_national()}}
 }
 \concept{native/tribal geometries functions}

@@ -59,10 +59,10 @@ plot(ne$geometry)
 \seealso{
 \url{https://www2.census.gov/geo/pdfs/maps-data/data/tiger/tgrshp2020/TGRSHP2020_TechDoc.pdf}
 
-Other metro area functions: 
-\code{\link{combined_statistical_areas}()},
-\code{\link{core_based_statistical_areas}()},
-\code{\link{metro_divisions}()},
-\code{\link{urban_areas}()}
+Other metro area functions:
+\code{\link[=combined_statistical_areas]{combined_statistical_areas()}},
+\code{\link[=core_based_statistical_areas]{core_based_statistical_areas()}},
+\code{\link[=metro_divisions]{metro_divisions()}},
+\code{\link[=urban_areas]{urban_areas()}}
 }
 \concept{metro area functions}

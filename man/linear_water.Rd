@@ -55,8 +55,8 @@ plot(dallas_water$geometry)
 \seealso{
 \url{https://www2.census.gov/geo/pdfs/maps-data/data/tiger/tgrshp2020/TGRSHP2020_TechDoc.pdf}
 
-Other water functions: 
-\code{\link{area_water}()},
-\code{\link{coastline}()}
+Other water functions:
+\code{\link[=area_water]{area_water()}},
+\code{\link[=coastline]{coastline()}}
 }
 \concept{water functions}

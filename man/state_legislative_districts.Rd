@@ -68,8 +68,8 @@ leaflet(leg) \%>\%
 \seealso{
 \url{https://www.census.gov/programs-surveys/geography/guidance/geo-areas/state-legis-dist.html}
 
-Other legislative district functions: 
-\code{\link{congressional_districts}()},
-\code{\link{voting_districts}()}
+Other legislative district functions:
+\code{\link[=congressional_districts]{congressional_districts()}},
+\code{\link[=voting_districts]{voting_districts()}}
 }
 \concept{legislative district functions}

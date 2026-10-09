@@ -72,8 +72,8 @@ plot(ia$geometry)
 \seealso{
 \url{https://www2.census.gov/geo/pdfs/reference/GARM/Ch14GARM.pdf}
 
-Other legislative district functions: 
-\code{\link{congressional_districts}()},
-\code{\link{state_legislative_districts}()}
+Other legislative district functions:
+\code{\link[=congressional_districts]{congressional_districts()}},
+\code{\link[=state_legislative_districts]{state_legislative_districts()}}
 }
 \concept{legislative district functions}

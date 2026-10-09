@@ -40,10 +40,10 @@ option \code{"tigris_refresh"} if it is set. Specifying this argument will overr
 \seealso{
 \url{https://www2.census.gov/geo/pdfs/maps-data/data/tiger/tgrshp2020/TGRSHP2020_TechDoc.pdf}
 
-Other transportation functions: 
-\code{\link{primary_roads}()},
-\code{\link{primary_secondary_roads}()},
-\code{\link{rails}()},
-\code{\link{roads}()}
+Other transportation functions:
+\code{\link[=primary_roads]{primary_roads()}},
+\code{\link[=primary_secondary_roads]{primary_secondary_roads()}},
+\code{\link[=rails]{rails()}},
+\code{\link[=roads]{roads()}}
 }
 \concept{transportation functions}

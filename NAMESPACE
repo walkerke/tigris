@@ -63,14 +63,20 @@ import(rappdirs)
 import(rlang)
 import(sf)
 import(utils)
-importFrom(cli,cli_abort)
-importFrom(cli,cli_bullets)
-importFrom(cli,cli_warn)
+importFrom(cli,
+  cli_abort,
+  cli_bullets,
+  cli_warn
+)
 importFrom(dplyr,mutate)
-importFrom(httr,GET)
-importFrom(httr,stop_for_status)
+importFrom(httr,
+  GET,
+  stop_for_status
+)
 importFrom(magrittr,"%>%")
 importFrom(methods,as)
-importFrom(stringr,str_pad)
-importFrom(stringr,str_trim)
+importFrom(stringr,
+  str_pad,
+  str_trim
+)
 importFrom(utils,URLencode)

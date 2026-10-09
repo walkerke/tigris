@@ -41,10 +41,10 @@ option \code{"tigris_refresh"} if it is set. Specifying this argument will overr
 \seealso{
 \url{https://www.census.gov/programs-surveys/geography/guidance/geo-areas/urban-rural.html}
 
-Other metro area functions: 
-\code{\link{combined_statistical_areas}()},
-\code{\link{core_based_statistical_areas}()},
-\code{\link{metro_divisions}()},
-\code{\link{new_england}()}
+Other metro area functions:
+\code{\link[=combined_statistical_areas]{combined_statistical_areas()}},
+\code{\link[=core_based_statistical_areas]{core_based_statistical_areas()}},
+\code{\link[=metro_divisions]{metro_divisions()}},
+\code{\link[=new_england]{new_england()}}
 }
 \concept{metro area functions}
