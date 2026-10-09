@@ -7,12 +7,11 @@
 roads(state, county, year = NULL, ...)
 }
 \arguments{
-\item{state}{A character vector of the two-digit FIPS code of the state of the county
-you'd like to download the roads for. Can also be state name or abbreviation
-(case-insensitive).}
+\item{state}{The two-digit FIPS code (string) of the state you'd like to
+download the roads for. Can also be state name or abbreviation (case-insensitive).}
 
-\item{county}{A character vector of the three-digit FIPS code of the county you'd like
-the roads for. Can also be a county name.}
+\item{county}{A character vector of the three-digit FIPS code of the county or counties you'd like
+the roads for. Can also be a vector of county names.}
 
 \item{year}{the data year; defaults to 2024}
 
