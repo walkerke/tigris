@@ -142,6 +142,13 @@ test_that("`blocks()` work", {
   )
 
   expect_error(blocks(state = state, year = 1990))
+
+  # Connecticut blocks use former counties, not planning regions (#178)
+  expect_error(
+    blocks(state = "CT", county = "Capitol", year = 2024),
+    "former counties"
+  )
+  expect_error(blocks(state = "CT", county = "110", year = 2024), "former counties")
 })
 
 

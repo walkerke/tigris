@@ -922,6 +922,23 @@ blocks <- function(state, county = NULL, year = NULL, ...) {
 
     state <- validate_state(state, require_state = TRUE)
 
+    # Block files use 2020 Census geography, so Connecticut blocks keep the
+    # former county codes rather than the planning regions used from 2022
+    if (year >= 2020 && state == "09" && !is.null(county)) {
+        ct_county <- suppressMessages(
+            validate_county(state, county, multiple = TRUE)
+        )
+
+        if (any(ct_county %in% c("110", "120", "130", "140", "150", "160", "170", "180", "190"))) {
+            cli_abort(
+                c(
+                    "Census block files use 2020 Census geography, so Connecticut blocks are coded to its former counties, not planning regions.",
+                    "i" = "Use a former county name or code instead, e.g. `county = \"Hartford\"` or `county = \"003\"`."
+                )
+            )
+        }
+    }
+
     if (year >= 2014) {
         if (year >= 2020) {
             # New block logic for 2020
