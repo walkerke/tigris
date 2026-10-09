@@ -794,7 +794,7 @@ rbind_tigris <- function(...) {
                 })
             }
 
-            tmp <- Reduce(rbind, elements) # bind_rows not working atm
+            tmp <- dplyr::bind_rows(elements)
 
             # Re-assign the original CRS if missing
             if (is.na(st_crs(tmp)$proj4string)) {
