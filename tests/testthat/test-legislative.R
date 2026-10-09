@@ -33,6 +33,13 @@ test_that("congressional_districts works", {
     congressional_districts(year = 2022, resolution = "20m", cb = TRUE),
     "sf"
   )
+  # TIGER/Line CDs are state files from 2022 on; Congress follows the year (#218)
+  expect_equal(nrow(congressional_districts(state = state, year = 2025)), 1)
+  expect_equal(nrow(congressional_districts(state = state, year = 2026)), 1)
+  expect_equal(
+    nrow(congressional_districts(state = c("WY", "VT"), year = 2024)),
+    2
+  )
   expect_s3_class(
     congressional_districts(
       state = state,
@@ -87,14 +94,14 @@ test_that("congressional_districts works", {
     ),
     "sf"
   )
-  expect_s3_class(
-    congressional_districts(
+  expect_equal(
+    nrow(congressional_districts(
       state = state,
       year = 2010,
       resolution = res,
       cb = FALSE
-    ),
-    "sf"
+    )),
+    1
   )
 })
 

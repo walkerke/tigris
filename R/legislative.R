@@ -5,7 +5,7 @@
 #'
 #' Congressional districts for the 108th through 112th sessions were established by the states based on the result of the 2000 Census. Congressional districts for the 113th through 116th sessions were established by the states based on the result of the 2010 Census. Boundaries are effective until January of odd number years (for example, January 2015, January 2017, etc.), unless a state initiative or court ordered redistricting requires a change. All states established new congressional districts in 2011-2012, with the exception of the seven single member states (Alaska, Delaware, Montana, North Dakota, South Dakota, Vermont, and Wyoming).
 #'
-#' The current default in tigris reflects boundaries for the 118th Congress, which is available for years 2022 and 2023.  Older congressional district boundaries back to 2011 can be obtained by supplying the appropriate year. For the 119th Congress, use `year = 2024`.
+#' Each year returns the districts in effect for that year's Congress: the 118th Congress for 2022 and 2023, the 119th for 2024 and 2025, and the 120th for 2026.  Older congressional district boundaries back to 2010 can be obtained by supplying the appropriate year.
 #'
 #' @param state The two-digit FIPS code (string) of the state you want, or a
 #'        vector of codes if you want multiple states. Can also be state name
@@ -46,7 +46,10 @@ congressional_districts <- function(
         )
     }
 
-    if (year %in% 2018:2021) {
+    if (year >= 2022) {
+        # One Congress per two-year cycle from the 118th (2022-2023) on
+        congress <- as.character(118 + (year - 2022) %/% 2)
+    } else if (year %in% 2018:2021) {
         congress <- "116"
     } else if (year %in% 2016:2017) {
         congress <- "115"
@@ -58,10 +61,6 @@ congressional_districts <- function(
         congress <- "112"
     } else if (year == 2010) {
         congress <- "111"
-    } else if (year %in% 2022:2023) {
-        congress <- "118"
-    } else if (year == 2024) {
-        congress <- "119"
     }
 
     if (cb) {
@@ -77,29 +76,35 @@ congressional_districts <- function(
 
         if (year == 2013) url <- gsub("shp/", "", url)
     } else {
-        # Have to handle 2022 through 2024 differently as national CD file is not available
-        if (year %in% 2022:2024) {
+        # National TIGER/Line CD files are not available from 2022 on
+        if (year >= 2022) {
             if (is.null(state)) {
-                state_codes <- unique(tigris::fips_codes$state_code)
-                state_codes <- state_codes[state_codes != "74"]
-                cds <- lapply(state_codes, function(x) {
+                state <- unique(tigris::fips_codes$state_code)
+                state <- state[state != "74"]
+            }
+
+            if (length(state) > 1) {
+                cds <- lapply(state, function(x) {
                     suppressMessages(congressional_districts(
                         state = x,
-                        year = year
+                        year = year,
+                        ...
                     ))
                 }) %>%
                     rbind_tigris()
 
                 return(cds)
-            } else {
-                url <- sprintf(
-                    "https://www2.census.gov/geo/tiger/TIGER%s/CD/tl_%s_%s_cd%s.zip",
-                    year,
-                    year,
-                    validate_state(state),
-                    congress
-                )
             }
+
+            url <- sprintf(
+                "https://www2.census.gov/geo/tiger/TIGER%s/CD/tl_%s_%s_cd%s.zip",
+                year,
+                year,
+                validate_state(state),
+                congress
+            )
+        } else if (year == 2010) {
+            url <- "https://www2.census.gov/geo/tiger/TIGER2010/CD/111/tl_2010_us_cd111.zip"
         } else {
             url <- sprintf(
                 "https://www2.census.gov/geo/tiger/TIGER%s/CD/tl_%s_us_cd%s.zip",
@@ -115,7 +120,8 @@ congressional_districts <- function(
     state <- validate_state(state, multiple = TRUE)
 
     if (!is.null(state)) {
-        cds <- cds[cds$STATEFP %in% state, ]
+        statefp <- if (year == 2010) cds$STATEFP10 else cds$STATEFP
+        cds <- cds[statefp %in% state, ]
     }
 
     return(cds)
