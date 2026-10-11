@@ -117,8 +117,7 @@ linear_water <- function(state, county, year = NULL, ...) {
 #' @export
 #' @family water functions
 coastline <- function(year = NULL, ...) {
-    # FIXME: 2024 data is available - why use 2020 as default?
-    year <- set_tigris_year(year, default = 2020)
+    year <- set_tigris_year(year)
 
     if (year > 2016) {
         url <- sprintf(

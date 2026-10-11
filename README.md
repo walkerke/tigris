@@ -18,7 +18,7 @@ Or, get the development version from GitHub:
 devtools::install_github('walkerke/tigris')
 ```
 
-__tigris__ functions return [simple features objects](https://r-spatial.github.io/sf/) with a default year of 2024.  To get started, choose a function from the table below and use it with a state and/or county if required. You'll get back an sf object for use in your mapping and spatial analysis projects: 
+__tigris__ functions return [simple features objects](https://r-spatial.github.io/sf/) with a default year of 2025.  To get started, choose a function from the table below and use it with a state and/or county if required. You'll get back an sf object for use in your mapping and spatial analysis projects: 
 
 ```r
 library(tigris)
@@ -45,41 +45,41 @@ Please note: cartographic boundary files in __tigris__ are not available for 201
 
 | Function | Datasets available | Years available |
 |------------------------------------------|------------------------------------------------|------------------------------|
-| `nation()` | cartographic (1:5m; 1:20m) | 2013-2024 |
-| `divisions()` | cartographic (1:500k; 1:5m; 1:20m) | 2013-2024 |
-| `regions()` | cartographic (1:500k; 1:5m; 1:20m) | 2013-2024 |
-| `states()` | TIGER/Line; cartographic (1:500k; 1:5m; 1:20m) | 1990, 2000, 2010-2024 |
-| `counties()` | TIGER/Line; cartographic (1:500k; 1:5m; 1:20m) | 1990, 2000, 2010-2024 |
-| `tracts()` | TIGER/Line; cartographic (1:500k) | 1990, 2000, 2010-2024 |
-| `block_groups()` | TIGER/Line; cartographic (1:500k) | 1990, 2000, 2010-2024 |
-| `blocks()` | TIGER/Line | 2000, 2010-2024 |
-| `places()` | TIGER/Line; cartographic (1:500k) | 2011-2024 |
-| `pumas()` | TIGER/Line; cartographic (1:500k) | 2012-2024 |
-| `school_districts()` | TIGER/Line; cartographic | 2011-2024 |
-| `zctas()` | TIGER/Line; cartographic (1:500k) | 2000, 2010, 2012-2024 |
-| `congressional_districts()` | TIGER/Line; cartographic (1:500k; 1:5m; 1:20m) | 2011-2024 |
-| `state_legislative_districts()` | TIGER/Line; cartographic (1:500k) | 2011-2024 |
+| `nation()` | cartographic (1:5m; 1:20m) | 2013-2025 |
+| `divisions()` | cartographic (1:500k; 1:5m; 1:20m) | 2013-2025 |
+| `regions()` | cartographic (1:500k; 1:5m; 1:20m) | 2013-2025 |
+| `states()` | TIGER/Line; cartographic (1:500k; 1:5m; 1:20m) | 1990, 2000, 2010-2025 |
+| `counties()` | TIGER/Line; cartographic (1:500k; 1:5m; 1:20m) | 1990, 2000, 2010-2025 |
+| `tracts()` | TIGER/Line; cartographic (1:500k) | 1990, 2000, 2010-2025 |
+| `block_groups()` | TIGER/Line; cartographic (1:500k) | 1990, 2000, 2010-2025 |
+| `blocks()` | TIGER/Line | 2000, 2010-2025 |
+| `places()` | TIGER/Line; cartographic (1:500k) | 2011-2025 |
+| `pumas()` | TIGER/Line; cartographic (1:500k) | 2012-2025 |
+| `school_districts()` | TIGER/Line; cartographic | 2011-2025 |
+| `zctas()` | TIGER/Line; cartographic (1:500k) | 2000, 2010, 2012-2025 |
+| `congressional_districts()` | TIGER/Line; cartographic (1:500k; 1:5m; 1:20m) | 2011-2025 |
+| `state_legislative_districts()` | TIGER/Line; cartographic (1:500k) | 2011-2025 |
 | `voting_districts()` | TIGER/Line | 2012, 2020 |
-| `area_water()` | TIGER/Line | 2011-2024 |
-| `linear_water()` | TIGER/Line | 2011-2024 |
-| `coastline` | TIGER/Line() | 2013-2024 |
-| `core_based_statistical_areas()` | TIGER/Line; cartographic (1:500k; 1:5m; 1:20m) | 2011-2021, 2023-2024 (not available for 2022) |
-| `combined_statistical_areas()` | TIGER/Line; cartographic (1:500k; 1:5m; 1:20m) | 2011-2024 |
-| `metro_divisions()` | TIGER/Line | 2011-2024 |
+| `area_water()` | TIGER/Line | 2011-2025 |
+| `linear_water()` | TIGER/Line | 2011-2025 |
+| `coastline` | TIGER/Line() | 2013-2025 |
+| `core_based_statistical_areas()` | TIGER/Line; cartographic (1:500k; 1:5m; 1:20m) | 2011-2021, 2023-2025 (not available for 2022) |
+| `combined_statistical_areas()` | TIGER/Line; cartographic (1:500k; 1:5m; 1:20m) | 2011-2025 |
+| `metro_divisions()` | TIGER/Line | 2011-2025 |
 | `new_england()` | TIGER/Line; cartographic (1:500k) | 2011-2021 (no longer used by Census) |
-| `county_subdivisions()` | TIGER/Line; cartographic (1:500k) | 2010-2024 |
-| `urban_areas()` | TIGER/Line; cartographic (1:500k) | 2012-2024 |
-| `primary_roads()` | TIGER/Line | 2011-2024 |
-| `primary_secondary_roads()` | TIGER/Line | 2011-2024 |
-| `roads()` | TIGER/Line | 2011-2024 |
-| `rails()` | TIGER/Line | 2011-2024 |
-| `native_areas()` | TIGER/Line; cartographic (1:500k) | 2011-2024 |
-| `alaska_native_regional_corporations()` | TIGER/Line; cartographic (1:500k) | 2011-2024 |
-| `tribal_block_groups()` | TIGER/Line | 2011-2024 |
-| `tribal_census_tracts()` | TIGER/Line | 2011-2024 |
-| `tribal_subdivisions_national()` | TIGER/Line | 2011-2024 |
-| `landmarks()` | TIGER/Line | 2011-2024 |
-| `military()` | TIGER/Line | 2011-2024 |
+| `county_subdivisions()` | TIGER/Line; cartographic (1:500k) | 2010-2025 |
+| `urban_areas()` | TIGER/Line; cartographic (1:500k) | 2012-2025 |
+| `primary_roads()` | TIGER/Line | 2011-2025 |
+| `primary_secondary_roads()` | TIGER/Line | 2011-2025 |
+| `roads()` | TIGER/Line | 2011-2025 |
+| `rails()` | TIGER/Line | 2011-2025 |
+| `native_areas()` | TIGER/Line; cartographic (1:500k) | 2011-2025 |
+| `alaska_native_regional_corporations()` | TIGER/Line; cartographic (1:500k) | 2011-2025 |
+| `tribal_block_groups()` | TIGER/Line | 2011-2025 |
+| `tribal_census_tracts()` | TIGER/Line | 2011-2025 |
+| `tribal_subdivisions_national()` | TIGER/Line | 2011-2025 |
+| `landmarks()` | TIGER/Line | 2011-2025 |
+| `military()` | TIGER/Line | 2011-2025 |
 
 
 

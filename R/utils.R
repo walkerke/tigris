@@ -662,7 +662,7 @@ year_suffix <- function(year) {
 #' @noRd
 set_tigris_year <- function(
   year = NULL,
-  default = 2024,
+  default = 2025,
   min_year = 2011,
   max_year = Inf,
   not_year = NULL,

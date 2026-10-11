@@ -838,7 +838,7 @@ rbind_tigris <- function(...) {
 #'
 #' @param input_sf An input sf object, ideally obtained with the tigris package or through tidycensus.
 #' @param area_threshold The percentile rank cutoff of water areas to use in the erase operation, ranked by size. Defaults to 0.75, representing the water areas in the 75th percentile and up (the largest 25 percent of areas).  This value may need to be modified by the user to achieve optimal results for a given location.
-#' @param year The year to use for the water layer (2011 or later); defaults to 2024 unless the \code{tigris_year} option is otherwise set.
+#' @param year The year to use for the water layer (2011 or later); defaults to 2025 unless the \code{tigris_year} option is otherwise set.
 #'
 #' @return An output sf object representing the polygons in \code{input_sf} with water areas erased.
 #' @export
@@ -948,7 +948,7 @@ erase_water <- function(input_sf, area_threshold = 0.75, year = NULL) {
 #' `@inheritSection load_tiger_doc_template Additional Arguments`
 #'
 #' @param ... arguments to be passed to internal function `load_tiger`, which is not exported. See Additional Arguments.
-#' @param year the data year; defaults to 2024
+#' @param year the data year; defaults to 2025
 #'
 #' @section Additional Arguments:
 #' Additional arguments that can be passed in `...` are:

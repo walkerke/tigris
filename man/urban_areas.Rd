@@ -12,7 +12,7 @@ cartographic boundary file.  Defaults to FALSE (the most detailed
 TIGER/Line file). Cartographic boundary urban areas are available
 through 2020.}
 
-\item{year}{the data year; defaults to 2024}
+\item{year}{the data year; defaults to 2025}
 
 \item{criteria}{If set to "2020" and the year is 2020, will download the new 2020 urban areas criteria. Not available for cartographic boundary shapefiles / other years at the moment.}
 

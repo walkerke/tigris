@@ -13,7 +13,7 @@ download the roads for. Can also be state name or abbreviation (case-insensitive
 \item{county}{A character vector of the three-digit FIPS code of the county or counties you'd like
 the roads for. Can also be a vector of county names.}
 
-\item{year}{the data year; defaults to 2024}
+\item{year}{the data year; defaults to 2025}
 
 \item{...}{arguments to be passed to internal function \code{load_tiger}, which is not exported. See Additional Arguments.}
 }

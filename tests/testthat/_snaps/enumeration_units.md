@@ -9,28 +9,39 @@
       Bounding box:  xmin: -179.1467 ymin: -14.5487 xmax: 179.7785 ymax: 71.38782
       Geodetic CRS:  NAD83
       First 10 features:
-         STATEFP COUNTYFP COUNTYNS        GEOIDFQ GEOID      NAME         NAMELSAD
-      1       01      069 00161560 0500000US01069 01069   Houston   Houston County
-      2       01      023 00161537 0500000US01023 01023   Choctaw   Choctaw County
-      3       01      113 00161583 0500000US01113 01113   Russell   Russell County
-      4       10      005 00217269 0500000US10005 10005    Sussex    Sussex County
-      5       01      071 00161561 0500000US01071 01071   Jackson   Jackson County
-      6       01      089 00161570 0500000US01089 01089   Madison   Madison County
-      7       04      015 00025445 0500000US04015 04015    Mohave    Mohave County
-      8       05      017 00069160 0500000US05017 05017    Chicot    Chicot County
-      9       05      121 00069178 0500000US05121 05121  Randolph  Randolph County
-      10      05      073 00066864 0500000US05073 05073 Lafayette Lafayette County
-         STUSPS STATE_NAME LSAD       ALAND    AWATER                       geometry
-      1      AL    Alabama   06  1501742250   4795418 MULTIPOLYGON (((-85.71209 3...
-      2      AL    Alabama   06  2365900084  19114321 MULTIPOLYGON (((-88.47323 3...
-      3      AL    Alabama   06  1660653961  15562947 MULTIPOLYGON (((-85.4347 32...
-      4      DE   Delaware   06  2424590442 674129051 MULTIPOLYGON (((-75.7226 38...
-      5      AL    Alabama   06  2792044612 126334711 MULTIPOLYGON (((-86.15423 3...
-      6      AL    Alabama   06  2076166271  28756353 MULTIPOLYGON (((-86.78955 3...
-      7      AZ    Arizona   06 34530024143 333399390 MULTIPOLYGON (((-114.7532 3...
-      8      AR   Arkansas   06  1649764401 140413175 MULTIPOLYGON (((-91.46042 3...
-      9      AR   Arkansas   06  1688445994  10370823 MULTIPOLYGON (((-91.40687 3...
-      10     AR   Arkansas   06  1371327391  43028604 MULTIPOLYGON (((-93.86332 3...
+         STATEFP COUNTYFP COUNTYNS        GEOIDFQ GEOID        NAME
+      1       06      085 00277307 0500000US06085 06085 Santa Clara
+      2       06      059 00277294 0500000US06059 06059      Orange
+      3       17      043 00422191 0500000US17043 17043      DuPage
+      4       04      027 00023901 0500000US04027 04027        Yuma
+      5       01      003 00161527 0500000US01003 01003     Baldwin
+      6       01      085 00161568 0500000US01085 01085     Lowndes
+      7       18      007 00450403 0500000US18007 18007      Benton
+      8       23      017 00581294 0500000US23017 23017      Oxford
+      9       23      025 00581298 0500000US23025 23025    Somerset
+      10      24      021 01711211 0500000US24021 24021   Frederick
+                   NAMELSAD STUSPS STATE_NAME LSAD       ALAND     AWATER
+      1  Santa Clara County     CA California   06  3343891498   33597067
+      2       Orange County     CA California   06  2054504217  405282838
+      3       DuPage County     IL   Illinois   06   849236415   22006224
+      4         Yuma County     AZ    Arizona   06 14280726743   13242852
+      5      Baldwin County     AL    Alabama   06  4117933903 1132678359
+      6      Lowndes County     AL    Alabama   06  1854651686   23271386
+      7       Benton County     IN    Indiana   06  1052608712     236033
+      8       Oxford County     ME      Maine   06  5379296165  255883190
+      9     Somerset County     ME      Maine   06 10163862548  437891943
+      10   Frederick County     MD   Maryland   06  1711005007   17630724
+                               geometry
+      1  MULTIPOLYGON (((-122.2027 3...
+      2  MULTIPOLYGON (((-118.1146 3...
+      3  MULTIPOLYGON (((-88.26288 4...
+      4  MULTIPOLYGON (((-114.8163 3...
+      5  MULTIPOLYGON (((-88.02858 3...
+      6  MULTIPOLYGON (((-86.90851 3...
+      7  MULTIPOLYGON (((-87.52637 4...
+      8  MULTIPOLYGON (((-71.08 45.3...
+      9  MULTIPOLYGON (((-70.55279 4...
+      10 MULTIPOLYGON (((-77.67716 3...
 
 ---
 
@@ -43,39 +54,39 @@
       Bounding box:  xmin: -179.2311 ymin: -14.60181 xmax: 179.8597 ymax: 71.43979
       Geodetic CRS:  NAD83
       First 10 features:
-         STATEFP COUNTYFP COUNTYNS GEOID        GEOIDFQ        NAME
-      1       31      039 00835841 31039 0500000US31039      Cuming
-      2       53      069 01513275 53069 0500000US53069   Wahkiakum
-      3       35      011 00933054 35011 0500000US35011     De Baca
-      4       31      109 00835876 31109 0500000US31109   Lancaster
-      5       31      129 00835886 31129 0500000US31129    Nuckolls
-      6       72      085 01804523 72085 0500000US72085 Las Piedras
-      7       46      099 01265772 46099 0500000US46099   Minnehaha
-      8       48      327 01383949 48327 0500000US48327      Menard
-      9       06      091 00277310 06091 0500000US06091      Sierra
-      10      21      053 00516873 21053 0500000US21053     Clinton
-                      NAMELSAD LSAD CLASSFP MTFCC CSAFP CBSAFP METDIVFP FUNCSTAT
-      1          Cuming County   06      H1 G4020  <NA>   <NA>     <NA>        A
-      2       Wahkiakum County   06      H1 G4020  <NA>   <NA>     <NA>        A
-      3         De Baca County   06      H1 G4020  <NA>   <NA>     <NA>        A
-      4       Lancaster County   06      H1 G4020   339  30700     <NA>        A
-      5        Nuckolls County   06      H1 G4020  <NA>   <NA>     <NA>        A
-      6  Las Piedras Municipio   13      H1 G4020   490  41980     <NA>        A
-      7       Minnehaha County   06      H1 G4020  <NA>  43620     <NA>        A
-      8          Menard County   06      H1 G4020  <NA>   <NA>     <NA>        A
-      9          Sierra County   06      H1 G4020  <NA>   <NA>     <NA>        A
-      10        Clinton County   06      H1 G4020  <NA>   <NA>     <NA>        A
-              ALAND   AWATER    INTPTLAT     INTPTLON                       geometry
-      1  1477563042 10772508 +41.9158651 -096.7885168 MULTIPOLYGON (((-96.55525 4...
-      2   680980773 61564428 +46.2946377 -123.4244583 MULTIPOLYGON (((-123.7276 4...
-      3  6016818941 29090018 +34.3592729 -104.3686961 MULTIPOLYGON (((-104.8934 3...
-      4  2169269508 22850511 +40.7835474 -096.6886584 MULTIPOLYGON (((-96.68493 4...
-      5  1489645201  1718484 +40.1764918 -098.0468422 MULTIPOLYGON (((-98.2737 40...
-      6    87748419    32509 +18.1871483 -065.8711890 MULTIPOLYGON (((-65.85703 1...
-      7  2089725024 18165219 +43.6674723 -096.7957261 MULTIPOLYGON (((-96.45339 4...
-      8  2336237980   613559 +30.8852677 -099.8588613 MULTIPOLYGON (((-99.7712 30...
-      9  2468694578 23299110 +39.5769252 -120.5219926 MULTIPOLYGON (((-120.5559 3...
-      10  510391739 21636754 +36.7272577 -085.1360977 MULTIPOLYGON (((-85.00988 3...
+         STATEFP COUNTYFP COUNTYNS GEOID        GEOIDFQ       NAME          NAMELSAD
+      1       40      075 01101825 40075 0500000US40075      Kiowa      Kiowa County
+      2       46      079 01265776 46079 0500000US46079       Lake       Lake County
+      3       37      033 01008542 37033 0500000US37033    Caswell    Caswell County
+      4       48      377 01383974 48377 0500000US48377   Presidio   Presidio County
+      5       39      057 01074041 39057 0500000US39057     Greene     Greene County
+      6       48      489 01384030 48489 0500000US48489    Willacy    Willacy County
+      7       72      021 01804490 72021 0500000US72021    Bayamón Bayamón Municipio
+      8       35      028 01702366 35028 0500000US35028 Los Alamos Los Alamos County
+      9       40      023 01101799 40023 0500000US40023    Choctaw    Choctaw County
+      10      20      041 00484990 20041 0500000US20041  Dickinson  Dickinson County
+         LSAD CLASSFP MTFCC CSAFP CBSAFP METDIVFP FUNCSTAT      ALAND    AWATER
+      1    06      H1 G4020  <NA>   <NA>     <NA>        A 2629039892  40296743
+      2    06      H1 G4020  <NA>   <NA>     <NA>        A 1457916151  31746795
+      3    06      H1 G4020  <NA>   <NA>     <NA>        A 1102042927   8293623
+      4    06      H1 G4020  <NA>   <NA>     <NA>        A 9985057447   1773188
+      5    06      H1 G4020   212  19430     <NA>        A 1071302625   6798109
+      6    06      H1 G4020   154  39700     <NA>        A 1529680719 502856285
+      7    13      H1 G4020   490  41980     <NA>        A  115097577    314191
+      8    06      H1 G4020   105  31060     <NA>        A  282626746    208105
+      9    06      H1 G4020  <NA>   <NA>     <NA>        A 1995281898  75475686
+      10   06      H1 G4020  <NA>   <NA>     <NA>        A 2193895344  12632459
+            INTPTLAT     INTPTLON                       geometry
+      1  +34.9214893 -098.9816168 MULTIPOLYGON (((-98.95506 3...
+      2  +44.0284497 -097.1232229 MULTIPOLYGON (((-96.88886 4...
+      3  +36.3943252 -079.3396193 MULTIPOLYGON (((-79.14343 3...
+      4  +30.0058912 -104.2616192 MULTIPOLYGON (((-104.9808 3...
+      5  +39.6874785 -083.8948943 MULTIPOLYGON (((-84.10668 3...
+      6  +26.4818607 -097.5947313 MULTIPOLYGON (((-97.86187 2...
+      7  +18.3494195 -066.1686259 MULTIPOLYGON (((-66.17269 1...
+      8  +35.8700469 -106.3079679 MULTIPOLYGON (((-106.3997 3...
+      9  +34.0276995 -095.5540792 MULTIPOLYGON (((-95.99158 3...
+      10 +38.8677353 -097.1579434 MULTIPOLYGON (((-97.25952 3...
 
 # `school_districts()` works
 
@@ -100,16 +111,16 @@
       9       56   01980 5601980 9700000US5601980  Laramie County School District 1
       10      56   02070 5602070 9700000US5602070     Park County School District 6
          LSAD LOGRADE HIGRADE MTFCC SDTYP FUNCSTAT       ALAND    AWATER    INTPTLAT
-      1    00      KG      12 G5420  <NA>        E 11070062826  89554047 +41.6655141
+      1    00      KG      12 G5420  <NA>        E 11070062783  89554047 +41.6655141
       2    00      KG      12 G5420  <NA>        E  9773622068 104730604 +41.6701404
-      3    00      KG      12 G5420  <NA>        E  2907604929  12397426 +44.3037320
-      4    00      KG      12 G5420  <NA>        E  5167822795  44824894 +42.4702137
+      3    00      KG      12 G5420  <NA>        E  2907604928  12397426 +44.3037320
+      4    00      KG      12 G5420  <NA>        E  5167822793  44824894 +42.4702137
       5    00      KG      12 G5420  <NA>        E  1166359258   2773120 +44.6511700
-      6    00      KG      12 G5420  <NA>        E  1131309905  34337878 +44.8645112
-      7    00      KG      12 G5420  <NA>        E 12437291871  11010428 +44.1919991
+      6    00      KG      12 G5420  <NA>        E  1131309907  34337878 +44.8645112
+      7    00      KG      12 G5420  <NA>        E 12437291865  11010427 +44.1896860
       8    00      KG      12 G5420  <NA>        E 10770613185  66803667 +41.6969310
-      9    00      KG      12 G5420  <NA>        E  4110915774   3903090 +41.3214688
-      10   00      KG      12 G5420  <NA>        E  6602950910  32056395 +44.3491549
+      9    00      KG      12 G5420  <NA>        E  4110915772   3903091 +41.3214688
+      10   00      KG      12 G5420  <NA>        E  6602950909  32056395 +44.3491549
              INTPTLON                       geometry
       1  -105.7218826 MULTIPOLYGON (((-106.3233 4...
       2  -107.3473386 MULTIPOLYGON (((-107.93 41....
@@ -117,7 +128,7 @@
       4  -110.2065072 MULTIPOLYGON (((-110.6238 4...
       5  -108.4826306 MULTIPOLYGON (((-108.7416 4...
       6  -108.1368525 MULTIPOLYGON (((-108.6838 4...
-      7  -105.5170141 MULTIPOLYGON (((-106.0252 4...
+      7  -105.5261402 MULTIPOLYGON (((-106.0252 4...
       8  -106.5669033 MULTIPOLYGON (((-107.1303 4...
       9  -104.9361616 MULTIPOLYGON (((-105.2807 4...
       10 -109.4725605 MULTIPOLYGON (((-110.1726 4...
@@ -132,12 +143,12 @@
       Dimension:     XY
       Bounding box:  xmin: -104.8999 ymin: 42.60879 xmax: -104.0526 ymax: 43.50333
       Geodetic CRS:  NAD83
-          STATEFP COUNTYFP TRACTCE       GEOID              GEOIDFQ NAME
-      155      56      027  957200 56027957200 1400000US56027957200 9572
-                   NAMELSAD MTFCC FUNCSTAT      ALAND  AWATER    INTPTLAT
-      155 Census Tract 9572 G5020        S 6801380678 4969450 +43.0621590
-              INTPTLON                       geometry
-      155 -104.4683727 POLYGON ((-104.8999 43.4996...
+        STATEFP COUNTYFP TRACTCE       GEOID              GEOIDFQ NAME
+      6      56      027  957200 56027957200 1400000US56027957200 9572
+                 NAMELSAD MTFCC FUNCSTAT      ALAND  AWATER    INTPTLAT     INTPTLON
+      6 Census Tract 9572 G5020        S 6801380681 4969450 +43.0621590 -104.4683727
+                              geometry
+      6 POLYGON ((-104.8999 43.4996...
 
 # `block_groups()` work
 
@@ -150,14 +161,14 @@
       Bounding box:  xmin: -104.8999 ymin: 42.60879 xmax: -104.0526 ymax: 43.50333
       Geodetic CRS:  NAD83
           STATEFP COUNTYFP TRACTCE BLKGRPCE        GEOID               GEOIDFQ
-      134      56      027  957200        2 560279572002 1500000US560279572002
-      135      56      027  957200        1 560279572001 1500000US560279572001
+      212      56      027  957200        2 560279572002 1500000US560279572002
+      213      56      027  957200        1 560279572001 1500000US560279572001
                NAMELSAD MTFCC FUNCSTAT      ALAND  AWATER    INTPTLAT     INTPTLON
-      134 Block Group 2 G5030        S 2363987158 2430652 +43.0111913 -104.2438245
-      135 Block Group 1 G5030        S 4437393520 2538798 +43.0890643 -104.5914885
+      212 Block Group 2 G5030        S 2363987159 2430652 +43.0111913 -104.2438245
+      213 Block Group 1 G5030        S 4437393522 2538798 +43.0890643 -104.5914885
                                 geometry
-      134 POLYGON ((-104.4524 42.7674...
-      135 POLYGON ((-104.8999 43.4996...
+      212 POLYGON ((-104.4524 42.7674...
+      213 POLYGON ((-104.8999 43.4996...
 
 # `blocks()` work
 
@@ -170,50 +181,50 @@
       Bounding box:  xmin: -104.8999 ymin: 42.60879 xmax: -104.0526 ymax: 43.50333
       Geodetic CRS:  NAD83
       First 10 features:
-         STATEFP20 COUNTYFP20 TRACTCE20 BLOCKCE20         GEOID20
-      12        56        027    957200      2374 560279572002374
-      13        56        027    957200      1039 560279572001039
-      14        56        027    957200      1768 560279572001768
-      15        56        027    957200      1328 560279572001328
-      16        56        027    957200      1270 560279572001270
-      33        56        027    957200      1068 560279572001068
-      34        56        027    957200      1275 560279572001275
-      35        56        027    957200      1287 560279572001287
-      64        56        027    957200      1263 560279572001263
-      65        56        027    957200      2071 560279572002071
-                        GEOIDFQ20    NAME20 MTFCC20 UR20 UACE20 FUNCSTAT20  ALAND20
-      12 1000000US560279572002374 Block2374   G5040    R   <NA>          S   354373
-      13 1000000US560279572001039 Block1039   G5040    R   <NA>          S  1448084
-      14 1000000US560279572001768 Block1768   G5040    R   <NA>          S 45107596
-      15 1000000US560279572001328 Block1328   G5040    R   <NA>          S  4159736
-      16 1000000US560279572001270 Block1270   G5040    R   <NA>          S  1320148
-      33 1000000US560279572001068 Block1068   G5040    R   <NA>          S  3677543
-      34 1000000US560279572001275 Block1275   G5040    R   <NA>          S 14349463
-      35 1000000US560279572001287 Block1287   G5040    R   <NA>          S 18768165
-      64 1000000US560279572001263 Block1263   G5040    R   <NA>          S 19386790
-      65 1000000US560279572002071 Block2071   G5040    R   <NA>          S  8731481
-         AWATER20  INTPTLAT20   INTPTLON20 HOUSING20 POP20
-      12        0 +42.6661756 -104.0987438         0     0
-      13        0 +43.4411881 -104.8840127         0     0
-      14        0 +42.6450661 -104.5798050         3     2
-      15    30277 +43.1089792 -104.4315139         0     0
-      16        0 +43.2039031 -104.6955923         0     0
-      33        0 +43.4127443 -104.6859831         0     0
-      34        0 +43.1741871 -104.6759531         0     0
-      35        0 +43.1098523 -104.5120357         1     4
-      64        0 +43.2484121 -104.8578082         0     0
-      65        0 +43.2290720 -104.1776283         0     0
-                               geometry
-      12 POLYGON ((-104.1039 42.6632...
-      13 POLYGON ((-104.8945 43.4467...
-      14 POLYGON ((-104.6429 42.6333...
-      15 POLYGON ((-104.4624 43.1088...
-      16 POLYGON ((-104.7113 43.1987...
-      33 POLYGON ((-104.7137 43.4110...
-      34 POLYGON ((-104.7024 43.1769...
-      35 POLYGON ((-104.5532 43.1102...
-      64 POLYGON ((-104.8983 43.2649...
-      65 POLYGON ((-104.2031 43.2401...
+          STATEFP20 COUNTYFP20 TRACTCE20 BLOCKCE20         GEOID20
+      132        56        027    957200      1293 560279572001293
+      174        56        027    957200      2105 560279572002105
+      215        56        027    957200      2389 560279572002389
+      216        56        027    957200      1307 560279572001307
+      217        56        027    957200      1333 560279572001333
+      263        56        027    957200      2007 560279572002007
+      316        56        027    957200      2006 560279572002006
+      317        56        027    957200      1074 560279572001074
+      376        56        027    957200      1508 560279572001508
+      603        56        027    957200      1733 560279572001733
+                         GEOIDFQ20     NAME20 MTFCC20 UR20 UACE20 FUNCSTAT20  ALAND20
+      132 1000000US560279572001293 Block 1293   G5040    R   <NA>          S 36670966
+      174 1000000US560279572002105 Block 2105   G5040    R   <NA>          S  1250728
+      215 1000000US560279572002389 Block 2389   G5040    R   <NA>          S 13140207
+      216 1000000US560279572001307 Block 1307   G5040    R   <NA>          S  4114767
+      217 1000000US560279572001333 Block 1333   G5040    R   <NA>          S  3803026
+      263 1000000US560279572002007 Block 2007   G5040    R   <NA>          S  4842763
+      316 1000000US560279572002006 Block 2006   G5040    R   <NA>          S  1994240
+      317 1000000US560279572001074 Block 1074   G5040    R   <NA>          S  4617320
+      376 1000000US560279572001508 Block 1508   G5040    R   <NA>          S  1147670
+      603 1000000US560279572001733 Block 1733   G5040    R   <NA>          S    18135
+          AWATER20  INTPTLAT20   INTPTLON20 HOUSING20 POP20
+      132    85055 +43.2071353 -104.5057956         2     0
+      174        0 +43.1756275 -104.3109365         0     0
+      215        0 +42.6336499 -104.0734553         0     0
+      216        0 +43.1903018 -104.4073020         0     0
+      217        0 +43.1310128 -104.3762124         0     0
+      263    37473 +43.4172361 -104.1139795         0     0
+      316        0 +43.4114497 -104.0920324         0     0
+      317        0 +43.3831090 -104.7228213         0     0
+      376        0 +43.0072368 -104.7304868         0     0
+      603        0 +42.7748502 -104.6182320         0     0
+                                geometry
+      132 POLYGON ((-104.539 43.25165...
+      174 POLYGON ((-104.3214 43.1662...
+      215 POLYGON ((-104.0941 42.6406...
+      216 POLYGON ((-104.4423 43.2011...
+      217 POLYGON ((-104.389 43.13834...
+      263 POLYGON ((-104.1318 43.4211...
+      316 POLYGON ((-104.1005 43.4082...
+      317 POLYGON ((-104.7367 43.3906...
+      376 POLYGON ((-104.7408 43.0043...
+      603 POLYGON ((-104.6188 42.7746...
 
 # `zctas()` works
 
@@ -260,12 +271,12 @@
       Bounding box:  xmin: -104.8999 ymin: 42.60879 xmax: -104.0526 ymax: 43.50333
       Geodetic CRS:  NAD83
          STATEFP COUNTYFP COUSUBFP COUSUBNS      GEOID             GEOIDFQ
-      10      56      027    91128 01939725 5602791128 0600000US5602791128
-      11      56      027    93603 01939726 5602793603 0600000US5602793603
+      46      56      027    91128 01939725 5602791128 0600000US5602791128
+      47      56      027    93603 01939726 5602793603 0600000US5602793603
                   NAME          NAMELSAD LSAD CLASSFP MTFCC FUNCSTAT      ALAND
-      10 East Niobrara East Niobrara CCD   22      Z5 G4040        S 2363987158
-      11 West Niobrara West Niobrara CCD   22      Z5 G4040        S 4437393520
+      46 East Niobrara East Niobrara CCD   22      Z5 G4040        S 2363987159
+      47 West Niobrara West Niobrara CCD   22      Z5 G4040        S 4437393522
           AWATER    INTPTLAT     INTPTLON                       geometry
-      10 2430652 +43.0111913 -104.2438245 POLYGON ((-104.4524 42.7674...
-      11 2538798 +43.0890643 -104.5914885 POLYGON ((-104.8999 43.4996...
+      46 2430652 +43.0111913 -104.2438245 POLYGON ((-104.4524 42.7674...
+      47 2538798 +43.0890643 -104.5914885 POLYGON ((-104.8999 43.4996...
 
