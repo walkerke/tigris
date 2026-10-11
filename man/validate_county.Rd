@@ -2,7 +2,7 @@
 % Please edit documentation in R/utils.R
 \name{validate_county}
 \alias{validate_county}
-\title{Check if county is a FIPS code, full name or abbreviation.}
+\title{Check if county is a FIPS code or name}
 \usage{
 validate_county(
   state,
@@ -15,11 +15,11 @@ validate_county(
 )
 }
 \arguments{
-\item{state}{State name, abbreviation, or FIPS code. Not case sensitive. If a
-single digits FIPS code or longer county FIPS code is passed, the values
-are padded with "0" to subset to allow use as a state value.}
+\item{state}{State name, abbreviation, or FIPS code. Not case sensitive.
+Single-digit FIPS codes are padded with "0" and longer FIPS codes (e.g.
+county FIPS codes) are subset to their first two digits.}
 
-\item{county}{County name, abbreviation, or FIPS code. Not case sensitive.}
+\item{county}{County name or FIPS code. Not case sensitive.}
 
 \item{allow_null}{If \code{TRUE} (default), allow \code{NULL} input values by invisibly
 returning \code{NULL}.}
@@ -40,12 +40,14 @@ usage. Uses \code{is_interactive()} by default.}
 \item \code{NULL} if input is \code{NULL} and \code{allow_null = TRUE} and \code{require_county = FALSE}
 \item valid county FIPS code if input is even pseudo-valid (i.e. single digit but w/in range)
 \item \code{NULL} if input is not a valid FIPS code and \code{require_county = FALSE}
-\item errors if input is not a valid FIPS code and \code{require_county = TRUE} or if \code{county} matched multiple values and \code{multiple = FALSE}
+\item errors if input is not a valid FIPS code and \code{require_county = TRUE}
 }
+
+A county name that matches multiple counties (e.g. "Baltimore" matches
+"Baltimore County" and "Baltimore city") is treated as invalid.
 }
 \description{
-\code{validate_county()} checks if an input \code{county} is a FIPS code, name or
-abbreviation. If some or all input values are invalid, error if
+\code{validate_county()} checks if an input \code{county} is a FIPS code or name. If some or all input values are invalid, error if
 \code{require_county = TRUE}, return \code{NULL} if all inputs are invalid, or warn and
 return valid input values.
 }

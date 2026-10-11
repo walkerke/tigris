@@ -14,9 +14,9 @@ validate_state(
 )
 }
 \arguments{
-\item{state}{State name, abbreviation, or FIPS code. Not case sensitive. If a
-single digits FIPS code or longer county FIPS code is passed, the values
-are padded with "0" to subset to allow use as a state value.}
+\item{state}{State name, abbreviation, or FIPS code. Not case sensitive.
+Single-digit FIPS codes are padded with "0" and longer FIPS codes (e.g.
+county FIPS codes) are subset to their first two digits.}
 
 \item{allow_null}{If \code{TRUE} (default), allow \code{NULL} input values by invisibly
 returning \code{NULL}.}
@@ -41,8 +41,8 @@ usage. Uses \code{is_interactive()} by default.}
 }
 }
 \description{
-\code{validate_state()} checks if an input state values is a FIPS code, full name
-or abbreviation. If some or all input values are invalid, error if
+\code{validate_state()} checks if input state values are FIPS codes, full names
+or abbreviations. If some or all input values are invalid, error if
 \code{require_state = TRUE}, return \code{NULL} if all inputs are invalid, or warn and
 return valid input values.
 }
