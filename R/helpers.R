@@ -96,67 +96,27 @@ load_tiger <- function(
     }
 
     tiger_file <- basename(url)
+    shape <- gsub(".zip", "", tiger_file)
+    shape <- gsub("_shp", "", shape) # for historic tracts
 
     obj <- NULL
 
     if (use_cache) {
-        if (Sys.getenv("TIGRIS_CACHE_DIR") != "") {
-            cache_dir <- Sys.getenv("TIGRIS_CACHE_DIR")
-            cache_dir <- path.expand(cache_dir)
-        } else {
-            cache_dir <- user_cache_dir("tigris")
-        }
-        if (!file.exists(cache_dir)) {
-            dir.create(cache_dir, recursive = TRUE)
-        }
+        cache_dir <- get_tigris_cache_dir()
 
         if (file.exists(cache_dir)) {
-            shape <- gsub(".zip", "", tiger_file)
-            shape <- gsub("_shp", "", shape) # for historic tracts
-
             file_loc <- file.path(cache_dir, tiger_file)
             shp_loc <- file.path(cache_dir, sprintf("%s.shp", shape))
 
             if (refresh | !file.exists(shp_loc)) {
-                if (grepl("^ftp://", url)) {
-                    # Use download.file for FTP URLs with timeout
-                    options(timeout = timeout)
-                    try(
-                        download.file(
-                            url,
-                            destfile = file_loc,
-                            quiet = !progress_bar,
-                            mode = "wb"
-                        ),
-                        silent = TRUE
-                    )
-                    options(timeout = 60) # Reset to R default
-                } else {
-                    # Use httr::GET for HTTP URLs
-                    if (progress_bar) {
-                        try(
-                            GET(
-                                url,
-                                write_disk(file_loc, overwrite = refresh),
-                                progress(type = "down"),
-                                timeout(timeout)
-                            ),
-                            silent = TRUE
-                        )
-                    } else {
-                        try(
-                            GET(
-                                url,
-                                write_disk(file_loc, overwrite = refresh),
-                                timeout(timeout)
-                            ),
-                            silent = TRUE
-                        )
-                    }
-                }
-            }
+                tiger_download(
+                    url,
+                    file_loc,
+                    overwrite = refresh,
+                    progress_bar = progress_bar,
+                    timeout = timeout
+                )
 
-            if (refresh | !file.exists(shp_loc)) {
                 unzip_tiger <- function() {
                     unzip(file_loc, exdir = cache_dir, overwrite = TRUE)
                 }
@@ -177,42 +137,13 @@ load_tiger <- function(
                             "Previous download failed.  Re-download attempt {i} of 3..."
                         )
 
-                        if (grepl("^ftp://", url)) {
-                            # Use download.file for FTP URLs with timeout
-                            options(timeout = timeout)
-                            try(
-                                download.file(
-                                    url,
-                                    destfile = file_loc,
-                                    quiet = !progress_bar,
-                                    mode = "wb"
-                                ),
-                                silent = TRUE
-                            )
-                            options(timeout = 60) # Reset to R default
-                        } else {
-                            # Use httr::GET for HTTP URLs
-                            if (progress_bar) {
-                                try(
-                                    GET(
-                                        url,
-                                        write_disk(file_loc, overwrite = TRUE),
-                                        progress(type = "down"),
-                                        timeout(timeout)
-                                    ),
-                                    silent = TRUE
-                                )
-                            } else {
-                                try(
-                                    GET(
-                                        url,
-                                        write_disk(file_loc, overwrite = TRUE),
-                                        timeout(timeout)
-                                    ),
-                                    silent = TRUE
-                                )
-                            }
-                        }
+                        tiger_download(
+                            url,
+                            file_loc,
+                            overwrite = TRUE,
+                            progress_bar = progress_bar,
+                            timeout = timeout
+                        )
 
                         t <- tryCatch(unzip_tiger(), warning = function(w) w)
 
@@ -230,18 +161,12 @@ load_tiger <- function(
                                     original_url
                                 )
 
-                                # Try FTP download
-                                options(timeout = timeout)
-                                try(
-                                    download.file(
-                                        ftp_url,
-                                        destfile = file_loc,
-                                        quiet = !progress_bar,
-                                        mode = "wb"
-                                    ),
-                                    silent = TRUE
+                                tiger_download(
+                                    ftp_url,
+                                    file_loc,
+                                    progress_bar = progress_bar,
+                                    timeout = timeout
                                 )
-                                options(timeout = 60) # Reset to R default
 
                                 # Check if FTP download succeeded
                                 t <- tryCatch(
@@ -272,55 +197,25 @@ load_tiger <- function(
                 }
             }
 
-            obj <- st_read(
-                dsn = cache_dir,
-                layer = shape,
-                quiet = TRUE,
-                stringsAsFactors = FALSE,
-                wkt_filter = wkt_filter
+            obj <- tiger_read(
+                cache_dir,
+                shape,
+                wkt_filter = wkt_filter,
+                tigris_type = tigris_type,
+                class = class
             )
-
-            if (is.na(st_crs(obj)$proj4string)) {
-                st_crs(obj) <- "+proj=longlat +datum=NAD83 +no_defs"
-            }
         }
     } else {
         tmp <- tempdir()
         file_loc <- file.path(tmp, tiger_file)
 
         # Try initial download with specified protocol
-        if (grepl("^ftp://", url)) {
-            # Use download.file for FTP URLs with timeout
-            options(timeout = timeout)
-            try(
-                download.file(
-                    url,
-                    destfile = file_loc,
-                    quiet = !progress_bar,
-                    mode = "wb"
-                ),
-                silent = TRUE
-            )
-            options(timeout = 60) # Reset to R default
-        } else {
-            # Use httr::GET for HTTP URLs
-            if (progress_bar) {
-                try(
-                    GET(
-                        url,
-                        write_disk(file_loc),
-                        progress(type = "down"),
-                        timeout(timeout)
-                    ),
-                    silent = TRUE
-                )
-            } else {
-                try(
-                    GET(url, write_disk(file_loc), timeout(timeout)),
-                    silent = TRUE
-                )
-            }
-        }
+        tiger_download(
+            url,
+            file_loc,
+            progress_bar = progress_bar,
+            timeout = timeout
+        )
 
         # Try to unzip the file
         unzip_result <- tryCatch(
@@ -337,18 +232,12 @@ load_tiger <- function(
             cli_bullets("HTTP download failed, trying FTP as fallback...")
             ftp_url <- gsub("^https://www2", "ftp://ftp2", original_url)
 
-            # Try FTP download
-            options(timeout = timeout)
-            try(
-                download.file(
-                    ftp_url,
-                    destfile = file_loc,
-                    quiet = !progress_bar,
-                    mode = "wb"
-                ),
-                silent = TRUE
+            tiger_download(
+                ftp_url,
+                file_loc,
+                progress_bar = progress_bar,
+                timeout = timeout
             )
-            options(timeout = 60) # Reset to R default
 
             # Try to unzip again
             unzip_result <- tryCatch(
@@ -372,20 +261,87 @@ load_tiger <- function(
              at https://www2.census.gov/geo/tiger/ or ftp://ftp2.census.gov/geo/tiger/."
             )
         }
-        shape <- gsub(".zip", "", tiger_file)
-        shape <- gsub("_shp", "", shape) # for historic tracts
 
-        obj <- st_read(
-            dsn = tmp,
-            layer = shape,
-            quiet = TRUE,
-            stringsAsFactors = FALSE,
-            wkt_filter = wkt_filter
+        obj <- tiger_read(
+            tmp,
+            shape,
+            wkt_filter = wkt_filter,
+            tigris_type = tigris_type,
+            class = class
         )
+    }
 
-        if (is.na(st_crs(obj)$proj4string)) {
-            st_crs(obj) <- "+proj=longlat +datum=NAD83 +no_defs"
+    obj
+}
+
+#' Download a TIGER/Line file to `path`
+#'
+#' Failures are silent here; `load_tiger()` checks the result by unzipping it.
+#' @noRd
+tiger_download <- function(
+    url,
+    path,
+    overwrite = FALSE,
+    progress_bar = TRUE,
+    timeout = 1800
+) {
+    if (grepl("^ftp://", url)) {
+        # Use download.file for FTP URLs with timeout
+        options(timeout = timeout)
+        try(
+            download.file(
+                url,
+                destfile = path,
+                quiet = !progress_bar,
+                mode = "wb"
+            ),
+            silent = TRUE
+        )
+        options(timeout = 60) # Reset to R default
+    } else {
+        # Use httr::GET for HTTP URLs
+        if (progress_bar) {
+            try(
+                GET(
+                    url,
+                    write_disk(path, overwrite = overwrite),
+                    progress(type = "down"),
+                    timeout(timeout)
+                ),
+                silent = TRUE
+            )
+        } else {
+            try(
+                GET(
+                    url,
+                    write_disk(path, overwrite = overwrite),
+                    timeout(timeout)
+                ),
+                silent = TRUE
+            )
         }
+    }
+}
+
+#' Read a downloaded TIGER/Line shapefile and tidy it for tigris
+#' @noRd
+tiger_read <- function(
+    dsn,
+    layer,
+    wkt_filter = character(0),
+    tigris_type = NULL,
+    class = getOption("tigris_class", "sf")
+) {
+    obj <- st_read(
+        dsn = dsn,
+        layer = layer,
+        quiet = TRUE,
+        stringsAsFactors = FALSE,
+        wkt_filter = wkt_filter
+    )
+
+    if (is.na(st_crs(obj)$proj4string)) {
+        st_crs(obj) <- "+proj=longlat +datum=NAD83 +no_defs"
     }
 
     attr(obj, "tigris") <- "tigris"
@@ -424,6 +380,22 @@ load_tiger <- function(
     } else {
         return(obj)
     }
+}
+
+#' Cache directory: TIGRIS_CACHE_DIR if set, otherwise the user cache directory
+#' @noRd
+get_tigris_cache_dir <- function() {
+    if (Sys.getenv("TIGRIS_CACHE_DIR") != "") {
+        cache_dir <- Sys.getenv("TIGRIS_CACHE_DIR")
+        cache_dir <- path.expand(cache_dir)
+    } else {
+        cache_dir <- user_cache_dir("tigris")
+    }
+    if (!file.exists(cache_dir)) {
+        dir.create(cache_dir, recursive = TRUE)
+    }
+
+    cache_dir
 }
 
 #' Easily merge a data frame to a spatial data frame
