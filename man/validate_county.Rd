@@ -43,8 +43,11 @@ usage. Uses \code{is_interactive()} by default.}
 \item errors if input is not a valid FIPS code and \code{require_county = TRUE}
 }
 
-A county name that matches multiple counties (e.g. "Baltimore" matches
-"Baltimore County" and "Baltimore city") is treated as invalid.
+County names match from the start, so "Anne" matches "Anne Arundel County".
+A complete name wins over longer names it starts, so "Collin" is Collin
+County, not Collingsworth County. If a name still matches more than one
+county (e.g. "Baltimore" matches "Baltimore County" and "Baltimore city"),
+interactive sessions ask which county you mean; elsewhere it's an error.
 }
 \description{
 \code{validate_county()} checks if an input \code{county} is a FIPS code or name. If some or all input values are invalid, error if

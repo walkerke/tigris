@@ -271,7 +271,9 @@ county_values <- function(
   state_counties <- tigris::fips_codes[
     tigris::fips_codes[["state_code"]] == state,
   ]
-  set_names(state_counties[["county_code"]], state_counties[["county"]])
+  values <- set_names(state_counties[["county_code"]], state_counties[["county"]])
+  attr(values, "state_name") <- state_counties[["state_name"]][1]
+  values
 }
 
 #' Match county FIPS values
@@ -321,64 +323,100 @@ match_county_name <- function(
   county_matches <- lapply(
     tolower(county),
     function(prefix) {
-      values[startsWith(tolower(names(values)), prefix)]
+      matches <- values[startsWith(tolower(names(values)), prefix)]
+
+      # A complete county name wins over longer names it prefixes, e.g.
+      # "Collin" is Collin County, not Collingsworth County
+      if (length(matches) > 1) {
+        exact <- tolower(county_stem(names(matches))) == prefix |
+          tolower(names(matches)) == prefix
+
+        if (sum(exact) == 1) {
+          matches <- matches[exact]
+        }
+      }
+
+      matches
     }
   )
 
-  missing_matches <- vapply(county_matches, is_empty, logical(1))
-  uncertain_matches <- vapply(
-    county_matches,
-    function(x) {
-      length(x) > 1
-    },
-    logical(1)
-  )
-
-  message <- NULL
-
-  if (!any(missing_matches) && !any(uncertain_matches)) {
-    return(as.character(county_matches))
-  }
-
-  if (any(missing_matches)) {
-    missing_county <- county[missing_matches]
-    county_matches[missing_matches] <- NA_character_
-
-    message <- c(
-      message,
-      "{.arg county} input can't be matched to any valid value: {.val {missing_county}}"
+  # Ask which county was meant, or error outside interactive sessions
+  for (i in which(lengths(county_matches) > 1)) {
+    county_matches[[i]] <- choose_county(
+      county[i],
+      county_matches[[i]],
+      state_name = attr(values, "state_name"),
+      error_call = error_call
     )
   }
 
-  if (any(uncertain_matches)) {
-    # Drop ambiguous matches and ask the user to refine their selection
-    for (i in which(uncertain_matches)) {
-      message <- c(
-        message,
-        paste0(
-          "{.arg county} input '",
-          county[i],
-          "' matches ",
-          paste(names(county_matches[[i]]), collapse = ", "),
-          ". Please refine your selection."
-        )
-      )
-    }
+  missing_matches <- vapply(county_matches, is_empty, logical(1))
 
-    county_matches[uncertain_matches] <- NA_character_
+  if (!any(missing_matches)) {
+    return(as.character(county_matches))
   }
 
-  county_matches <- as.character(county_matches)
+  missing_county <- county[missing_matches]
+  county_matches[missing_matches] <- NA_character_
 
-  if (require_county && (any(missing_matches) || any(uncertain_matches))) {
+  message <- "{.arg county} input can't be matched to any valid value: {.val {missing_county}}"
+
+  if (require_county) {
     cli_abort(message, call = error_call)
   }
 
-  if (!is.null(message) && length(message) > 0) {
-    cli_warn(message, call = error_call)
+  cli_warn(message, call = error_call)
+
+  as.character(county_matches)
+}
+
+#' County name without its type, e.g. "Collin" for "Collin County"
+#' @noRd
+county_stem <- function(x) {
+  sub(
+    " (County|Parish|City and Borough|Borough|Census Area|Municipality|Municipio|city|City|Islands|Island|District)$",
+    "",
+    x
+  )
+}
+
+#' Resolve a county name that matches more than one county
+#'
+#' Interactive sessions get a menu; elsewhere (scripts, R Markdown / Quarto,
+#' tests) this errors with the choices, as there is no one to ask.
+#' @noRd
+choose_county <- function(county, matches, state_name, error_call = caller_env()) {
+  choices <- sprintf("%s (%s)", names(matches), matches)
+
+  if (!is_interactive()) {
+    cli_abort(
+      c(
+        "{.arg county} input {.val {county}} matches more than one county in {state_name}: {choices}.",
+        "i" = "Use the full county name or its FIPS code."
+      ),
+      call = error_call
+    )
   }
 
-  county_matches
+  selection <- county_menu(
+    choices,
+    title = sprintf(
+      "\"%s\" matches more than one county in %s. Which county are you requesting?",
+      county,
+      state_name
+    )
+  )
+
+  if (selection == 0) {
+    cli_abort("No county selected.", call = error_call)
+  }
+
+  matches[selection]
+}
+
+# Wrapper so tests can mock the menu
+county_menu <- function(choices, title) {
+  utils::menu(choices, title = title)
 }
 
 #' Check if county is a FIPS code or name
@@ -397,8 +435,11 @@ match_county_name <- function(
 #' - `NULL` if input is not a valid FIPS code and `require_county = FALSE`
 #' - errors if input is not a valid FIPS code and `require_county = TRUE`
 #'
-#' A county name that matches multiple counties (e.g. "Baltimore" matches
-#' "Baltimore County" and "Baltimore city") is treated as invalid.
+#' County names match from the start, so "Anne" matches "Anne Arundel County".
+#' A complete name wins over longer names it starts, so "Collin" is Collin
+#' County, not Collingsworth County. If a name still matches more than one
+#' county (e.g. "Baltimore" matches "Baltimore County" and "Baltimore city"),
+#' interactive sessions ask which county you mean; elsewhere it's an error.
 #' @export
 validate_county <- function(
   state,

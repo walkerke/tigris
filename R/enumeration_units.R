@@ -321,12 +321,17 @@ tracts <- function(
         }
     }
 
-    trcts <- load_tiger(url, tigris_type = "tract", ...)
-
-    if (!is.null(county)) {
+    # Check county before downloading, so an error (or a question about an
+    # ambiguous county name) comes before the state file downloads
+    filter_county <- !is.null(county)
+    if (filter_county) {
         # TODO: Add check that state is not "us"
         county <- validate_county(state, county, multiple = TRUE)
+    }
 
+    trcts <- load_tiger(url, tigris_type = "tract", ...)
+
+    if (filter_county) {
         trcts <- trcts[trcts$COUNTYFP %in% county, ]
     }
 
@@ -618,11 +623,16 @@ block_groups <- function(
         }
     }
 
+    # Check county before downloading, so an error (or a question about an
+    # ambiguous county name) comes before the state file downloads
+    filter_county <- !is.null(county)
+    if (filter_county) {
+        county <- validate_county(state, county, multiple = TRUE)
+    }
+
     bgs <- load_tiger(url, tigris_type = "block_group", ...)
 
-    if (!is.null(county)) {
-        county <- validate_county(state, county, multiple = TRUE)
-
+    if (filter_county) {
         bgs <- bgs[bgs$COUNTYFP %in% county, ]
     }
 
@@ -922,14 +932,17 @@ blocks <- function(state, county = NULL, year = NULL, ...) {
 
     state <- validate_state(state, require_state = TRUE)
 
+    # Check county before downloading, so an error (or a question about an
+    # ambiguous county name) comes before the state file downloads
+    filter_county <- !is.null(county)
+    if (filter_county) {
+        county <- validate_county(state, county, multiple = TRUE)
+    }
+
     # Block files use 2020 Census geography, so Connecticut blocks keep the
     # former county codes rather than the planning regions used from 2022
     if (year >= 2020 && state == "09" && !is.null(county)) {
-        ct_county <- suppressMessages(
-            validate_county(state, county, multiple = TRUE)
-        )
-
-        if (any(ct_county %in% c("110", "120", "130", "140", "150", "160", "170", "180", "190"))) {
+        if (any(county %in% c("110", "120", "130", "140", "150", "160", "170", "180", "190"))) {
             cli_abort(
                 c(
                     "Census block files use 2020 Census geography, so Connecticut blocks are coded to its former counties, not planning regions.",
@@ -964,7 +977,6 @@ blocks <- function(state, county = NULL, year = NULL, ...) {
             state
         )
     } else if (year %in% c(2000, 2010)) {
-        county <- validate_county(state, county, multiple = TRUE, allow_null = TRUE)
         suf <- year_suffix(year)
 
         if (!is.null(county)) {
@@ -995,9 +1007,7 @@ blocks <- function(state, county = NULL, year = NULL, ...) {
         blks <- load_tiger(url, tigris_type = "block", ...)
     }
 
-    if (!is.null(county) && year > 2010) {
-        county <- validate_county(state, county, multiple = TRUE)
-
+    if (filter_county && year > 2010) {
         if (year >= 2020) {
             blks <- blks[blks$COUNTYFP20 %in% county, ]
         } else {
@@ -1083,10 +1093,16 @@ county_subdivisions <- function(
         }
     }
 
+    # Check county before downloading, so an error (or a question about an
+    # ambiguous county name) comes before the state file downloads
+    filter_county <- !is.null(county)
+    if (filter_county) {
+        county <- validate_county(state, county, multiple = TRUE)
+    }
+
     cs <- load_tiger(url, tigris_type = "county_subdivision", ...)
 
-    if (!is.null(county)) {
-        county <- validate_county(state, county, multiple = TRUE)
+    if (filter_county) {
         cs <- cs[cs$COUNTYFP %in% county, ]
     }
 
