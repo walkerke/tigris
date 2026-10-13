@@ -34,7 +34,6 @@
 #' @importFrom stringr str_trim str_pad
 #' @import utils
 #' @import rappdirs
-#' @import httr
 #' @import sf
 #' @import dplyr
 #' @importFrom cli cli_abort cli_warn cli_bullets

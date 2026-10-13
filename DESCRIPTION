@@ -21,7 +21,6 @@ Depends:
 Imports:
     cli,
     dplyr,
-    httr,
     httr2,
     magrittr,
     methods,

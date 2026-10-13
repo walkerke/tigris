@@ -100,9 +100,14 @@ population_centers <- function(
         ifelse(col_names == "POPULATION", "integer", "character")
     )
 
+    # Download first, for retries and a clear error if the file is missing
+    file <- tempfile(fileext = ".txt")
+    on.exit(unlink(file), add = TRUE)
+    tigris_download(url, file)
+
     if (year == 2000 && geography == "state") {
         dat <- utils::read.fwf(
-            url,
+            file,
             widths = c(5, 20, 10, 12, 12),
             skip = 4,
             col.names = col_names,
@@ -111,7 +116,7 @@ population_centers <- function(
     } else {
         # 2000 and 2010 files are Latin-1; 2020 files are UTF-8 with a byte order mark
         dat <- utils::read.csv(
-            url,
+            file,
             header = year != 2000,
             col.names = col_names,
             colClasses = col_classes,
