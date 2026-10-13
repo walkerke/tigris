@@ -70,10 +70,6 @@ importFrom(cli,
   cli_warn
 )
 importFrom(dplyr,mutate)
-importFrom(httr,
-  GET,
-  stop_for_status
-)
 importFrom(magrittr,"%>%")
 importFrom(methods,as)
 importFrom(stringr,

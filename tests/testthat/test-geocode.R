@@ -35,13 +35,9 @@ test_that("call_geolocator_latlon works with other vintages (#151)", {
 
 test_that("call_geolocator_latlon returns NA without a block GEOID", {
   mock_geographies <- function(geographies) {
-    local_mocked_bindings(
-      GET = function(...) structure(list(), class = "response"),
-      status_code = function(...) 200L,
-      stop_for_status = function(...) invisible(NULL),
-      content = function(...) list(result = list(geographies = geographies)),
-      .package = "httr",
-      .env = parent.frame()
+    httr2::local_mocked_responses(
+      function(req) httr2::response_json(body = list(result = list(geographies = geographies))),
+      env = parent.frame()
     )
   }
 
@@ -60,4 +56,17 @@ test_that("call_geolocator_latlon returns NA without a block GEOID", {
 
   mock_geographies(list(`2020 Census Blocks` = list(list(GEOID = "010010208011015"))))
   expect_identical(call_geolocator_latlon(32.4, -86.5), "010010208011015")
+})
+
+test_that("geocoder errors explain the status (#179)", {
+  # Mocked responses skip the retries; dev/httr2/retry_check.R checks them
+  httr2::local_mocked_responses(function(req) httr2::response(502))
+  expect_error(call_geolocator_latlon(32.4, -86.5), "Bad Gateway \\(HTTP 502\\)")
+  expect_error(call_geolocator("3700 Koppers St", "Baltimore", "MD"), "temporarily unavailable")
+
+  httr2::local_mocked_responses(function(req) httr2::response(400))
+  expect_error(call_geolocator_latlon(32.4, -86.5), "benchmark` and `vintage")
+
+  httr2::local_mocked_responses(function(req) httr2::response(404))
+  expect_error(call_geolocator("3700 Koppers St", "Baltimore", "MD"), "Not Found \\(HTTP 404\\)")
 })

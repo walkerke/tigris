@@ -71,9 +71,6 @@ append_geoid <- function(address, geoid_type = 'block') {
 #' @return A character string representing the Census block of the supplied
 #'   address.
 #'
-#' importFrom utils URLencode
-#' importFrom httr GET stop_for_status
-#'
 #' @export
 #'
 call_geolocator <- function(street, city, state, zip = NA) {
@@ -111,9 +108,9 @@ call_geolocator <- function(street, city, state, zip = NA) {
   url_full <- paste0(call_start, url, call_end)
 
   # Check response
-  r <- httr::GET(url_full)
-  httr::stop_for_status(r)
-  response <- httr::content(r)
+  resp <- tigris_perform(tigris_request(url_full))
+  stop_for_geocoder_status(resp)
+  response <- httr2::resp_body_json(resp, simplifyVector = FALSE)
   if (length(response$result$addressMatches) == 0) {
     message(paste0("Address (",
                    street, " ", city, " ", state,
@@ -147,7 +144,6 @@ call_geolocator <- function(street, city, state, zip = NA) {
 #'   lat/lon.
 #'
 #' @importFrom utils URLencode
-#' @importFrom httr GET stop_for_status
 #'
 #' @author Josie Kressner, \email{josie@@transportfoundry.com}
 #' @author Mark Richards, \email{Mark.Richards.002@@gmail.com}
@@ -175,8 +171,8 @@ call_geolocator_latlon <- function(lat, lon, benchmark, vintage) {
   url_full <- paste0(call_start, url, benchmark0, vintage0)
   #print(url_full)
   # Check response
-  r <- httr::GET(url_full)
-  if (httr::status_code(r) == 400) {
+  resp <- tigris_perform(tigris_request(url_full))
+  if (httr2::resp_status(resp) == 400) {
     cli_abort(
       c(
         "The Census geocoder rejected the request (HTTP 400); check that `benchmark` and `vintage` are valid.",
@@ -185,8 +181,8 @@ call_geolocator_latlon <- function(lat, lon, benchmark, vintage) {
       )
     )
   }
-  httr::stop_for_status(r)
-  response <- httr::content(r)
+  stop_for_geocoder_status(resp)
+  response <- httr2::resp_body_json(resp, simplifyVector = FALSE)
   geographies <- response[["result"]][["geographies"]]
 
   # The block layer is "2020 Census Blocks" for Current_Current and "Census
@@ -208,4 +204,29 @@ call_geolocator_latlon <- function(lat, lon, benchmark, vintage) {
   }
 
   return(geoid)
+}
+
+# Error for a geocoder response with an HTTP error status, in the wording
+# httr's stop_for_status() used (e.g. "Bad Gateway (HTTP 502)."). Temporary
+# server errors have already been retried, so those say so.
+stop_for_geocoder_status <- function(resp) {
+  status <- httr2::resp_status(resp)
+
+  if (status < 400) {
+    return(invisible(resp))
+  }
+
+  message <- sprintf("%s (HTTP %s).", httr2::resp_status_desc(resp), status)
+
+  if (status %in% tigris_retry_statuses) {
+    message <- c(
+      message,
+      "i" = sprintf(
+        "The Census geocoder may be temporarily unavailable (tried %s times); please try again later.",
+        tigris_max_tries
+      )
+    )
+  }
+
+  cli_abort(message, class = "tigris_geocoder_error", call = NULL)
 }
