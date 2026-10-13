@@ -13,7 +13,7 @@ load_tiger(
   keep_zipped_shapefile = FALSE,
   filter_by = NULL,
   protocol = getOption("tigris_protocol", "http"),
-  timeout = 1800
+  timeout = NULL
 )
 }
 \arguments{
@@ -38,7 +38,7 @@ global option "tigris_use_cache"). Defaults to FALSE.}
 
 \item{protocol}{Character string specifying the protocol to use for downloading files. Options are "ftp" or "http" (default). If "ftp", the URL will be modified to use FTP instead of HTTPS.}
 
-\item{timeout}{Integer specifying the timeout in seconds for download operations. Defaults to 300 (5 minutes) to handle large files.}
+\item{timeout}{No longer used: downloads have no time limit. Kept so existing code that sets it keeps working.}
 }
 \value{
 sf or sp data frame

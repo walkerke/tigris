@@ -66,7 +66,7 @@ tigris_cache_dir <- function(path) {
 #' global option "tigris_use_cache"). Defaults to FALSE.
 #' @param filter_by Geometry used to filter the output returned by the function.  Can be an sf object, an object of class `bbox`, or a length-4 vector of format `c(xmin, ymin, xmax, ymax)` that can be converted to a bbox. Geometries that intersect the input to `filter_by` will be returned.
 #' @param protocol Character string specifying the protocol to use for downloading files. Options are "ftp" or "http" (default). If "ftp", the URL will be modified to use FTP instead of HTTPS.
-#' @param timeout Integer specifying the timeout in seconds for download operations. Defaults to 300 (5 minutes) to handle large files.
+#' @param timeout No longer used: downloads have no time limit. Kept so existing code that sets it keeps working.
 #'
 #' @return sf or sp data frame
 #'
@@ -79,248 +79,237 @@ load_tiger <- function(
     keep_zipped_shapefile = FALSE,
     filter_by = NULL,
     protocol = getOption("tigris_protocol", "http"),
-    timeout = 1800
+    timeout = NULL
 ) {
+    # `timeout` is no longer used: downloads have no time limit. It's kept so
+    # code that sets it keeps working.
+
     use_cache <- getOption("tigris_use_cache", FALSE)
 
     # Process filter_by
     # TODO: Expose geos_method argument used by sf::st_make_valid
     wkt_filter <- input_to_wkt(filter_by)
 
-    # Store original URL before protocol modification
-    original_url <- url
-
-    # Modify URL for FTP if needed
-    if (protocol == "ftp" && grepl("^https://www2", url)) {
-        url <- gsub("^https://www2", "ftp://ftp2", url)
+    # HTTPS by default, with FTP as a fallback; FTP only if requested
+    ftp_url <- gsub("^https://www2", "ftp://ftp2", url)
+    if (protocol == "ftp") {
+        url <- ftp_url
+    }
+    if (identical(ftp_url, url)) {
+        ftp_url <- NULL
     }
 
     tiger_file <- basename(url)
     shape <- gsub(".zip", "", tiger_file)
     shape <- gsub("_shp", "", shape) # for historic tracts
 
-    obj <- NULL
-
     if (use_cache) {
         cache_dir <- get_tigris_cache_dir()
+        file_loc <- file.path(cache_dir, tiger_file)
+        shp_loc <- file.path(cache_dir, sprintf("%s.shp", shape))
 
-        if (file.exists(cache_dir)) {
-            file_loc <- file.path(cache_dir, tiger_file)
-            shp_loc <- file.path(cache_dir, sprintf("%s.shp", shape))
+        if (refresh || !file.exists(shp_loc)) {
+            # Downloads are extracted and checked here before they replace
+            # anything in the cache
+            work_dir <- tempfile("staging-", tmpdir = cache_dir)
+            dir.create(work_dir)
+            on.exit(unlink(work_dir, recursive = TRUE), add = TRUE)
 
-            if (refresh | !file.exists(shp_loc)) {
-                tiger_download(
-                    url,
-                    file_loc,
-                    overwrite = refresh,
-                    progress_bar = progress_bar,
-                    timeout = timeout
-                )
+            staged <- tiger_fetch(url, ftp_url, file_loc, shape, work_dir, progress_bar)
+            publish_layer(staged, shape, cache_dir)
 
-                unzip_tiger <- function() {
-                    unzip(file_loc, exdir = cache_dir, overwrite = TRUE)
-                }
-                remove_zip_tiger <- function() {
-                    if (file.exists(file_loc) && file.exists(shp_loc)) {
-                        invisible(file.remove(file_loc))
-                    }
-                }
-
-                # Logic for handling download errors and re-downloading
-                t <- tryCatch(unzip_tiger(), warning = function(w) w)
-
-                if ("warning" %in% class(t)) {
-                    i <- 1
-
-                    while (i < 4) {
-                        cli_bullets(
-                            "Previous download failed.  Re-download attempt {i} of 3..."
-                        )
-
-                        tiger_download(
-                            url,
-                            file_loc,
-                            overwrite = TRUE,
-                            progress_bar = progress_bar,
-                            timeout = timeout
-                        )
-
-                        t <- tryCatch(unzip_tiger(), warning = function(w) w)
-
-                        if ("warning" %in% class(t)) {
-                            i <- i + 1
-
-                            # If using HTTP protocol and about to make final retry, try FTP as fallback
-                            if (i == 3 && protocol == "http") {
-                                cli_bullets(
-                                    "HTTP download failed, trying FTP as fallback..."
-                                )
-                                ftp_url <- gsub(
-                                    "^https://www2",
-                                    "ftp://ftp2",
-                                    original_url
-                                )
-
-                                tiger_download(
-                                    ftp_url,
-                                    file_loc,
-                                    progress_bar = progress_bar,
-                                    timeout = timeout
-                                )
-
-                                # Check if FTP download succeeded
-                                t <- tryCatch(
-                                    unzip_tiger(),
-                                    warning = function(w) w
-                                )
-                                if (!("warning" %in% class(t))) {
-                                    break # FTP worked, exit the retry loop
-                                }
-                            }
-                        } else {
-                            break
-                        }
-                    }
-
-                    if (i == 4) {
-                        cli_abort(
-                            "Download failed with both HTTP and FTP; check your internet connection or the status of the Census Bureau website
-                 at https://www2.census.gov/geo/tiger/ or ftp://ftp2.census.gov/geo/tiger/."
-                        )
-                    }
-                } else {
-                    unzip_tiger()
-
-                    if (!keep_zipped_shapefile) {
-                        remove_zip_tiger()
-                    }
-                }
+            if (!keep_zipped_shapefile) {
+                unlink(file_loc)
             }
-
-            obj <- tiger_read(
-                cache_dir,
-                shape,
-                wkt_filter = wkt_filter,
-                tigris_type = tigris_type,
-                class = class
-            )
         }
+
+        dsn <- cache_dir
     } else {
-        tmp <- tempdir()
-        file_loc <- file.path(tmp, tiger_file)
+        # The zip stays in tempdir(), as before; each call extracts into its
+        # own directory
+        file_loc <- file.path(tempdir(), tiger_file)
+        work_dir <- tempfile("tigris-")
+        dir.create(work_dir)
+        on.exit(unlink(work_dir, recursive = TRUE), add = TRUE)
 
-        # Try initial download with specified protocol
-        tiger_download(
-            url,
-            file_loc,
-            progress_bar = progress_bar,
-            timeout = timeout
-        )
-
-        # Try to unzip the file
-        unzip_result <- tryCatch(
-            {
-                unzip(file_loc, exdir = tmp)
-                TRUE # Success
-            },
-            warning = function(w) FALSE, # Failed
-            error = function(e) FALSE # Failed
-        )
-
-        # If HTTP download failed, try FTP as fallback
-        if (!unzip_result && protocol == "http") {
-            cli_bullets("HTTP download failed, trying FTP as fallback...")
-            ftp_url <- gsub("^https://www2", "ftp://ftp2", original_url)
-
-            tiger_download(
-                ftp_url,
-                file_loc,
-                progress_bar = progress_bar,
-                timeout = timeout
-            )
-
-            # Try to unzip again
-            unzip_result <- tryCatch(
-                {
-                    unzip(file_loc, exdir = tmp)
-                    TRUE # Success
-                },
-                warning = function(w) FALSE, # Failed
-                error = function(e) FALSE # Failed
-            )
-
-            if (!unzip_result) {
-                cli_abort(
-                    "Download failed with both HTTP and FTP; check your internet connection or the status of the Census Bureau website
-                 at https://www2.census.gov/geo/tiger/ or ftp://ftp2.census.gov/geo/tiger/."
-                )
-            }
-        } else if (!unzip_result) {
-            cli_abort(
-                "Download failed; check your internet connection or the status of the Census Bureau website
-             at https://www2.census.gov/geo/tiger/ or ftp://ftp2.census.gov/geo/tiger/."
-            )
-        }
-
-        obj <- tiger_read(
-            tmp,
-            shape,
-            wkt_filter = wkt_filter,
-            tigris_type = tigris_type,
-            class = class
-        )
+        dsn <- tiger_fetch(url, ftp_url, file_loc, shape, work_dir, progress_bar)
     }
 
-    obj
+    tiger_read(
+        dsn,
+        shape,
+        wkt_filter = wkt_filter,
+        tigris_type = tigris_type,
+        class = class
+    )
 }
 
-#' Download a TIGER/Line file to `path`
+#' Download a TIGER/Line zip to `path` and extract it
 #'
-#' Failures are silent here; `load_tiger()` checks the result by unzipping it.
+#' Tries `url`, then `ftp_url` if given. Each download counts as successful
+#' only if it extracts and reads cleanly (see `extract_layer()`), so a corrupt
+#' or truncated file is retried, and then falls back to FTP, like any other
+#' failure. A file that doesn't exist on the server errors right away, as the
+#' FTP server has the same files.
+#'
+#' @return The directory inside `work_dir` holding the extracted, checked layer.
 #' @noRd
-tiger_download <- function(
-    url,
-    path,
-    overwrite = FALSE,
-    progress_bar = TRUE,
-    timeout = 1800
-) {
-    if (grepl("^ftp://", url)) {
-        # Use download.file for FTP URLs with timeout
-        options(timeout = timeout)
-        try(
-            download.file(
-                url,
-                destfile = path,
-                quiet = !progress_bar,
-                mode = "wb"
+tiger_fetch <- function(url, ftp_url, path, layer, work_dir, progress_bar = TRUE) {
+    extracted <- NULL
+
+    # Extract each downloaded file into its own directory and keep the one
+    # that checks out
+    check <- function(zip) {
+        dir <- tempfile("extract-", tmpdir = work_dir)
+        dir.create(dir)
+        if (extract_layer(zip, layer, dir)) {
+            extracted <<- dir
+            return(TRUE)
+        }
+        unlink(dir, recursive = TRUE)
+        FALSE
+    }
+
+    first <- tryCatch(
+        tigris_download(url, path, validate = check, progress = progress_bar),
+        error = function(e) e
+    )
+
+    if (!inherits(first, "error")) {
+        return(extracted)
+    }
+
+    if (inherits(first, "tigris_file_not_found")) {
+        stop(first)
+    }
+
+    if (is.null(ftp_url)) {
+        cli_abort(
+            c(
+                "Download failed; check your internet connection or the status of the Census Bureau website
+             at https://www2.census.gov/geo/tiger/ or ftp://ftp2.census.gov/geo/tiger/.",
+                "i" = "{conditionMessage(first)}"
             ),
-            silent = TRUE
+            call = NULL
         )
-        options(timeout = 60) # Reset to R default
-    } else {
-        # Use httr::GET for HTTP URLs
-        if (progress_bar) {
-            try(
-                GET(
-                    url,
-                    write_disk(path, overwrite = overwrite),
-                    progress(type = "down"),
-                    timeout(timeout)
-                ),
-                silent = TRUE
-            )
-        } else {
-            try(
-                GET(
-                    url,
-                    write_disk(path, overwrite = overwrite),
-                    timeout(timeout)
-                ),
-                silent = TRUE
+    }
+
+    cli_bullets("HTTP download failed, trying FTP as fallback...")
+
+    second <- tryCatch(
+        tigris_download(ftp_url, path, validate = check, progress = progress_bar),
+        error = function(e) e
+    )
+
+    if (inherits(second, "error")) {
+        cli_abort(
+            c(
+                "Download failed with both HTTP and FTP; check your internet connection or the status of the Census Bureau website
+                 at https://www2.census.gov/geo/tiger/ or ftp://ftp2.census.gov/geo/tiger/.",
+                "i" = "HTTP: {conditionMessage(first)}",
+                "i" = "FTP: {conditionMessage(second)}"
+            ),
+            call = NULL
+        )
+    }
+
+    extracted
+}
+
+#' Extract a TIGER/Line zip into `dir` and check that its layer reads cleanly
+#'
+#' Every file must extract without errors, the shapefile's .shp, .shx, and .dbf
+#' must be present, and GDAL must read every feature without errors.
+#' zip::unzip() verifies each file's checksum; utils::unzip() doesn't, so it
+#' can extract damaged data without complaint.
+#' @noRd
+extract_layer <- function(zip, layer, dir) {
+    extracted <- tryCatch(
+        {
+            zip::unzip(zip, exdir = dir)
+            TRUE
+        },
+        warning = function(w) FALSE,
+        error = function(e) FALSE
+    )
+
+    required <- file.path(dir, paste0(layer, c(".shp", ".shx", ".dbf")))
+    if (!extracted || !all(file.exists(required))) {
+        return(FALSE)
+    }
+
+    gdal_error <- FALSE
+    obj <- tryCatch(
+        withCallingHandlers(
+            st_read(dir, layer = layer, quiet = TRUE),
+            warning = function(w) {
+                if (grepl("GDAL Error", conditionMessage(w))) gdal_error <<- TRUE
+                invokeRestart("muffleWarning")
+            }
+        ),
+        error = function(e) NULL
+    )
+
+    !is.null(obj) && !gdal_error
+}
+
+#' Move a checked layer from `staged` into `dest_dir`
+#'
+#' Replaces the layer's existing files in `dest_dir`, so old and new files are
+#' never mixed. If a move fails partway, the old files are restored.
+#' @noRd
+publish_layer <- function(staged, layer, dest_dir) {
+    new_files <- list.files(staged)
+
+    # The layer's existing files (by exact layer name), apart from the zip
+    old_files <- list.files(dest_dir)
+    old_files <- old_files[
+        startsWith(old_files, paste0(layer, ".")) & !endsWith(old_files, ".zip")
+    ]
+
+    backup <- tempfile("backup-", tmpdir = dest_dir)
+    dir.create(backup)
+    moved_old <- character()
+    moved_new <- character()
+
+    restore <- function() {
+        unlink(file.path(dest_dir, moved_new))
+        restored <- vapply(
+            moved_old,
+            function(f) move_file(file.path(backup, f), file.path(dest_dir, f)),
+            logical(1)
+        )
+        if (all(restored)) {
+            unlink(backup, recursive = TRUE)
+            cli_abort(
+                "Unable to update the cached files for {.val {layer}}; the previous files were kept.",
+                call = NULL
             )
         }
+        cli_abort(
+            "Unable to update the cached files for {.val {layer}}; the previous files are in {.path {backup}}.",
+            call = NULL
+        )
     }
+
+    for (f in old_files) {
+        if (!move_file(file.path(dest_dir, f), file.path(backup, f))) restore()
+        moved_old <- c(moved_old, f)
+    }
+
+    for (f in new_files) {
+        if (!move_file(file.path(staged, f), file.path(dest_dir, f))) restore()
+        moved_new <- c(moved_new, f)
+    }
+
+    unlink(backup, recursive = TRUE)
+
+    invisible(dest_dir)
+}
+
+# file.rename(), wrapped so tests can simulate a failed move
+move_file <- function(from, to) {
+    file.rename(from, to)
 }
 
 #' Read a downloaded TIGER/Line shapefile and tidy it for tigris
@@ -932,6 +921,6 @@ erase_water <- function(input_sf, area_threshold = 0.75, year = NULL) {
 #'     option `"tigris_refresh"` if it is set. Specifying this argument will override the behavior set in `"tigris_refresh"` global option.
 #'  * `filter_by` Geometry used to filter the output returned by the function.  Can be an sf object, an object of class `bbox`, or a length-4 vector of format `c(xmin, ymin, xmax, ymax)` that can be converted to a bbox. Geometries that intersect the input to `filter_by` will be returned.
 #'  * `protocol` Character string specifying the protocol to use for downloading files. Options are "ftp" or "http" (default). If "ftp", the URL will be modified to use FTP instead of HTTPS.
-#'  * `timeout` Integer specifying the timeout in seconds for download operations if protocol is "ftp". Defaults to 1800 (30 minutes) to handle large files.
+#'  * `timeout` No longer used: downloads have no time limit. Kept so existing code that sets it keeps working.
 #' @name load_tiger_doc_template
 NULL

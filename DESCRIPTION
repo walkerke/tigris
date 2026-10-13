@@ -17,18 +17,20 @@ License: MIT + file LICENSE
 URL: https://github.com/walkerke/tigris
 BugReports: https://github.com/walkerke/tigris/issues
 Depends:
-    R (>= 3.3.0)
+    R (>= 4.1)
 Imports:
     cli,
     dplyr,
     httr,
+    httr2,
     magrittr,
     methods,
     rappdirs,
     rlang,
     sf,
     stringr,
-    utils
+    utils,
+    zip
 Suggests:
     ggplot2,
     knitr,
