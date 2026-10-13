@@ -19,3 +19,10 @@ test_that("transportation functions work", {
 
   expect_s3_class(address_ranges(state = state, county = "01"), "sf")
 })
+
+test_that("transportation functions work for 2010", {
+  skip_on_cran()
+  expect_s3_class(roads("VT", "001", year = 2010), "sf")
+  expect_s3_class(primary_secondary_roads("VT", year = 2010), "sf")
+  expect_error(roads("VT", "001", year = 2009))
+})

@@ -39,7 +39,7 @@
 #' gg
 #' }
 roads <- function(state, county, year = NULL, ...) {
-    year <- set_tigris_year(year)
+    year <- set_tigris_year(year, min_year = 2010)
     state <- validate_state(state, require_state = TRUE)
     county <- validate_county(
         state,
@@ -91,7 +91,7 @@ roads <- function(state, county, year = NULL, ...) {
 #'
 #' }
 primary_roads <- function(year = NULL, ...) {
-    year <- set_tigris_year(year)
+    year <- set_tigris_year(year, min_year = 2010)
 
     url <- sprintf(
         "https://www2.census.gov/geo/tiger/TIGER%s/PRIMARYROADS/tl_%s_us_primaryroads.zip",
@@ -131,7 +131,7 @@ primary_roads <- function(year = NULL, ...) {
 #'
 #' }
 primary_secondary_roads <- function(state, year = NULL, ...) {
-    year <- set_tigris_year(year)
+    year <- set_tigris_year(year, min_year = 2010)
 
     state <- validate_state(state, require_state = TRUE)
 

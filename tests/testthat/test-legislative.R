@@ -107,6 +107,10 @@ test_that("congressional_districts works", {
 
 
 test_that("state_legislative_districts errors", {
+  expect_error(
+    state_legislative_districts("VT", cb = TRUE, year = 2000),
+    "2010 and later"
+  )
   skip_on_cran()
   skip_on_ci()
   expect_error(state_legislative_districts())
@@ -154,25 +158,25 @@ test_that("state_legislative_districts works", {
     ),
     "sf"
   )
-  # TODO: Check if this test is supposed to work or not
-  # expect_s3_class(
-  #   state_legislative_districts(
-  #     state = state,
-  #     house = "upper",
-  #     year = 2010,
-  #     cb = TRUE
-  #   ),
-  #   "sf"
-  # )
-  # expect_s3_class(
-  #   state_legislative_districts(
-  #     state = state,
-  #     house = "lower",
-  #     year = 2010,
-  #     cb = TRUE
-  #   ),
-  #   "sf"
-  # )
+  # 2010 cartographic files (the URL used to be overwritten)
+  expect_s3_class(
+    state_legislative_districts(
+      state = state,
+      house = "upper",
+      year = 2010,
+      cb = TRUE
+    ),
+    "sf"
+  )
+  expect_s3_class(
+    state_legislative_districts(
+      state = state,
+      house = "lower",
+      year = 2010,
+      cb = TRUE
+    ),
+    "sf"
+  )
 })
 
 

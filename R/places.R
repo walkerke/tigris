@@ -7,8 +7,8 @@
 #'        \code{cb = TRUE}, a national dataset of places will be returned for years
 #'        2019 and later.
 #' @param cb If cb is set to TRUE, download a generalized (1:500k)
-#'        cartographic boundary file.  Defaults to FALSE (the most detailed
-#'        TIGER/Line file).
+#'        cartographic boundary file (2010 and later).  Defaults to FALSE (the
+#'        most detailed TIGER/Line file).
 #' @inheritParams load_tiger_doc_template
 #' @inheritSection load_tiger_doc_template Additional Arguments
 #' @family general area functions
@@ -16,7 +16,7 @@
 #' @export
 places <- function(state = NULL, cb = FALSE, year = NULL, ...) {
     check_cb(cb)
-    year <- set_tigris_year(year)
+    year <- set_tigris_year(year, min_year = 2000, not_year = 2001:2009)
     state <- validate_state(state, multiple = TRUE)
 
     if (is.null(state)) {
@@ -33,19 +33,39 @@ places <- function(state = NULL, cb = FALSE, year = NULL, ...) {
     }
 
     if (cb) {
-        url <- sprintf(
-            "https://www2.census.gov/geo/tiger/GENZ%s/shp/cb_%s_%s_place_500k.zip",
-            year,
-            year,
-            state
-        )
+        if (year == 2000) {
+            cli_abort(
+                "Cartographic boundary places are available for 2010 and later; use {.code cb = FALSE} for 2000."
+            )
+        } else if (year == 2010) {
+            url <- sprintf(
+                "https://www2.census.gov/geo/tiger/GENZ2010/gz_2010_%s_160_00_500k.zip",
+                state
+            )
+        } else {
+            url <- sprintf(
+                "https://www2.census.gov/geo/tiger/GENZ%s/shp/cb_%s_%s_place_500k.zip",
+                year,
+                year,
+                state
+            )
+        }
     } else {
-        url <- sprintf(
-            "https://www2.census.gov/geo/tiger/TIGER%s/PLACE/tl_%s_%s_place.zip",
-            year,
-            year,
-            state
-        )
+        if (year %in% c(2000, 2010)) {
+            url <- sprintf(
+                "https://www2.census.gov/geo/tiger/TIGER2010/PLACE/%s/tl_2010_%s_place%s.zip",
+                year,
+                state,
+                year_suffix(year)
+            )
+        } else {
+            url <- sprintf(
+                "https://www2.census.gov/geo/tiger/TIGER%s/PLACE/tl_%s_%s_place.zip",
+                year,
+                year,
+                state
+            )
+        }
     }
 
     if (length(state) > 1) {

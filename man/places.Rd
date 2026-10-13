@@ -13,8 +13,8 @@ be state name or state abbreviation. When \code{NULL} and combined with
 2019 and later.}
 
 \item{cb}{If cb is set to TRUE, download a generalized (1:500k)
-cartographic boundary file.  Defaults to FALSE (the most detailed
-TIGER/Line file).}
+cartographic boundary file (2010 and later).  Defaults to FALSE (the
+most detailed TIGER/Line file).}
 
 \item{year}{the data year; defaults to 2025}
 

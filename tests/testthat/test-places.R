@@ -35,3 +35,12 @@ test_that("places works", {
     "sf"
   )
 })
+
+test_that("places works for 2000 and 2010", {
+  skip_on_cran()
+  expect_equal(nrow(places("VT", year = 2010)), 119)
+  expect_true("PLACEFP00" %in% names(places("VT", year = 2000)))
+  expect_equal(nrow(places("VT", cb = TRUE, year = 2010)), 119)
+  expect_error(places("VT", cb = TRUE, year = 2000), "2010 and later")
+  expect_error(places("VT", year = 2005))
+})

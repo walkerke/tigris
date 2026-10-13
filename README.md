@@ -53,12 +53,12 @@ Please note: cartographic boundary files in __tigris__ are not available for 201
 | `tracts()` | TIGER/Line; cartographic (1:500k) | 1990, 2000, 2010-2025 |
 | `block_groups()` | TIGER/Line; cartographic (1:500k) | 1990, 2000, 2010-2025 |
 | `blocks()` | TIGER/Line | 2000, 2010-2025 |
-| `places()` | TIGER/Line; cartographic (1:500k) | 2011-2025 |
+| `places()` | TIGER/Line; cartographic (1:500k) | 2000 (TIGER/Line only), 2010-2025 |
 | `pumas()` | TIGER/Line; cartographic (1:500k) | 2012-2025 |
 | `school_districts()` | TIGER/Line; cartographic | 2011-2025 |
 | `zctas()` | TIGER/Line; cartographic (1:500k) | 2000, 2010, 2012-2025 |
 | `congressional_districts()` | TIGER/Line; cartographic (1:500k; 1:5m; 1:20m) | 2011-2025 |
-| `state_legislative_districts()` | TIGER/Line; cartographic (1:500k) | 2011-2025 |
+| `state_legislative_districts()` | TIGER/Line; cartographic (1:500k) | 2000 (TIGER/Line only), 2010-2025 |
 | `voting_districts()` | TIGER/Line | 2012, 2020 |
 | `area_water()` | TIGER/Line | 2011-2025 |
 | `linear_water()` | TIGER/Line | 2011-2025 |
@@ -69,9 +69,9 @@ Please note: cartographic boundary files in __tigris__ are not available for 201
 | `new_england()` | TIGER/Line; cartographic (1:500k) | 2011-2021 (no longer used by Census) |
 | `county_subdivisions()` | TIGER/Line; cartographic (1:500k) | 2010-2025 |
 | `urban_areas()` | TIGER/Line; cartographic (1:500k) | 2012-2025 |
-| `primary_roads()` | TIGER/Line | 2011-2025 |
-| `primary_secondary_roads()` | TIGER/Line | 2011-2025 |
-| `roads()` | TIGER/Line | 2011-2025 |
+| `primary_roads()` | TIGER/Line | 2010-2025 |
+| `primary_secondary_roads()` | TIGER/Line | 2010-2025 |
+| `roads()` | TIGER/Line | 2010-2025 |
 | `rails()` | TIGER/Line | 2011-2025 |
 | `native_areas()` | TIGER/Line; cartographic (1:500k) | 2011-2025 |
 | `alaska_native_regional_corporations()` | TIGER/Line; cartographic (1:500k) | 2011-2025 |

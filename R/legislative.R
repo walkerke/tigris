@@ -194,7 +194,11 @@ state_legislative_districts <- function(
     }
 
     if (cb) {
-        if (year == 2010) {
+        if (year == 2000) {
+            cli_abort(
+                "Cartographic boundary state legislative districts are available for 2010 and later; use {.code cb = FALSE} for 2000."
+            )
+        } else if (year == 2010) {
             if (type == "sldu") {
                 url <- sprintf(
                     "https://www2.census.gov/geo/tiger/GENZ2010/gz_2010_%s_610_u2_500k.zip",
@@ -206,17 +210,17 @@ state_legislative_districts <- function(
                     state
                 )
             }
+        } else {
+            url <- sprintf(
+                "https://www2.census.gov/geo/tiger/GENZ%s/shp/cb_%s_%s_%s_500k.zip",
+                year,
+                year,
+                state,
+                type
+            )
+
+            if (year == 2013) url <- gsub("shp/", "", url)
         }
-
-        url <- sprintf(
-            "https://www2.census.gov/geo/tiger/GENZ%s/shp/cb_%s_%s_%s_500k.zip",
-            year,
-            year,
-            state,
-            type
-        )
-
-        if (year == 2013) url <- gsub("shp/", "", url)
     } else {
         if (year %in% c(2000, 2010)) {
             url <- sprintf(
