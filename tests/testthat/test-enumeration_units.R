@@ -213,3 +213,13 @@ test_that("`county_subdivisions()` works", {
     "sf"
   )
 })
+
+test_that("county_subdivisions accepts several states", {
+  skip_on_cran()
+  cs <- county_subdivisions(c("VT", "NH"), cb = TRUE, year = 2023)
+  expect_setequal(unique(cs$STATEFP), c("50", "33"))
+  expect_error(
+    county_subdivisions(c("VT", "NH"), county = "001"),
+    "single `state`"
+  )
+})

@@ -7,12 +7,14 @@
 county_subdivisions(state, county = NULL, cb = FALSE, year = NULL, ...)
 }
 \arguments{
-\item{state}{The two-digit FIPS code (string) of the state you want. Can also
-be state name or state abbreviation.}
+\item{state}{The two-digit FIPS code (string) of the state you want, or a
+vector of codes for several states. Can also be state names or
+abbreviations.}
 
 \item{county}{The three-digit FIPS code (string) of the county you'd like to
 subset for, or a vector of FIPS codes if you desire multiple counties.
-Can also be a county name or vector of names.}
+Can also be a county name or vector of names. Only available for a
+single state.}
 
 \item{cb}{If cb is set to TRUE, download a generalized (1:500k)
 file.  Defaults to FALSE (the most detailed TIGER/Line file)}

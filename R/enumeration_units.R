@@ -1029,11 +1029,13 @@ blocks <- function(state, county = NULL, year = NULL, ...) {
 #'  A State has either MCDs or their statistical equivalents, or CCDs; it cannot
 #'  contain both."
 #'
-#' @param state The two-digit FIPS code (string) of the state you want. Can also
-#'        be state name or state abbreviation.
+#' @param state The two-digit FIPS code (string) of the state you want, or a
+#'        vector of codes for several states. Can also be state names or
+#'        abbreviations.
 #' @param county The three-digit FIPS code (string) of the county you'd like to
 #'        subset for, or a vector of FIPS codes if you desire multiple counties.
-#'        Can also be a county name or vector of names.
+#'        Can also be a county name or vector of names. Only available for a
+#'        single state.
 #' @param cb If cb is set to TRUE, download a generalized (1:500k)
 #'        file.  Defaults to FALSE (the most detailed TIGER/Line file)
 #' @inheritParams load_tiger_doc_template
@@ -1059,7 +1061,11 @@ county_subdivisions <- function(
 ) {
     check_cb(cb)
     year <- set_tigris_year(year, min_year = 2010)
-    state <- validate_state(state, require_state = TRUE)
+    state <- validate_state(state, require_state = TRUE, multiple = TRUE)
+
+    if (length(state) > 1 && !is.null(county)) {
+        cli_abort("{.arg county} can only be used with a single {.arg state}.")
+    }
 
     if (cb) {
         if (year == 2010) {
@@ -1100,7 +1106,14 @@ county_subdivisions <- function(
         county <- validate_county(state, county, multiple = TRUE)
     }
 
-    cs <- load_tiger(url, tigris_type = "county_subdivision", ...)
+    if (length(state) > 1) {
+        cs <- lapply(url, function(x) {
+            load_tiger(x, tigris_type = "county_subdivision", ...)
+        }) %>%
+            rbind_tigris()
+    } else {
+        cs <- load_tiger(url, tigris_type = "county_subdivision", ...)
+    }
 
     if (filter_county) {
         cs <- cs[cs$COUNTYFP %in% county, ]
