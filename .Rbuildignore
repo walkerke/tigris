@@ -8,3 +8,5 @@
 ^img$
 
 ^\.github$
+^dev$
+^\.claude$

@@ -57,7 +57,7 @@ Please note: cartographic boundary files in __tigris__ are not available for 201
 | `pumas()` | TIGER/Line; cartographic (1:500k) | 2012-2025 |
 | `school_districts()` | TIGER/Line; cartographic | 2011-2025 |
 | `zctas()` | TIGER/Line; cartographic (1:500k) | 2000, 2010, 2012-2025 |
-| `congressional_districts()` | TIGER/Line; cartographic (1:500k; 1:5m; 1:20m) | 2011-2025 |
+| `congressional_districts()` | TIGER/Line; cartographic (1:500k; 1:5m; 1:20m) | 2010-2025 (cartographic 2013 and later) |
 | `state_legislative_districts()` | TIGER/Line; cartographic (1:500k) | 2000 (TIGER/Line only), 2010-2025 |
 | `voting_districts()` | TIGER/Line | 2012, 2020 |
 | `area_water()` | TIGER/Line | 2011-2025 |

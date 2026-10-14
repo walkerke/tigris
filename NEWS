@@ -1,16 +1,18 @@
-tigris development
+tigris 2.3.0
 -------------------------------------------------------
-* Add `{rlang}` and `{cli}` packages to Imports. Add `{withr}` to Suggests. Remove `{uuid}` and `{tidycensus}` from Suggests.
+* Functions now default to a year of 2025.
 
-* Switch to use `cli::cli_abort()`, `cli::cli_warn()` and `cli::cli_bullets()` for all errors, warnings, and messages.
+* Downloads now use {httr2}. Temporary server errors and incomplete or corrupt files are retried automatically before falling back to FTP, a file that doesn't exist on the Census Bureau's server gets a clear error right away, and cached files are only replaced once the new download reads correctly. The geocoder also retries temporary server errors. tigris now requires R 4.1 or later and imports {httr2} and {zip} in place of {httr}; the `timeout` argument is no longer needed.
 
-* Warn users when `filter_by` contains multiple geometries and only part of the filter can be used.
+* A new function, `population_centers()`, returns Census centers of population for states, counties, Census tracts, and block groups for 2000, 2010, and 2020.
 
-* Export `validate_state()` and `validate_county()` functions with added  `multiple` argument to allow validation of multiple states or counties in a single call.
+* `places()` now supports 2000 and 2010, and `roads()`, `primary_roads()`, and `primary_secondary_roads()` support 2010. `county_subdivisions()` accepts multiple states.
 
-* Improve consistency of validation for input `year`, `cb`, and `resolution` arguments.
+* County names that match more than one county (e.g. "Collin", which also matches Collingsworth County, Texas) prompt you to choose in interactive sessions and error with the choices otherwise. An exact name match always wins.
 
-* Expand test coverage.
+* `validate_state()` and `validate_county()` are now exported, with a `multiple` argument for validating several states or counties at once. Errors, warnings, and messages use {cli} throughout.
+
+* Various bug fixes and performance improvements (#129, #151, #172, #178, #179, #182, #183, #184, #185, #188, #189, #192, #198, #203, #206, #213, #215, #216, #218, #219, #220).
 
 tigris 2.2.1
 -------------------------------------------------------

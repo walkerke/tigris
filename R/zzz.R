@@ -40,6 +40,7 @@ utils::globalVariables(c(
   ".data",
   "geoid",
   "GEOID",
+  "id",
   "state_fips",
   "AWATER",
   "AREA",

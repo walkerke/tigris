@@ -57,6 +57,7 @@ population_centers <- function(
     }
 
     if (year == 2000) {
+        fips_codes <- tigris::fips_codes
         state_abb <- tolower(fips_codes$state[match(state, fips_codes$state_code)])
         path <- switch(
             geography,
