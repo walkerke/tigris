@@ -42,7 +42,7 @@ congressional_districts <- function(
 
     if (year < 2013 && cb) {
         cli_abort(
-            "`cb = TRUE` for congressional districts is unavailable prior to 2013. Regular TIGER/Line files are available for 2010 through 2010 with `cb = FALSE`"
+            "`cb = TRUE` for congressional districts is unavailable prior to 2013. Regular TIGER/Line files are available for 2010 through 2012 with `cb = FALSE`."
         )
     }
 
