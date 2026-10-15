@@ -3,6 +3,9 @@
 \name{load_tiger_doc_template}
 \alias{load_tiger_doc_template}
 \title{Documentation Template for Functions that Utilize \code{load_tiger}}
+\usage{
+load_tiger_doc_template(..., year)
+}
 \arguments{
 \item{...}{arguments to be passed to internal function \code{load_tiger}, which is not exported. See Additional Arguments.}
 
@@ -33,3 +36,4 @@ option \code{"tigris_refresh"} if it is set. Specifying this argument will overr
 }
 }
 
+\keyword{internal}

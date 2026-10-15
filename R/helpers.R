@@ -922,5 +922,5 @@ erase_water <- function(input_sf, area_threshold = 0.75, year = NULL) {
 #'  * `filter_by` Geometry used to filter the output returned by the function.  Can be an sf object, an object of class `bbox`, or a length-4 vector of format `c(xmin, ymin, xmax, ymax)` that can be converted to a bbox. Geometries that intersect the input to `filter_by` will be returned.
 #'  * `protocol` Character string specifying the protocol to use for downloading files. Options are "ftp" or "http" (default). If "ftp", the URL will be modified to use FTP instead of HTTPS.
 #'  * `timeout` No longer used: downloads have no time limit. Kept so existing code that sets it keeps working.
-#' @name load_tiger_doc_template
-NULL
+#' @keywords internal
+load_tiger_doc_template <- function(..., year) NULL

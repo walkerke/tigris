@@ -1,3 +1,10 @@
+## Resubmission
+
+This is a resubmission. In this version I have:
+
+* Replaced the deprecated `.Names` in a `structure()` call with `names`.
+* Added a `\usage` section to the internal `load_tiger_doc_template` Rd file.
+
 ## R CMD check results
 
 0 errors | 0 warnings | 0 notes
