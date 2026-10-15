@@ -10,3 +10,6 @@
 ^\.github$
 ^dev$
 ^\.claude$
+^cran-comments\.md$
+^CRAN-SUBMISSION$
+^revdep$
