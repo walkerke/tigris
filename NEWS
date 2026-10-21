@@ -1,3 +1,8 @@
+tigris (development)
+-------------------------------------------------------
+
+* Expose crs, query, and geos_method arguments in `load_tiger()`. A default coordinate reference system can be returned by setting the global "tigris_crs" option. In `query`, `{layer}` is replaced with the name of the downloaded layer (e.g. `"SELECT * FROM {layer} WHERE STATEFP = '24'"`).
+
 tigris 2.3.0
 -------------------------------------------------------
 * Functions now default to a year of 2025.

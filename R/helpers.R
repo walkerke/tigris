@@ -64,7 +64,23 @@ tigris_cache_dir <- function(path) {
 #' @param keep_zipped_shapefile If set to TRUE, do not delete zipped shapefile
 #' (stored in temporary directory or TIGRIS_CACHE_DIR depending on the configuration of
 #' global option "tigris_use_cache"). Defaults to FALSE.
+#' @param query Optional OGR SQL query used to select features, passed to
+#' [sf::st_read()]. Each TIGER/Line download contains a single layer named
+#' after the zip file (e.g. `"tl_2025_us_county"`), and the name varies with
+#' year, geography, and resolution, so use `{layer}` as a placeholder for it:
+#' `"SELECT * FROM {layer} WHERE STATEFP = '24'"`. Defaults to `NA` (all
+#' features). If `filter_by` is also supplied, the spatial filter is passed to
+#' [sf::st_read()] alongside the query.
 #' @param filter_by Geometry used to filter the output returned by the function.  Can be an sf object, an object of class `bbox`, or a length-4 vector of format `c(xmin, ymin, xmax, ymax)` that can be converted to a bbox. Geometries that intersect the input to `filter_by` will be returned.
+#' @param geos_method Method passed to [sf::st_make_valid()] to repair
+#' `filter_by` if it contains invalid geometries. Must be `"valid_linework"` or
+#' `"valid_structure"` (the default). Ignored if `filter_by` is valid. Also
+#' ignored (with a warning from sf) for longitude/latitude coordinates, which
+#' includes the default NAD83, unless S2 is disabled with
+#' `sf::sf_use_s2(FALSE)`.
+#' @param crs Coordinate reference system to return. `NULL` and `NA` values are
+#' ignored. Passed to [sf::st_transform()]. Defaults to "EPSG:4269" (unless set
+#' using global option "tigris_crs").
 #' @param protocol Character string specifying the protocol to use for downloading files. Options are "ftp" or "http" (default). If "ftp", the URL will be modified to use FTP instead of HTTPS.
 #' @param timeout No longer used: downloads have no time limit. Kept so existing code that sets it keeps working.
 #'
@@ -77,7 +93,10 @@ load_tiger <- function(
     class = getOption("tigris_class", "sf"),
     progress_bar = TRUE,
     keep_zipped_shapefile = FALSE,
+    query = NA,
     filter_by = NULL,
+    geos_method = "valid_structure",
+    crs = getOption("tigris_crs", "EPSG:4269"),
     protocol = getOption("tigris_protocol", "http"),
     timeout = NULL
 ) {
@@ -87,8 +106,7 @@ load_tiger <- function(
     use_cache <- getOption("tigris_use_cache", FALSE)
 
     # Process filter_by
-    # TODO: Expose geos_method argument used by sf::st_make_valid
-    wkt_filter <- input_to_wkt(filter_by)
+    wkt_filter <- input_to_wkt(filter_by, geos_method = geos_method)
 
     # HTTPS by default, with FTP as a fallback; FTP only if requested
     ftp_url <- gsub("^https://www2", "ftp://ftp2", url)
@@ -138,7 +156,9 @@ load_tiger <- function(
     tiger_read(
         dsn,
         shape,
+        query = query,
         wkt_filter = wkt_filter,
+        crs = crs,
         tigris_type = tigris_type,
         class = class
     )
@@ -312,25 +332,58 @@ move_file <- function(from, to) {
     file.rename(from, to)
 }
 
+#' Substitute the layer name into an OGR SQL query
+#'
+#' Each TIGER/Line download has one layer, named after the shapefile, so
+#' `{layer}` in `query` is replaced with the quoted layer name.
+#' @noRd
+as_tigris_query <- function(query, layer, call = caller_env()) {
+    if (is.null(query) || all(is.na(query))) {
+        return(NA_character_)
+    }
+
+    if (!is.character(query) || length(query) != 1) {
+        cli_abort("{.arg query} must be a single string or {.code NA}.", call = call)
+    }
+
+    gsub("{layer}", sprintf('"%s"', layer), query, fixed = TRUE)
+}
+
 #' Read a downloaded TIGER/Line shapefile and tidy it for tigris
 #' @noRd
 tiger_read <- function(
     dsn,
     layer,
+    query = NA,
     wkt_filter = character(0),
+    crs = getOption("tigris_crs", "EPSG:4269"),
     tigris_type = NULL,
     class = getOption("tigris_class", "sf")
 ) {
-    obj <- st_read(
+    query <- as_tigris_query(query, layer)
+
+    # sf warns if layer is supplied along with a query
+    read_args <- list(
         dsn = dsn,
-        layer = layer,
         quiet = TRUE,
         stringsAsFactors = FALSE,
         wkt_filter = wkt_filter
     )
 
+    if (is.na(query)) {
+        read_args$layer <- layer
+    } else {
+        read_args$query <- query
+    }
+
+    obj <- do.call(st_read, read_args)
+
     if (is.na(st_crs(obj)$proj4string)) {
         st_crs(obj) <- "+proj=longlat +datum=NAD83 +no_defs"
+    }
+
+    if (!is.null(crs) && !is.na(crs) && (sf::st_crs(obj) != sf::st_crs(crs))) {
+        obj <- sf::st_transform(obj, crs = crs)
     }
 
     attr(obj, "tigris") <- "tigris"

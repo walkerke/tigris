@@ -20,12 +20,15 @@ Use option \code{tigris_refresh} to force a refresh of cached \code{tigris}
 Shapefiles. e.g. \code{options(tigris_refresh=TRUE)}
 
 Use option \code{tigris_year} to change the year for which you'd like to download data.
-e.g. \code{options(tigris_year = 2017)}.  The default year for the package is 2022.
+e.g. \code{options(tigris_year = 2017)}.  The default year for the package is 2025.
 
 Use option \code{tigris_class} to specify the class of spatial object you'd like returned.
 The default is \code{"sf"} for simple features objects.  If you'd like a legacy object
 of class \code{Spatial*DataFrame}, use \code{options(tigris_class = "sp")}. Please note
 that legacy sp objects are no longer formally supported in tigris.
+
+Use option \code{tigris_crs} to specify the coordinate reference system you'd like returned.
+The default is \code{"EPSG:4269"} which is the existing coordinate reference system for the TIGER/Line Shapefiles.
 
 Use the \code{protocol} argument in data download functions to specify whether to use FTP or HTTP
 for downloading files. The default is \code{"http"}, which downloads over HTTPS and falls back to FTP

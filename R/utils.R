@@ -630,12 +630,17 @@ prep_input_sfc <- function(
     cli_bullets(
       c(
         "!" = "{.arg {arg}} contains multiple geometries and may not work as expected.",
-        "i" = "Unioning .arg {arg}} geometries with {.fn sf::st_union}."
+        "i" = "Unioning {.arg {arg}} geometries with {.fn sf::st_union}."
       )
     )
 
     input <- sf::st_union(input)
-    input <- sf::st_make_valid(input, geos_method = geos_method)
+
+    if (all(sf::st_is_valid(input))) {
+      return(input)
+    }
+
+    sf::st_make_valid(input, geos_method = geos_method)
   }
 
   # Make NAD83 for coordinate alignment

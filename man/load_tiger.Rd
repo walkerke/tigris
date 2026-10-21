@@ -11,7 +11,10 @@ load_tiger(
   class = getOption("tigris_class", "sf"),
   progress_bar = TRUE,
   keep_zipped_shapefile = FALSE,
+  query = NA,
   filter_by = NULL,
+  geos_method = "valid_structure",
+  crs = getOption("tigris_crs", "EPSG:4269"),
   protocol = getOption("tigris_protocol", "http"),
   timeout = NULL
 )
@@ -34,7 +37,26 @@ set in "tigris_refresh" option if a value (TRUE or FALSE) is provided.}
 (stored in temporary directory or TIGRIS_CACHE_DIR depending on the configuration of
 global option "tigris_use_cache"). Defaults to FALSE.}
 
+\item{query}{Optional OGR SQL query used to select features, passed to
+\code{\link[sf:st_read]{sf::st_read()}}. Each TIGER/Line download contains a single layer named
+after the zip file (e.g. \code{"tl_2025_us_county"}), and the name varies with
+year, geography, and resolution, so use \code{{layer}} as a placeholder for it:
+\code{"SELECT * FROM {layer} WHERE STATEFP = '24'"}. Defaults to \code{NA} (all
+features). If \code{filter_by} is also supplied, the spatial filter is passed to
+\code{\link[sf:st_read]{sf::st_read()}} alongside the query.}
+
 \item{filter_by}{Geometry used to filter the output returned by the function.  Can be an sf object, an object of class \code{bbox}, or a length-4 vector of format \code{c(xmin, ymin, xmax, ymax)} that can be converted to a bbox. Geometries that intersect the input to \code{filter_by} will be returned.}
+
+\item{geos_method}{Method passed to \code{\link[sf:st_make_valid]{sf::st_make_valid()}} to repair
+\code{filter_by} if it contains invalid geometries. Must be \code{"valid_linework"} or
+\code{"valid_structure"} (the default). Ignored if \code{filter_by} is valid. Also
+ignored (with a warning from sf) for longitude/latitude coordinates, which
+includes the default NAD83, unless S2 is disabled with
+\code{sf::sf_use_s2(FALSE)}.}
+
+\item{crs}{Coordinate reference system to return. \code{NULL} and \code{NA} values are
+ignored. Passed to \code{\link[sf:st_transform]{sf::st_transform()}}. Defaults to "EPSG:4269" (unless set
+using global option "tigris_crs").}
 
 \item{protocol}{Character string specifying the protocol to use for downloading files. Options are "ftp" or "http" (default). If "ftp", the URL will be modified to use FTP instead of HTTPS.}
 
